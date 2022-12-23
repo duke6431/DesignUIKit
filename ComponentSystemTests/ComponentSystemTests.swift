@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import ComponentSystem
+@testable import DesignCore
 
 class ComponentSystemTests: XCTestCase {
 
