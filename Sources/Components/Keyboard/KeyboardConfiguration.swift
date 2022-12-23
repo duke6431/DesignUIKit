@@ -1,0 +1,23 @@
+//
+//  KeyboardConfiguration.swift
+//  Components
+//
+//  Created by Duc IT. Nguyen Minh on 24/05/2022.
+//
+
+import UIKit
+import DesignToolbox
+
+extension Keyboard {
+    public struct Default {
+        public static var outerSpacing: UIEdgeInsets = .init(top: 12, left: 12, bottom: 12 + 20, right: 12)
+        public static var spacing: CGFloat = 6
+        public static var keyboardBackground: UIColor = .secondarySystemBackground
+        public struct Key {
+            public static var background: UIColor = .systemBackground
+            public static var foreground: UIColor = .label
+            public static var font: UIFont = .systemFont(ofSize: 20)
+            public static var shadow: CALayer.ShadowConfiguration = .init()
+        }
+    }
+}

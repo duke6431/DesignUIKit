@@ -1,0 +1,103 @@
+//
+//  FontSystem.swift
+//  DesignToolbox
+//
+//  Created by Duc IT. Nguyen Minh on 12/07/2022.
+//
+
+import UIKit
+
+public protocol FontFamily {
+    var ultraLight: UIFont { get }
+    var thin: UIFont { get }
+    var light: UIFont { get }
+    var regular: UIFont { get }
+    var medium: UIFont { get }
+    var semibold: UIFont { get }
+    var bold: UIFont { get }
+    var heavy: UIFont { get }
+    var black: UIFont { get }
+    func font(with style: FontStyle) -> UIFont
+}
+
+public protocol FontStyle {
+    var size: CGFloat { get }
+    var weight: UIFont.Weight { get }
+}
+
+public extension UIFont {
+    enum DefaultStyle: FontStyle {
+        case title
+        case title2
+        case title3
+        case headline
+        case subheadline
+        case body
+        case body2
+        case footnote
+        case caption
+        case caption2
+
+        public var size: CGFloat {
+            switch self {
+            case .title: return 28
+            case .title2: return 24
+            case .title3: return 20
+            case .headline: return 17
+            case .subheadline: return 15
+            case .body: return 17
+            case .body2: return 15
+            case .footnote: return 12
+            case .caption: return 13
+            case .caption2: return 12
+            }
+        }
+
+        public var weight: Weight {
+            switch self {
+            case .title: return .semibold
+            case .title2: return .semibold
+            case .title3: return .semibold
+            case .headline: return .semibold
+            case .subheadline: return .semibold
+            case .body: return .regular
+            case .body2: return .regular
+            case .footnote: return .light
+            case .caption: return .regular
+            case .caption2: return .regular
+            }
+        }
+    }
+}
+
+public class FontSystem {
+    struct Default: FontFamily {
+        private static let defaultSize: CGFloat = 17
+
+        public var ultraLight: UIFont = .systemFont(ofSize: defaultSize, weight: .ultraLight)
+        public var thin: UIFont = .systemFont(ofSize: defaultSize, weight: .thin)
+        public var light: UIFont = .systemFont(ofSize: defaultSize, weight: .light)
+        public var regular: UIFont = .systemFont(ofSize: defaultSize, weight: .regular)
+        public var medium: UIFont = .systemFont(ofSize: defaultSize, weight: .medium)
+        public var semibold: UIFont = .systemFont(ofSize: defaultSize, weight: .semibold)
+        public var bold: UIFont = .systemFont(ofSize: defaultSize, weight: .bold)
+        public var heavy: UIFont = .systemFont(ofSize: defaultSize, weight: .heavy)
+        public var black: UIFont = .systemFont(ofSize: defaultSize, weight: .black)
+        public func font(with style: FontStyle) -> UIFont {
+            .systemFont(ofSize: style.size, weight: style.weight)
+        }
+
+        static let `default` = Default()
+    }
+
+    public static let shared: FontSystem = FontSystem()
+    public private(set) var defaultFont: FontFamily
+
+    init() {
+        defaultFont = Default.default
+    }
+
+    public func register(family: FontFamily) {
+        defaultFont = family
+    }
+}
