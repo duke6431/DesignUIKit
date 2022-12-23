@@ -16,18 +16,18 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "DesignCore",
-            targets: ["Core"]),
+            targets: ["DesignCore"]),
         .library(
             name: "DesignToolbox",
-            targets: ["Design"]
+            targets: ["DesignToolbox"]
         ),
         .library(
             name: "DesignComponents",
-            targets: ["Components"]
+            targets: ["DesignComponents"]
         ),
         .library(
             name: "DesignRx",
-            targets: ["RxComponents"]
+            targets: ["DesignRx"]
         )
     ],
     dependencies: [
@@ -39,32 +39,32 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "Core",
+            name: "DesignCore",
             path: "Sources/Core"
         ),
         .target(
-            name: "Design",
+            name: "DesignToolbox",
             path: "Sources/Design"
         ),
         .target(
-            name: "Components",
+            name: "DesignComponents",
             dependencies: [
-                .target(name: "Core"),
-                .target(name: "Design")
+                .target(name: "DesignCore"),
+                .target(name: "DesignToolbox")
             ],
             path: "Sources/Components"
         ),
         .target(
-            name: "RxComponents",
+            name: "DesignRx",
             dependencies: [
-                .target(name: "Components"),
+                .target(name: "DesignComponents"),
                 .product(name: "RxCocoa", package: "RxSwift")
             ],
             path: "Sources/RxComponents"
         ),
         .testTarget(
             name: "ComponentSystemTests",
-            dependencies: ["Core"],
+            dependencies: ["DesignCore"],
             path: "ComponentSystemTests"
         )
     ]
