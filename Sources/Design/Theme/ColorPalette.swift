@@ -19,15 +19,15 @@ public protocol ImageName {
     var name: String { get }
 }
 
-public class Palette: NSObject {
+open class Palette: NSObject {
     fileprivate var colorDict: [String: () -> UIColor] = [:]
     fileprivate var imageDict: [String: () -> UIImage?] = [:]
     
-    subscript(_ name: ColorName) -> UIColor {
+    public subscript(_ name: ColorName) -> UIColor {
         colorDict[name.name]?() ?? .systemBlue
     }
     
-    subscript(_ name: ImageName) -> UIImage? {
+    public subscript(_ name: ImageName) -> UIImage? {
         imageDict[name.name]?()
     }
 }
