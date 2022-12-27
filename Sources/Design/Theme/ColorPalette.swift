@@ -41,19 +41,19 @@ public extension Palette {
 public class ColorPalette: NSObject {
     public private(set) var palette: Palette
     
-    init(container: Palette, light: Palette, dark: Palette? = nil) {
+    init(container: Palette) {
         self.palette = container
         super.init()
 #if canImport(LoggerCenter)
         LogCenter.default.verbose("Initializing color palette type \(palette.name)")
 #endif
-        guard let colorCodesLight = readFrom(plist: light.name) else {
+        guard let colorCodesLight = readFrom(plist: container.name + "-light") else {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(light.name)")
 #endif
             return
         }
-        guard let dark = dark, let colorCodesDark = readFrom(plist: dark.name) else {
+        guard let colorCodesDark = readFrom(plist: container.name + "-dark") else {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(dark.name)")
 #endif

@@ -24,8 +24,8 @@ public class Theme: NSObject {
         _sharedProvider = DefaultThemeProvider(with: theme)
     }
     
-    public init(colorPalette: ColorPalette) {
-        self.colorPalette = colorPalette
+    public init(palette: Palette) {
+        self.colorPalette = .init(container: palette)
     }
 }
 
