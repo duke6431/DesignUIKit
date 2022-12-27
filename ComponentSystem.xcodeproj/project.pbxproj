@@ -7,23 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F1326EF287D311A0043625F /* FontSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1326EE287D311A0043625F /* FontSystem.swift */; };
 		3F132723287DE71F0043625F /* CommonStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F132721287D7CDC0043625F /* CommonStatusView.swift */; };
-		3F13272A287DE7F20043625F /* Logger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F132729287DE7F20043625F /* Logger.framework */; };
-		3F13272B287DE7F20043625F /* Logger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F132729287DE7F20043625F /* Logger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F1E06EC2846284A00659F71 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1E06EA284627CE00659F71 /* UIButton+.swift */; };
 		3F252FC2283B7BED00D927E9 /* ViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F252FC1283B7BED00D927E9 /* ViewController+.swift */; };
-		3F252FD3283B906600D927E9 /* Automation in Frameworks */ = {isa = PBXBuildFile; productRef = 3F252FD2283B906600D927E9 /* Automation */; };
-		3F252FD4283B906600D927E9 /* Automation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3F252FD2283B906600D927E9 /* Automation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3F26FBFB2835FC69003EF65C /* Design.docc in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FBFA2835FC69003EF65C /* Design.docc */; };
 		3F26FC012835FC69003EF65C /* DesignToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F26FBF72835FC69003EF65C /* DesignToolbox.framework */; };
 		3F26FC082835FC69003EF65C /* DesignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FC072835FC69003EF65C /* DesignTests.swift */; };
 		3F26FC0C2835FC69003EF65C /* DesignToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F26FBF72835FC69003EF65C /* DesignToolbox.framework */; };
 		3F26FC0D2835FC69003EF65C /* DesignToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F26FBF72835FC69003EF65C /* DesignToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F26FC142835FC7E003EF65C /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC895228354D3700A68C67 /* UIColor+.swift */; };
-		3F26FC152835FC7E003EF65C /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC894F28354B9000A68C67 /* ThemeProvider.swift */; };
-		3F26FC162835FC7E003EF65C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC894D2835088C00A68C67 /* ColorPalette.swift */; };
-		3F26FC172835FC7E003EF65C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC894A2835082C00A68C67 /* Theme.swift */; };
 		3F26FC1B2835FC9D003EF65C /* ComponentSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FC1A2835FC9D003EF65C /* ComponentSystem.swift */; };
 		3F26FC1D2835FD0D003EF65C /* DesignToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F26FBF72835FC69003EF65C /* DesignToolbox.framework */; };
 		3F26FC1E2835FD0E003EF65C /* DesignToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F26FBF72835FC69003EF65C /* DesignToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -31,6 +23,10 @@
 		3F26FC222835FD13003EF65C /* DesignCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F26FC272836316F003EF65C /* ComponentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FC262836316F003EF65C /* ComponentCell.swift */; };
 		3F282374283F6BFD00B8F5FE /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 3F282373283F6BFD00B8F5FE /* Nuke */; };
+		3F77A3932955BD9C008DAC67 /* FontSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A38F2955BD9C008DAC67 /* FontSystem.swift */; };
+		3F77A3942955BD9C008DAC67 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3902955BD9C008DAC67 /* ColorPalette.swift */; };
+		3F77A3952955BD9C008DAC67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3912955BD9C008DAC67 /* Theme.swift */; };
+		3F77A3962955BD9C008DAC67 /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */; };
 		3F7C1FA52834A47300D136BE /* Core.docc in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C1FA42834A47300D136BE /* Core.docc */; };
 		3F7C1FAB2834A47400D136BE /* DesignCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; };
 		3F7C1FB02834A47400D136BE /* ComponentSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C1FAF2834A47400D136BE /* ComponentSystemTests.swift */; };
@@ -76,7 +72,6 @@
 		3FDC89412835071000A68C67 /* DesignCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; };
 		3FDC89422835071000A68C67 /* DesignCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3FEACB622857438600B32AF0 /* CommonAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEACB612857438600B32AF0 /* CommonAttributedString.swift */; };
-		3FF75151283CF2C400C241A6 /* Logger in Frameworks */ = {isa = PBXBuildFile; productRef = 3FF75150283CF2C400C241A6 /* Logger */; };
 		3FF75153283CFE2800C241A6 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF75152283CFE2800C241A6 /* CALayer+.swift */; };
 /* End PBXBuildFile section */
 
@@ -195,7 +190,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3F13272B287DE7F20043625F /* Logger.framework in Embed Frameworks */,
 				3F26FC222835FD13003EF65C /* DesignCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -218,7 +212,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3F252FD4283B906600D927E9 /* Automation in Embed Frameworks */,
 				3FDC89342835068700A68C67 /* DesignComponents.framework in Embed Frameworks */,
 				3FDC893D283506CF00A68C67 /* DesignCore.framework in Embed Frameworks */,
 				3FA874B52838BC3A00699F51 /* DesignRx.framework in Embed Frameworks */,
@@ -242,12 +235,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3F1326EE287D311A0043625F /* FontSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSystem.swift; sourceTree = "<group>"; };
 		3F132721287D7CDC0043625F /* CommonStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStatusView.swift; sourceTree = "<group>"; };
 		3F132724287DE7840043625F /* Logger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Logger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F132729287DE7F20043625F /* Logger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Logger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F1E06EA284627CE00659F71 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
-		3F252FC0283B7B8A00D927E9 /* Automation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Automation; path = ../Automation; sourceTree = "<group>"; };
 		3F252FC1283B7BED00D927E9 /* ViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+.swift"; sourceTree = "<group>"; };
 		3F26FBF72835FC69003EF65C /* DesignToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F26FBFA2835FC69003EF65C /* Design.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Design.docc; sourceTree = "<group>"; };
@@ -256,6 +247,10 @@
 		3F26FC1A2835FC9D003EF65C /* ComponentSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSystem.swift; sourceTree = "<group>"; };
 		3F26FC262836316F003EF65C /* ComponentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentCell.swift; sourceTree = "<group>"; };
 		3F655B16286CAE8000FC2531 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		3F77A38F2955BD9C008DAC67 /* FontSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSystem.swift; sourceTree = "<group>"; };
+		3F77A3902955BD9C008DAC67 /* ColorPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		3F77A3912955BD9C008DAC67 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
 		3F7C1FA02834A47300D136BE /* DesignCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7C1FA42834A47300D136BE /* Core.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Core.docc; sourceTree = "<group>"; };
 		3F7C1FAA2834A47400D136BE /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,9 +292,6 @@
 		3FDC89202835068600A68C67 /* Components.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Components.docc; sourceTree = "<group>"; };
 		3FDC89262835068700A68C67 /* ComponentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComponentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FDC892D2835068700A68C67 /* ComponentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsTests.swift; sourceTree = "<group>"; };
-		3FDC894A2835082C00A68C67 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		3FDC894D2835088C00A68C67 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
-		3FDC894F28354B9000A68C67 /* ThemeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
 		3FDC895228354D3700A68C67 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		3FEACB612857438600B32AF0 /* CommonAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonAttributedString.swift; sourceTree = "<group>"; };
 		3FF75152283CFE2800C241A6 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
@@ -310,7 +302,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F13272A287DE7F20043625F /* Logger.framework in Frameworks */,
 				3F26FC212835FD13003EF65C /* DesignCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,13 +351,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FF75151283CF2C400C241A6 /* Logger in Frameworks */,
 				3FDC89322835068700A68C67 /* DesignComponents.framework in Frameworks */,
 				3FDC893C283506CF00A68C67 /* DesignCore.framework in Frameworks */,
 				3FA874B42838BC3A00699F51 /* DesignRx.framework in Frameworks */,
 				3F26FC0C2835FC69003EF65C /* DesignToolbox.framework in Frameworks */,
 				3FA874CC2838C4FD00699F51 /* SnapKit in Frameworks */,
-				3F252FD3283B906600D927E9 /* Automation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,7 +390,6 @@
 		3F252FBF283B7B8900D927E9 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				3F252FC0283B7B8A00D927E9 /* Automation */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -445,6 +433,17 @@
 				3F655B16286CAE8000FC2531 /* Package.swift */,
 			);
 			name = Deployment;
+			sourceTree = "<group>";
+		};
+		3F77A38E2955BD9C008DAC67 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				3F77A38F2955BD9C008DAC67 /* FontSystem.swift */,
+				3F77A3902955BD9C008DAC67 /* ColorPalette.swift */,
+				3F77A3912955BD9C008DAC67 /* Theme.swift */,
+				3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		3F7C1F962834A47300D136BE = {
@@ -623,10 +622,7 @@
 		3FDC895128354BEE00A68C67 /* Design */ = {
 			isa = PBXGroup;
 			children = (
-				3F1326EE287D311A0043625F /* FontSystem.swift */,
-				3FDC894A2835082C00A68C67 /* Theme.swift */,
-				3FDC894F28354B9000A68C67 /* ThemeProvider.swift */,
-				3FDC894D2835088C00A68C67 /* ColorPalette.swift */,
+				3F77A38E2955BD9C008DAC67 /* Theme */,
 				3F26FC182835FC84003EF65C /* Exts */,
 			);
 			path = Design;
@@ -820,8 +816,6 @@
 			name = Catalog;
 			packageProductDependencies = (
 				3FA874CB2838C4FD00699F51 /* SnapKit */,
-				3F252FD2283B906600D927E9 /* Automation */,
-				3FF75150283CF2C400C241A6 /* Logger */,
 			);
 			productName = Catalog;
 			productReference = 3FDC88FA283505FE00A68C67 /* Catalog.app */;
@@ -1029,7 +1023,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Core\"\n    swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Core\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282376283F89A100B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1048,7 +1042,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Design\"\n    swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Design\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282377283F89C500B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1067,7 +1061,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Components\"\n    swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Components\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282378283F89D700B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1085,7 +1079,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/RxComponents\"\n    swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/RxComponents\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1097,11 +1091,11 @@
 				3F26FBFB2835FC69003EF65C /* Design.docc in Sources */,
 				3F95F44A2840D41F001BA153 /* UIImage+.swift in Sources */,
 				3FF75153283CFE2800C241A6 /* CALayer+.swift in Sources */,
-				3F26FC152835FC7E003EF65C /* ThemeProvider.swift in Sources */,
-				3F26FC172835FC7E003EF65C /* Theme.swift in Sources */,
+				3F77A3932955BD9C008DAC67 /* FontSystem.swift in Sources */,
+				3F77A3962955BD9C008DAC67 /* ThemeProvider.swift in Sources */,
 				3F26FC142835FC7E003EF65C /* UIColor+.swift in Sources */,
-				3F26FC162835FC7E003EF65C /* ColorPalette.swift in Sources */,
-				3F1326EF287D311A0043625F /* FontSystem.swift in Sources */,
+				3F77A3942955BD9C008DAC67 /* ColorPalette.swift in Sources */,
+				3F77A3952955BD9C008DAC67 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1967,10 +1961,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3F252FD2283B906600D927E9 /* Automation */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Automation;
-		};
 		3F282373283F6BFD00B8F5FE /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F282372283F6BFD00B8F5FE /* XCRemoteSwiftPackageReference "Nuke" */;
@@ -1985,10 +1975,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3FA874CA2838C4FD00699F51 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		3FF75150283CF2C400C241A6 /* Logger */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Logger;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

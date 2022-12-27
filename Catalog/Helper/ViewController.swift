@@ -11,14 +11,11 @@ import RxCocoa
 import RxSwift
 
 enum Components: String, CaseIterable {
-    case commonTableView
     case customKeyboard
     case commonTextField
 
     var viewController: UIViewController {
         switch self {
-        case .commonTableView:
-            return UIViewController()
         case .customKeyboard:
             return KeyboardVC()
         case .commonTextField:
@@ -35,7 +32,7 @@ enum Components: String, CaseIterable {
             return "Create any keyboard with ease"
         case .commonTextField:
             return "Text field that every app need"
-        default:
+        @unknown default:
             return "Something descriptive..."
         }
 

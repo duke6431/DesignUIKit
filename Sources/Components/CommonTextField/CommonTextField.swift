@@ -118,7 +118,7 @@ extension CommonTextField {
         // TextField leading on if no image and off if there is an image
         textFieldLeading = textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
         trailingViewWidth = trailingView.widthAnchor.constraint(equalToConstant: 0)
-        trailingViewWidth?.priority = .defaultLow
+        trailingViewWidth?.priority = .defaultHigh + 50
         iconWidth = iconView.widthAnchor.constraint(equalTo: iconView.heightAnchor)
         NSLayoutConstraint.activate {
             textFieldLeading!

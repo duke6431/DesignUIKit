@@ -44,7 +44,7 @@ import DesignToolbox
 
     open func configureViews() {
 #if canImport(DesignToolbox)
-        DefaultThemeProvider.shared.register(observer: self)
+        Theme.provider.register(observer: self)
 #endif
     }
 #if canImport(DesignToolbox)

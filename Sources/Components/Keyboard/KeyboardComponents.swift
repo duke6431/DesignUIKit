@@ -7,6 +7,9 @@
 
 import UIKit
 import DesignCore
+#if canImport(LoggerCenter)
+import LoggerCenter
+#endif
 
 public class Key: KeyRenderable, KeyTappable {
     public enum Kind {
@@ -151,7 +154,9 @@ public class KeyStack: KeyRenderable {
             return $0.render()
         }.forEach(stackView.addArrangedSubview)
         for (index, view) in stackView.arrangedSubviews.enumerated() {
+#if canImport(LoggerCenter)
             print("\(multipliers[index].current(axis))/\(totalMultiplier)")
+#endif
             var constant = (multipliers.count > 1 ? -stackView.spacing / 2 : 0)
             if index != 0 && index != multipliers.count - 1 { constant *= 2 }
             switch axis {

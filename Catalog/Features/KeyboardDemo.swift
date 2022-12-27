@@ -48,7 +48,7 @@ class KeyboardVC: UIViewController {
             $0.trailing.lessThanOrEqualTo(textField)
         }
         keyboard.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalTo(view)
         }
         keyboard.attach(to: textField)
     }
