@@ -11,7 +11,26 @@ import DesignCore
 import LoggerCenter
 #endif
 
-public class Palette: NSObject { }
+public protocol ColorName {
+    var name: String { get }
+}
+
+public protocol ImageName {
+    var name: String { get }
+}
+
+public class Palette: NSObject {
+    fileprivate var colorDict: [String: () -> UIColor] = [:]
+    fileprivate var imageDict: [String: () -> UIImage?] = [:]
+    
+    subscript(_ name: ColorName) -> UIColor {
+        colorDict[name.name]?() ?? .systemBlue
+    }
+    
+    subscript(_ name: ImageName) -> UIImage? {
+        imageDict[name.name]?()
+    }
+}
 
 public extension Palette {
     var name: String {
@@ -46,24 +65,20 @@ public class ColorPalette: NSObject {
     
     func load(into palette: Palette, with light: [String: String], and dark: [String: String]? = nil) {
         for property in light.keys {
-            guard palette.responds(to: .init(property)) else {
-#if canImport(LoggerCenter)
-                LogCenter.default.warning("Property '\(property)' not found on '\(palette.name)'")
-#else
-                print("Property '\(property)' not found on '\(palette.name)'")
-#endif
-                return
-            }
             if property.starts(with: "img") {
-                palette.setValue(UIImage(dynamicImageWithLight: UIImage(named: light[property] ?? "", in: .main, compatibleWith: nil), dark: UIImage(named: dark?[property] ?? "", in: .main, compatibleWith: nil)), forKeyPath: property)
+                palette.imageDict[property] = {
+                    UIImage(dynamicImageWithLight: UIImage(named: light[property] ?? "", in: Theme.bundle, compatibleWith: nil), dark: UIImage(named: dark?[property] ?? "", in: Theme.bundle, compatibleWith: nil))
+                }
             } else {
-                palette.setValue(UIColor(dynamicProvider: { traitCollection -> UIColor in
-                    if traitCollection.userInterfaceStyle == .light {
-                        return UIColor(hexString: light[property] ?? "")
-                    } else {
-                        return UIColor(hexString: dark?[property] ?? "")
-                    }
-                }), forKeyPath: property)
+                palette.colorDict[property] = {
+                    UIColor(dynamicProvider: { traitCollection -> UIColor in
+                        if traitCollection.userInterfaceStyle == .light {
+                            return UIColor(hexString: light[property] ?? "")
+                        } else {
+                            return UIColor(hexString: dark?[property] ?? "")
+                        }
+                    })
+                }
             }
         }
     }
