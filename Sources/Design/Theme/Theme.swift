@@ -17,15 +17,24 @@ public protocol Themable: AnyObject {
 public class Theme: NSObject {
     static var bundle: Bundle = Bundle.main
     static var _sharedProvider: ThemeProvider?
-    public private(set) var colorPalette: ColorPalette
+    public private(set) var palette: Palette
 
-    public static func initialize(with bundle: Bundle?, and theme: Theme) {
+    public static func initialize(with bundle: Bundle?, and palette: Palette) {
         Theme.bundle = bundle ?? .main
-        _sharedProvider = DefaultThemeProvider(with: theme)
+        _sharedProvider = DefaultThemeProvider(with: .init(palette: palette))
     }
     
     public init(palette: Palette) {
-        self.colorPalette = .init(container: palette)
+        self.palette = palette
+        if ColorLoader(container: palette).load() {
+#if canImport(LoggerCenter)
+            LogCenter.default.verbose("Successfully loaded palette \(palette.name)")
+#endif
+        } else {
+#if canImport(LoggerCenter)
+            LogCenter.default.verbose("Failure occurred while loading palette \(palette.name)")
+#endif
+        }
     }
 }
 

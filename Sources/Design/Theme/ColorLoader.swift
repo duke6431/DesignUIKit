@@ -1,5 +1,5 @@
 //
-//  ColorPalette.swift
+//  ColorLoader.swift
 //  Life
 //
 //  Created by Duc Minh Nguyen on 11/5/21.
@@ -38,12 +38,15 @@ public extension Palette {
     }
 }
 
-public class ColorPalette: NSObject {
+public class ColorLoader: NSObject {
     public private(set) var palette: Palette
     
     init(container: Palette) {
         self.palette = container
         super.init()
+    }
+    
+    func load() -> Bool {
 #if canImport(LoggerCenter)
         LogCenter.default.verbose("Initializing color palette type \(palette.name)")
 #endif
@@ -51,16 +54,17 @@ public class ColorPalette: NSObject {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(light.name)")
 #endif
-            return
+            return false
         }
         guard let colorCodesDark = readFrom(plist: container.name + "-dark") else {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(dark.name)")
 #endif
             load(into: palette, with: colorCodesLight)
-            return
+            return true
         }
         load(into: palette, with: colorCodesLight, and: colorCodesDark)
+        return true
     }
     
     func load(into palette: Palette, with light: [String: String], and dark: [String: String]? = nil) {
@@ -81,10 +85,6 @@ public class ColorPalette: NSObject {
                 }
             }
         }
-    }
-    
-    public func currentPalette<T: Palette>() -> T? {
-        return palette as? T
     }
     
     func readFrom(plist name: String) -> [String: String]? {

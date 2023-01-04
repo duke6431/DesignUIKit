@@ -24,7 +24,7 @@
 		3F26FC272836316F003EF65C /* ComponentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FC262836316F003EF65C /* ComponentCell.swift */; };
 		3F282374283F6BFD00B8F5FE /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 3F282373283F6BFD00B8F5FE /* Nuke */; };
 		3F77A3932955BD9C008DAC67 /* FontSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A38F2955BD9C008DAC67 /* FontSystem.swift */; };
-		3F77A3942955BD9C008DAC67 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3902955BD9C008DAC67 /* ColorPalette.swift */; };
+		3F77A3942955BD9C008DAC67 /* ColorLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3902955BD9C008DAC67 /* ColorLoader.swift */; };
 		3F77A3952955BD9C008DAC67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3912955BD9C008DAC67 /* Theme.swift */; };
 		3F77A3962955BD9C008DAC67 /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */; };
 		3F7C1FA52834A47300D136BE /* Core.docc in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C1FA42834A47300D136BE /* Core.docc */; };
@@ -248,7 +248,7 @@
 		3F26FC262836316F003EF65C /* ComponentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentCell.swift; sourceTree = "<group>"; };
 		3F655B16286CAE8000FC2531 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		3F77A38F2955BD9C008DAC67 /* FontSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSystem.swift; sourceTree = "<group>"; };
-		3F77A3902955BD9C008DAC67 /* ColorPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		3F77A3902955BD9C008DAC67 /* ColorLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorLoader.swift; sourceTree = "<group>"; };
 		3F77A3912955BD9C008DAC67 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
 		3F7C1FA02834A47300D136BE /* DesignCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -439,7 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				3F77A38F2955BD9C008DAC67 /* FontSystem.swift */,
-				3F77A3902955BD9C008DAC67 /* ColorPalette.swift */,
+				3F77A3902955BD9C008DAC67 /* ColorLoader.swift */,
 				3F77A3912955BD9C008DAC67 /* Theme.swift */,
 				3F77A3922955BD9C008DAC67 /* ThemeProvider.swift */,
 			);
@@ -1095,7 +1095,7 @@
 				3F77A3932955BD9C008DAC67 /* FontSystem.swift in Sources */,
 				3F77A3962955BD9C008DAC67 /* ThemeProvider.swift in Sources */,
 				3F26FC142835FC7E003EF65C /* UIColor+.swift in Sources */,
-				3F77A3942955BD9C008DAC67 /* ColorPalette.swift in Sources */,
+				3F77A3942955BD9C008DAC67 /* ColorLoader.swift in Sources */,
 				3F77A3952955BD9C008DAC67 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
