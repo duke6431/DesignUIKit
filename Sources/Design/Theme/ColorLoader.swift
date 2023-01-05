@@ -50,13 +50,13 @@ public class ColorLoader: NSObject {
 #if canImport(LoggerCenter)
         LogCenter.default.verbose("Initializing color palette type \(palette.name)")
 #endif
-        guard let colorCodesLight = readFrom(plist: container.name + "-light") else {
+        guard let colorCodesLight = readFrom(plist: palette.name + "-light") else {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(light.name)")
 #endif
             return false
         }
-        guard let colorCodesDark = readFrom(plist: container.name + "-dark") else {
+        guard let colorCodesDark = readFrom(plist: palette.name + "-dark") else {
 #if canImport(LoggerCenter)
             LogCenter.default.warning("Couldn't initialize for color palette adaptive type \(dark.name)")
 #endif
