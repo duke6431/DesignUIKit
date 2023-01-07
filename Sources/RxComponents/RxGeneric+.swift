@@ -11,13 +11,13 @@ import RxCocoa
 public extension ObservableType where Element == Bool {
     /// Boolean not operator
     func not() -> Observable<Bool> {
-        map { !value }
+        map { !$0 }
     }
 }
 
 public extension ObservableType {
     func catchErrorJustComplete() -> Observable<Element> {
-        catchError { _ in Observable.empty() }
+        `catch` { _ in Observable.empty() }
     }
     
     func asDriverOnErrorJustComplete() -> Driver<Element> {
