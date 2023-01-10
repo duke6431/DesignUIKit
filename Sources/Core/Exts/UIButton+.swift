@@ -7,6 +7,12 @@
 
 import UIKit
 
+@objc public class ClosureSleeve: NSObject {
+    let closure:() -> Void
+    public init(_ closure: @escaping() -> Void) { self.closure = closure }
+    @objc public func invoke() { closure() }
+}
+
 public extension UIControl {
     /// Add action with out caring about selector and version compatible
     /// - Parameters:
@@ -16,11 +22,6 @@ public extension UIControl {
         if #available(iOS 14.0, *) {
             addAction(UIAction { (_: UIAction) in closure() }, for: controlEvent)
         } else {
-            @objc class ClosureSleeve: NSObject {
-                let closure:() -> Void
-                init(_ closure: @escaping() -> Void) { self.closure = closure }
-                @objc func invoke() { closure() }
-            }
             let sleeve = ClosureSleeve(closure)
             addTarget(sleeve, action: #selector(ClosureSleeve.invoke), for: controlEvent)
             objc_setAssociatedObject(self, "\(UUID())", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)

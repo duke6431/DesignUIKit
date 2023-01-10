@@ -13,15 +13,34 @@ import RxSwift
 enum Components: String, CaseIterable {
     case customKeyboard
     case commonTextField
+    case customBottomSheet
 
-    var viewController: UIViewController {
+    var viewController: UIViewController? {
         switch self {
         case .customKeyboard:
             return KeyboardVC()
         case .commonTextField:
             return CommonTextFieldVC()
+        default:
+            return nil
         }
     }
+    
+    var action: ((UINavigationController) -> Void)? {
+        switch self {
+        case .customBottomSheet:
+            return { navigationController in
+                let childNavigationController = UINavigationController()
+                let viewController = UIViewController()
+                viewController.view.backgroundColor = .white
+                childNavigationController.pushViewController(viewController, animated: true)
+                navigationController.present(childNavigationController, dimmingView: .dimmingDefault)
+            }
+        default:
+            return nil
+        }
+    }
+    
     var name: String {
         return rawValue.camelCaseToWords().capitalized
     }
@@ -98,9 +117,12 @@ class ViewController: UIViewController {
         bindActions()
         let components = CommonTableSection(items: Components.allCases.map({ feature in
             ComponentCellModel.init(name: feature.name, detail: feature.detail) { [weak self] in
-                let viewController = feature.viewController
-                viewController.title = feature.name
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                if let viewController = feature.viewController {
+                    viewController.title = feature.name
+                    self?.navigationController?.present(viewController, animated: true)
+                } else if let action = feature.action {
+                    action(self?.navigationController ?? UINavigationController())
+                }
             }
         }))
         tableView.reloadData(sections: [components])
