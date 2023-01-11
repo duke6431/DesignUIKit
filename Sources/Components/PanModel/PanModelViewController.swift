@@ -58,7 +58,7 @@ extension UIViewController {
         modalPresentationStyle = .custom
     }
     
-    public func present(_ viewController: UIViewController?, dimmingView: UIView,
+    public func present(_ viewController: UIViewController?, dimmingView: UIView? = nil,
                         direction: PanModal.OriginDirection = .top, animated: Bool = true) {
         let panel = PanModal.ViewController()
         panel.prepareToPresentAsPanel(with: dimmingView, direction: direction)

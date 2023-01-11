@@ -20,52 +20,47 @@ public protocol FontFamily {
     func font(with style: FontStyle) -> UIFont
 }
 
-public protocol FontStyle {
-    var size: CGFloat { get }
-    var weight: UIFont.Weight { get }
+public enum FontStyle {
+    case title
+    case title2
+    case title3
+    case headline
+    case subheadline
+    case body
+    case body2
+    case footnote
+    case caption
+    case caption2
 }
 
-public extension UIFont {
-    enum DefaultStyle: FontStyle {
-        case title
-        case title2
-        case title3
-        case headline
-        case subheadline
-        case body
-        case body2
-        case footnote
-        case caption
-        case caption2
-
-        public var size: CGFloat {
-            switch self {
-            case .title: return 28
-            case .title2: return 24
-            case .title3: return 20
-            case .headline: return 17
-            case .subheadline: return 15
-            case .body: return 17
-            case .body2: return 15
-            case .footnote: return 12
-            case .caption: return 13
-            case .caption2: return 12
-            }
+extension FontStyle {
+    public var size: CGFloat {
+        switch self {
+        case .title: return 28
+        case .title2: return 24
+        case .title3: return 20
+        case .headline: return 17
+        case .subheadline: return 15
+        case .body: return 17
+        case .body2: return 15
+        case .footnote: return 12
+        case .caption: return 13
+        case .caption2: return 12
         }
+    }
 
-        public var weight: Weight {
-            switch self {
-            case .title: return .semibold
-            case .title2: return .semibold
-            case .title3: return .semibold
-            case .headline: return .semibold
-            case .subheadline: return .semibold
-            case .body: return .regular
-            case .body2: return .regular
-            case .footnote: return .light
-            case .caption: return .regular
-            case .caption2: return .regular
-            }
+    public var weight: UIFont.Weight {
+        switch self {
+        case .title: return .semibold
+        case .title2: return .semibold
+        case .title3: return .semibold
+        case .headline: return .semibold
+        case .subheadline: return .semibold
+        case .body: return .regular
+        case .body2: return .regular
+        case .footnote: return .light
+        case .caption: return .regular
+        case .caption2: return .regular
         }
     }
 }
@@ -99,5 +94,9 @@ public class FontSystem {
 
     public func register(family: FontFamily) {
         defaultFont = family
+    }
+    
+    public static func font(with style: FontStyle) -> UIFont {
+        shared.defaultFont.font(with: style)
     }
 }

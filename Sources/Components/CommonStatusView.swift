@@ -34,9 +34,9 @@ public class CommonStatusView: UIView {
     public var title: String? { didSet { titleLabel.text = title } }
     public var subtitle: String? { didSet { subtitleLabel.text = subtitle } }
     public var titleColor: UIColor = .label { didSet { titleLabel.textColor = titleColor } }
-    public var titleFont: UIFont = FontSystem.shared.defaultFont.font(with: UIFont.DefaultStyle.title2) { didSet { titleLabel.font = titleFont } }
+    public var titleFont: UIFont = FontSystem.font(with: .title2) { didSet { titleLabel.font = titleFont } }
     public var subtitleColor: UIColor = .secondaryLabel { didSet { subtitleLabel.textColor = subtitleColor } }
-    public var subtitleFont: UIFont = FontSystem.shared.defaultFont.font(with: UIFont.DefaultStyle.body) { didSet { subtitleLabel.font = subtitleFont } }
+    public var subtitleFont: UIFont = FontSystem.font(with: .body) { didSet { subtitleLabel.font = subtitleFont } }
 
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
