@@ -78,10 +78,10 @@ extension UIViewController {
                 view.addSubview(viewController.view)
                 viewController.view.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate {
-                    viewController.view.topAnchor.constraint(equalTo: view.topAnchor)
+                    viewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
                     viewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor)
                     viewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-                    viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                    viewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                 }
                 panel.addChild(viewController)
                 viewController.didMove(toParent: panel)
