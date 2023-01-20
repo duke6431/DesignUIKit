@@ -12,6 +12,17 @@ import DesignCore
 extension PanModal {
     public class ViewController: UIViewController {
         var contentConfigure: ((UIView, UIViewController) -> Void)?
+        var direction: OriginDirection
+        
+        @available(iOS, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError()
+        }
+        
+        public init(direction: OriginDirection = .bottom) {
+            self.direction = direction
+            super.init(nibName: nil, bundle: nil)
+        }
         
         // MARK: - Views
         public private(set) lazy var contentView: UIView = {
@@ -34,7 +45,7 @@ extension PanModal {
             NSLayoutConstraint.activate {
                 contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
                 contentView.heightAnchor.constraint(equalToConstant: 500).with(\.priority, setTo: .defaultLow + 250)
-                contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                direction == .top ? contentView.topAnchor.constraint(equalTo: view.topAnchor) : contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                 contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             }
             contentConfigure?(contentView, self)
@@ -60,17 +71,17 @@ extension UIViewController {
     
     public func present(_ viewController: UIViewController?, dimmingView: UIView? = nil,
                         direction: PanModal.OriginDirection = .top, animated: Bool = true) {
-        let panel = PanModal.ViewController()
+        let panel = PanModal.ViewController(direction: direction)
         panel.prepareToPresentAsPanel(with: dimmingView, direction: direction)
         if let viewController = viewController {
             panel.contentConfigure = { view, panel in
                 view.addSubview(viewController.view)
                 viewController.view.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate {
-                    viewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+                    viewController.view.topAnchor.constraint(equalTo: view.topAnchor)
                     viewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor)
                     viewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-                    viewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+                    viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                 }
                 panel.addChild(viewController)
                 viewController.didMove(toParent: panel)
