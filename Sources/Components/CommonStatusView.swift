@@ -20,6 +20,7 @@ public class CommonStatusView: UIView {
         let view = UILabel()
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         return view
     }()
     lazy var subtitleLabel: UILabel = {
@@ -27,6 +28,7 @@ public class CommonStatusView: UIView {
         view.numberOfLines = 0
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
         return view
     }()
     // MARK: - Content
@@ -87,6 +89,17 @@ public class CommonStatusView: UIView {
     }
     
     func change(from old: Alignment? = nil, to new: Alignment) {
+        switch new {
+        case .left:
+            titleLabel.textAlignment = .left
+            subtitleLabel.textAlignment = .left
+        case .center:
+            titleLabel.textAlignment = .center
+            subtitleLabel.textAlignment = .center
+        case .right:
+            titleLabel.textAlignment = .right
+            subtitleLabel.textAlignment = .right
+        }
         guard let constraints = alignmentConstraints[new] else {
             NSLayoutConstraint.activate(load(new))
             return
