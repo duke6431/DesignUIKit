@@ -18,7 +18,7 @@ public extension UIControl {
     /// - Parameters:
     ///   - controlEvent: Control event for action to be triggered
     ///   - closure: Things happen
-    func addAction(for controlEvent: UIControl.Event = .touchUpInside, _ closure: @escaping() -> Void) {
+    func addAction(for controlEvent: UIControl.Event = .touchUpInside, _ closure: @escaping() -> Void) -> String {
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }
             addAction(action, for: controlEvent)

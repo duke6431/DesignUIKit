@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignCore
 import DesignToolbox
 
 public class CommonStatusView: UIView {
@@ -13,7 +14,6 @@ public class CommonStatusView: UIView {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         return view
     }()
     lazy var titleLabel: UILabel = {
@@ -29,7 +29,7 @@ public class CommonStatusView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    // MARK: - Content
     public var image: UIImage? { didSet { imageView.image = image } }
     public var title: String? { didSet { titleLabel.text = title } }
     public var subtitle: String? { didSet { subtitleLabel.text = subtitle } }
@@ -37,40 +37,88 @@ public class CommonStatusView: UIView {
     public var titleFont: UIFont = FontSystem.font(with: .title2) { didSet { titleLabel.font = titleFont } }
     public var subtitleColor: UIColor = .secondaryLabel { didSet { subtitleLabel.textColor = subtitleColor } }
     public var subtitleFont: UIFont = FontSystem.font(with: .body) { didSet { subtitleLabel.font = subtitleFont } }
-
+    
+    // MARK: - Distribution, Size and Anchors
+    public var alignment: Alignment = .center { didSet { change(from: oldValue, to: alignment) } }
+    public var imageRatio: CGFloat = 1.0 { didSet { imageRatioConstraint = imageRatioConstraint.setMultiplier(multiplier: imageRatio) } }
+    public var imageToTitleSpacing: CGFloat = 28 { didSet { imageTitleConstraint.constant = imageToTitleSpacing } }
+    public var titleToSubtitleSpacing: CGFloat = 12 { didSet { titleSubtitleConstraint.constant = titleToSubtitleSpacing } }
+    public var imageWidthAnchor: NSLayoutDimension { imageView.widthAnchor }
+    
+    public lazy var imageWidthSizeConstraint: NSLayoutConstraint = {
+        imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 3.0/5)
+    }()
+    private lazy var imageRatioConstraint: NSLayoutConstraint = {
+        imageView.widthAnchor.constraint(equalTo: heightAnchor, multiplier: imageRatio)
+    }()
+    private lazy var imageTitleConstraint: NSLayoutConstraint = {
+        titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: imageToTitleSpacing)
+    }()
+    private lazy var titleSubtitleConstraint: NSLayoutConstraint = {
+        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: titleToSubtitleSpacing)
+    }()
+    private var alignmentConstraints: [Alignment: [NSLayoutConstraint]] = [:]
+    
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         configureViews()
     }
-
+    
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureViews()
     }
-
+    
     func configureViews() {
         [imageView, titleLabel, subtitleLabel].forEach(addSubview)
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 3.5/5)
-        ])
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 40),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            subtitleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            subtitleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            imageRatioConstraint,
+            imageWidthSizeConstraint,
+            imageTitleConstraint,
+            titleSubtitleConstraint,
             subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         titleLabel.textColor = titleColor
         titleLabel.font = titleFont
         subtitleLabel.textColor = subtitleColor
         subtitleLabel.font = subtitleFont
+        change(to: alignment)
+    }
+    
+    func change(from old: Alignment? = nil, to new: Alignment) {
+        guard let constraints = alignmentConstraints[new] else {
+            NSLayoutConstraint.activate(load(new))
+            return
+        }
+        NSLayoutConstraint.activate(constraints)
+        guard let old = old, let constraints = alignmentConstraints[old] else { return }
+        NSLayoutConstraint.deactivate(constraints)
+    }
+    
+    func load(_ alignment: Alignment) -> [NSLayoutConstraint] {
+        var constraints: [NSLayoutConstraint] = []
+        switch alignment {
+        case .left:
+            constraints.append(imageView.leadingAnchor.constraint(equalTo: leadingAnchor))
+            constraints.append(titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor))
+            constraints.append(titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor))
+            constraints.append(subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor))
+            constraints.append(subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor))
+        case .center:
+            constraints.append(imageView.centerXAnchor.constraint(equalTo: centerXAnchor))
+            constraints.append(titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor))
+            constraints.append(titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor))
+            constraints.append(subtitleLabel.centerXAnchor.constraint(equalTo: centerXAnchor))
+            constraints.append(subtitleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor))
+        case .right:
+            constraints.append(imageView.trailingAnchor.constraint(equalTo: trailingAnchor))
+            constraints.append(titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor))
+            constraints.append(titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor))
+            constraints.append(subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor))
+            constraints.append(subtitleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor))
+        }
+        alignmentConstraints[alignment] = constraints
+        return constraints
     }
 }
