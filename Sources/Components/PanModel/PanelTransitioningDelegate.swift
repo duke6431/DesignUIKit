@@ -20,7 +20,7 @@ extension PanModal {
             self.dimmingView = dimmingView
             self.direction = direction
             self.animationController = .init(direction: direction)
-            self.interactionController = .init()
+            self.interactionController = .init(direction: direction)
             self.interactive = interactive
         }
         

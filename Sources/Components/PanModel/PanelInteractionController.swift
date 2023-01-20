@@ -15,6 +15,11 @@ extension PanModal {
         private var beginTranslationY: CGFloat = 0
         private var gestures: [UIGestureRecognizer] = []
         private weak var viewController: UIViewController?
+        private var direction: OriginDirection
+        
+        init(direction: OriginDirection) {
+            self.direction = direction
+        }
         
         func wireToViewController(viewController: UIViewController, interactive: Bool = true) {
             self.viewController = viewController
@@ -49,11 +54,12 @@ extension PanModal {
             
             switch gestureRecognizer.state {
             case .changed:
-                if let scrollView = gestureRecognizer.view as? UIScrollView ?? gestureRecognizer.view?.subviews.first as? UIScrollView, scrollView.contentOffset.y > 0, percentComplete == 0 {
+                if let scrollView = gestureRecognizer.view as? UIScrollView ?? gestureRecognizer.view?.subviews.first as? UIScrollView,
+                    direction == .bottom ? scrollView.contentOffset.y > 0 : scrollView.contentOffset.y < 0, percentComplete == 0 {
                     return
                 }
                 let translation = gestureRecognizer.translation(in: superview)
-                let rawProgress = (translation.y - beginTranslationY) / view.bounds.height
+                let rawProgress = abs(translation.y - beginTranslationY) / view.bounds.height
                 let progress = CGFloat(fminf(fmaxf(Float(rawProgress), 0), 1))
                 
                 if interactionInProgress {
@@ -61,7 +67,7 @@ extension PanModal {
                     update(progress)
                 } else {
                     interactionInProgress.toggle()
-                    beginTranslationY = translation.y
+                    beginTranslationY = direction == .bottom ? translation.y : -translation.y
                     viewController?.dismiss(animated: true)
                 }
             case .cancelled, .failed, .ended:
