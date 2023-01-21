@@ -26,7 +26,7 @@ public class RxStatusPair {
 }
 
 extension ObservableConvertibleType {
-    func trackStatus(using pair: RxStatusPair) -> Observable<Element> {
-        trackActivity(pair.activityIndicator).trackError(pair.errorTracker)
+    func track(_ pair: RxStatusPair) -> Observable<Element> {
+        track(pair.activityIndicator).track(pair.errorTracker)
     }
 }
