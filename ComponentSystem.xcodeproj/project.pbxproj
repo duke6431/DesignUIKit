@@ -544,8 +544,8 @@
 			children = (
 				3FA874BC2838BC9300699F51 /* CommonTableView+Rx.swift */,
 				3F6432B429682EAD00BDE71E /* RxGeneric+.swift */,
-				3FB3F61B2969B59A002CC4E2 /* Trackers */,
 				3FB3F61E2969B7C1002CC4E2 /* ViewModelType.swift */,
+				3FB3F61B2969B59A002CC4E2 /* Trackers */,
 			);
 			path = RxComponents;
 			sourceTree = "<group>";
