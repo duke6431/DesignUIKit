@@ -44,6 +44,7 @@ public extension UIControl {
                 // FIXME: Throw an error here if it is not found or we can just ignore like removeAction?
                 return
             }
+            objc_setAssociatedObject(self, identifier, nil, .OBJC_ASSOCIATION_RETAIN)
             removeTarget(sleeve, action: #selector(ClosureSleeve.invoke), for: controlEvent)
         }
     }
