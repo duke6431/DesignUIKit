@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol ViewModelType {
     associatedtype Input
@@ -14,12 +15,18 @@ public protocol ViewModelType {
     func transform(input: Input) -> Output
 }
 
-public struct RxStatusPair {
+public class RxStatusPair {
     public var errorTracker = ErrorTracker()
     public var activityIndicator = ActivityIndicator()
     
     public init(errorTracker: ErrorTracker = ErrorTracker(), activityIndicator: ActivityIndicator = ActivityIndicator()) {
         self.errorTracker = errorTracker
         self.activityIndicator = activityIndicator
+    }
+}
+
+extension ObservableConvertibleType {
+    func trackStatus(using pair: RxStatusPair) -> Observable<Element> {
+        trackActivity(pair.activityIndicator).trackError(pair.errorTracker)
     }
 }

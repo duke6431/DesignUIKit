@@ -16,19 +16,13 @@ public extension ObservableType where Element == Bool {
 }
 
 public extension ObservableType {
-    func catchErrorJustComplete() -> Observable<Element> {
-        `catch` { _ in Observable.empty() }
-    }
+    func catchErrorJustComplete() -> Observable<Element> { `catch` { _ in .empty() } }
     
-    func asDriverOnErrorJustComplete() -> Driver<Element> {
-        asDriver { _ in Driver.empty() }
-    }
+    func asDriverOnErrorJustComplete() -> Driver<Element> { asDriver { _ in .empty() } }
     
-    func mapToVoid() -> Observable<Void> {
-        map { _ in }
-    }
+    func void() -> Observable<Void> { map { _ in } }
 }
 
 public extension SharedSequence {
-    func mapToVoid() -> SharedSequence<SharingStrategy, Void> { map { _ in () } }
+    func void() -> SharedSequence<SharingStrategy, Void> { map { _ in () } }
 }
