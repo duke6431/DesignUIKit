@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import DesignComponents
+import DesignRx
 
 class CommonTextFieldVC: UIViewController {
     var disposeBag = DisposeBag()

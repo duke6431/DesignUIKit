@@ -23,13 +23,13 @@ public class ActivityIndicator: SharedSequenceConvertibleType {
     }
     
     fileprivate func trackActivityOfObservable<O: ObservableConvertibleType>(_ source: O) -> Observable<O.Element> {
-        return source.asObservable()
-            .do(onNext: { _ in
-                self.sendStopLoading()
-            }, onError: { _ in
-                self.sendStopLoading()
-            }, onSubscribe: subscribed)
-                }
+        source.asObservable().do(
+            onNext: { [sendStopLoading] _ in sendStopLoading() },
+            onError: { [sendStopLoading] _ in sendStopLoading() },
+            onCompleted: sendStopLoading,
+            onSubscribe: subscribed
+        )
+    }
     
     private func subscribed() {
         lock.lock()
@@ -43,9 +43,7 @@ public class ActivityIndicator: SharedSequenceConvertibleType {
         lock.unlock()
     }
     
-    public func asSharedSequence() -> SharedSequence<SharingStrategy, Element> {
-        return loading
-    }
+    public func asSharedSequence() -> SharedSequence<SharingStrategy, Element> { loading }
 }
 
 extension ObservableConvertibleType {
