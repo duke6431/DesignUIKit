@@ -1803,6 +1803,8 @@
 				DEVELOPMENT_TEAM = VGDVWV5J5U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Catalog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CatalogX;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1834,6 +1836,8 @@
 				DEVELOPMENT_TEAM = VGDVWV5J5U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Catalog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CatalogX;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
