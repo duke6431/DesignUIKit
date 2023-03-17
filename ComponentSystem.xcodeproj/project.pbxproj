@@ -43,7 +43,6 @@
 		3FA874BD2838BC9300699F51 /* CommonTableView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA874BC2838BC9300699F51 /* CommonTableView+Rx.swift */; };
 		3FA874C02838BEA900699F51 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3FA874BF2838BEA900699F51 /* RxCocoa */; };
 		3FA874C12838BF1700699F51 /* DesignComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC891D2835068600A68C67 /* DesignComponents.framework */; };
-		3FA874C22838BF1700699F51 /* DesignComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3FDC891D2835068600A68C67 /* DesignComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3FA874C92838C41D00699F51 /* KeyboardDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA874C82838C41D00699F51 /* KeyboardDemo.swift */; };
 		3FA874CC2838C4FD00699F51 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3FA874CB2838C4FD00699F51 /* SnapKit */; };
 		3FB3F61A2969B358002CC4E2 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3F6192969B358002CC4E2 /* ErrorTracker.swift */; };
@@ -201,17 +200,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3FA874C52838BF1800699F51 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3FA874C22838BF1700699F51 /* DesignComponents.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3FDC89332835068700A68C67 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -845,7 +833,6 @@
 				3FA8749B2838BC3900699F51 /* Sources */,
 				3FA8749C2838BC3900699F51 /* Frameworks */,
 				3FA8749D2838BC3900699F51 /* Resources */,
-				3FA874C52838BF1800699F51 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
