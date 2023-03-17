@@ -299,6 +299,7 @@
 		3FFFA7E829BF3B0600499849 /* CommonCollectionViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionViewProtocol.swift; sourceTree = "<group>"; };
 		6C01874C29799393005A45DB /* Alignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		6C018756297C0EA9005A45DB /* ObjectAssociation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectAssociation.swift; sourceTree = "<group>"; };
+		6CB760A329C4D96800388F23 /* DesignRx-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "DesignRx-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,6 +433,7 @@
 		3F655B15286CAB7B00FC2531 /* Deployment */ = {
 			isa = PBXGroup;
 			children = (
+				6CB760A329C4D96800388F23 /* DesignRx-Info.plist */,
 				3FC2F1852876D547005CDF9D /* DesignCore.podspec */,
 				3FC2F1832876D547005CDF9D /* DesignToolbox.podspec */,
 				3FC2F1842876D547005CDF9D /* DesignComponents.podspec */,
@@ -1699,6 +1701,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "DesignRx-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1730,6 +1733,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "DesignRx-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
