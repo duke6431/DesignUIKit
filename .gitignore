@@ -52,6 +52,6 @@ Thumbs.db
 Podfile
 Podfile.lock
 .swiftpm/
-Package.resolved
+#Package.resolved
 *.xcuserstate
 xcuserdata/

@@ -18,6 +18,7 @@ public class CommonStatusView: UIView {
     }()
     lazy var titleLabel: UILabel = {
         let view = UILabel()
+        view.numberOfLines = 2
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -39,19 +40,21 @@ public class CommonStatusView: UIView {
     public var titleFont: UIFont = FontSystem.font(with: .title2) { didSet { titleLabel.font = titleFont } }
     public var subtitleColor: UIColor = .secondaryLabel { didSet { subtitleLabel.textColor = subtitleColor } }
     public var subtitleFont: UIFont = FontSystem.font(with: .body) { didSet { subtitleLabel.font = subtitleFont } }
-    
+
     // MARK: - Distribution, Size and Anchors
     public var alignment: Alignment = .center { didSet { change(from: oldValue, to: alignment) } }
+    // swiftlint:disable:next line_length
     public var imageRatio: CGFloat = 1.0 { didSet { imageRatioConstraint = imageRatioConstraint.setMultiplier(multiplier: imageRatio) } }
     public var imageToTitleSpacing: CGFloat = 28 { didSet { imageTitleConstraint.constant = imageToTitleSpacing } }
+    // swiftlint:disable:next line_length
     public var titleToSubtitleSpacing: CGFloat = 12 { didSet { titleSubtitleConstraint.constant = titleToSubtitleSpacing } }
     public var imageWidthAnchor: NSLayoutDimension { imageView.widthAnchor }
-    
+
     public lazy var imageWidthSizeConstraint: NSLayoutConstraint = {
         imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 3.0/5)
     }()
     private lazy var imageRatioConstraint: NSLayoutConstraint = {
-        imageView.widthAnchor.constraint(equalTo: heightAnchor, multiplier: imageRatio)
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: imageRatio)
     }()
     private lazy var imageTitleConstraint: NSLayoutConstraint = {
         titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: imageToTitleSpacing)
@@ -60,17 +63,17 @@ public class CommonStatusView: UIView {
         subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: titleToSubtitleSpacing)
     }()
     private var alignmentConstraints: [Alignment: [NSLayoutConstraint]] = [:]
-    
+
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         configureViews()
     }
-    
+
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureViews()
     }
-    
+
     func configureViews() {
         [imageView, titleLabel, subtitleLabel].forEach(addSubview)
         NSLayoutConstraint.activate([
@@ -87,7 +90,7 @@ public class CommonStatusView: UIView {
         subtitleLabel.font = subtitleFont
         change(to: alignment)
     }
-    
+
     func change(from old: Alignment? = nil, to new: Alignment) {
         switch new {
         case .left:
@@ -108,7 +111,7 @@ public class CommonStatusView: UIView {
         guard let old = old, let constraints = alignmentConstraints[old] else { return }
         NSLayoutConstraint.deactivate(constraints)
     }
-    
+
     func load(_ alignment: Alignment) -> [NSLayoutConstraint] {
         var constraints: [NSLayoutConstraint] = []
         switch alignment {

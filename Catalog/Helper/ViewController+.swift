@@ -6,7 +6,7 @@
 //
 
 import UIKit
-//import Automation
+// import Automation
 #if canImport(Logger)
 import Logger
 #endif
@@ -29,10 +29,10 @@ extension ViewController {
 //            }))
 //        ]
 //        StepGroup(name: "Main", steps: steps) { status in
-//#if canImport(Logger)
+// #if canImport(Logger)
 //            Logger.default.info("Automation status: \(status ? "👌" : "💥")")
 //            Logger.default.info("🚀🚀🚀 Main complete 🚀🚀🚀")
-//#endif
+// #endif
 //        }.execute()
     }
 }

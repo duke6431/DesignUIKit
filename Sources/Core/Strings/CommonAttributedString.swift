@@ -32,6 +32,7 @@ public class CommonAttributedString {
         return NSMutableAttributedString(string: string, attributes: attributes)
     }
 
+    // swiftlint:disable:next line_length
     public static func build(@BuilderComponent<CommonAttributedString> _ strings: () -> [CommonAttributedString]) -> NSAttributedString {
         strings().reduce(into: NSMutableAttributedString()) { partialResult, prototype in
             partialResult.append(prototype.build())

@@ -11,15 +11,18 @@ import RxSwift
 public protocol ViewModelType {
     associatedtype Input
     associatedtype Output
-    
+
     func transform(input: Input) -> Output
 }
 
 public class RxStatusPair {
     public var errorTracker = ErrorTracker()
     public var activityIndicator = ActivityIndicator()
-    
-    public init(errorTracker: ErrorTracker = ErrorTracker(), activityIndicator: ActivityIndicator = ActivityIndicator()) {
+
+    public init(
+        errorTracker: ErrorTracker = ErrorTracker(),
+        activityIndicator: ActivityIndicator = ActivityIndicator()
+    ) {
         self.errorTracker = errorTracker
         self.activityIndicator = activityIndicator
     }

@@ -21,10 +21,15 @@ public class Key: KeyRenderable, KeyTappable {
     public var isBaseMeasurement = false
     weak var delegate: KeyTappableDelegate?
 
-    var name: String { didSet { button.setTitle(name, for: .normal) } }
+    var name: String? { didSet { updateButton() } }
+    var image: UIImage? { didSet { updateButton() } }
     var value: Kind
+    // swiftlint:disable:next line_length
     var backgroundColor: UIColor = Keyboard.Default.Key.background { didSet { button.backgroundColor = backgroundColor } }
-    var foregroundColor: UIColor = Keyboard.Default.Key.foreground { didSet { button.setTitleColor(foregroundColor, for: .normal) } }
+    var foregroundColor: UIColor = Keyboard.Default.Key.foreground { didSet {
+        button.setTitleColor(foregroundColor, for: .normal)
+        button.tintColor = foregroundColor
+    } }
     var font: UIFont = Keyboard.Default.Key.font { didSet { button.titleLabel?.font = font } }
     var cornerRadius: Double = 8 { didSet { button.layer.cornerRadius = cornerRadius } }
     var height: Double? {
@@ -42,32 +47,50 @@ public class Key: KeyRenderable, KeyTappable {
     lazy var button: UIButton = {
         let view = UIButton(type: .system)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+        view.setContentHuggingPriority(.defaultLow, for: .horizontal)
         view.clipsToBounds = true
         return view
     }()
 
-    public init(name: String, value: Kind? = nil) {
+    public init(name: String? = nil, image: UIImage? = nil, value: Kind? = nil) {
         self.name = name
+        self.image = image?.withRenderingMode(.alwaysTemplate)
         if let value = value {
             self.value = value
-        } else {
+        } else if let name = name {
             self.value = .insert(value: name)
+        } else {
+            self.value = .insert(value: "")
         }
     }
 
     func tap() { button.sendActions(for: .touchUpInside) }
 
     public func render() -> UIView {
-        button.setTitle(name, for: .normal)
+        updateButton()
         button.backgroundColor = backgroundColor
         button.setTitleColor(foregroundColor, for: .normal)
+        button.tintColor = foregroundColor
         button.titleLabel?.font = font
         button.layer.cornerRadius = cornerRadius
         button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        if case .delete = value { button.attachLongHold { [weak self] _ in self?.tapped() } }
         buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: height ?? 1)
+        buttonHeightConstraint?.priority = .defaultHigh
         if isBaseMeasurement { buttonHeightConstraint?.isActive = true }
         button.layer.removeShadow().addShadow(shadow)
         return button
+    }
+
+    public func updateButton() {
+        if let image = image {
+            button.setTitle(nil, for: .normal)
+            button.setImage(image, for: .normal)
+        } else {
+            button.setImage(nil, for: .normal)
+            button.setTitle(name, for: .normal)
+        }
     }
 
     @objc func tapped() { delegate?.didTap(action: value) }
@@ -154,10 +177,10 @@ public class KeyStack: KeyRenderable {
             return $0.render()
         }.forEach(stackView.addArrangedSubview)
         for (index, view) in stackView.arrangedSubviews.enumerated() {
-#if canImport(LoggerCenter)
+#if canImport(LoggerCenter) || DEBUG
             print("\(multipliers[index].current(axis))/\(totalMultiplier)")
 #endif
-            var constant = (multipliers.count > 1 ? -stackView.spacing / 2 : 0)
+            var constant = multipliers.count > 1 ? -stackView.spacing / 2 : 0
             if index != 0 && index != multipliers.count - 1 { constant *= 2 }
             switch axis {
             case .horizontal:

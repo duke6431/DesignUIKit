@@ -15,8 +15,8 @@ import ObjectiveC
      private static let association = ObjectAssociation<NSObject>()
 
      var simulatedProperty: NSObject? {
-         get { return SomeType.association[self] }
-         set { SomeType.association[self] = newValue }
+         get { return Self.association[self] }
+         set { Self.association[self] = newValue }
      }
  }
  ```
@@ -32,7 +32,7 @@ public final class ObjectAssociation<T: AnyObject> {
     /// Accesses associated object.
     /// - Parameter index: An object whose associated object is to be accessed.
     public subscript(index: AnyObject) -> T? {
-        get { return objc_getAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque()) as! T? }
+        get { objc_getAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque()) as? T }
         set { objc_setAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque(), newValue, policy) }
     }
 }

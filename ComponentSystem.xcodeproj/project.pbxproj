@@ -22,7 +22,7 @@
 		3F26FC212835FD13003EF65C /* DesignCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; };
 		3F26FC222835FD13003EF65C /* DesignCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7C1FA02834A47300D136BE /* DesignCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F26FC272836316F003EF65C /* ComponentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F26FC262836316F003EF65C /* ComponentCell.swift */; };
-		3F282374283F6BFD00B8F5FE /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 3F282373283F6BFD00B8F5FE /* Nuke */; };
+		3F280DA129B5DF8800CFADB0 /* CommonStatusViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F280DA029B5DF8800CFADB0 /* CommonStatusViewDemo.swift */; };
 		3F62111D296C2B0F00CFB773 /* PanModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F62111C296C2B0F00CFB773 /* PanModal.swift */; };
 		3F6432B529682EAD00BDE71E /* RxGeneric+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6432B429682EAD00BDE71E /* RxGeneric+.swift */; };
 		3F6432B729682FA000BDE71E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6432B629682FA000BDE71E /* ActivityIndicator.swift */; };
@@ -85,6 +85,12 @@
 		3FEC8E28296BFA4C0071367C /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3F61C2969B6BB002CC4E2 /* Builder.swift */; };
 		3FEC8E2A296C08420071367C /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEC8E29296C08420071367C /* UINavigationController+.swift */; };
 		3FF75153283CFE2800C241A6 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF75152283CFE2800C241A6 /* CALayer+.swift */; };
+		3FFFA7D829BC486700499849 /* CommonCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7D729BC486700499849 /* CommonCollectionView.swift */; };
+		3FFFA7DB29BC4A7400499849 /* CommonGalleryViewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7DA29BC4A7400499849 /* CommonGalleryViewDemo.swift */; };
+		3FFFA7E329BF3A3000499849 /* CommonCollectionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7E229BF3A3000499849 /* CommonCollectionSection.swift */; };
+		3FFFA7E529BF3A8300499849 /* CommonCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7E429BF3A8300499849 /* CommonCollectionHeader.swift */; };
+		3FFFA7E729BF3ABA00499849 /* CommonCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7E629BF3ABA00499849 /* CommonCollectionCell.swift */; };
+		3FFFA7E929BF3B0600499849 /* CommonCollectionViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFFA7E829BF3B0600499849 /* CommonCollectionViewProtocol.swift */; };
 		6C01874D29799393005A45DB /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C01874C29799393005A45DB /* Alignment.swift */; };
 		6C018757297C0EA9005A45DB /* ObjectAssociation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C018756297C0EA9005A45DB /* ObjectAssociation.swift */; };
 /* End PBXBuildFile section */
@@ -260,6 +266,7 @@
 		3F26FC072835FC69003EF65C /* DesignTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTests.swift; sourceTree = "<group>"; };
 		3F26FC1A2835FC9D003EF65C /* ComponentSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSystem.swift; sourceTree = "<group>"; };
 		3F26FC262836316F003EF65C /* ComponentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentCell.swift; sourceTree = "<group>"; };
+		3F280DA029B5DF8800CFADB0 /* CommonStatusViewDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStatusViewDemo.swift; sourceTree = "<group>"; };
 		3F62111C296C2B0F00CFB773 /* PanModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanModal.swift; sourceTree = "<group>"; };
 		3F6432B429682EAD00BDE71E /* RxGeneric+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxGeneric+.swift"; sourceTree = "<group>"; };
 		3F6432B629682FA000BDE71E /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -300,6 +307,7 @@
 		3FC2F1842876D547005CDF9D /* DesignComponents.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DesignComponents.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3FC2F1852876D547005CDF9D /* DesignCore.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DesignCore.podspec; sourceTree = "<group>"; };
 		3FC2F1862876D547005CDF9D /* DesignRx.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DesignRx.podspec; sourceTree = "<group>"; };
+		3FC82DC829C485B8001F5E27 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3FD34BD0283E27F8005B0B94 /* CommonTextFieldDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTextFieldDemo.swift; sourceTree = "<group>"; };
 		3FDC88FA283505FE00A68C67 /* Catalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Catalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FDC8903283505FF00A68C67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -321,6 +329,12 @@
 		3FEC8E21296BD0B00071367C /* PanelTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelTransitioningDelegate.swift; sourceTree = "<group>"; };
 		3FEC8E29296C08420071367C /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		3FF75152283CFE2800C241A6 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
+		3FFFA7D729BC486700499849 /* CommonCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionView.swift; sourceTree = "<group>"; };
+		3FFFA7DA29BC4A7400499849 /* CommonGalleryViewDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonGalleryViewDemo.swift; sourceTree = "<group>"; };
+		3FFFA7E229BF3A3000499849 /* CommonCollectionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionSection.swift; sourceTree = "<group>"; };
+		3FFFA7E429BF3A8300499849 /* CommonCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionHeader.swift; sourceTree = "<group>"; };
+		3FFFA7E629BF3ABA00499849 /* CommonCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionCell.swift; sourceTree = "<group>"; };
+		3FFFA7E829BF3B0600499849 /* CommonCollectionViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCollectionViewProtocol.swift; sourceTree = "<group>"; };
 		6C01874C29799393005A45DB /* Alignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		6C018756297C0EA9005A45DB /* ObjectAssociation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectAssociation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -346,7 +360,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F282374283F6BFD00B8F5FE /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +475,7 @@
 				3FC2F1842876D547005CDF9D /* DesignComponents.podspec */,
 				3FC2F1862876D547005CDF9D /* DesignRx.podspec */,
 				3F655B16286CAE8000FC2531 /* Package.swift */,
+				3FC82DC829C485B8001F5E27 /* .swiftlint.yml */,
 			);
 			name = Deployment;
 			sourceTree = "<group>";
@@ -484,10 +498,7 @@
 				3F252FBF283B7B8900D927E9 /* Packages */,
 				3FDC88FB283505FF00A68C67 /* Catalog */,
 				3F7C1FA22834A47300D136BE /* Sources */,
-				3F7C1FAE2834A47400D136BE /* ComponentSystemTests */,
-				3FDC892C2835068700A68C67 /* ComponentsTests */,
-				3F26FC062835FC69003EF65C /* DesignTests */,
-				3FA874AE2838BC3A00699F51 /* RxComponentsTests */,
+				3FC82DC729C483E2001F5E27 /* Tests */,
 				3F7C1FA12834A47300D136BE /* Products */,
 				3FDC893B283506CF00A68C67 /* Frameworks */,
 			);
@@ -584,9 +595,9 @@
 			isa = PBXGroup;
 			children = (
 				3FC2F1692876D4D8005CDF9D /* Exts */,
-				3FC2F16C2876D4D8005CDF9D /* TableView */,
-				3FC2F1712876D4D8005CDF9D /* CommonTextField */,
 				3FC2F1732876D4D8005CDF9D /* Keyboard */,
+				3FC2F1712876D4D8005CDF9D /* TextField */,
+				3FFFA7D929BC487000499849 /* ListView */,
 				3FEC8E27296BD0B90071367C /* PanModel */,
 				3F132721287D7CDC0043625F /* CommonStatusView.swift */,
 			);
@@ -606,20 +617,20 @@
 		3FC2F16C2876D4D8005CDF9D /* TableView */ = {
 			isa = PBXGroup;
 			children = (
-				3FC2F16D2876D4D8005CDF9D /* CommonCell.swift */,
+				3FC2F1702876D4D8005CDF9D /* CommonTableViewProtocol.swift */,
 				3FC2F16E2876D4D8005CDF9D /* CommonTableView.swift */,
 				3FC2F16F2876D4D8005CDF9D /* CommonHeader.swift */,
-				3FC2F1702876D4D8005CDF9D /* CommonTableViewProtocol.swift */,
+				3FC2F16D2876D4D8005CDF9D /* CommonCell.swift */,
 			);
 			path = TableView;
 			sourceTree = "<group>";
 		};
-		3FC2F1712876D4D8005CDF9D /* CommonTextField */ = {
+		3FC2F1712876D4D8005CDF9D /* TextField */ = {
 			isa = PBXGroup;
 			children = (
 				3FC2F1722876D4D8005CDF9D /* CommonTextField.swift */,
 			);
-			path = CommonTextField;
+			path = TextField;
 			sourceTree = "<group>";
 		};
 		3FC2F1732876D4D8005CDF9D /* Keyboard */ = {
@@ -631,6 +642,17 @@
 				3FC2F1772876D4D8005CDF9D /* Keyboard.swift */,
 			);
 			path = Keyboard;
+			sourceTree = "<group>";
+		};
+		3FC82DC729C483E2001F5E27 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3F7C1FAE2834A47400D136BE /* ComponentSystemTests */,
+				3FDC892C2835068700A68C67 /* ComponentsTests */,
+				3F26FC062835FC69003EF65C /* DesignTests */,
+				3FA874AE2838BC3A00699F51 /* RxComponentsTests */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		3FDC88FB283505FF00A68C67 /* Catalog */ = {
@@ -691,8 +713,31 @@
 			children = (
 				3FA874C82838C41D00699F51 /* KeyboardDemo.swift */,
 				3FD34BD0283E27F8005B0B94 /* CommonTextFieldDemo.swift */,
+				3F280DA029B5DF8800CFADB0 /* CommonStatusViewDemo.swift */,
+				3FFFA7DA29BC4A7400499849 /* CommonGalleryViewDemo.swift */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		3FFFA7D929BC487000499849 /* ListView */ = {
+			isa = PBXGroup;
+			children = (
+				3FC2F16C2876D4D8005CDF9D /* TableView */,
+				3FFFA7DC29BC4A8700499849 /* GalleryView */,
+			);
+			path = ListView;
+			sourceTree = "<group>";
+		};
+		3FFFA7DC29BC4A8700499849 /* GalleryView */ = {
+			isa = PBXGroup;
+			children = (
+				3FFFA7E829BF3B0600499849 /* CommonCollectionViewProtocol.swift */,
+				3FFFA7D729BC486700499849 /* CommonCollectionView.swift */,
+				3FFFA7E229BF3A3000499849 /* CommonCollectionSection.swift */,
+				3FFFA7E429BF3A8300499849 /* CommonCollectionHeader.swift */,
+				3FFFA7E629BF3ABA00499849 /* CommonCollectionCell.swift */,
+			);
+			path = GalleryView;
 			sourceTree = "<group>";
 		};
 		6C01874E297995AB005A45DB /* Strings */ = {
@@ -795,7 +840,6 @@
 			);
 			name = DesignCore;
 			packageProductDependencies = (
-				3F282373283F6BFD00B8F5FE /* Nuke */,
 			);
 			productName = ComponentSystem;
 			productReference = 3F7C1FA02834A47300D136BE /* DesignCore.framework */;
@@ -983,7 +1027,6 @@
 			packageReferences = (
 				3FA874BE2838BEA900699F51 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				3FA874CA2838C4FD00699F51 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				3F282372283F6BFD00B8F5FE /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 3F7C1FA12834A47300D136BE /* Products */;
 			projectDirPath = "";
@@ -1089,7 +1132,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Core\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --fix Sources/Core\n    swiftlint lint Sources/Core\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint lint --fix Sources/Core\n        swiftlint lint Sources/Core\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282376283F89A100B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1108,7 +1151,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Design\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --fix Sources/Design\n    swiftlint lint Sources/Design\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint lint --fix Sources/Design\n        swiftlint lint Sources/Design\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282377283F89C500B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1127,7 +1170,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/Components\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --fix Sources/Components\n    swiftlint lint Sources/Components\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint lint --fix Sources/Components\n        swiftlint lint Sources/Components\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 		3F282378283F89D700B8F5FE /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1146,7 +1189,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n    echo \"Omitting swiftlint\"\n    # swiftlint lint --config \"$(pwd)/../.global.lint.yml\" --path \"$(pwd)/Sources/RxComponents\"\n    # swiftlint autocorrect\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
+			shellScript = "if which swiftlint > /dev/null; then\n    swiftlint lint --fix\n    swiftlint lint Sources/RxComponents\nelse\n    if which brew > /dev/null; then\n        brew install swiftlint\n        swiftlint lint --fix Sources/RxComponents\n        swiftlint lint Sources/RxComponents\n    else\n        echo \"error: Homebrew not found. Please install homebrew and install swiftgen\"\n        echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n    fi\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1226,9 +1269,11 @@
 			files = (
 				3FDC89122835063700A68C67 /* AppDelegate.swift in Sources */,
 				3FD34BD1283E27F8005B0B94 /* CommonTextFieldDemo.swift in Sources */,
+				3F280DA129B5DF8800CFADB0 /* CommonStatusViewDemo.swift in Sources */,
 				3F26FC272836316F003EF65C /* ComponentCell.swift in Sources */,
 				3FDC89112835063700A68C67 /* ViewController.swift in Sources */,
 				3FA874C92838C41D00699F51 /* KeyboardDemo.swift in Sources */,
+				3FFFA7DB29BC4A7400499849 /* CommonGalleryViewDemo.swift in Sources */,
 				3F252FC2283B7BED00D927E9 /* ViewController+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1247,13 +1292,18 @@
 				3FEC8E23296BD0B00071367C /* PanelAnimationController.swift in Sources */,
 				3FC2F1802876D4D9005CDF9D /* KeyboardProtocol.swift in Sources */,
 				3FC2F1792876D4D9005CDF9D /* UITableView+.swift in Sources */,
+				3FFFA7E729BF3ABA00499849 /* CommonCollectionCell.swift in Sources */,
+				3FFFA7E529BF3A8300499849 /* CommonCollectionHeader.swift in Sources */,
 				3FDC89212835068600A68C67 /* Components.docc in Sources */,
 				3FC2F1782876D4D8005CDF9D /* NSLayoutConstraint+.swift in Sources */,
 				3FEC8E2A296C08420071367C /* UINavigationController+.swift in Sources */,
 				3FC2F17B2876D4D9005CDF9D /* CommonTableView.swift in Sources */,
+				3FFFA7E929BF3B0600499849 /* CommonCollectionViewProtocol.swift in Sources */,
 				3FC2F1812876D4D9005CDF9D /* KeyboardComponents.swift in Sources */,
 				3FC2F1822876D4D9005CDF9D /* Keyboard.swift in Sources */,
 				3FEC8E25296BD0B00071367C /* PanelPresentationController.swift in Sources */,
+				3FFFA7D829BC486700499849 /* CommonCollectionView.swift in Sources */,
+				3FFFA7E329BF3A3000499849 /* CommonCollectionSection.swift in Sources */,
 				3F62111D296C2B0F00CFB773 /* PanModal.swift in Sources */,
 				3FEC8E24296BD0B00071367C /* PanelInteractionController.swift in Sources */,
 				3FC2F17D2876D4D9005CDF9D /* CommonTableViewProtocol.swift in Sources */,
@@ -2015,14 +2065,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3F282372283F6BFD00B8F5FE /* XCRemoteSwiftPackageReference "Nuke" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
-			};
-		};
 		3FA874BE2838BEA900699F51 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -2042,11 +2084,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3F282373283F6BFD00B8F5FE /* Nuke */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3F282372283F6BFD00B8F5FE /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
 		3FA874BF2838BEA900699F51 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3FA874BE2838BEA900699F51 /* XCRemoteSwiftPackageReference "RxSwift" */;

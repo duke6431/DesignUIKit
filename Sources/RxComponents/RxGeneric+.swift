@@ -17,9 +17,9 @@ public extension ObservableType where Element == Bool {
 
 public extension ObservableType {
     func catchErrorJustComplete() -> Observable<Element> { `catch` { _ in .empty() } }
-    
+
     func asDriverOnErrorJustComplete() -> Driver<Element> { asDriver { _ in .empty() } }
-    
+
     func void() -> Observable<Void> { map { _ in } }
 }
 

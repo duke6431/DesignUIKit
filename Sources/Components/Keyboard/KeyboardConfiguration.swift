@@ -16,7 +16,7 @@ extension Keyboard {
         public struct Key {
             public static var background: UIColor = .systemBackground
             public static var foreground: UIColor = .label
-            public static var font: UIFont = .systemFont(ofSize: 20)
+            public static var font: UIFont = .systemFont(ofSize: 24)
             public static var shadow: CALayer.ShadowConfiguration = .init()
         }
     }

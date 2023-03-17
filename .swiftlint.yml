@@ -1,0 +1,6 @@
+excluded:
+  - Catalog
+  - Tests
+disabled_rules:
+  - todo
+  - nesting

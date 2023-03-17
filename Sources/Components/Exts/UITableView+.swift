@@ -6,7 +6,22 @@
 
 import UIKit
 
-extension UICollectionView {
+public extension UICollectionView {
+    enum ReusableKind: String {
+        case header
+        case footer
+
+        public var rawValue: String {
+            switch self {
+            case .header:
+                return UICollectionView.elementKindSectionHeader
+            case .footer:
+                return UICollectionView.elementKindSectionFooter
+            }
+        }
+    }
+
+    // swiftlint:disable:next line_length
     /// Registers a nib or a UICollectionViewCell object containing a cell with the collection view under a specified identifier.
     func register<T: UICollectionViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -18,6 +33,22 @@ extension UICollectionView {
         }
     }
 
+    // swiftlint:disable:next line_length
+    /// Registers a nib or a UICollectionReusableView object containing a header with the collection view under a specified identifier.
+    func register<T: UICollectionReusableView>(
+        _ aClass: T.Type,
+        kind: ReusableKind = .header,
+        bundle: Bundle? = .main
+    ) {
+        let name = String(describing: aClass)
+        if bundle?.path(forResource: name, ofType: "nib") != nil {
+            let nib = UINib(nibName: name, bundle: bundle)
+            register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: name)
+        } else {
+            register(aClass, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: name)
+        }
+    }
+
     /// Returns a reusable collection-view cell object located by its identifier.
     func dequeue<T: UICollectionViewCell>(_ aClass: T.Type, indexPath: IndexPath) -> T {
         let name = String(describing: aClass)
@@ -26,9 +57,23 @@ extension UICollectionView {
         }
         return cell
     }
+
+    /// Returns a reusable header view located by its identifier.
+    func dequeue<T: UICollectionReusableView>(
+        _ aClass: T.Type,
+        kind: ReusableKind = .header,
+        indexPath: IndexPath
+    ) -> T {
+        let name = String(describing: aClass)
+        // swiftlint:disable:next line_length
+        guard let header = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: name, for: indexPath) as? T else {
+            fatalError("`\(name)` is not registered")
+        }
+        return header
+    }
 }
 
-extension UITableView {
+public extension UITableView {
     /// Registers a nib or a UITableViewCell object containing a cell with the table view under a specified identifier.
     func register<T: UITableViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -49,6 +94,7 @@ extension UITableView {
         return cell
     }
 
+    // swiftlint:disable:next line_length
     /// Registers a nib or a UITableViewHeaderFooterView object containing a header or footer with the table view under a specified identifier.
     func register<T: UITableViewHeaderFooterView>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -70,12 +116,12 @@ extension UITableView {
     }
 }
 
-protocol ReuseIdentifying {
+public protocol ReuseIdentifying {
     static var reuseIdentifier: String { get }
 }
 
 extension ReuseIdentifying {
-    static var reuseIdentifier: String {
+    public static var reuseIdentifier: String {
         return String(describing: Self.self)
     }
 }

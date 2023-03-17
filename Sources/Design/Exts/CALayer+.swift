@@ -29,7 +29,10 @@ public extension CALayer {
     }
 
     @discardableResult
-    func addShadow(offSet: CGSize = .zero, opacity: Float = 0.2, radius: CGFloat = 3, color: UIColor = .black) -> CALayer {
+    func addShadow(
+        offSet: CGSize = .zero, opacity: Float = 0.2,
+        radius: CGFloat = 3, color: UIColor = .black
+    ) -> CALayer {
         shadowOffset = offSet
         shadowOpacity = opacity
         shadowRadius = radius

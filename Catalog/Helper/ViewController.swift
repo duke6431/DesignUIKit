@@ -11,9 +11,28 @@ import RxCocoa
 import RxSwift
 
 enum Components: String, CaseIterable {
+    enum PresentStyle {
+        case push
+        case present
+        case panModal(direction: PanModal.OriginDirection = .top)
+
+        func present(target: UIViewController, source: UINavigationController?) {
+            switch self {
+            case .push:
+                source?.pushViewController(target, animated: true)
+            case .present:
+                source?.present(target, animated: true)
+            case .panModal(let direction):
+                source?.present(target, dimmingView: .dimmingDefault, direction: direction)
+            }
+        }
+    }
+
     case customKeyboard
     case commonTextField
     case customBottomSheet
+    case commonStatusView
+    case commonCollectionView
 
     var viewController: UIViewController? {
         switch self {
@@ -21,11 +40,19 @@ enum Components: String, CaseIterable {
             return KeyboardVC()
         case .commonTextField:
             return CommonTextFieldVC()
+        case .commonStatusView:
+            return CommonStatusViewVC()
+        case .commonCollectionView:
+            return CommonGalleryViewVC()
         default:
             return nil
         }
     }
-    
+
+    var presentationStyle: PresentStyle {
+        .push
+    }
+
     var action: ((UINavigationController) -> Void)? {
         switch self {
         case .customBottomSheet:
@@ -34,13 +61,13 @@ enum Components: String, CaseIterable {
                 let viewController = UIViewController()
                 viewController.view.backgroundColor = .white
                 childNavigationController.pushViewController(viewController, animated: true)
-                navigationController.present(childNavigationController, dimmingView: .dimmingDefault)
+                navigationController.present(childNavigationController, dimmingView: .dimmingDefault, direction: .top)
             }
         default:
             return nil
         }
     }
-    
+
     var name: String {
         return rawValue.camelCaseToWords().capitalized
     }
@@ -51,10 +78,15 @@ enum Components: String, CaseIterable {
             return "Create any keyboard with ease"
         case .commonTextField:
             return "Text field that every app need"
+        case .customBottomSheet:
+            return "Trending bottom sheet"
+        case .commonStatusView:
+            return "Default status view with image, title and content"
+        case .commonCollectionView:
+            return "Common customizable collection view"
         @unknown default:
             return "Something descriptive..."
         }
-
     }
 }
 
@@ -77,13 +109,12 @@ enum Core: String, CaseIterable {
 
 extension String {
     func camelCaseToWords() -> String {
-        return unicodeScalars.dropFirst().reduce(String(prefix(1))) {
-            return CharacterSet.uppercaseLetters.contains($1)
-            ? $0 + " " + String($1)
-            : $0 + String($1)
+        unicodeScalars.dropFirst().reduce(String(prefix(1))) {
+            CharacterSet.uppercaseLetters.contains($1) ? $0 + " " + String($1) : $0 + String($1)
         }
     }
 }
+
 class ViewController: UIViewController {
     private let disposeBag = DisposeBag()
     lazy var searchBar: UISearchBar = {
@@ -98,10 +129,13 @@ class ViewController: UIViewController {
         return view
     }()
     lazy var tableView: CommonTableView = {
-        let view = CommonTableView(map: [(ComponentCellModel.self, ComponentCell.self)])
+        let view = CommonTableView(
+            map: [(ComponentCellModel.self, ComponentCell.self)],
+            headerMap: [(ComponentHeaderModel.self, ComponentHeader.self)]
+        )
         view.alwaysBounceVertical = true
         self.view.addSubview(view)
-        view.delegate = self
+        view.actionDelegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
@@ -112,19 +146,23 @@ class ViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
+        navigationController?.navigationBar.prefersLargeTitles = true
         super.viewDidLoad()
         configureViews()
         bindActions()
-        let components = CommonTableSection(items: Components.allCases.map({ feature in
-            ComponentCellModel.init(name: feature.name, detail: feature.detail) { [weak self] in
-                if let viewController = feature.viewController {
-                    viewController.title = feature.name
-                    self?.navigationController?.present(viewController, animated: true)
-                } else if let action = feature.action {
-                    action(self?.navigationController ?? UINavigationController())
+        let components = CommonTableSection(
+            header: ComponentHeaderModel(title: "This one is also the example of CommonTableView usage. Read the code in ViewController.swift for more!!"),
+            items: Components.allCases.map({ feature in
+                ComponentCellModel.init(name: feature.name, detail: feature.detail) { [weak self] in
+                    if let viewController = feature.viewController {
+                        viewController.title = feature.name
+                        feature.presentationStyle.present(target: viewController, source: self?.navigationController)
+                    } else if let action = feature.action {
+                        action(self?.navigationController ?? UINavigationController())
+                    }
                 }
-            }
-        }))
+            })
+        )
         tableView.reloadData(sections: [components])
     }
 

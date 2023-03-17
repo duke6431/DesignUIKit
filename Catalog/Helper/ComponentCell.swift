@@ -6,10 +6,48 @@
 //
 
 import UIKit
+import SnapKit
 import DesignComponents
 #if canImport(Design)
 import DesignToolbox
 #endif
+
+class ComponentHeaderModel: NSObject, CommonHeaderModel {
+    var identifier: String = UUID().uuidString
+    var customConfiguration: ((CommonHeader) -> Void)?
+    var title: String
+
+    init(identifier: String = UUID().uuidString,
+         customConfigurartion: ((CommonHeader) -> Void)? = nil,
+         title: String) {
+        self.identifier = identifier
+        self.customConfiguration = customConfigurartion
+        self.title = title
+    }
+}
+
+class ComponentHeader: CommonHeader {
+    lazy var titleLabel: UILabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 14, weight: .bold)
+        view.numberOfLines = 0
+        view.textColor = .secondaryLabel
+        return view
+    }()
+
+    override func configureViews() {
+        contentView.backgroundColor = .secondarySystemBackground
+        contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(16)
+        }
+    }
+
+    override func bind(_ model: CommonHeaderModel) {
+        guard let model = model as? ComponentHeaderModel else { return }
+        titleLabel.text = model.title
+    }
+}
 
 class ComponentCellModel: NSObject, CommonCellModel {
     var identifier: String = UUID().uuidString

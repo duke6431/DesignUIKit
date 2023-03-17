@@ -170,6 +170,7 @@ extension CommonTextField: UITextFieldDelegate {
         delegate?.textFieldShouldReturn?(textField) ?? true
     }
 
+    // swiftlint:disable:next line_length
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         delegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
     }

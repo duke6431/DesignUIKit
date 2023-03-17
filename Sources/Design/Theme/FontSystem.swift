@@ -21,15 +21,25 @@ public protocol FontFamily {
 }
 
 public enum FontStyle {
+    /// Semibold with size 28
     case title
+    /// Semibold with size 24
     case title2
+    /// Semibold with size 20
     case title3
+    /// Semibold with size 17
     case headline
+    /// Semibold with size 15
     case subheadline
+    /// Regular with size 17
     case body
+    /// Regular with size 15
     case body2
+    /// Light with size 12
     case footnote
+    /// Regular with size 13
     case caption
+    /// Regular with size 12
     case caption2
 }
 
@@ -95,7 +105,7 @@ public class FontSystem {
     public func register(family: FontFamily) {
         defaultFont = family
     }
-    
+
     public static func font(with style: FontStyle) -> UIFont {
         shared.defaultFont.font(with: style)
     }

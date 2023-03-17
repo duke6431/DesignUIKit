@@ -16,6 +16,7 @@ public protocol Themable: AnyObject {
 
 public class Theme: NSObject {
     static var bundle: Bundle = Bundle.main
+    // swiftlint:disable:next identifier_name
     static var _sharedProvider: ThemeProvider?
     public private(set) var palette: Palette
 
@@ -23,7 +24,7 @@ public class Theme: NSObject {
         Theme.bundle = bundle ?? .main
         _sharedProvider = DefaultThemeProvider(with: .init(palette: palette))
     }
-    
+
     public init(palette: Palette) {
         self.palette = palette
         if ColorLoader(container: palette).load() {
@@ -40,11 +41,9 @@ public class Theme: NSObject {
 
 public extension Theme {
     static var provider: ThemeProvider {
-        get {
-            guard let provider = _sharedProvider else {
-                fatalError("Must run Theme.initialize(with:and:) before using provider")
-            }
-            return provider
+        guard let provider = _sharedProvider else {
+            fatalError("Must run Theme.initialize(with:and:) before using provider")
         }
+        return provider
     }
 }

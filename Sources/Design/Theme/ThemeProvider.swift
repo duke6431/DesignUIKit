@@ -20,7 +20,7 @@ public class DefaultThemeProvider: NSObject, ThemeProvider {
     public var theme: Theme { didSet { notifyObservers() } }
 
     private var observers: NSHashTable<AnyObject> = NSHashTable.weakObjects()
-    
+
     public init(with theme: Theme) {
         self.theme = theme
         super.init()
@@ -30,7 +30,7 @@ public class DefaultThemeProvider: NSObject, ThemeProvider {
         observers.add(observer)
         observer.apply(theme: theme)
     }
-    
+
     private func notifyObservers() {
         DispatchQueue.main.async {
             self.observers.allObjects

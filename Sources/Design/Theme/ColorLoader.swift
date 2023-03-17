@@ -22,11 +22,11 @@ public protocol ImageName {
 open class Palette: NSObject {
     fileprivate var colorDict: [String: () -> UIColor] = [:]
     fileprivate var imageDict: [String: () -> UIImage?] = [:]
-    
+
     public subscript(_ name: ColorName) -> UIColor {
         colorDict[name.name]?() ?? .systemBlue
     }
-    
+
     public subscript(_ name: ImageName) -> UIImage? {
         imageDict[name.name]?()
     }
@@ -40,12 +40,12 @@ public extension Palette {
 
 public class ColorLoader: NSObject {
     public private(set) var palette: Palette
-    
+
     init(container: Palette) {
         self.palette = container
         super.init()
     }
-    
+
     func load() -> Bool {
 #if canImport(LoggerCenter)
         LogCenter.default.verbose("Initializing color palette type \(palette.name)")
@@ -66,12 +66,23 @@ public class ColorLoader: NSObject {
         load(into: palette, with: colorCodesLight, and: colorCodesDark)
         return true
     }
-    
+
     func load(into palette: Palette, with light: [String: String], and dark: [String: String]? = nil) {
         for property in light.keys {
             if property.starts(with: "img") {
                 palette.imageDict[property] = {
-                    UIImage(dynamicImageWithLight: UIImage(named: light[property] ?? "", in: Theme.bundle, compatibleWith: nil), dark: UIImage(named: dark?[property] ?? "", in: Theme.bundle, compatibleWith: nil))
+                    UIImage(
+                        dynamicImageWithLight: UIImage(
+                            named: light[property] ?? "",
+                            in: Theme.bundle,
+                            compatibleWith: nil
+                        ),
+                        dark: UIImage(
+                            named: dark?[property] ?? "",
+                            in: Theme.bundle,
+                            compatibleWith: nil
+                        )
+                    )
                 }
             } else {
                 palette.colorDict[property] = {
@@ -86,9 +97,10 @@ public class ColorLoader: NSObject {
             }
         }
     }
-    
+
     func readFrom(plist name: String) -> [String: String]? {
-        if let path = Theme.bundle.path(forResource: name, ofType: "plist"), let colorCodes = NSDictionary(contentsOfFile: path) as? [String: String] {
+        if let path = Theme.bundle.path(forResource: name, ofType: "plist"),
+            let colorCodes = NSDictionary(contentsOfFile: path) as? [String: String] {
             return colorCodes
         }
         return nil

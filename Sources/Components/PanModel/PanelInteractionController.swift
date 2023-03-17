@@ -59,6 +59,9 @@ extension PanModal {
                     return
                 }
                 let translation = gestureRecognizer.translation(in: superview)
+                if direction == .bottom ? translation.y < 0 : translation.y > 0 {
+                    return
+                }
                 let rawProgress = abs(translation.y - beginTranslationY) / view.bounds.height
                 let progress = CGFloat(fminf(fmaxf(Float(rawProgress), 0), 1))
                 

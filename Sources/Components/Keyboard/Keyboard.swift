@@ -8,22 +8,24 @@
 import UIKit
 
 public class Keyboard: UIInputView {
-    public static let numberPadWithReturn: Keyboard = Keyboard(stack: KeyStack {
-        KeyStack {
-            KeyStack(keys: Array(1...3).map { Key(name: "\($0)") })
-            KeyStack(keys: Array(4...6).map { Key(name: "\($0)") })
-            KeyStack(keys: Array(7...9).map { Key(name: "\($0)") })
+    public static var numberPadWithReturn: Keyboard {
+        Keyboard(stack: KeyStack {
             KeyStack {
-                Key(name: "0").base(withHeight: 44)
-                Key(name: ".")
-                Key(name: "000")// .multiply(.init(width: 2, height: 1))
-            }
-        }.axis(.vertical).multiply(.init(width: 3, height: 4))
-        KeyStack {
-            Key(name: "D", value: .delete)
-            Key(name: "Enter", value: .insert(value: "\n")).background(.systemBlue).foreground(.white)
-        }.axis(.vertical)
-    })
+                KeyStack(keys: Array(1...3).map { Key(name: "\($0)") })
+                KeyStack(keys: Array(4...6).map { Key(name: "\($0)") })
+                KeyStack(keys: Array(7...9).map { Key(name: "\($0)") })
+                KeyStack {
+                    Key(name: "0").base(withHeight: 44)
+                    Key(name: ".")
+                    Key(name: "000")// .multiply(.init(width: 2, height: 1))
+                }
+            }.axis(.vertical).multiply(.init(width: 3, height: 4))
+            KeyStack {
+                Key(name: "Del", image: .init(systemName: "delete.left"), value: .delete)
+                Key(name: "Enter", value: .insert(value: "\n")).background(.systemBlue).foreground(.white)
+            }.axis(.vertical)
+        })
+    }
 
     public struct Multiplier {
         public var width: Double = 1
@@ -50,8 +52,7 @@ public class Keyboard: UIInputView {
         } else if let stack = self.stack as? Key {
             stack.delegate = self
         }
-        setNeedsLayout()
-        layoutIfNeeded()
+        configureViews()
     }
     @available(iOS, unavailable)
     required init?(coder: NSCoder) {
@@ -63,21 +64,24 @@ public class Keyboard: UIInputView {
         textField?.inputView = self
     }
 
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        configureViews()
-    }
-
     func configureViews() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = Default.keyboardBackground
         let renderedStack = stack.render()
         addSubview(renderedStack)
         NSLayoutConstraint.activate([
-            renderedStack.topAnchor.constraint(equalTo: topAnchor, constant: Keyboard.Default.outerSpacing.top),
-            renderedStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Keyboard.Default.outerSpacing.left),
-            renderedStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Keyboard.Default.outerSpacing.right),
-            renderedStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Keyboard.Default.outerSpacing.bottom)
+            renderedStack.topAnchor.constraint(
+                equalTo: topAnchor, constant: Keyboard.Default.outerSpacing.top
+            ),
+            renderedStack.leadingAnchor.constraint(
+                equalTo: leadingAnchor, constant: Keyboard.Default.outerSpacing.left
+            ),
+            renderedStack.trailingAnchor.constraint(
+                equalTo: trailingAnchor, constant: -Keyboard.Default.outerSpacing.right
+            ),
+            renderedStack.bottomAnchor.constraint(
+                equalTo: bottomAnchor, constant: -Keyboard.Default.outerSpacing.bottom
+            )
         ])
     }
 }
