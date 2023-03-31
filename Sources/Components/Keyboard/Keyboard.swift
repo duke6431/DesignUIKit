@@ -16,8 +16,8 @@ public class Keyboard: UIInputView {
                 KeyStack(keys: Array(7...9).map { Key(name: "\($0)") })
                 KeyStack {
                     Key(name: "0").base(withHeight: 44)
-                    Key(name: ".")
-                    Key(name: "000")// .multiply(.init(width: 2, height: 1))
+//                    Key(name: ".")
+                    Key(name: "000").multiply(.init(width: 2, height: 1))
                 }
             }.axis(.vertical).multiply(.init(width: 3, height: 4))
             KeyStack {

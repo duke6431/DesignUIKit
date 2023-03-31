@@ -109,7 +109,7 @@ extension UIButton {
         })
     }
 
-    public func attachLongHold(_ action: @escaping (UIButton) -> Void) {
+    public func attachLongHold(_ action: @escaping (UIButton) -> Void, repeat: Bool = true) {
         stopHold()
         self.action = .init({ [weak self] in
             guard let self = self else { return }

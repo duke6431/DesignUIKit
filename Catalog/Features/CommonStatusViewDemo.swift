@@ -19,7 +19,6 @@ class CommonStatusViewVC: UIViewController {
     }()
 
     override func viewDidLoad() {
-        navigationController?.autoDetectLeftItem()
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(statusView)

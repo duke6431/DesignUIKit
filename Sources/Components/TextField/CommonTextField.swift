@@ -59,6 +59,10 @@ public class CommonTextField: UIView {
     // MARK: Properties
     public override var isFirstResponder: Bool { return textField.isFirstResponder }
     public override var canBecomeFirstResponder: Bool { return textField.canBecomeFirstResponder }
+    public var text: String? {
+        get { textField.text }
+        set { textField.text = newValue }
+    }
 
     // MARK: Private properties
     private var iconWidth: NSLayoutConstraint?
@@ -72,6 +76,7 @@ public class CommonTextField: UIView {
     }()
     public private(set) lazy var textField: UITextField = {
         let view = UITextField()
+        view.addTarget(self, action: #selector(textFieldDidChange), for: .valueChanged)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -162,6 +167,10 @@ extension CommonTextField {
 
 // MARK: - Delegate
 extension CommonTextField: UITextFieldDelegate {
+    @objc func textFieldDidChange() {
+        delegate?.textFieldDidChange?(textField)
+    }
+
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
         delegate?.textFieldShouldClear?(textField) ?? true
     }

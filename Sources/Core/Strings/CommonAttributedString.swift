@@ -29,7 +29,7 @@ public class CommonAttributedString {
     }
 
     public func build() -> NSAttributedString {
-        return NSMutableAttributedString(string: string, attributes: attributes)
+        NSMutableAttributedString(string: string, attributes: attributes)
     }
 
     // swiftlint:disable:next line_length

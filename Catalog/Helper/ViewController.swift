@@ -118,14 +118,8 @@ extension String {
 class ViewController: UIViewController {
     private let disposeBag = DisposeBag()
     lazy var searchBar: UISearchBar = {
-        let view = UISearchBar()
-        self.view.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        let view = UISearchBar(frame: .init(origin: .zero, size: .init(width: 0, height: 48)))
+        tableView.tableHeaderView = view
         return view
     }()
     lazy var tableView: CommonTableView = {
@@ -138,6 +132,7 @@ class ViewController: UIViewController {
         view.actionDelegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
@@ -169,7 +164,6 @@ class ViewController: UIViewController {
     func configureViews() {
         self.title = "Catalog"
         view.backgroundColor = .systemBackground
-        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
     }
 
     func bindActions() {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public typealias Warning = Error
 
@@ -16,7 +17,8 @@ public typealias Warning = Error
 // }
 
 public protocol Validator {
-    func validate(_ data: Any) throws -> (status: Bool, comment: Warning?)
+    var ruleType: Validators.Rule { get set }
+    func validate(_ data: String) throws -> (status: Bool, comment: Warning?)
 }
 
 extension ComponentSystem {
@@ -32,16 +34,7 @@ public struct Validators {
         case onSubmit
     }
     public class TextLength: Validator {
-        public var autoFormatEnable: Bool = false
-
-//        public func autoformat(_ data: Any, _ pointer: Int) throws -> (data: Any, position: Int) {
-//            guard let data = data as? String else { throw ComponentSystem.Common.typeNotMatch }
-//
-//            return data
-//        }
-
-        public func validate(_ data: Any) throws -> (status: Bool, comment: Error?) {
-            guard let data = data as? String else { throw ComponentSystem.Common.typeNotMatch }
+        public func validate(_ data: String) throws -> (status: Bool, comment: Error?) {
             if maxLength < 0 && minLength <= 0 { return (true, nil) }
             if data == previousValidValue { return (true, nil) }
             let count = data.count
@@ -75,12 +68,9 @@ public struct Validators {
         public var maxLength: Int = -1
         public var minLength: Int = 0
         public var checkEmpty: Bool = false
+        public var ruleType: Rule = .none
 
         // MARK: Internal
         var previousValidValue = ""
     }
-}
-
-extension Validators.TextLength.Failure: LocalizedError {
-    // TODO: Update failure description
 }

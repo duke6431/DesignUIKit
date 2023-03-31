@@ -487,8 +487,8 @@
 		3F7C1FA22834A47300D136BE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				3FC2F1682876D4D8005CDF9D /* Components */,
 				3F26FC1C2835FCCE003EF65C /* Documents */,
+				3FC2F1682876D4D8005CDF9D /* Components */,
 				3F7C1FBC2834A58A00D136BE /* Core */,
 				3FDC895128354BEE00A68C67 /* Design */,
 				3FA874A02838BC3A00699F51 /* RxComponents */,

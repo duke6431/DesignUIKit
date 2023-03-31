@@ -11,6 +11,60 @@ import SnapKit
 import DesignComponents
 import DesignToolbox
 
+class ContentFilter {
+    class Cell: CommonCollection.Cell {
+        lazy var imageView: UIImageView = {
+            let view = UIImageView()
+            return view
+        }()
+        lazy var title: UILabel = {
+            let view = UILabel()
+            return view
+        }()
+        
+        override func configureViews() {
+            contentView.addSubview(imageView)
+            contentView.addSubview(title)
+            imageView.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.top.equalToSuperview().inset(4)
+                $0.width.equalTo(imageView.snp.height)
+            }
+            title.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.leading.equalTo(imageView.snp.trailing).offset(8)
+                $0.top.equalToSuperview().inset(4)
+            }
+        }
+        
+        override func bind(_ model: CommonCollectionCellModel) {
+            guard let model = model as? Model else { return }
+            imageView.image = .init(systemName: model.iconName)
+            title.text = model.title
+        }
+    }
+}
+
+extension ContentFilter.Cell {
+    class Model: NSObject, CommonCollectionCellModel {
+        var identifier: String = UUID().uuidString
+        var selectable: Bool = false
+        var customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)?
+        var realData: Any?
+        
+        var iconName: String
+        var title: String
+        
+        init(selectable: Bool = false, customConfiguration: ( (DesignComponents.CommonCollection.Cell) -> Void)? = nil, realData: Any? = nil, iconName: String, title: String) {
+            self.selectable = selectable
+            self.customConfiguration = customConfiguration
+            self.realData = realData
+            self.iconName = iconName
+            self.title = title
+        }
+    }
+}
+
 class TestCollection {
     class Header: CommonCollection.ReusableView {
         lazy var titleLabel: UILabel = {
@@ -128,7 +182,6 @@ class CommonGalleryViewVC: UIViewController {
     }()
 
     override func viewDidLoad() {
-        navigationController?.autoDetectLeftItem()
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(collectionView)
