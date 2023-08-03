@@ -215,16 +215,15 @@ class CommonGalleryViewVC: UIViewController {
                     TestCollection.Cell.Model(),
                     TestCollection.Cell.Model(),
                     TestCollection.Cell.Model(),
-                    TestCollection.Cell.Model(),
                     TestCollection.Cell.Model()
                 ]
             )
             .with(dimension: .init(
-                itemWHRatio: 1.7, groupWidthRatio: 0.85, groupSpacing: 16,
+                itemWHRatio: 0.4, groupWidthRatio: 0.26, groupSpacing: 16, numberItemsPerGroup: 2,
                 sectionInset: .init(top: 12, left: 24, bottom: 5, right: 24),
                 headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)))
             )
-            .with(layout: CommonCollection.Section.slidingLayout(section:))
+            .with(layout: CommonCollection.Section.list(section:))
         ])
     }
 }
