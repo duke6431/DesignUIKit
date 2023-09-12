@@ -17,7 +17,7 @@ public extension FastView {
         var distribution: UIStackView.Distribution?
         var customConfiguration: ((UIStackView, [FastViewable]) -> Void)?
         
-        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, distribution: UIStackView.Distribution? = nil, @BuilderComponent<FastViewable> _ components: () -> [FastViewable], customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
+        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, distribution: UIStackView.Distribution? = nil, @BuilderComponent<[FastViewable]> _ components: () -> [FastViewable], customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
             self.axis = axis
             self.components = components()
             self.spacing = spacing
@@ -47,7 +47,7 @@ public extension FastView {
         var components: [FastViewable]
         var customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil
         
-        public init(@BuilderComponent<FastViewable> _ components: () -> [FastViewable], customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
+        public init(@BuilderComponent<[FastViewable]> _ components: () -> [FastViewable], customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
             self.components = components()
             self.customConfiguration = customConfiguration
         }
