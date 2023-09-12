@@ -47,6 +47,11 @@
 		3FA874CC2838C4FD00699F51 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3FA874CB2838C4FD00699F51 /* SnapKit */; };
 		3FB3F61A2969B358002CC4E2 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3F6192969B358002CC4E2 /* ErrorTracker.swift */; };
 		3FB3F61F2969B7C1002CC4E2 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3F61E2969B7C1002CC4E2 /* ViewModelType.swift */; };
+		3FBFAB732AB00880005A6F10 /* FastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB722AB00880005A6F10 /* FastView.swift */; };
+		3FBFAB762AB01795005A6F10 /* FastView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */; };
+		3FBFAB782AB017E7005A6F10 /* FastView+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */; };
+		3FBFAB7A2AB01870005A6F10 /* FastView+Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */; };
+		3FBFAB7C2AB01951005A6F10 /* FastView+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */; };
 		3FC2F1782876D4D8005CDF9D /* NSLayoutConstraint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC2F16A2876D4D8005CDF9D /* NSLayoutConstraint+.swift */; };
 		3FC2F1792876D4D9005CDF9D /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC2F16B2876D4D8005CDF9D /* UITableView+.swift */; };
 		3FC2F17A2876D4D9005CDF9D /* CommonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC2F16D2876D4D8005CDF9D /* CommonCell.swift */; };
@@ -254,6 +259,11 @@
 		3FB3F6192969B358002CC4E2 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		3FB3F61C2969B6BB002CC4E2 /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		3FB3F61E2969B7C1002CC4E2 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		3FBFAB722AB00880005A6F10 /* FastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastView.swift; sourceTree = "<group>"; };
+		3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Scroll.swift"; sourceTree = "<group>"; };
+		3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Button.swift"; sourceTree = "<group>"; };
+		3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Stack.swift"; sourceTree = "<group>"; };
+		3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+View.swift"; sourceTree = "<group>"; };
 		3FC2F16A2876D4D8005CDF9D /* NSLayoutConstraint+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+.swift"; sourceTree = "<group>"; };
 		3FC2F16B2876D4D8005CDF9D /* UITableView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		3FC2F16D2876D4D8005CDF9D /* CommonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonCell.swift; sourceTree = "<group>"; };
@@ -555,10 +565,23 @@
 			path = Trackers;
 			sourceTree = "<group>";
 		};
+		3FBFAB742AB00883005A6F10 /* SwiftUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				3FBFAB722AB00880005A6F10 /* FastView.swift */,
+				3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */,
+				3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */,
+				3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */,
+				3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */,
+			);
+			path = SwiftUIKit;
+			sourceTree = "<group>";
+		};
 		3FC2F1682876D4D8005CDF9D /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				3FC2F1692876D4D8005CDF9D /* Exts */,
+				3FBFAB742AB00883005A6F10 /* SwiftUIKit */,
 				3FC2F1732876D4D8005CDF9D /* Keyboard */,
 				3FC2F1712876D4D8005CDF9D /* TextField */,
 				3FFFA7D929BC487000499849 /* ListView */,
@@ -1243,6 +1266,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FBFAB782AB017E7005A6F10 /* FastView+Button.swift in Sources */,
+				3FBFAB7C2AB01951005A6F10 /* FastView+View.swift in Sources */,
 				3FEC8E26296BD0B00071367C /* PanelTransitioningDelegate.swift in Sources */,
 				3FEC8E22296BD0B00071367C /* PanModelViewController.swift in Sources */,
 				3FC2F17A2876D4D9005CDF9D /* CommonCell.swift in Sources */,
@@ -1258,10 +1283,13 @@
 				3FDC89212835068600A68C67 /* Components.docc in Sources */,
 				3FC2F1782876D4D8005CDF9D /* NSLayoutConstraint+.swift in Sources */,
 				3FEC8E2A296C08420071367C /* UINavigationController+.swift in Sources */,
+				3FBFAB7A2AB01870005A6F10 /* FastView+Stack.swift in Sources */,
 				3FC2F17B2876D4D9005CDF9D /* CommonTableView.swift in Sources */,
 				3FFFA7E929BF3B0600499849 /* CommonCollectionViewProtocol.swift in Sources */,
 				3FC2F1812876D4D9005CDF9D /* KeyboardComponents.swift in Sources */,
+				3FBFAB732AB00880005A6F10 /* FastView.swift in Sources */,
 				3FC2F1822876D4D9005CDF9D /* Keyboard.swift in Sources */,
+				3FBFAB762AB01795005A6F10 /* FastView+Scroll.swift in Sources */,
 				3FEC8E25296BD0B00071367C /* PanelPresentationController.swift in Sources */,
 				3FFFA7D829BC486700499849 /* CommonCollectionView.swift in Sources */,
 				3FFFA7E329BF3A3000499849 /* CommonCollectionSection.swift in Sources */,
