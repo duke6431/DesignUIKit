@@ -19,12 +19,12 @@ public extension FastView {
         var contentHuggingH: UILayoutPriority = .defaultLow
         var compressionResistanceV: UILayoutPriority = .defaultHigh
         var compressionResistanceH: UILayoutPriority = .defaultHigh
-        var customConfiguration: ((UIButton) -> Void)? = nil
-        var action: (() -> Void)? = nil
+        var customConfiguration: ((UIButton) -> Void)?
+        var action: (() -> Void)?
         
-        public init(text: String, font: UIFont, color: UIColor,
-                    contentHuggingV: UILayoutPriority, contentHuggingH: UILayoutPriority,
-                    compressionResistanceV: UILayoutPriority, compressionResistanceH: UILayoutPriority,
+        public init(text: String, font: UIFont = FontSystem.font(with: .body), color: UIColor = .systemBlue,
+                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
                     action: (() -> Void)? = nil, customConfiguration: ((UIButton) -> Void)? = nil) {
             self.text = text
             self.font = font

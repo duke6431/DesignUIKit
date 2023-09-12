@@ -14,10 +14,10 @@ public extension FastView {
         var axis: NSLayoutConstraint.Axis
         var spacing: Double = 0
         var components: [FastViewable]
-        var distribution: UIStackView.Distribution? = nil
-        var customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil
+        var distribution: UIStackView.Distribution?
+        var customConfiguration: ((UIStackView, [FastViewable]) -> Void)?
         
-        public init(axis: NSLayoutConstraint.Axis, spacing: Double, distribution: UIStackView.Distribution? = nil, @BuilderComponent<FastViewable> _ components: () -> [FastViewable], customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
+        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, distribution: UIStackView.Distribution? = nil, @BuilderComponent<FastViewable> _ components: () -> [FastViewable], customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
             self.axis = axis
             self.components = components()
             self.spacing = spacing

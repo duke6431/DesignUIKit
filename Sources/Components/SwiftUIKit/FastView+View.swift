@@ -15,18 +15,18 @@ public extension FastView {
         var text: String = ""
         var font: UIFont = FontSystem.font(with: .body)
         var color: UIColor = .black
-        var attributedText: NSAttributedString? = nil
+        var attributedText: NSAttributedString?
         var numberOfLine: Int = 0
         var contentHuggingV: UILayoutPriority = .defaultLow
         var contentHuggingH: UILayoutPriority = .defaultLow
         var compressionResistanceV: UILayoutPriority = .defaultHigh
         var compressionResistanceH: UILayoutPriority = .defaultHigh
-        var customConfiguration: ((UILabel) -> Void)? = nil
+        var customConfiguration: ((UILabel) -> Void)?
         
-        public init(text: String, font: UIFont, color: UIColor,
-                    attributedText: NSAttributedString? = nil, numberOfLine: Int,
-                    contentHuggingV: UILayoutPriority, contentHuggingH: UILayoutPriority,
-                    compressionResistanceV: UILayoutPriority, compressionResistanceH: UILayoutPriority,
+        public init(text: String = "", font: UIFont = FontSystem.font(with: .body), color: UIColor = .black,
+                    attributedText: NSAttributedString? = nil, numberOfLine: Int = 0,
+                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
                     customConfiguration: ((UILabel) -> Void)? = nil) {
             self.text = text
             self.font = font
@@ -61,8 +61,8 @@ public extension FastView {
     }
     
     struct Image: FastViewable {
-        var image: UIImage? = nil
-        var url: URL? = nil
+        var image: UIImage?
+        var url: URL?
         var size: CGSize = .zero
         var contentMode: UIImageView.ContentMode = .scaleAspectFit
         var contentHuggingV: UILayoutPriority = .defaultLow
@@ -71,10 +71,10 @@ public extension FastView {
         var compressionResistanceH: UILayoutPriority = .defaultHigh
         var customConfiguration: ((UIImageView) -> Void)?
         
-        public init(image: UIImage? = nil, url: URL? = nil, size: CGSize,
-                    contentMode: UIImageView.ContentMode,
-                    contentHuggingV: UILayoutPriority, contentHuggingH: UILayoutPriority,
-                    compressionResistanceV: UILayoutPriority, compressionResistanceH: UILayoutPriority,
+        public init(image: UIImage? = nil, url: URL? = nil, size: CGSize = .zero,
+                    contentMode: UIImageView.ContentMode = .scaleAspectFit,
+                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
                     customConfiguration: ((UIImageView) -> Void)? = nil) {
             self.image = image
             self.url = url
