@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Chainable: SelfCustomizable { }
+public protocol Chainable { }
 
 public extension Chainable where Self: AnyObject {
     @discardableResult
