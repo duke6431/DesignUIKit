@@ -36,9 +36,9 @@ public class CommonStatusView: UIView {
     public var image: UIImage? { didSet { imageView.image = image } }
     public var title: String? { didSet { titleLabel.text = title } }
     public var subtitle: String? { didSet { subtitleLabel.text = subtitle } }
-    public var titleColor: UIColor = .label { didSet { titleLabel.textColor = titleColor } }
+    public var titleColor: UIColor = .black { didSet { titleLabel.textColor = titleColor } }
     public var titleFont: UIFont = FontSystem.font(with: .title2) { didSet { titleLabel.font = titleFont } }
-    public var subtitleColor: UIColor = .secondaryLabel { didSet { subtitleLabel.textColor = subtitleColor } }
+    public var subtitleColor: UIColor = .lightText { didSet { subtitleLabel.textColor = subtitleColor } }
     public var subtitleFont: UIFont = FontSystem.font(with: .body) { didSet { subtitleLabel.font = subtitleFont } }
 
     // MARK: - Distribution, Size and Anchors

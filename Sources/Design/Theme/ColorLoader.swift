@@ -71,28 +71,40 @@ public class ColorLoader: NSObject {
         for property in light.keys {
             if property.starts(with: "img") {
                 palette.imageDict[property] = {
-                    UIImage(
-                        dynamicImageWithLight: UIImage(
+                    if #available(iOS 13.0, *) {
+                        return UIImage(
+                            dynamicImageWithLight: UIImage(
+                                named: light[property] ?? "",
+                                in: Theme.bundle,
+                                compatibleWith: nil
+                            ),
+                            dark: UIImage(
+                                named: dark?[property] ?? "",
+                                in: Theme.bundle,
+                                compatibleWith: nil
+                            )
+                        )
+                    } else {
+                        return UIImage(
                             named: light[property] ?? "",
                             in: Theme.bundle,
                             compatibleWith: nil
-                        ),
-                        dark: UIImage(
-                            named: dark?[property] ?? "",
-                            in: Theme.bundle,
-                            compatibleWith: nil
                         )
-                    )
+                    }
                 }
             } else {
                 palette.colorDict[property] = {
-                    UIColor(dynamicProvider: { traitCollection -> UIColor in
-                        if traitCollection.userInterfaceStyle == .light {
-                            return UIColor(hexString: light[property] ?? "")
-                        } else {
-                            return UIColor(hexString: dark?[property] ?? "")
-                        }
-                    })
+                    if #available(iOS 13.0, *) {
+                        return UIColor(dynamicProvider: { traitCollection -> UIColor in
+                            if traitCollection.userInterfaceStyle == .light {
+                                return UIColor(hexString: light[property] ?? "")
+                            } else {
+                                return UIColor(hexString: dark?[property] ?? "")
+                            }
+                        })
+                    } else {
+                        return UIColor(hexString: light[property] ?? "")
+                    }
                 }
             }
         }

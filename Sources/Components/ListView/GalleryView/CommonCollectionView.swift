@@ -11,6 +11,7 @@ import UIKit
 import DesignToolbox
 #endif
 
+@available(iOS 13.0, *)
 public extension CommonCollection {
     class View: UICollectionView {
         public weak var commonDelegate: CommonSlidingViewDelegate?
@@ -36,6 +37,7 @@ public extension CommonCollection {
     }
 }
 
+@available(iOS 13.0, *)
 extension CommonCollection.View {
     func configureViews() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +125,7 @@ extension CommonCollection.View {
     }
 }
 
+@available(iOS 13.0, *)
 extension CommonCollection.View: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         didSelectCell(at: indexPath, with: sections[indexPath.section].cells[indexPath.row])
