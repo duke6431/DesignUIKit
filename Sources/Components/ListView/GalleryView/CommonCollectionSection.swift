@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 extension CommonCollection {
     public final class Section: NSObject, Sendable {
         public var header: CommonCollectionReusableModel?
@@ -70,6 +71,7 @@ extension CommonCollection {
     }
 }
 
+@available(iOS 13.0, *)
 extension CommonCollection.Section {
     public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
         let itemLayout = NSCollectionLayoutItem(
