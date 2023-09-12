@@ -31,4 +31,10 @@ public struct BuilderComponent<T> {
     public static func buildEither(second components: [T]) -> [T] {
         components
     }
+    public static func buildArray(_ components: [[T]]) -> [T] {
+        components.flatMap { $0 }
+    }
+    public static func buildBlock(_ components: [T]...) -> [T] {
+        components.flatMap { $0 }
+    }
 }
