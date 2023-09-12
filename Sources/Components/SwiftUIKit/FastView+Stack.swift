@@ -16,8 +16,11 @@ public extension FastView {
         var components: [FastViewable]
         var distribution: UIStackView.Distribution?
         var customConfiguration: ((UIStackView, [FastViewable]) -> Void)?
-        
-        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0, distribution: UIStackView.Distribution? = nil, @BuilderComponent<[FastViewable]> _ components: () -> [FastViewable], customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
+
+        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
+                    distribution: UIStackView.Distribution? = nil,
+                    @BuilderComponent<FastViewable> _ components: () -> [FastViewable],
+                    customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
             self.axis = axis
             self.components = components()
             self.spacing = spacing
@@ -25,6 +28,17 @@ public extension FastView {
             self.customConfiguration = customConfiguration
         }
         
+        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
+                    distribution: UIStackView.Distribution? = nil,
+                    _ components: [FastViewable],
+                    customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
+            self.axis = axis
+            self.components = components
+            self.spacing = spacing
+            self.distribution = distribution
+            self.customConfiguration = customConfiguration
+        }
+
         public func render() -> UIView {
             let view = UIStackView()
             view.snp.makeConstraints {
@@ -42,13 +56,20 @@ public extension FastView {
             return view
         }
     }
-    
+
     struct ZStack: FastViewable {
         var components: [FastViewable]
-        var customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil
-        
-        public init(@BuilderComponent<[FastViewable]> _ components: () -> [FastViewable], customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
+        var customConfiguration: ((UIView, [FastViewable]) -> Void)?
+
+        public init(@BuilderComponent<FastViewable> _ components: () -> [FastViewable],
+                    customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
             self.components = components()
+            self.customConfiguration = customConfiguration
+        }
+        
+        public init(_ components: [FastViewable],
+                    customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
+            self.components = components
             self.customConfiguration = customConfiguration
         }
         

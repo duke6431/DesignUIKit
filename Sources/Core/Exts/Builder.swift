@@ -28,7 +28,7 @@ public extension SelfCustomizable {
         configuration(&newSelf)
         return newSelf
     }
-    
+
     func updated<Value>(with value: Value, for keyPath: WritableKeyPath<Self, Value>) -> Self {
         var newSelf = self
         newSelf[keyPath: keyPath] = value

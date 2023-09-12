@@ -8,22 +8,21 @@
 import UIKit
 import DesignCore
 
-// swiftlint:disable all
 extension PanModal {
     public class ViewController: UIViewController {
         var contentConfigure: ((UIView, UIViewController) -> Void)?
         var direction: OriginDirection
-        
+
         @available(iOS, unavailable)
         required init?(coder: NSCoder) {
             fatalError()
         }
-        
+
         public init(direction: OriginDirection = .bottom) {
             self.direction = direction
             super.init(nibName: nil, bundle: nil)
         }
-        
+
         // MARK: - Views
         public private(set) lazy var contentView: UIView = {
             let view = UIView()
@@ -34,18 +33,22 @@ extension PanModal {
             view.backgroundColor = .white
             return view
         }()
-        
+
         public override func viewDidLoad() {
             super.viewDidLoad()
             configurationUI()
         }
-        
+
         // MARK: - Functions
         private func configurationUI() {
             NSLayoutConstraint.activate {
                 contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
                 contentView.heightAnchor.constraint(equalToConstant: 500).with(\.priority, setTo: .defaultLow + 250)
-                direction == .top ? contentView.topAnchor.constraint(equalTo: view.topAnchor) : contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
+                direction == .top
+                // swiftlint:disable:next void_function_in_ternary
+                ? contentView.topAnchor.constraint(equalTo: view.topAnchor)
+                : contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                 contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             }
             contentConfigure?(contentView, self)
@@ -56,7 +59,8 @@ extension PanModal {
 }
 
 extension PanModal.ViewController {
-    public override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+    public override func size(forChildContentContainer container: UIContentContainer,
+                              withParentContainerSize parentSize: CGSize) -> CGSize {
         return CGSize(width: parentSize.width, height: contentView.frame.size.height)
     }
 }
@@ -68,7 +72,7 @@ extension UIViewController {
         transitioningDelegate = _storedTransitioningDelegate
         modalPresentationStyle = .custom
     }
-    
+
     public func present(_ viewController: UIViewController?, dimmingView: UIView? = nil,
                         direction: PanModal.OriginDirection = .top, animated: Bool = true) {
         let panel = PanModal.ViewController(direction: direction)
@@ -89,17 +93,24 @@ extension UIViewController {
         }
         present(panel, animated: animated)
     }
-    
+
     private struct AssociatedKeys {
         static var TransitioningDelegate: UInt8 = 0
     }
-    
+
     fileprivate var _storedTransitioningDelegate: UIViewControllerTransitioningDelegate? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.TransitioningDelegate) as? UIViewControllerTransitioningDelegate
+            return objc_getAssociatedObject(
+                self, &AssociatedKeys.TransitioningDelegate
+            ) as? UIViewControllerTransitioningDelegate
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.TransitioningDelegate, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(
+                self,
+                &AssociatedKeys.TransitioningDelegate,
+                newValue,
+                objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
         }
     }
 }

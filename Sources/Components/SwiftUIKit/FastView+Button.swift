@@ -21,10 +21,12 @@ public extension FastView {
         var compressionResistanceH: UILayoutPriority = .defaultHigh
         var customConfiguration: ((UIButton) -> Void)?
         var action: (() -> Void)?
-        
+
         public init(text: String, font: UIFont = FontSystem.font(with: .body), color: UIColor = .systemBlue,
-                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
+                    contentHuggingV: UILayoutPriority = .defaultLow,
+                    contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh,
+                    compressionResistanceH: UILayoutPriority = .defaultHigh,
                     action: (() -> Void)? = nil, customConfiguration: ((UIButton) -> Void)? = nil) {
             self.text = text
             self.font = font
@@ -36,7 +38,7 @@ public extension FastView {
             self.action = action
             self.customConfiguration = customConfiguration
         }
-        
+
         public func render() -> UIView {
             let view = UIButton()
             view.setTitle(text, for: .normal)

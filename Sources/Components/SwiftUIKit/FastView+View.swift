@@ -11,7 +11,7 @@ import DesignToolbox
 import DesignCore
 
 public extension FastView {
-    struct Label : FastViewable {
+    struct Label: FastViewable {
         var text: String = ""
         var font: UIFont = FontSystem.font(with: .body)
         var color: UIColor = .black
@@ -22,11 +22,13 @@ public extension FastView {
         var compressionResistanceV: UILayoutPriority = .defaultHigh
         var compressionResistanceH: UILayoutPriority = .defaultHigh
         var customConfiguration: ((UILabel) -> Void)?
-        
+
         public init(text: String = "", font: UIFont = FontSystem.font(with: .body), color: UIColor = .black,
                     attributedText: NSAttributedString? = nil, numberOfLine: Int = 0,
-                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
+                    contentHuggingV: UILayoutPriority = .defaultLow,
+                    contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh,
+                    compressionResistanceH: UILayoutPriority = .defaultHigh,
                     customConfiguration: ((UILabel) -> Void)? = nil) {
             self.text = text
             self.font = font
@@ -39,7 +41,7 @@ public extension FastView {
             self.compressionResistanceH = compressionResistanceH
             self.customConfiguration = customConfiguration
         }
-        
+
         public func render() -> UIView {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +61,7 @@ public extension FastView {
             return view
         }
     }
-    
+
     struct Image: FastViewable {
         var image: UIImage?
         var url: URL?
@@ -70,11 +72,13 @@ public extension FastView {
         var compressionResistanceV: UILayoutPriority = .defaultHigh
         var compressionResistanceH: UILayoutPriority = .defaultHigh
         var customConfiguration: ((UIImageView) -> Void)?
-        
+
         public init(image: UIImage? = nil, url: URL? = nil, size: CGSize = .zero,
                     contentMode: UIImageView.ContentMode = .scaleAspectFit,
-                    contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-                    compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
+                    contentHuggingV: UILayoutPriority = .defaultLow,
+                    contentHuggingH: UILayoutPriority = .defaultLow,
+                    compressionResistanceV: UILayoutPriority = .defaultHigh,
+                    compressionResistanceH: UILayoutPriority = .defaultHigh,
                     customConfiguration: ((UIImageView) -> Void)? = nil) {
             self.image = image
             self.url = url
@@ -86,7 +90,7 @@ public extension FastView {
             self.compressionResistanceH = compressionResistanceH
             self.customConfiguration = customConfiguration
         }
-        
+
         public func render() -> UIView {
             let view = UIImageView(image: image)
             view.contentMode = contentMode

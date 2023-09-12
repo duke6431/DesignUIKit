@@ -7,6 +7,7 @@
 
 import UIKit
 import DesignCore
+import DesignToolbox
 #if canImport(LoggerCenter)
 import LoggerCenter
 #endif

@@ -14,7 +14,7 @@ public extension FastView {
         public var axis: NSLayoutConstraint.Axis
         public var content: FastViewable
         public var customConfiguration: ((UIScrollView, FastViewable) -> Void)?
-        
+
         public init(axis: NSLayoutConstraint.Axis = .vertical,
                     @BuilderComponent<FastViewable> _ content: () -> FastViewable,
                     customConfiguration: ((UIScrollView, FastViewable) -> Void)? = nil) {
@@ -22,7 +22,7 @@ public extension FastView {
             self.content = content()
             self.customConfiguration = customConfiguration
         }
-        
+
         public func render() -> UIView {
             let view = UIScrollView()
             view.translatesAutoresizingMaskIntoConstraints = false
