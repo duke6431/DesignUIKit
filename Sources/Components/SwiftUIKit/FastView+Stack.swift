@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import DesignCore
 
 public extension FastView {
@@ -27,7 +26,7 @@ public extension FastView {
             self.distribution = distribution
             self.customConfiguration = customConfiguration
         }
-        
+
         public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
                     distribution: UIStackView.Distribution? = nil,
                     _ components: [FastViewable],
@@ -41,9 +40,10 @@ public extension FastView {
 
         public func render() -> UIView {
             let view = UIStackView()
-            view.snp.makeConstraints {
-                $0.width.equalTo(0).priority(.low)
-                $0.height.equalTo(0).priority(.low)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate {
+                view.widthAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
+                view.heightAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
             }
             view.axis = axis
             if let distribution {
@@ -58,30 +58,52 @@ public extension FastView {
     }
 
     struct ZStack: FastViewable {
-        var components: [FastViewable]
-        var customConfiguration: ((UIView, [FastViewable]) -> Void)?
+        public var components: [FastViewable]
+        public var customConfiguration: ((UIView, [FastViewable]) -> Void)?
 
         public init(@BuilderComponent<FastViewable> _ components: () -> [FastViewable],
                     customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
             self.components = components()
             self.customConfiguration = customConfiguration
         }
-        
+
         public init(_ components: [FastViewable],
                     customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
             self.components = components
             self.customConfiguration = customConfiguration
         }
-        
+
         public func render() -> UIView {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
-            components.map(\.rendered).forEach {
-                view.addSubview($0)
-                $0.snp.makeConstraints { $0.edges.equalToSuperview() }
+            components.map(\.rendered).forEach { component in
+                view.addSubview(component)
+                component.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate {
+                    component.topAnchor.constraint(equalTo: view.topAnchor)
+                    component.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                    component.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+                    component.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+                }
             }
             customConfiguration?(view, components)
             return view
         }
     }
+}
+
+func test() {
+    FastView.Stack(axis: .vertical, spacing: 12) {
+        Array(0...2).map { _ in
+            FastView.ZStack {
+                FastView.Stack(axis: .vertical) {
+                    FastView(insets: .init(top: 12, left: 12, bottom: 12, right: 12)) {
+                        FastView.Image(image: .init())
+                    }
+                    FastView.Label(text: "")
+                }
+                FastView.Button(text: "")
+            }
+        }
+    }.rendered
 }

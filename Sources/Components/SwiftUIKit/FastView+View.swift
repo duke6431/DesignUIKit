@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import DesignToolbox
 import DesignCore
 
@@ -99,9 +98,14 @@ public extension FastView {
             view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
             view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
             view.setContentHuggingPriority(contentHuggingV, for: .vertical)
-            view.snp.makeConstraints {
-                if size.width > 0 { $0.width.equalTo(size.width).priority(.medium) }
-                if size.height > 0 { $0.height.equalTo(size.height).priority(.medium) }
+            view.translatesAutoresizingMaskIntoConstraints = true
+            if size != .zero {
+                NSLayoutConstraint.activate {
+                    view.widthAnchor.constraint(equalToConstant: size.width)
+                        .with(\.priority, setTo: .init(rawValue: 500))
+                    view.heightAnchor.constraint(equalToConstant: size.height)
+                        .with(\.priority, setTo: .init(rawValue: 500))
+                }
             }
             customConfiguration?(view)
             return view

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import DesignCore
 
 public extension FastView {
@@ -28,15 +27,21 @@ public extension FastView {
             view.translatesAutoresizingMaskIntoConstraints = false
             let content = content.rendered
             view.addSubview(content)
-            content.snp.makeConstraints {
-                $0.edges.equalToSuperview()
+            content.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate {
+                content.topAnchor.constraint(equalTo: view.topAnchor)
+                content.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                content.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+                content.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            }
+            NSLayoutConstraint.activate {
                 switch axis {
                 case .horizontal:
-                    $0.centerY.equalToSuperview()
+                    content.centerYAnchor.constraint(equalTo: view.centerYAnchor)
                 case .vertical:
-                    $0.centerX.equalToSuperview()
+                    content.centerXAnchor.constraint(equalTo: view.centerXAnchor)
                 @unknown default:
-                    $0.centerX.equalToSuperview()
+                    content.centerXAnchor.constraint(equalTo: view.centerXAnchor)
                 }
             }
             customConfiguration?(view, self.content)

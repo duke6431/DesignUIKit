@@ -8,7 +8,6 @@
 import UIKit
 import DesignCore
 import DesignToolbox
-import SnapKit
 
 public extension FastView {
     struct Button: FastViewable {

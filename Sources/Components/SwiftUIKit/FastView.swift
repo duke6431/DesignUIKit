@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import DesignToolbox
 import DesignCore
 
@@ -29,9 +28,17 @@ public struct FastView: FastViewable {
     }
 
     public init(insets: UIEdgeInsets = .zero,
-                @BuilderComponent<FastViewable> _ content: () -> FastViewable,
+                @BuilderComponent<FastViewable> _ content: () -> [FastViewable],
                 customConfiguration: ((UIView, FastViewable?) -> Void)? = nil) {
-        self.content = content()
+        self.content = content().first
+        self.insets = insets
+        self.customConfiguration = customConfiguration
+    }
+
+    public init(insets: UIEdgeInsets = .zero,
+                _ content: FastViewable,
+                customConfiguration: ((UIView, FastViewable?) -> Void)? = nil) {
+        self.content = content
         self.insets = insets
         self.customConfiguration = customConfiguration
     }
@@ -41,11 +48,12 @@ public struct FastView: FastViewable {
         view.translatesAutoresizingMaskIntoConstraints = false
         if let content = content?.rendered {
             view.addSubview(content)
-            content.snp.makeConstraints {
-                $0.top.equalToSuperview().offset(insets.top)
-                $0.bottom.equalToSuperview().offset(-insets.bottom)
-                $0.leading.equalToSuperview().offset(insets.left)
-                $0.trailing.equalToSuperview().offset(-insets.right)
+            content.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate {
+                content.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top)
+                content.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom)
+                content.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left)
+                content.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -insets.right)
             }
         }
         view.clipsToBounds = true
