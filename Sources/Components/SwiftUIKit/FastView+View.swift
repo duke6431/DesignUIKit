@@ -102,9 +102,9 @@ public extension FastView {
             if size != .zero {
                 NSLayoutConstraint.activate {
                     view.widthAnchor.constraint(equalToConstant: size.width)
-                        .with(\.priority, setTo: .init(rawValue: 500))
+//                        .with(\.priority, setTo: .init(rawValue: 500))
                     view.heightAnchor.constraint(equalToConstant: size.height)
-                        .with(\.priority, setTo: .init(rawValue: 500))
+//                        .with(\.priority, setTo: .init(rawValue: 500))
                 }
             }
             customConfiguration?(view)
