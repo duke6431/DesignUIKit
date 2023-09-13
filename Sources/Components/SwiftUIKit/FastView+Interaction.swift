@@ -1,5 +1,5 @@
 //
-//  FastView+Button.swift
+//  FastView+Interaction.swift
 //  DesignComponents
 //
 //  Created by Duc IT. Nguyen Minh on 12/09/2023.
@@ -52,5 +52,36 @@ public extension FastView {
             customConfiguration?(view)
             return view
         }
+    }
+    
+    struct TextField: FastViewable {
+        class DelegateProxy: NSObject { }
+        
+        var placeholder: String
+        var font: UIFont = FontSystem.font(with: .body)
+        var customConfiguration: ((UITextField) -> Void)?
+        var textChanged: ((String) -> Void)?
+        var textEntered: ((String) -> Void)?
+        
+        public init(placeholder: String, font: UIFont,
+             customConfiguration: ((UITextField) -> Void)? = nil,
+             textChanged: ((String) -> Void)? = nil,
+             textEntered: ((String) -> Void)? = nil) {
+            self.placeholder = placeholder
+            self.font = font
+            self.customConfiguration = customConfiguration
+            self.textChanged = textChanged
+            self.textEntered = textEntered
+        }
+        
+        public func render() -> UIView {
+            return UIView()
+        }
+    }
+}
+
+extension FastView.TextField.DelegateProxy: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        true
     }
 }
