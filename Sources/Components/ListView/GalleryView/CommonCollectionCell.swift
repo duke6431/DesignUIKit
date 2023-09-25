@@ -13,6 +13,7 @@ import DesignToolbox
 
 @objc public protocol CommonCollectionCellModel: NSObjectProtocol {
     var identifier: String { get }
+    static var cellKind: CommonCollection.Cell.Type { get }
     var selectable: Bool { get }
     // swiftlint:disable:next line_length
     /// This function should only be used as emergency option when something need to be custom once or twice or when something is really needed on production

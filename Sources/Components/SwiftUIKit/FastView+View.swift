@@ -9,106 +9,82 @@ import UIKit
 import DesignToolbox
 import DesignCore
 
-public extension FastView {
-    struct Label: FastViewable {
-        var text: String = ""
-        var font: UIFont = FontSystem.font(with: .body)
-        var color: UIColor = .black
-        var attributedText: NSAttributedString?
-        var numberOfLine: Int = 0
-        var contentHuggingV: UILayoutPriority = .defaultLow
-        var contentHuggingH: UILayoutPriority = .defaultLow
-        var compressionResistanceV: UILayoutPriority = .defaultHigh
-        var compressionResistanceH: UILayoutPriority = .defaultHigh
-        var customConfiguration: ((UILabel) -> Void)?
+public class QLabel: UILabel, ViewBuildable {
+    var customConfiguration: ((UILabel) -> Void)?
 
-        public init(text: String = "", font: UIFont = FontSystem.font(with: .body), color: UIColor = .black,
-                    attributedText: NSAttributedString? = nil, numberOfLine: Int = 0,
-                    contentHuggingV: UILayoutPriority = .defaultLow,
-                    contentHuggingH: UILayoutPriority = .defaultLow,
-                    compressionResistanceV: UILayoutPriority = .defaultHigh,
-                    compressionResistanceH: UILayoutPriority = .defaultHigh,
-                    customConfiguration: ((UILabel) -> Void)? = nil) {
-            self.text = text
-            self.font = font
-            self.color = color
-            self.attributedText = attributedText
-            self.numberOfLine = numberOfLine
-            self.contentHuggingV = contentHuggingV
-            self.contentHuggingH = contentHuggingH
-            self.compressionResistanceV = compressionResistanceV
-            self.compressionResistanceH = compressionResistanceH
-            self.customConfiguration = customConfiguration
-        }
-
-        public func render() -> UIView {
-            let view = UILabel()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.text = text
-            view.font = font
-            if let attributedText = attributedText {
-                view.attributedText = attributedText
-            }
-            view.clipsToBounds = true
-            view.textColor = color
-            view.numberOfLines = numberOfLine
-            view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
-            view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
-            view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
-            view.setContentHuggingPriority(contentHuggingV, for: .vertical)
-            customConfiguration?(view)
-            return view
-        }
+    @available(iOS, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError("Unavailable")
     }
 
-    struct Image: FastViewable {
-        var image: UIImage?
-        var url: URL?
-        var size: CGSize = .zero
-        var contentMode: UIImageView.ContentMode = .scaleAspectFit
-        var contentHuggingV: UILayoutPriority = .defaultLow
-        var contentHuggingH: UILayoutPriority = .defaultLow
-        var compressionResistanceV: UILayoutPriority = .defaultHigh
-        var compressionResistanceH: UILayoutPriority = .defaultHigh
-        var customConfiguration: ((UIImageView) -> Void)?
-
-        public init(image: UIImage? = nil, url: URL? = nil, size: CGSize = .zero,
-                    contentMode: UIImageView.ContentMode = .scaleAspectFit,
-                    contentHuggingV: UILayoutPriority = .defaultLow,
-                    contentHuggingH: UILayoutPriority = .defaultLow,
-                    compressionResistanceV: UILayoutPriority = .defaultHigh,
-                    compressionResistanceH: UILayoutPriority = .defaultHigh,
-                    customConfiguration: ((UIImageView) -> Void)? = nil) {
-            self.image = image
-            self.url = url
-            self.size = size
-            self.contentMode = contentMode
-            self.contentHuggingV = contentHuggingV
-            self.contentHuggingH = contentHuggingH
-            self.compressionResistanceV = compressionResistanceV
-            self.compressionResistanceH = compressionResistanceH
-            self.customConfiguration = customConfiguration
+    public init(text: String = "", font: UIFont = FontSystem.font(with: .body),
+                textColor: UIColor = .black,
+                attributedText: NSAttributedString? = nil, numberOfLines: Int = 0,
+                contentHuggingV: UILayoutPriority = .defaultLow,
+                contentHuggingH: UILayoutPriority = .defaultLow,
+                compressionResistanceV: UILayoutPriority = .defaultHigh,
+                compressionResistanceH: UILayoutPriority = .defaultHigh,
+                customConfiguration: ((UILabel) -> Void)? = nil) {
+        super.init(frame: .zero)
+        self.text = text
+        self.font = font
+        self.textColor = textColor
+        if let attributedText = attributedText {
+            self.attributedText = attributedText
         }
+        self.numberOfLines = numberOfLines
+        self.setContentHuggingPriority(contentHuggingV, for: .vertical)
+        self.setContentHuggingPriority(contentHuggingH, for: .horizontal)
+        self.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
+        self.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
+        self.customConfiguration = customConfiguration
+        configureViews()
+    }
 
-        public func render() -> UIView {
-            let view = UIImageView(image: image)
-            view.contentMode = contentMode
-            view.clipsToBounds = true
-            view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
-            view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
-            view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
-            view.setContentHuggingPriority(contentHuggingV, for: .vertical)
-            view.translatesAutoresizingMaskIntoConstraints = true
-            if size != .zero {
-                NSLayoutConstraint.activate {
-                    view.widthAnchor.constraint(equalToConstant: size.width)
-                        .with(\.priority, setTo: .init(rawValue: 500))
-                    view.heightAnchor.constraint(equalToConstant: size.height)
-                        .with(\.priority, setTo: .init(rawValue: 500))
-                }
+    public func configureViews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+        customConfiguration?(self)
+    }
+}
+
+public class QImage: UIImageView, ViewBuildable {
+    var url: URL?
+    var size: CGSize = .zero
+    var customConfiguration: ((UIImageView) -> Void)?
+
+    @available(iOS, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError("Unavailable")
+    }
+    public init(image: UIImage? = nil, url: URL? = nil, size: CGSize = .zero,
+                contentMode: UIImageView.ContentMode = .scaleAspectFit,
+                contentHuggingV: UILayoutPriority = .defaultLow,
+                contentHuggingH: UILayoutPriority = .defaultLow,
+                compressionResistanceV: UILayoutPriority = .defaultHigh,
+                compressionResistanceH: UILayoutPriority = .defaultHigh,
+                customConfiguration: ((UIImageView) -> Void)? = nil) {
+        self.url = url
+        self.size = size
+        super.init(image: image)
+        self.contentMode = contentMode
+        self.setContentHuggingPriority(contentHuggingV, for: .vertical)
+        self.setContentHuggingPriority(contentHuggingH, for: .horizontal)
+        self.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
+        self.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
+        self.customConfiguration = customConfiguration
+        self.configureViews()
+    }
+
+    public func configureViews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+        if size != .zero {
+            NSLayoutConstraint.activate {
+                widthAnchor.constraint(equalToConstant: size.width)
+                heightAnchor.constraint(equalToConstant: size.height)
             }
-            customConfiguration?(view)
-            return view
         }
+        customConfiguration?(self)
     }
 }

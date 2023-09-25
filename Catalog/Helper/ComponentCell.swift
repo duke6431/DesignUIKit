@@ -14,6 +14,7 @@ import DesignToolbox
 
 class ComponentHeaderModel: NSObject, CommonHeaderModel {
     var identifier: String = UUID().uuidString
+    static var headerKind: CommonHeader.Type = ComponentHeader.self
     var customConfiguration: ((CommonHeader) -> Void)?
     var title: String
 
@@ -51,6 +52,7 @@ class ComponentHeader: CommonHeader {
 
 class ComponentCellModel: NSObject, CommonCellModel {
     var identifier: String = UUID().uuidString
+    static var cellKind: CommonCell.Type = ComponentCell.self
     var selectable: Bool = true
     var customConfiguration: ((CommonCell) -> Void)?
     var leadingActions: [UIContextualAction] = []

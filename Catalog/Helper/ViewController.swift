@@ -124,8 +124,8 @@ class ViewController: UIViewController {
     }()
     lazy var tableView: CommonTableView = {
         let view = CommonTableView(
-            map: [(ComponentCellModel.self, ComponentCell.self)],
-            headerMap: [(ComponentHeaderModel.self, ComponentHeader.self)]
+            map: [ComponentCellModel.self],
+            headerMap: [ComponentHeaderModel.self]
         )
         view.alwaysBounceVertical = true
         self.view.addSubview(view)

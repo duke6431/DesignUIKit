@@ -16,16 +16,17 @@ public extension CommonCollection {
     class View: UICollectionView {
         public weak var commonDelegate: CommonSlidingViewDelegate?
 
-        private let cellMapper: [CommonCollectionConfigPair]
-        private var cellCache: CommonCollectionConfigPair?
-        private let headerMapper: [CommonCollectionHeaderConfigPair]?
-        private var headerCache: CommonCollectionHeaderConfigPair?
+        private let itemMapper: [CommonCollectionCellModel.Type]
+        private var itemCache: CommonCollectionCellModel.Type?
+        private let sectionMapper: [CommonCollectionReusableModel.Type]?
+        private var sectionCache: CommonCollectionReusableModel.Type?
+
         private var sections: [Section] = []
         private var currentDataSource: UICollectionViewDataSource?
 
-        public init(cellMapper: [CommonCollectionConfigPair], headerMapper: [CommonCollectionHeaderConfigPair]? = nil) {
-            self.headerMapper = headerMapper
-            self.cellMapper = cellMapper
+        public init(itemMapper: [CommonCollectionCellModel.Type], sectionMapper: [CommonCollectionReusableModel.Type]) {
+            self.itemMapper = itemMapper
+            self.sectionMapper = sectionMapper
             super.init(frame: .zero, collectionViewLayout: UICollectionViewLayout())
             configureViews()
         }
@@ -45,8 +46,8 @@ extension CommonCollection.View {
         delegate = self
         backgroundColor = .clear
         keyboardDismissMode = .onDrag
-        cellMapper.forEach { register($0.cell) }
-        headerMapper?.forEach { register($0.header) }
+        itemMapper.forEach { register($0.cellKind) }
+        sectionMapper?.forEach { register($0.headerKind) }
     }
 
     public func reloadData(sections: [CommonCollection.Section]) {
@@ -71,17 +72,17 @@ extension CommonCollection.View {
             guard let item = self?.sections[indexPath.section].cells[indexPath.row] else {
                 return UICollectionViewCell()
             }
-            if let cachedCell = self?.cellCache, item.isKind(of: cachedCell.model) {
-                let cell = collectionView.dequeue(cachedCell.cell, indexPath: indexPath)
+            if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
+                let cell = collectionView.dequeue(cachedItem, indexPath: indexPath)
                 cell.indexPath = indexPath
                 cell.bind(item)
                 return cell
             }
-            guard let map = self?.cellMapper.first(where: { item.isKind(of: $0.model) }) else {
+            guard let map = self?.itemMapper.first(where: { item.isKind(of: $0) }) else {
                 return UICollectionViewCell()
             }
-            self?.cellCache = map
-            let cell = collectionView.dequeue(map.cell, indexPath: indexPath)
+            self?.itemCache = map
+            let cell = collectionView.dequeue(map.cellKind, indexPath: indexPath)
             cell.indexPath = indexPath
             cell.bind(item)
             return cell
@@ -91,18 +92,18 @@ extension CommonCollection.View {
             guard let headerData = self?.sections[indexPath.section].header else {
                 return nil
             }
-            if let cachedHeader = self?.headerCache, headerData.isKind(of: cachedHeader.model) {
-                let header = collectionView.dequeue(cachedHeader.header, indexPath: indexPath)
+            if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
+                let header = collectionView.dequeue(cachedHeader, indexPath: indexPath)
                 header.section = indexPath.section
                 header.bind(headerData)
                 headerData.customConfiguration?(header)
                 return header
             }
-            guard let map = self?.headerMapper?.first(where: { headerData.isKind(of: $0.model) }) else {
+            guard let map = self?.sectionMapper?.first(where: { headerData.isKind(of: $0) }) else {
                 return nil
             }
-            self?.headerCache = map
-            let header = collectionView.dequeue(map.header, indexPath: indexPath)
+            self?.sectionCache = map
+            let header = collectionView.dequeue(map.headerKind, indexPath: indexPath)
             header.section = indexPath.section
             header.bind(headerData)
             headerData.customConfiguration?(header)

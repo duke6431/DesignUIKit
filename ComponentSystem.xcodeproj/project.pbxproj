@@ -49,7 +49,7 @@
 		3FB3F61F2969B7C1002CC4E2 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB3F61E2969B7C1002CC4E2 /* ViewModelType.swift */; };
 		3FBFAB732AB00880005A6F10 /* FastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB722AB00880005A6F10 /* FastView.swift */; };
 		3FBFAB762AB01795005A6F10 /* FastView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */; };
-		3FBFAB782AB017E7005A6F10 /* FastView+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */; };
+		3FBFAB782AB017E7005A6F10 /* FastView+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB772AB017E7005A6F10 /* FastView+Interaction.swift */; };
 		3FBFAB7A2AB01870005A6F10 /* FastView+Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */; };
 		3FBFAB7C2AB01951005A6F10 /* FastView+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */; };
 		3FC2F1782876D4D8005CDF9D /* NSLayoutConstraint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC2F16A2876D4D8005CDF9D /* NSLayoutConstraint+.swift */; };
@@ -261,7 +261,7 @@
 		3FB3F61E2969B7C1002CC4E2 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		3FBFAB722AB00880005A6F10 /* FastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastView.swift; sourceTree = "<group>"; };
 		3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Scroll.swift"; sourceTree = "<group>"; };
-		3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Button.swift"; sourceTree = "<group>"; };
+		3FBFAB772AB017E7005A6F10 /* FastView+Interaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Interaction.swift"; sourceTree = "<group>"; };
 		3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+Stack.swift"; sourceTree = "<group>"; };
 		3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FastView+View.swift"; sourceTree = "<group>"; };
 		3FC2F16A2876D4D8005CDF9D /* NSLayoutConstraint+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+.swift"; sourceTree = "<group>"; };
@@ -571,7 +571,7 @@
 				3FBFAB722AB00880005A6F10 /* FastView.swift */,
 				3FBFAB7B2AB01951005A6F10 /* FastView+View.swift */,
 				3FBFAB752AB01795005A6F10 /* FastView+Scroll.swift */,
-				3FBFAB772AB017E7005A6F10 /* FastView+Button.swift */,
+				3FBFAB772AB017E7005A6F10 /* FastView+Interaction.swift */,
 				3FBFAB792AB01870005A6F10 /* FastView+Stack.swift */,
 			);
 			path = SwiftUIKit;
@@ -1266,7 +1266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FBFAB782AB017E7005A6F10 /* FastView+Button.swift in Sources */,
+				3FBFAB782AB017E7005A6F10 /* FastView+Interaction.swift in Sources */,
 				3FBFAB7C2AB01951005A6F10 /* FastView+View.swift in Sources */,
 				3FEC8E26296BD0B00071367C /* PanelTransitioningDelegate.swift in Sources */,
 				3FEC8E22296BD0B00071367C /* PanModelViewController.swift in Sources */,

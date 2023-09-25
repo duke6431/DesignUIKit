@@ -8,44 +8,57 @@
 import UIKit
 import DesignCore
 
-public extension FastView {
-    struct ScrollView: FastViewable {
-        public var axis: NSLayoutConstraint.Axis
-        public var content: FastViewable
-        public var customConfiguration: ((UIScrollView, FastViewable) -> Void)?
+public class QScroll: UIScrollView, ViewBuildable {
+    public var axis: NSLayoutConstraint.Axis
+    public var content: () -> [ViewBuildable]
+    public var customConfiguration: ((UIScrollView, [ViewBuildable]) -> Void)?
 
-        public init(axis: NSLayoutConstraint.Axis = .vertical,
-                    @BuilderComponent<FastViewable> _ content: () -> FastViewable,
-                    customConfiguration: ((UIScrollView, FastViewable) -> Void)? = nil) {
-            self.axis = axis
-            self.content = content()
-            self.customConfiguration = customConfiguration
-        }
+    public init(axis: NSLayoutConstraint.Axis = .vertical,
+                @ViewBuilder _ content: @escaping () -> [ViewBuildable],
+                customConfiguration: ((UIScrollView, [ViewBuildable]) -> Void)? = nil) {
+        self.axis = axis
+        self.content = content
+        self.customConfiguration = customConfiguration
+        super.init(frame: .zero)
+        configureViews()
+    }
 
-        public func render() -> UIView {
-            let view = UIScrollView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            let content = content.rendered
-            view.addSubview(content)
-            content.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate {
-                content.topAnchor.constraint(equalTo: view.topAnchor)
-                content.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-                content.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-                content.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            }
-            NSLayoutConstraint.activate {
-                switch axis {
-                case .horizontal:
-                    content.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-                case .vertical:
-                    content.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-                @unknown default:
-                    content.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-                }
-            }
-            customConfiguration?(view, self.content)
-            return view
+    @available(iOS, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError("Unavailable")
+    }
+
+    public func configureViews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        let content = QStack(axis: axis, content)
+        addSubview(content)
+        content.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate {
+            content.topAnchor.constraint(equalTo: topAnchor)
+            content.bottomAnchor.constraint(equalTo: bottomAnchor)
+            content.leadingAnchor.constraint(equalTo: leadingAnchor)
+            content.trailingAnchor.constraint(equalTo: trailingAnchor)
         }
+        NSLayoutConstraint.activate {
+            switch axis {
+            case .horizontal:
+                content.centerYAnchor.constraint(equalTo: centerYAnchor)
+            case .vertical:
+                content.centerXAnchor.constraint(equalTo: centerXAnchor)
+            @unknown default:
+                content.centerXAnchor.constraint(equalTo: centerXAnchor)
+
+            }
+        }
+        customConfiguration?(self, self.content())
+    }
+}
+
+public class QList: CommonTableView, ViewBuildable {
+    init(@BuilderComponent<CommonTableSection> sections: () -> [CommonTableSection], style: UITableView.Style = .plain) {
+        let sections = sections()
+        super.init(map: sections.flatMap(\.items).map { type(of: $0) },
+                   headerMap: sections.compactMap(\.header).map { type(of: $0) })
+        reloadData(sections: sections)
     }
 }

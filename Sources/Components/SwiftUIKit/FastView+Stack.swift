@@ -8,102 +8,86 @@
 import UIKit
 import DesignCore
 
-public extension FastView {
-    struct Stack: FastViewable {
-        var axis: NSLayoutConstraint.Axis
-        var spacing: Double = 0
-        var components: [FastViewable]
-        var distribution: UIStackView.Distribution?
-        var customConfiguration: ((UIStackView, [FastViewable]) -> Void)?
+public class QStack: UIStackView, ViewBuildable {
+    var components: [ViewBuildable]
+    var customConfiguration: ((UIStackView, [ViewBuildable]) -> Void)?
 
-        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
-                    distribution: UIStackView.Distribution? = nil,
-                    @BuilderComponent<FastViewable> _ components: () -> [FastViewable],
-                    customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
-            self.axis = axis
-            self.components = components()
-            self.spacing = spacing
-            self.distribution = distribution
-            self.customConfiguration = customConfiguration
-        }
-
-        public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
-                    distribution: UIStackView.Distribution? = nil,
-                    _ components: [FastViewable],
-                    customConfiguration: ((UIStackView, [FastViewable]) -> Void)? = nil) {
-            self.axis = axis
-            self.components = components
-            self.spacing = spacing
-            self.distribution = distribution
-            self.customConfiguration = customConfiguration
-        }
-
-        public func render() -> UIView {
-            let view = UIStackView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate {
-                view.widthAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
-                view.heightAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
-            }
-            view.axis = axis
-            if let distribution {
-                view.distribution = distribution
-            }
-            view.spacing = CGFloat(spacing)
-            view.clipsToBounds = true
-            components.forEach { view.addArrangedSubview($0.render()) }
-            customConfiguration?(view, components)
-            return view
-        }
+    @available(iOS, unavailable)
+    public required init(coder: NSCoder) {
+        fatalError("Unavailable")
     }
 
-    struct ZStack: FastViewable {
-        public var components: [FastViewable]
-        public var customConfiguration: ((UIView, [FastViewable]) -> Void)?
+    public init(axis: NSLayoutConstraint.Axis, spacing: Double = 0,
+                distribution: UIStackView.Distribution = .fillProportionally,
+                @ViewBuilder _ components: () -> [ViewBuildable],
+                customConfiguration: ((UIStackView, [ViewBuildable]) -> Void)? = nil) {
+        self.components = components()
+        self.customConfiguration = customConfiguration
+        super.init(frame: .zero)
+        self.axis = axis
+        self.spacing = spacing
+        self.distribution = distribution
+        configureViews()
+    }
 
-        public init(@BuilderComponent<FastViewable> _ components: () -> [FastViewable],
-                    customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
-            self.components = components()
-            self.customConfiguration = customConfiguration
+    public func configureViews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate {
+            widthAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
+            heightAnchor.constraint(equalToConstant: 0).with(\.priority, setTo: .defaultLow)
         }
-
-        public init(_ components: [FastViewable],
-                    customConfiguration: ((UIView, [FastViewable]) -> Void)? = nil) {
-            self.components = components
-            self.customConfiguration = customConfiguration
-        }
-
-        public func render() -> UIView {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            components.map(\.rendered).forEach { component in
-                view.addSubview(component)
-                component.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate {
-                    component.topAnchor.constraint(equalTo: view.topAnchor)
-                    component.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-                    component.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-                    component.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-                }
-            }
-            customConfiguration?(view, components)
-            return view
-        }
+        clipsToBounds = true
+        components.forEach { addArrangedSubview($0.body) }
+        customConfiguration?(self, components)
     }
 }
 
-func test() {
-    FastView.Stack(axis: .vertical, spacing: 12) {
-        Array(0...2).map { _ in
-            FastView.ZStack {
-                FastView.Stack(axis: .vertical) {
-                    FastView(insets: .init(top: 12, left: 12, bottom: 12, right: 12)) {
-                        FastView.Image(image: .init())
-                    }
-                    FastView.Label(text: "")
-                }
-                FastView.Button(text: "")
-            }
+public extension QStack {
+    // swiftlint:disable:next type_name
+    class Z: UIView, ViewBuildable {
+        public var contents: [ViewBuildable]?
+        public var insets: UIEdgeInsets = .zero
+        public var customConfiguration: ((UIView, [ViewBuildable]) -> Void)?
+
+        public required init(customConfiguration: ((UIView, [ViewBuildable]) -> Void)? = nil) {
+            super.init(frame: .zero)
+            self.customConfiguration = customConfiguration
         }
-    }.rendered
+
+        public convenience init(insets: UIEdgeInsets = .zero,
+                                @ViewBuilder _ content: () -> [ViewBuildable],
+                                customConfiguration: ((UIView, [ViewBuildable]) -> Void)? = nil) {
+            self.init(insets: insets, content(), customConfiguration: customConfiguration)
+        }
+
+        public convenience init(insets: UIEdgeInsets = .zero,
+                                _ contents: [ViewBuildable],
+                                customConfiguration: ((UIView, [ViewBuildable]) -> Void)? = nil) {
+            self.init(customConfiguration: customConfiguration)
+            self.contents = contents
+            self.insets = insets
+        }
+
+        @available(iOS, unavailable)
+        public required init?(coder: NSCoder) {
+            fatalError("Unavailable")
+        }
+
+        public func configureViews() {
+            translatesAutoresizingMaskIntoConstraints = false
+            contents?.forEach {
+                let content = $0.body
+                addSubview(content)
+                content.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate {
+                    content.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
+                    content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
+                    content.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left)
+                    content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+                }
+            }
+            clipsToBounds = true
+            customConfiguration?(self, contents ?? [])
+        }
+    }
 }

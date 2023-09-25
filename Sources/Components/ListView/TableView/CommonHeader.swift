@@ -12,6 +12,7 @@ import DesignToolbox
 
 @objc public protocol CommonHeaderModel: NSObjectProtocol {
     var identifier: String { get }
+    static var headerKind: CommonHeader.Type { get }
     // swiftlint:disable:next line_length
     /// This function should only be used as emergency option when something need to be custom once or twice or when something is really needed on production
     var customConfiguration: ((CommonHeader) -> Void)? { get set }
