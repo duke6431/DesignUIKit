@@ -13,6 +13,7 @@ import DesignToolbox
 
 @objc public protocol CommonCollectionReusableModel: NSObjectProtocol {
     var identifier: String { get }
+    static var headerKind: CommonCollection.ReusableView.Type { get }
     // swiftlint:disable:next line_length
     /// This function should only be used as emergency option when something need to be custom once or twice or when something is really needed on production
     var customConfiguration: ((CommonCollection.ReusableView) -> Void)? { get set }

@@ -22,10 +22,10 @@ public class CommonTableView: UITableView {
         }
     }
 
-    private let cellMapper: [CommonTableConfigPair]
-    private let headerMapper: [CommonTableHeaderConfigPair]
-    private var mapCache: CommonTableConfigPair?
-    private var headerMapCache: CommonTableHeaderConfigPair?
+    private let cellMapper: [CommonCellModel.Type]
+    private let headerMapper: [CommonHeaderModel.Type]
+    private var cellCache: CommonCellModel.Type?
+    private var headerCache: CommonHeaderModel.Type?
     private var sections: [CommonTableSection] = []
     private var searchedSections: [CommonTableSection] = []
     private var keyword = ""
@@ -37,8 +37,8 @@ public class CommonTableView: UITableView {
     }()
 
     public init(
-        map: [CommonTableConfigPair],
-        headerMap: [CommonTableHeaderConfigPair] = [],
+        map: [CommonCellModel.Type],
+        headerMap: [CommonHeaderModel.Type] = [],
         style: UITableView.Style = .plain
     ) {
         self.cellMapper = map
@@ -67,8 +67,8 @@ public class CommonTableView: UITableView {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         estimatedRowHeight = 44.0
-        cellMapper.forEach { register($0.cell) }
-        headerMapper.forEach { register($0.header) }
+        cellMapper.forEach { register($0.cellKind) }
+        headerMapper.forEach { register($0.headerKind) }
     }
 
     @objc public func startRefreshing() {
@@ -152,18 +152,18 @@ extension CommonTableView: UITableViewDataSource {
         guard let headerData = searchedSections[section].header else {
             return nil
         }
-        if let cachedMap = headerMapCache {
-            let header = tableView.dequeue(cachedMap.header)
+        if let cachedMap = headerCache {
+            let header = tableView.dequeue(cachedMap.headerKind)
             header.section = section
             header.bind(headerData)
             headerData.customConfiguration?(header)
             return header
         }
-        guard let map = headerMapper.first(where: { headerData.isKind(of: $0.model) }) else {
+        guard let map = headerMapper.first(where: { headerData.isKind(of: $0) }) else {
             return nil
         }
-        headerMapCache = map
-        let header = tableView.dequeue(map.header)
+        headerCache = map
+        let header = tableView.dequeue(map.headerKind)
         header.section = section
         header.bind(headerData)
         headerData.customConfiguration?(header)
@@ -176,20 +176,20 @@ extension CommonTableView: UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = searchedSections[indexPath.section].items[indexPath.row]
-        if let cachedMap = mapCache, item.isKind(of: cachedMap.model) {
-            let cell = tableView.dequeue(cachedMap.cell)
+        if let cachedMap = cellCache, item.isKind(of: cachedMap) {
+            let cell = tableView.dequeue(cachedMap.cellKind)
             cell.selectionStyle = .none
             cell.indexPath = indexPath
             cell.bind(item, highlight: keyword)
             return cell
         }
-        guard let map = cellMapper.first(where: { item.isKind(of: $0.model) }) else {
+        guard let map = cellMapper.first(where: { item.isKind(of: $0) }) else {
             let cell = UITableViewCell()
             cell.selectionStyle = .none
             return cell
         }
-        mapCache = map
-        let cell = tableView.dequeue(map.cell)
+        cellCache = map
+        let cell = tableView.dequeue(map.cellKind)
         cell.selectionStyle = .none
         cell.indexPath = indexPath
         cell.bind(item, highlight: keyword)

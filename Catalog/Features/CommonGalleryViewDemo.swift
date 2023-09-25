@@ -48,6 +48,7 @@ class ContentFilter {
 extension ContentFilter.Cell {
     class Model: NSObject, CommonCollectionCellModel {
         var identifier: String = UUID().uuidString
+        static var cellKind: CommonCollection.Cell.Type { ContentFilter.Cell.self }
         var selectable: Bool = false
         var customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)?
         var realData: Any?
@@ -92,6 +93,7 @@ class TestCollection {
 extension TestCollection.Header {
     class Model: NSObject, CommonCollectionReusableModel {
         var identifier: String = UUID().uuidString
+        static var headerKind: CommonCollection.ReusableView.Type { TestCollection.Header.self }
         var customConfiguration: ((DesignComponents.CommonCollection.ReusableView) -> Void)?
         var title: String
 
@@ -154,6 +156,7 @@ extension TestCollection {
 extension TestCollection.Cell {
     class Model: NSObject, CommonCollectionCellModel {
         var identifier: String = UUID().uuidString
+        static var cellKind: CommonCollection.Cell.Type { TestCollection.Cell.self }
         var selectable: Bool = true
         var customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)?
         var realData: Any?
@@ -173,11 +176,15 @@ extension TestCollection.Cell {
 
 class CommonGalleryViewVC: UIViewController {
     lazy var collectionView: CommonCollection.View = {
-        let view = CommonCollection.View(cellMapper: [
-            (TestCollection.Cell.Model.self, TestCollection.Cell.self)
-        ], headerMapper: [
-            (TestCollection.Header.Model.self, TestCollection.Header.self)
-        ])
+//        let view = CommonCollection.View(cellMapper: [
+//            (TestCollection.Cell.Model.self, TestCollection.Cell.self)
+//        ], headerMapper: [
+//            (TestCollection.Header.Model.self, TestCollection.Header.self)
+//        ])
+        let view = CommonCollection.View(
+            itemMapper: [TestCollection.Cell.Model.self],
+            sectionMapper: [TestCollection.Header.Model.self]
+        )
         return view
     }()
 

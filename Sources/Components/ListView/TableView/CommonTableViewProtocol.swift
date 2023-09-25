@@ -6,9 +6,6 @@
 //
 
 import UIKit
-public typealias CommonTableConfigPair = (model: CommonCellModel.Type, cell: CommonCell.Type)
-public typealias CommonTableHeaderConfigPair = (model: CommonHeaderModel.Type, header: CommonHeader.Type)
-
 @objc public protocol CommonTableViewDelegate: AnyObject {
     @objc optional func refreshStarted()
     @objc optional func didSelectCell(at indexPath: IndexPath, with data: CommonCellModel)

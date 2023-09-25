@@ -9,55 +9,39 @@ import UIKit
 import DesignToolbox
 import DesignCore
 
-public protocol FastViewable {
-    var rendered: UIView { get }
-    func render() -> UIView
-}
+public class QSpacer: UIView, ViewBuildable {
+    public var width: Double
+    public var height: Double
 
-public extension FastViewable {
-    var rendered: UIView { render() }
-}
-
-public struct FastView: FastViewable {
-    public var content: FastViewable?
-    public var insets: UIEdgeInsets = .zero
-    public var customConfiguration: ((UIView, FastViewable?) -> Void)?
-
-    public init(customConfiguration: ((UIView, FastViewable?) -> Void)? = nil) {
-        self.customConfiguration = customConfiguration
+    public init(width: Double? = nil, height: Double? = nil) {
+        self.width = width ?? 0
+        self.height = height ?? 0
+        super.init(
+            frame: .init(
+                origin: .zero,
+                size: .init(
+                    width: self.width,
+                    height: self.height
+                )
+            )
+        )
     }
 
-    public init(insets: UIEdgeInsets = .zero,
-                @BuilderComponent<FastViewable> _ content: () -> [FastViewable],
-                customConfiguration: ((UIView, FastViewable?) -> Void)? = nil) {
-        self.content = content().first
-        self.insets = insets
-        self.customConfiguration = customConfiguration
-    }
-
-    public init(insets: UIEdgeInsets = .zero,
-                _ content: FastViewable,
-                customConfiguration: ((UIView, FastViewable?) -> Void)? = nil) {
-        self.content = content
-        self.insets = insets
-        self.customConfiguration = customConfiguration
-    }
-
-    public func render() -> UIView {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        if let content = content?.rendered {
-            view.addSubview(content)
-            content.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate {
-                content.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top)
-                content.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom)
-                content.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left)
-                content.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -insets.right)
-            }
+    func configureViews() {
+        NSLayoutConstraint.activate {
+            heightAnchor.constraint(equalToConstant: height)
+                .with(\.priority, setTo: .defaultLow)
+            widthAnchor.constraint(equalToConstant: width)
+                .with(\.priority, setTo: .defaultLow)
         }
-        view.clipsToBounds = true
-        customConfiguration?(view, content)
-        return view
     }
+
+    @available(iOS, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("Not implemented")
+    }
+}
+
+public struct QEmpty: ViewBuildableConvertible {
+    public func view() -> [ViewBuildable] { [] }
 }
