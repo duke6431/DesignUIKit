@@ -10,7 +10,8 @@ import PackageDescription
 let package = Package(
     name: "ComponentSystem",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v15),
+        .macOS(.v12)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -18,26 +19,13 @@ let package = Package(
             name: "DesignCore",
             targets: ["DesignCore"]),
         .library(
-            name: "DesignToolbox",
-            targets: ["DesignToolbox"]
-        ),
-        .library(
-            name: "DesignKit",
-            targets: ["DesignKit"]
-        ),
-        .library(
             name: "DesignUI",
             targets: ["DesignUI"]
-        ),
-        .library(
-            name: "DesignKitRx",
-            targets: ["DesignKitRx"]
         )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(name: "Logger", path: "../Logger"),
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "6.5.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -47,39 +35,11 @@ let package = Package(
             path: "Sources/Core"
         ),
         .target(
-            name: "DesignToolbox",
-            dependencies: [
-                .target(name: "DesignCore")
-            ],
-            path: "Sources/Design"
-        ),
-        .target(
             name: "DesignUI",
             dependencies: [
                 .target(name: "DesignCore")
             ],
             path: "Sources/Components+"
-        ),
-        .target(
-            name: "DesignKit",
-            dependencies: [
-                .target(name: "DesignCore"),
-                .target(name: "DesignToolbox")
-            ],
-            path: "Sources/Components"
-        ),
-        .target(
-            name: "DesignKitRx",
-            dependencies: [
-                .target(name: "DesignKit"),
-                .product(name: "RxCocoa", package: "RxSwift")
-            ],
-            path: "Sources/RxComponents"
-        ),
-        .testTarget(
-            name: "ComponentSystemTests",
-            dependencies: ["DesignCore"],
-            path: "Tests"
         )
     ]
 )
