@@ -21,11 +21,11 @@ public protocol Validator {
     func validate(_ data: String) throws -> (status: Bool, comment: Warning?)
 }
 
-extension ComponentSystem {
-    enum Common: Error {
-        case typeNotMatch
-    }
+
+enum CommonValidatorError: Error {
+    case typeNotMatch
 }
+
 
 public struct Validators {
     public enum Rule {

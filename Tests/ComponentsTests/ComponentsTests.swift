@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DesignComponents
+@testable import DesignKit
 
 class ComponentsTests: XCTestCase {
 

@@ -1,6 +1,6 @@
 //
 //  CommonCollectionView.swift
-//  DesignComponents
+//  DesignKit
 //
 //  Created by Duc IT. Nguyen Minh on 11/03/2023.
 //

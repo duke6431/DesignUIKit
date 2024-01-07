@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name = "DesignRx"
+  s.name = "DesignUI"
   s.version = '0.0.1'
   s.homepage = "https://github.com"
 
@@ -18,18 +18,11 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.0'
   s.license = { :type => 'MIT' }
-  s.default_subspec = 'Rx'
+  s.default_subspec = 'UI'
   
   # Subspecs zone
-  s.subspec 'Rx' do |ss|
-    ss.source_files = 'Sources/RxComponents/**/*.{swift}'
-    ss.dependency 'DesignComponents'
-    ss.dependency 'RxSwift'
-    ss.dependency 'RxCocoa'
-  end
-  
-  s.subspec 'Logged' do |ss|
-    ss.dependency 'DesignRx/Rx'
-    ss.dependency 'LoggerCenter'
+  s.subspec 'UI' do |ss|
+    ss.source_files = 'Sources/Components+/**/*.{swift}'
+    ss.dependency 'DesignCore'
   end
 end

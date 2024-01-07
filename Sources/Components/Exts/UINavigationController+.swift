@@ -1,22 +1,23 @@
 //
 //  UINavigationController+.swift
-//  DesignComponents
+//  DesignKit
 //
 //  Created by Duc IT. Nguyen Minh on 09/01/2023.
 //
 
 import UIKit
 import DesignCore
+import DesignToolbox
 
-extension UINavigationController {
+public extension UINavigationController {
     @available(iOS 13.0, *)
-    public func autoDetectLeftItem(animated: Bool = true, color: UIColor = .black) {
+    func autoDetectLeftItem(animated: Bool = true, color: UIColor = .black) {
         autoDetectLeftItem(animated: animated,
                            image: .init(systemName: isBeingPresented ? "xmark" : "chevron.backward"),
                            color: color)
     }
 
-    public func autoDetectLeftItem(animated: Bool = true, image: UIImage?, color: UIColor = .black) {
+    func autoDetectLeftItem(animated: Bool = true, image: UIImage?, color: UIColor = .black) {
         guard let image else { return }
         navigationBar.tintColor = color
         topViewController?.navigationItem.backBarButtonItem?.title = ""

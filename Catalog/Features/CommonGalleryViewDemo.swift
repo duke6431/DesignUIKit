@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
-import DesignComponents
+import DesignKit
 import DesignToolbox
 
 class ContentFilter {
@@ -50,13 +50,13 @@ extension ContentFilter.Cell {
         var identifier: String = UUID().uuidString
         static var cellKind: CommonCollection.Cell.Type { ContentFilter.Cell.self }
         var selectable: Bool = false
-        var customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)?
+        var customConfiguration: ((DesignKit.CommonCollection.Cell) -> Void)?
         var realData: Any?
         
         var iconName: String
         var title: String
         
-        init(selectable: Bool = false, customConfiguration: ( (DesignComponents.CommonCollection.Cell) -> Void)? = nil, realData: Any? = nil, iconName: String, title: String) {
+        init(selectable: Bool = false, customConfiguration: ( (DesignKit.CommonCollection.Cell) -> Void)? = nil, realData: Any? = nil, iconName: String, title: String) {
             self.selectable = selectable
             self.customConfiguration = customConfiguration
             self.realData = realData
@@ -94,12 +94,12 @@ extension TestCollection.Header {
     class Model: NSObject, CommonCollectionReusableModel {
         var identifier: String = UUID().uuidString
         static var headerKind: CommonCollection.ReusableView.Type { TestCollection.Header.self }
-        var customConfiguration: ((DesignComponents.CommonCollection.ReusableView) -> Void)?
+        var customConfiguration: ((DesignKit.CommonCollection.ReusableView) -> Void)?
         var title: String
 
         init(
             identifier: String = UUID().uuidString,
-            customConfiguration: ((DesignComponents.CommonCollection.ReusableView) -> Void)? = nil,
+            customConfiguration: ((DesignKit.CommonCollection.ReusableView) -> Void)? = nil,
             title: String
         ) {
             self.identifier = identifier
@@ -158,13 +158,13 @@ extension TestCollection.Cell {
         var identifier: String = UUID().uuidString
         static var cellKind: CommonCollection.Cell.Type { TestCollection.Cell.self }
         var selectable: Bool = true
-        var customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)?
+        var customConfiguration: ((DesignKit.CommonCollection.Cell) -> Void)?
         var realData: Any?
 
         var title: String
         var color: UIColor = .white
 
-        init(selectable: Bool = true, customConfiguration: ((DesignComponents.CommonCollection.Cell) -> Void)? = nil, realData: Any? = nil, title: String = "Popple Launch Party 😆", color: UIColor = .white) {
+        init(selectable: Bool = true, customConfiguration: ((DesignKit.CommonCollection.Cell) -> Void)? = nil, realData: Any? = nil, title: String = "Popple Launch Party 😆", color: UIColor = .white) {
             self.selectable = selectable
             self.customConfiguration = customConfiguration
             self.realData = realData

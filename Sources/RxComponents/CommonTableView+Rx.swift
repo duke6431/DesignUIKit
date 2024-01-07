@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import DesignComponents
+import DesignKit
 
 extension Reactive where Base: CommonTableView {
     public var refresh: Observable<Void> { base.rx.methodInvoked(#selector(CommonTableView.startRefreshing)).void() }

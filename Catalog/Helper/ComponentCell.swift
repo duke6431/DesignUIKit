@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import DesignComponents
+import DesignKit
 #if canImport(Design)
 import DesignToolbox
 #endif

@@ -1,6 +1,6 @@
 //
 //  ErrorTracker.swift
-//  DesignRx
+//  DesignKitRx
 //
 //  Created by Duc IT. Nguyen Minh on 07/01/2023.
 //

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignCore
 
 @objc public class ClosureSleeve: NSObject {
     let closure: () -> Void

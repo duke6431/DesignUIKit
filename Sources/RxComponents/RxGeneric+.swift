@@ -1,6 +1,6 @@
 //
 //  RxGeneric+.swift
-//  DesignRx
+//  DesignKitRx
 //
 //  Created by Duc IT. Nguyen Minh on 06/01/2023.
 //

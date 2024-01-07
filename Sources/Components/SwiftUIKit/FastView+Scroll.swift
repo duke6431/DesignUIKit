@@ -1,6 +1,6 @@
 //
 //  FastView+Scroll.swift
-//  DesignComponents
+//  DesignKit
 //
 //  Created by Duc IT. Nguyen Minh on 12/09/2023.
 //

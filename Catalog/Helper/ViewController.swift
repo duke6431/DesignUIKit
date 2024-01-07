@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import DesignComponents
+import DesignKit
 import RxCocoa
 import RxSwift
 

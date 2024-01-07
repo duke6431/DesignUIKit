@@ -10,7 +10,7 @@ import UIKit
 #if canImport(Logger)
 import Logger
 #endif
-import DesignComponents
+import DesignKit
 
 extension ViewController {
     override func viewDidAppear(_ animated: Bool) {

@@ -5,29 +5,16 @@
 //  Created by Duc IT. Nguyen Minh on 13/06/2022.
 //
 
-import UIKit
+import Foundation
 
 public class CommonAttributedString {
-    var attributes: [NSAttributedString.Key: Any] = [:]
-    var string: String
+    public var attributes: [NSAttributedString.Key: Any] = [:]
+    public var string: String
 
-    init(_ string: String = "") {
+    public init(_ string: String = "") {
         self.string = string
     }
-
-    public func background(with color: UIColor) -> Self {
-        attributes[.backgroundColor] = color
-        return self
-    }
-    public func foreground(with color: UIColor) -> Self {
-        attributes[.foregroundColor] = color
-        return self
-    }
-    public func font(with font: UIFont) -> Self {
-        attributes[.font] = font
-        return self
-    }
-
+    
     public func build() -> NSAttributedString {
         NSMutableAttributedString(string: string, attributes: attributes)
     }
@@ -37,5 +24,16 @@ public class CommonAttributedString {
         strings().reduce(into: NSMutableAttributedString()) { partialResult, prototype in
             partialResult.append(prototype.build())
         }
+    }
+}
+
+public extension NSAttributedString {
+    func add(_ attributes: [NSAttributedString.Key: Any], to target: String) -> NSAttributedString {
+        let ranges = string.ranges(of: target)
+        let attributedText = NSMutableAttributedString(attributedString: self)
+        ranges.forEach {
+            attributedText.addAttributes(attributes, range: $0)
+        }
+        return attributedText
     }
 }

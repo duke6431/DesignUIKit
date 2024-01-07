@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import DesignComponents
+import DesignKit
 import SnapKit
 
 class KeyboardVC: UIViewController {

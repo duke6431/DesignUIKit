@@ -10,7 +10,7 @@ import PackageDescription
 let package = Package(
     name: "ComponentSystem",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v15)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -22,12 +22,16 @@ let package = Package(
             targets: ["DesignToolbox"]
         ),
         .library(
-            name: "DesignComponents",
-            targets: ["DesignComponents"]
+            name: "DesignKit",
+            targets: ["DesignKit"]
         ),
         .library(
-            name: "DesignRx",
-            targets: ["DesignRx"]
+            name: "DesignUI",
+            targets: ["DesignUI"]
+        ),
+        .library(
+            name: "DesignKitRx",
+            targets: ["DesignKitRx"]
         )
     ],
     dependencies: [
@@ -50,7 +54,14 @@ let package = Package(
             path: "Sources/Design"
         ),
         .target(
-            name: "DesignComponents",
+            name: "DesignUI",
+            dependencies: [
+                .target(name: "DesignCore")
+            ],
+            path: "Sources/Components+"
+        ),
+        .target(
+            name: "DesignKit",
             dependencies: [
                 .target(name: "DesignCore"),
                 .target(name: "DesignToolbox")
@@ -58,9 +69,9 @@ let package = Package(
             path: "Sources/Components"
         ),
         .target(
-            name: "DesignRx",
+            name: "DesignKitRx",
             dependencies: [
-                .target(name: "DesignComponents"),
+                .target(name: "DesignKit"),
                 .product(name: "RxCocoa", package: "RxSwift")
             ],
             path: "Sources/RxComponents"
@@ -68,7 +79,7 @@ let package = Package(
         .testTarget(
             name: "ComponentSystemTests",
             dependencies: ["DesignCore"],
-            path: "ComponentSystemTests"
+            path: "Tests"
         )
     ]
 )

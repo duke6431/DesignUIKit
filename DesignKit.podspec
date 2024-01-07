@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name = "DesignComponents"
+  s.name = "DesignKit"
   s.version = '0.0.1'
   s.homepage = "https://github.com"
 
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Logged' do |ss|
-    ss.dependency 'DesignComponents/Components'
+    ss.dependency 'DesignKit/Components'
     ss.dependency 'LoggerCenter'
   end
 end

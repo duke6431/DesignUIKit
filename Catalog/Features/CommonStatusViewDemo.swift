@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import DesignComponents
+import DesignKit
 
 class CommonStatusViewVC: UIViewController {
     lazy var statusView: CommonStatusView = {
