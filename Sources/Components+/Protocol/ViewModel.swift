@@ -13,19 +13,19 @@ open class ViewModel: NSObject, ObservableObject {
     public var error: Error?
     
     @MainActor
-    func load<T: Codable>(target: inout T?, value: T) {
+    public func load<T: Codable>(target: inout T?, value: T) {
         withAnimation { target = value }
     }
     
     @MainActor
-    func load<T: Codable>(target: inout T, value: T) {
+    public func load<T: Codable>(target: inout T, value: T) {
         withAnimation {
             target = value
         }
     }
     
     @MainActor
-    func handle(_ error: Error) {
+    public func handle(_ error: Error) {
         withAnimation { [weak self] in
             self?.error = error
         }
