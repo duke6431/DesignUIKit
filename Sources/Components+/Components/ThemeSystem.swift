@@ -11,16 +11,7 @@ import DesignCore
 public class ThemeSystem: ObservableObject {
     public static var shared: ThemeSystem = .init()
     
-    private static var _defaultTheme: Theme?
-    public static var defaultTheme: Theme {
-        get {
-            guard let _defaultTheme else { fatalError("Default theme not set") }
-            return _defaultTheme
-        }
-        set {
-            _defaultTheme = newValue
-        }
-    }
+    public static var defaultTheme: Theme = .empty
     
     @Published public var current: Theme
 
@@ -40,27 +31,20 @@ public protocol ThemeKey {
 }
 
 public class Theme: ObservableObject, Identifiable, Codable {
+    fileprivate static let empty: Theme = .init(name: "Empty", styles: [:])
+    
     @Environment(\.colorScheme) var scheme
-    private static var _defaultImage: String?
+    private static var _defaultImage: String = "photo"
+    private static var _defaultImageChanged: Bool = false
     public static var defaultImage: String {
         get {
-            guard let _defaultImage else { fatalError("Default image not set") }
             return _defaultImage
         }
         set {
             _defaultImage = newValue
         }
     }
-    private static var _defaultColor: String?
-    public static var defaultColor: String {
-        get {
-            guard let _defaultColor else { fatalError("Default color not set") }
-            return _defaultColor
-        }
-        set {
-            _defaultColor = newValue
-        }
-    }
+    public static var defaultColor: String = "00000000"
     
     public var id = UUID()
     public var name: String
@@ -76,7 +60,14 @@ public class Theme: ObservableObject, Identifiable, Codable {
     }
     
     public func image(key: ThemeKey, bundle: Bundle = .main) -> Image {
-        .init(styles[scheme.style]?[key.name] ?? Self.defaultImage, bundle: bundle)
+        guard let img = styles[scheme.style]?[key.name] else {
+            if Self._defaultImageChanged {
+                return .init(Self.defaultImage, bundle: bundle)
+            } else {
+                return Image(systemName: Self.defaultImage)
+            }
+        }
+        return .init(img, bundle: bundle)
     }
     
     enum CodingKeys: String, CodingKey {
