@@ -9,6 +9,8 @@ import SwiftUI
 import DesignCore
 
 public class ThemeSystem: ObservableObject {
+    public static var shared: ThemeSystem = .init()
+    
     private static var _defaultTheme: Theme?
     public static var defaultTheme: Theme {
         get {
@@ -64,16 +66,16 @@ public class Theme: ObservableObject, Identifiable, Codable {
     public var name: String
     var styles: [Theme.Style: [String: String]]
     
-    init(name: String, styles: [Theme.Style : [String : String]]) {
+    public init(name: String, styles: [Theme.Style : [String : String]]) {
         self.name = name
         self.styles = styles
     }
     
-    func color(key: ThemeKey) -> Color {
+    public func color(key: ThemeKey) -> Color {
         .init(hex: styles[scheme.style]?[key.name] ?? Self.defaultColor)
     }
     
-    func image(key: ThemeKey, bundle: Bundle = .main) -> Image {
+    public func image(key: ThemeKey, bundle: Bundle = .main) -> Image {
         .init(styles[scheme.style]?[key.name] ?? Self.defaultImage, bundle: bundle)
     }
     

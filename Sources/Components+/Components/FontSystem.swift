@@ -8,9 +8,8 @@
 import SwiftUI
 import DesignCore
 
-
-
 public class FontSystem: ObservableObject {
+    public static var shared: FontSystem = .init()
     public static var defaultFont: FontFamily = .System()
 
     @Published public var current: FontFamily
@@ -27,11 +26,11 @@ public class FontSystem: ObservableObject {
 }
 
 public class FontFamily {
-    var name: String
+    public var name: String
     
-    init(name: String) { self.name = name }
+    public init(name: String) { self.name = name }
     
-    func font(with style: Style) -> UIFont {
+    public func font(with style: Style) -> UIFont {
         var font: UIFont?
         switch style.weight {
         case .ultraLight:
@@ -56,10 +55,11 @@ public class FontFamily {
         return font ?? FontFamily.System().font(with: style)
     }
 }
-extension FontFamily {
+
+public extension FontFamily {
     class System: FontFamily {
         init() { super.init(name: "system") }
-        override func font(with style: FontFamily.Style) -> UIFont {
+        public override func font(with style: FontFamily.Style) -> UIFont {
             .systemFont(ofSize: style.size, weight: style.weight)
         }
     }
@@ -67,8 +67,8 @@ extension FontFamily {
 
 public extension FontFamily {
     struct Style {
-        var size: CGFloat
-        var weight: UIFont.Weight
+        public var size: CGFloat
+        public var weight: UIFont.Weight
     }
 }
 
