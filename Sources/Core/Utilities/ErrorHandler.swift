@@ -31,4 +31,5 @@ public protocol SelfHandlableError {
     var title: String { get }
     var message: String { get }
     var options: [ErrorOption] { get }
+    var additional: [String: Any]? { get }
 }
