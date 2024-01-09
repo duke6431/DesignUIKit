@@ -27,7 +27,7 @@ private struct ThemeSystemKey: EnvironmentKey {
     static let defaultValue = ThemeSystem.shared
 }
 
-extension EnvironmentValues {
+public extension EnvironmentValues {
     var themeSystem: ThemeSystem {
         get { self[ThemeSystemKey.self] }
         set { self[ThemeSystemKey.self] = newValue }
