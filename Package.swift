@@ -39,7 +39,14 @@ let package = Package(
             dependencies: [
                 .target(name: "DesignCore")
             ],
-            path: "Sources/Components+"
-        )
+            path: "Sources/UI"
+        ),
+//        .target(
+//            name: "DesignBlink",
+//                dependencies: [
+//            .target(name: "DesignCore")
+//        ], 
+//            path: "Sources/Blink"
+//        )
     ]
 )

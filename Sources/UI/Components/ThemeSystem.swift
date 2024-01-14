@@ -14,6 +14,9 @@ public class ThemeSystem: ObservableObject {
     public static var defaultTheme: Theme = .empty
     
     @Published public var current: Theme
+    
+    /// Nil = automatic scheme
+    @Published public var forceColorScheme: ColorScheme?
 
     public init(current: Theme? = nil) {
         self.current = current ?? Self.defaultTheme

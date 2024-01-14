@@ -13,6 +13,7 @@ public class FontSystem: ObservableObject {
     public static var defaultFont: FontFamily = .System()
 
     @Published public var current: FontFamily
+    @Published public var multiplier: CGFloat = 1
     
     public init(current: FontFamily? = nil) {
         self.current = current ?? Self.defaultFont
@@ -54,6 +55,10 @@ public class FontSystem: ObservableObject {
     public func update(_ styles: [(style: FontFamily.Style, newStyle: FontFamily.Style)]) {
         styles.forEach(update)
     }
+    
+    public func font(with style: FontFamily.Style) -> UIFont {
+        current.font(with: style, multiplier: multiplier)
+    }
 }
 
 public class FontFamily {
@@ -61,27 +66,27 @@ public class FontFamily {
     
     public init(name: String) { self.name = name }
     
-    public func font(with style: Style) -> UIFont {
+    public func font(with style: Style, multiplier: CGFloat = 1) -> UIFont {
         var font: UIFont?
         switch style.weight {
         case .ultraLight:
-            font = .init(name: name + "-UltraLight", size: style.size)
+            font = .init(name: name + "-UltraLight", size: style.size * multiplier)
         case .light:
-            font = .init(name: name + "-Light", size: style.size)
+            font = .init(name: name + "-Light", size: style.size * multiplier)
         case .thin:
-            font = .init(name: name + "-Thin", size: style.size)
+            font = .init(name: name + "-Thin", size: style.size * multiplier)
         case .medium:
-            font = .init(name: name + "-Medium", size: style.size)
+            font = .init(name: name + "-Medium", size: style.size * multiplier)
         case .semibold:
-            font = .init(name: name + "-Semibold", size: style.size)
+            font = .init(name: name + "-Semibold", size: style.size * multiplier)
         case .bold:
-            font = .init(name: name + "-Bold", size: style.size)
+            font = .init(name: name + "-Bold", size: style.size * multiplier)
         case .heavy:
-            font = .init(name: name + "-Heavy", size: style.size)
+            font = .init(name: name + "-Heavy", size: style.size * multiplier)
         case .black:
-            font = .init(name: name + "-Black", size: style.size)
+            font = .init(name: name + "-Black", size: style.size * multiplier)
         default:
-            font = .init(name: name, size: style.size)
+            font = .init(name: name, size: style.size * multiplier)
         }
         return font ?? FontFamily.System().font(with: style)
     }
@@ -90,8 +95,8 @@ public class FontFamily {
 public extension FontFamily {
     class System: FontFamily {
         init() { super.init(name: "system") }
-        public override func font(with style: FontFamily.Style) -> UIFont {
-            .systemFont(ofSize: style.size, weight: style.weight)
+        public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
+            .systemFont(ofSize: style.size * multiplier, weight: style.weight)
         }
     }
 }

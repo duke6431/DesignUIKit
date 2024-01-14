@@ -7,7 +7,11 @@
 
 import SwiftUI
 
+/// To use designable protocol via @Environment,
+/// The FontSystem.shared and ThemeSystem.shared
+/// must be observed at app level so when the value updated, everything will change accordingly
 public protocol Designable {
+    var spacingSystem: SpacingSystem { get }
     var fontSystem: FontSystem { get }
     var themeSystem: ThemeSystem { get }
 }
@@ -34,3 +38,13 @@ public extension EnvironmentValues {
     }
 }
 
+private struct SpacingSystemKey: EnvironmentKey {
+    static let defaultValue = SpacingSystem.shared
+}
+
+public extension EnvironmentValues {
+    var spacingSystem: SpacingSystem {
+        get { self[SpacingSystemKey.self] }
+        set { self[SpacingSystemKey.self] = newValue }
+    }
+}
