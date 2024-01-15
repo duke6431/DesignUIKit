@@ -55,17 +55,22 @@ public class FontSystem: ObservableObject {
     public func update(_ styles: [(style: FontFamily.Style, newStyle: FontFamily.Style)]) {
         styles.forEach(update)
     }
-    
+#if os(iOS)
     public func font(with style: FontFamily.Style) -> UIFont {
         current.font(with: style, multiplier: multiplier)
     }
+#elseif os(macOS)
+    public func font(with style: FontFamily.Style) -> NSFont {
+        current.font(with: style, multiplier: multiplier)
+    }
+#endif
 }
 
 public class FontFamily {
     public var name: String
     
     public init(name: String) { self.name = name }
-    
+#if os(iOS)
     public func font(with style: Style, multiplier: CGFloat = 1) -> UIFont {
         var font: UIFont?
         switch style.weight {
@@ -90,26 +95,71 @@ public class FontFamily {
         }
         return font ?? FontFamily.System().font(with: style)
     }
+#elseif os(macOS)
+    public func font(with style: Style, multiplier: CGFloat = 1) -> NSFont {
+        var font: NSFont?
+        switch style.weight {
+        case .ultraLight:
+            font = .init(name: name + "-UltraLight", size: style.size * multiplier)
+        case .light:
+            font = .init(name: name + "-Light", size: style.size * multiplier)
+        case .thin:
+            font = .init(name: name + "-Thin", size: style.size * multiplier)
+        case .medium:
+            font = .init(name: name + "-Medium", size: style.size * multiplier)
+        case .semibold:
+            font = .init(name: name + "-Semibold", size: style.size * multiplier)
+        case .bold:
+            font = .init(name: name + "-Bold", size: style.size * multiplier)
+        case .heavy:
+            font = .init(name: name + "-Heavy", size: style.size * multiplier)
+        case .black:
+            font = .init(name: name + "-Black", size: style.size * multiplier)
+        default:
+            font = .init(name: name, size: style.size * multiplier)
+        }
+        return font ?? FontFamily.System().font(with: style)
+    }
+#endif
 }
 
 public extension FontFamily {
     class System: FontFamily {
         init() { super.init(name: "system") }
+        #if os(iOS)
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
         }
+        #elseif os(macOS)
+        public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> NSFont {
+            .systemFont(ofSize: style.size * multiplier, weight: style.weight)
+        }
+        
+        #endif
     }
 }
 
 public extension FontFamily {
     struct Style: Equatable, SelfCustomizable {
         public var size: CGFloat
+        
+#if os(iOS)
         public var weight: UIFont.Weight
         
         public init(size: CGFloat, weight: UIFont.Weight) {
             self.size = size
             self.weight = weight
         }
+#elseif os(macOS)
+        public var weight: NSFont.Weight
+        
+        public init(size: CGFloat, weight: NSFont.Weight) {
+            self.size = size
+            self.weight = weight
+        }
+#endif
+        
+        
     }
 }
 
