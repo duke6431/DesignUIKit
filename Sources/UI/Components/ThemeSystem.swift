@@ -36,7 +36,6 @@ public protocol ThemeKey {
 public class Theme: ObservableObject, Identifiable, Codable {
     fileprivate static let empty: Theme = .init(name: "Empty", styles: [:])
     
-    @Environment(\.colorScheme) var scheme
     private static var _defaultImage: String = "photo"
     private static var _defaultImageChanged: Bool = false
     public static var defaultImage: String {
@@ -53,16 +52,16 @@ public class Theme: ObservableObject, Identifiable, Codable {
     public var name: String
     var styles: [Theme.Style: [String: String]]
     
-    public init(name: String, styles: [Theme.Style : [String : String]]) {
+    public init(name: String, styles: [Theme.Style: [String : String]]) {
         self.name = name
         self.styles = styles
     }
     
-    public func color(key: ThemeKey) -> Color {
+    public func color(key: ThemeKey, with scheme: ColorScheme) -> Color {
         .init(hex: styles[scheme.style]?[key.name] ?? Self.defaultColor)
     }
     
-    public func image(key: ThemeKey, bundle: Bundle = .main) -> Image {
+    public func image(key: ThemeKey, with scheme: ColorScheme, bundle: Bundle = .main) -> Image {
         guard let img = styles[scheme.style]?[key.name] else {
             if Self._defaultImageChanged {
                 return .init(Self.defaultImage, bundle: bundle)
@@ -76,6 +75,12 @@ public class Theme: ObservableObject, Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case name
         case styles
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.styles = try container.decode([Theme.Style: [String : String]].self, forKey: .styles)
     }
 }
 
