@@ -15,7 +15,7 @@ public extension View {
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
     @ViewBuilder
-    func `if`<Content: View, OtherContent: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> Content)? = nil) -> some View {
+    func `if`<Content: View, OtherContent: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> OtherContent)? = nil) -> some View {
         if condition() {
             transform(self)
         } else if let othertransform {
