@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension Text {
+public extension Text {
 #if os(iOS)
     @ViewBuilder
     func font(_ style: UIFont) -> Text {
@@ -21,16 +21,18 @@ extension Text {
 #endif
 }
 
-extension View {
+public extension View {
 #if os(iOS)
     @ViewBuilder
-    func foreground(_ color: UIColor) -> some View {
+    func foregroundStyle(_ color: UIColor) -> some View {
         foregroundStyle(Color(color))
     }
 #elseif os(macOS)
     @ViewBuilder
-    func foreground(_ color: NSColor) -> some View {
+    func foregroundStyle(_ color: NSColor) -> some View {
         foregroundStyle(Color(color))
     }
 #endif
+    
+    
 }
