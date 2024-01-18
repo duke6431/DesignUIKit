@@ -15,7 +15,7 @@ public extension View {
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
     @ViewBuilder
-    func `if`<Content: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> Content)? = nil) -> some View {
+    func `if`<Content: View, OtherContent: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> Content)? = nil) -> some View {
         if condition() {
             transform(self)
         } else if let othertransform {
@@ -32,7 +32,7 @@ public extension View {
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the optional value.
     @ViewBuilder
-    func `if`<T, Content: View>(_ optional: T?, transform: (Self, T) -> Content, else othertransform: ((Self) -> Content)? = nil) -> some View {
+    func `if`<T, Content: View, OtherContent: View>(_ optional: T?, transform: (Self, T) -> Content, else othertransform: ((Self) -> OtherContent)? = nil) -> some View {
         if let optional {
             transform(self, optional)
         } else if let othertransform {
@@ -49,7 +49,7 @@ public extension View {
     ///   - defalt: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
     @ViewBuilder
-    func `switch`<T: Hashable, Content: View>(_ condition: @autoclosure () -> T, cases: [T: (Self) -> Content], default transform: ((Self) -> Content)? = nil) -> some View {
+    func `switch`<T: Hashable, Content: View>(_ condition: @autoclosure () -> T, cases: [T: (Self) -> some View], default transform: ((Self) -> Content)? = nil) -> some View {
         if let action = cases[condition()] {
             action(self)
         } else if let transform {
