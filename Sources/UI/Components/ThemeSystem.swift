@@ -34,7 +34,7 @@ public protocol ThemeKey {
 }
 
 public class Theme: ObservableObject, Identifiable, Codable {
-    fileprivate static let empty: Theme = .init(name: "Empty", styles: [:])
+    fileprivate static let empty: Theme = .init(name: "Empty", styles: [])
     
     private static var _defaultImage: String = "photo"
     private static var _defaultImageChanged: Bool = false
@@ -50,9 +50,9 @@ public class Theme: ObservableObject, Identifiable, Codable {
     
     public var id = UUID()
     public var name: String
-    var styles: [Theme.Style: [String: String]]
+    var styles: Set<Palette>
     
-    public init(name: String, styles: [Theme.Style: [String : String]]) {
+    public init(name: String, styles: Set<Palette>) {
         self.name = name
         self.styles = styles
     }
@@ -76,18 +76,31 @@ public class Theme: ObservableObject, Identifiable, Codable {
         case name
         case styles
     }
-    
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.styles = try container.decode([Theme.Style: [String : String]].self, forKey: .styles)
-    }
 }
 
 public extension Theme {
+    struct Palette: Codable, Hashable {
+        var style: Style
+        var colors: [String: String]
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(style)
+        }
+        
+        subscript(_ key: String) -> String? {
+            colors[key]
+        }
+    }
+    
     enum Style: String, Codable {
         case light
         case dark
+    }
+}
+
+extension Set where Element == Theme.Palette {
+    subscript(_ style: Theme.Style) -> Element? {
+        first { $0.style == style }
     }
 }
 
