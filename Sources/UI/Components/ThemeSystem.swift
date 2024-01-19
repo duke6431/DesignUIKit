@@ -10,14 +10,10 @@ import DesignCore
 
 public class ThemeSystem: ObservableObject {
     public static var shared: ThemeSystem = .init()
-    
     public static var defaultTheme: Theme = .empty
     
     @Published public var current: Theme
     
-    /// Nil = automatic scheme
-    @Published public var forceColorScheme: ColorScheme?
-
     public init(current: Theme? = nil) {
         self.current = current ?? Self.defaultTheme
     }
@@ -26,6 +22,10 @@ public class ThemeSystem: ObservableObject {
         withAnimation {
             self.current = theme
         }
+    }
+    
+    public func color(_ key: ThemeKey, with scheme: ColorScheme) -> Color {
+        current.color(key: key, with: scheme)
     }
 }
 
@@ -79,6 +79,13 @@ public class Theme: ObservableObject, Identifiable, Codable {
 }
 
 public extension Theme {
+    /// Theme might only has 2 styles: dark and light
+    @frozen
+    enum Style: String, Codable {
+        case light
+        case dark
+    }
+    
     struct Palette: Codable, Hashable {
         var style: Style
         var colors: [String: String]
@@ -90,11 +97,6 @@ public extension Theme {
         subscript(_ key: String) -> String? {
             colors[key]
         }
-    }
-    
-    enum Style: String, Codable {
-        case light
-        case dark
     }
 }
 

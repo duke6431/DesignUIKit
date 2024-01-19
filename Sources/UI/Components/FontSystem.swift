@@ -134,7 +134,6 @@ public extension FontFamily {
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> NSFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
         }
-        
         #endif
     }
 }
