@@ -24,7 +24,7 @@ public class ThemeSystem: ObservableObject {
         }
     }
     
-    public func color(_ key: ThemeKey, with scheme: ColorScheme) -> Color {
+    public func color(key: ThemeKey, with scheme: ColorScheme) -> Color {
         current.color(key: key, with: scheme)
     }
 }
