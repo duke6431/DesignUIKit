@@ -8,7 +8,13 @@
 import SwiftUI
 import Foundation
 
-open class ViewModel: NSObject, ObservableObject {
+public protocol ViewModeling: ObservableObject {
+    var error: Error? { get set }
+    func handle(_ error: Error)
+    func handle(_ error: Error, customAnimation: Animation?)
+}
+
+open class ViewModel: NSObject, ViewModeling {
     public static var animation = Animation.easeInOut(duration: 0.25)
     
     @Published
@@ -28,7 +34,12 @@ open class ViewModel: NSObject, ObservableObject {
     }
     
     @MainActor
-    public func handle(_ error: Error, customAnimation: Animation? = nil) {
+    public func handle(_ error: Error) {
+        handle(error, customAnimation: nil)
+    }
+    
+    @MainActor
+    public func handle(_ error: Error, customAnimation: Animation?) {
         withAnimation(customAnimation ?? animation) { [weak self] in
             self?.error = error
         }
