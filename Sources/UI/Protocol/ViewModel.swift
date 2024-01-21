@@ -8,10 +8,8 @@
 import SwiftUI
 import Foundation
 
-public protocol ViewModeling: ObservableObject {
+public protocol ViewModeling: AnyObject {
     var error: Error? { get set }
-    func handle(_ error: Error)
-    func handle(_ error: Error, customAnimation: Animation?)
 }
 
 open class ViewModel: NSObject, ViewModeling {

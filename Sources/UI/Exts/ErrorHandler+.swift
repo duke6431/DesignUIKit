@@ -36,11 +36,11 @@ public extension ErrorOption {
 }
 
 public protocol ErrorHandlable {
-    func showError(with vm: ViewModel) -> Binding<Bool>
+    func showError(with vm: ViewModeling) -> Binding<Bool>
 }
 
 public extension ErrorHandlable {
-    func showError(with vm: ViewModel) -> Binding<Bool> {
+    func showError(with vm: ViewModeling) -> Binding<Bool> {
         .init { vm.error != nil } set: { _ in vm.error = nil }
     }
 }
