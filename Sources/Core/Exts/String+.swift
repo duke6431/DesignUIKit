@@ -24,7 +24,7 @@ public extension String {
         return indices.map { NSRange(location: $0, length: string.count) }
     }
 
-    func stripped() -> String {
+    var stripped: String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
