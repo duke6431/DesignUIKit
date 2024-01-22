@@ -12,22 +12,22 @@ public protocol UserDefaultKey {
 }
 
 @propertyWrapper
-struct UserDefault<Value> {
+public struct UserDefault<Value> {
     let key: String
     let defaultValue: Value
     var container: UserDefaults = .standard
     
-    init(key: UserDefaultKey, default: Value) {
+    public init(key: UserDefaultKey, default: Value) {
         self.key = key.rawValue
         self.defaultValue = `default`
     }
     
-    init(key: String, default: Value) {
+    public init(key: String, default: Value) {
         self.key = key
         self.defaultValue = `default`
     }
     
-    var wrappedValue: Value {
+    public var wrappedValue: Value {
         get {
             return container.object(forKey: key) as? Value ?? defaultValue
         }
