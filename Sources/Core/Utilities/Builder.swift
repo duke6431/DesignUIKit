@@ -19,7 +19,7 @@ public extension Chainable where Self: AnyObject {
 
 public protocol SelfCustomizable {
     func custom(_ configuration: (inout Self) -> Void) -> Self
-    func updated<Value>(with value: Value, for keyPath: WritableKeyPath<Self, Value>) -> Self
+    func updated<Value>(for keyPath: WritableKeyPath<Self, Value>, with value: Value) -> Self
 }
 
 public extension SelfCustomizable {
@@ -29,7 +29,7 @@ public extension SelfCustomizable {
         return newSelf
     }
 
-    func updated<Value>(with value: Value, for keyPath: WritableKeyPath<Self, Value>) -> Self {
+    func updated<Value>(for keyPath: WritableKeyPath<Self, Value>, with value: Value) -> Self {
         var newSelf = self
         newSelf[keyPath: keyPath] = value
         return newSelf
