@@ -37,7 +37,7 @@ public extension ImageStack {
         public var color: Color = .black
         public var customizable: ((AnyView) -> AnyView)?
         
-        init(name: String, alignment: Alignment = .bottomTrailing,
+        public init(name: String, alignment: Alignment = .bottomTrailing,
              size: CGSize = .init(width: 24, height: 24), offset: CGSize = .zero,
              color: Color = .black, customizable: ((AnyView) -> AnyView)? = nil) {
             self.name = name
