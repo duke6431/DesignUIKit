@@ -95,3 +95,56 @@ public extension ImageStack {
         }
     }
 }
+
+#Preview {
+    VStack {
+        ImageStack(
+            primary: .init(
+                name: "square.and.arrow.down.fill",
+                size: .init(width: 60, height: 60),
+                color: .red
+            ),
+            stack: [
+                .init(
+                    name: "1.circle.fill",
+                    color: .blue
+                )
+            ]
+        )
+        Spacer().frame(height: 100)
+        ImageStack(
+            primary: .init(
+                name: "square.and.arrow.down.fill",
+                size: .init(width: 90, height: 90)
+            ),
+            stack: [
+                .init(
+                    name: "1.circle.fill",
+                    alignment: .bottomTrailing,
+                    size: .init(width: 20, height: 20),
+                    color: .red
+                ),
+                .init(
+                    name: "2.circle.fill",
+                    alignment: .topLeading,
+                    size: .init(width: 30, height: 30),
+                    offset: .init(width: 10 , height: 30),
+                    color: .green,
+                    customizable: { item in
+                            .init(
+                                item.background(
+                                    Color.white.clipShape(Circle())
+                                )
+                            )
+                    }
+                ),
+                .init(
+                    name: "3.circle.fill",
+                    alignment: .topTrailing,
+                    size: .init(width: 20, height: 20),
+                    color: .blue
+                )
+            ]
+        )
+    }
+}

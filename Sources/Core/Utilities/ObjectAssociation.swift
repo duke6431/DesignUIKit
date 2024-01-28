@@ -36,3 +36,17 @@ public final class ObjectAssociation<T: AnyObject> {
         set { objc_setAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque(), newValue, policy) }
     }
 }
+
+@objc public class ClosureSleeve: NSObject {
+    let closure: () -> Void
+    public init(_ closure: @escaping() -> Void) { self.closure = closure }
+    @objc public func invoke() { closure() }
+}
+
+public class StructWrapper<T>: NSObject {
+    public var value: T
+    
+    public init(value: T) {
+        self.value = value
+    }
+}
