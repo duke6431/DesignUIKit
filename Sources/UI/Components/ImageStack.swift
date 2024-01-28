@@ -8,11 +8,16 @@
 import SwiftUI
 import DesignCore
 
-struct ImageStack: View, SelfCustomizable {
-    var primary: Model
-    var stack: [Model] = []
+public struct ImageStack: View, SelfCustomizable {
+    public var primary: Model
+    public var stack: [Model] = []
     
-    var body: some View {
+    public init(primary: Model, stack: [Model] = []) {
+        self.primary = primary
+        self.stack = stack
+    }
+    
+    public var body: some View {
         ZStack {
             primary.updated(for: \.alignment, with: .center).body()
             ForEach(stack) {
@@ -22,15 +27,26 @@ struct ImageStack: View, SelfCustomizable {
     }
 }
 
-extension ImageStack {
+public extension ImageStack {
     struct Model: Identifiable, SelfCustomizable {
-        var id = UUID().uuidString
-        var name: String
-        var alignment: Alignment = .bottomTrailing
-        var size: CGSize = .init(width: 24, height: 24)
-        var offset: CGSize = .zero
-        var color: Color = .black
-        var customizable: ((AnyView) -> AnyView)?
+        public var id = UUID().uuidString
+        public var name: String
+        public var alignment: Alignment = .bottomTrailing
+        public var size: CGSize = .init(width: 24, height: 24)
+        public var offset: CGSize = .zero
+        public var color: Color = .black
+        public var customizable: ((AnyView) -> AnyView)?
+        
+        init(name: String, alignment: Alignment = .bottomTrailing,
+             size: CGSize = .init(width: 24, height: 24), offset: CGSize = .zero,
+             color: Color = .black, customizable: ((AnyView) -> AnyView)? = nil) {
+            self.name = name
+            self.alignment = alignment
+            self.size = size
+            self.offset = offset
+            self.color = color
+            self.customizable = customizable
+        }
         
         @ViewBuilder
         func body(relativeTo parentSize: CGSize? = nil) -> some View {
@@ -77,15 +93,5 @@ extension ImageStack {
                 return .zero
             }
         }
-    }
-}
-
-extension CGSize {
-    static func + (lhs: CGSize, rhs: CGSize?) -> CGSize {
-        .init(width: lhs.width + (rhs?.width ?? 0), height: lhs.height + (rhs?.height ?? 0))
-    }
-    
-    static func / (lhs: CGSize, rhs: CGFloat) -> CGSize {
-        .init(width: lhs.width / rhs, height: lhs.height / rhs)
     }
 }
