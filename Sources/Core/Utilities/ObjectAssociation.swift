@@ -41,6 +41,7 @@ public final class ObjectAssociation<T: AnyObject> {
     let closure: () -> Void
     public init(_ closure: @escaping() -> Void) { self.closure = closure }
     @objc public func invoke() { closure() }
+    public func callAsFunction() { invoke() }
 }
 
 public class StructWrapper<T>: NSObject {
