@@ -34,12 +34,12 @@ public extension ImageStack {
         public var alignment: Alignment = .bottomTrailing
         public var size: CGSize = .init(width: 24, height: 24)
         public var offset: CGSize = .zero
-        public var color: Color = .black
+        public var color: Color?
         public var customizable: ((AnyView) -> AnyView)?
         
         public init(name: String, alignment: Alignment = .bottomTrailing,
              size: CGSize = .init(width: 24, height: 24), offset: CGSize = .zero,
-             color: Color = .black, customizable: ((AnyView) -> AnyView)? = nil) {
+             color: Color? = nil, customizable: ((AnyView) -> AnyView)? = nil) {
             self.name = name
             self.alignment = alignment
             self.size = size
@@ -55,7 +55,9 @@ public extension ImageStack {
                     width: size.width,
                     height: size.height
                 )))
-                .foregroundColor(color)
+                .if(color) {
+                    $0.foregroundStyle($1)
+                }
                 .offset(offset(relativeTo: parentSize ?? .zero))
                 .offset(offset)
             } else {
@@ -63,7 +65,9 @@ public extension ImageStack {
                     width: size.width,
                     height: size.height
                 )
-                .foregroundColor(color)
+                .if(color) {
+                    $0.foregroundStyle($1)
+                }
                 .offset(offset(relativeTo: parentSize ?? .zero))
                 .offset(offset)
             }
