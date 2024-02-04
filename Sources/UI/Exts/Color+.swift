@@ -13,7 +13,7 @@ import UIKit
 import AppKit
 #endif
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 public extension UIColor {
     convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: .alphanumerics.inverted)

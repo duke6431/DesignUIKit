@@ -142,7 +142,7 @@ public extension FontFamily {
     struct Style: Equatable, SelfCustomizable {
         public var size: CGFloat
         
-#if os(iOS)
+#if os(iOS) || os(tvOS)
         public var weight: UIFont.Weight
         
         public init(size: CGFloat, weight: UIFont.Weight) {

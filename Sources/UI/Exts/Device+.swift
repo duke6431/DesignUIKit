@@ -5,9 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 18/01/2024.
 //
 
-#if os(iOS)
 import SwiftUI
-#endif
 import Foundation
 
 public enum DeviceSystem: Int, Codable, @unchecked Sendable {
@@ -29,7 +27,7 @@ public enum DeviceSystem: Int, Codable, @unchecked Sendable {
     public static var current: DeviceSystem {
 #if os(macOS)
         return .mac
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
             return .phone
@@ -42,7 +40,7 @@ public enum DeviceSystem: Int, Codable, @unchecked Sendable {
         case .mac:
             return .mac
         @unknown default:
-            if #available(iOS 17.0, *) {
+            if #available(iOS 17.0, tvOS 17.0, *) {
                 if UIDevice.current.userInterfaceIdiom == .vision {
                     return .vision
                 }
