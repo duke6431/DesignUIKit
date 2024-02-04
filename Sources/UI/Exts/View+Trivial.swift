@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 public extension View {
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     @ViewBuilder
     func navigationBar(hidden: Bool) -> some View {
         if #available(iOS 16.0, *) {

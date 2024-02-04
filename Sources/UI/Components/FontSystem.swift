@@ -55,7 +55,7 @@ public class FontSystem: ObservableObject {
     public func update(_ styles: [(style: FontFamily.Style, newStyle: FontFamily.Style)]) {
         styles.forEach(update)
     }
-#if os(iOS)
+#if os(iOS) || os(tvOS)
     public func font(with style: FontFamily.Style) -> UIFont {
         current.font(with: style, multiplier: multiplier)
     }
@@ -70,7 +70,7 @@ public class FontFamily {
     public var name: String
     
     public init(name: String) { self.name = name }
-#if os(iOS)
+#if os(iOS) || os(tvOS)
     public func font(with style: Style, multiplier: CGFloat = 1) -> UIFont {
         var font: UIFont?
         switch style.weight {
@@ -126,7 +126,7 @@ public class FontFamily {
 public extension FontFamily {
     class System: FontFamily {
         init() { super.init(name: "system") }
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
         }

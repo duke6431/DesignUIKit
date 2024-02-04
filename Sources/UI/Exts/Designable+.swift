@@ -8,7 +8,7 @@
 import SwiftUI
 
 public extension Text {
-#if os(iOS)
+#if os(iOS) || os(tvOS)
     @ViewBuilder
     func font(_ style: UIFont) -> Text {
         font(.init(style))
@@ -22,7 +22,7 @@ public extension Text {
 }
 
 public extension View {
-#if os(iOS)
+#if os(iOS) || os(tvOS)
     @ViewBuilder
     func foregroundStyle(_ color: UIColor) -> some View {
         foregroundStyle(Color(color))
