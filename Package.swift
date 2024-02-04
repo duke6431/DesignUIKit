@@ -22,6 +22,10 @@ let package = Package(
         .library(
             name: "DesignUI",
             targets: ["DesignUI"]
+        ),
+        .library(
+            name: "DesignBridge",
+            targets: ["DesignBridge"]
         )
     ],
     dependencies: [
@@ -42,6 +46,13 @@ let package = Package(
             ],
             path: "Sources/UI"
         ),
+        .target(
+            name: "DesignBridge",
+            dependencies: [
+                .target(name: "DesignCore")
+            ],
+            path: "Sources/Bridge"
+        )
 //        .target(
 //            name: "DesignBlink",
 //                dependencies: [
