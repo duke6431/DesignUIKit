@@ -47,7 +47,7 @@ public class FBase<Content: UIView>: UIView {
         }
     }
     
-    func frame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
+    public func frame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
         snp.makeConstraints {
             if let width { $0.width.equalTo(width) }
             if let height { $0.height.equalTo(height) }
