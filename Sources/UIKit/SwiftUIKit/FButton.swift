@@ -7,22 +7,27 @@
 
 import UIKit
 import DesignCore
+import SnapKit
 
-public class FButton: FViewable {
-    public var text: String
-    public var image: String
-    public var font: UIFont
-    public var color: UIColor
-    public var contentHuggingV: UILayoutPriority
-    public var contentHuggingH: UILayoutPriority
-    public var compressionResistanceV: UILayoutPriority
-    public var compressionResistanceH: UILayoutPriority
+public class FButton: UIView, FViewable {
+    public var text: String = ""
+    public var image: String = ""
+    public var font: UIFont = FontSystem.shared.font(with: .body)
+    public var color: UIColor = .systemBlue
+    public var contentHuggingV: UILayoutPriority = .defaultLow
+    public var contentHuggingH: UILayoutPriority = .defaultLow
+    public var compressionResistanceV: UILayoutPriority = .defaultHigh
+    public var compressionResistanceH: UILayoutPriority = .defaultHigh
     public var action: (() -> Void)?
+    
+    public var padding: UIEdgeInsets?
     public var customConfiguration: ((UIButton, FButton) -> UIButton)?
+    
+    public private(set) weak var content: UIButton?
     
     public init(
         text: String = "", image: String = "",
-        font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .label,
+        font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .systemBlue,
         contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
         compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
         action: (() -> Void)? = nil,
@@ -38,10 +43,16 @@ public class FButton: FViewable {
         self.compressionResistanceH = compressionResistanceH
         self.action = action
         self.customConfiguration = customConfiguration
+        super.init(frame: .zero)
     }
     
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    @discardableResult
     public func rendered() -> UIButton {
-        let view = UIButton()
+        var view = UIButton()
         view.setTitle(text, for: .normal)
         view.titleLabel?.font = font
         view.clipsToBounds = true
@@ -51,6 +62,18 @@ public class FButton: FViewable {
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
         if let action = action { view.addAction(for: .touchUpInside, action) }
-        return customConfiguration?(view, self) ?? view
+        view = customConfiguration?(view, self) ?? view
+        content = view
+        return view
+    }
+    
+    public override func didMoveToSuperview() {
+        addSubview(rendered())
+        snp.makeConstraints {
+            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
+            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
+            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
+            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
+        }
     }
 }

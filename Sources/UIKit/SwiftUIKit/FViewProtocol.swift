@@ -14,9 +14,25 @@ public protocol AnyViewable: AnyObject {
 
 public protocol FViewable: AnyViewable, Chainable {
     associatedtype SomeView: UIView
-    
     var customConfiguration: ((SomeView, Self) -> SomeView)? { get set }
+    var backgroundColor: UIColor? { get set }
+    var padding: UIEdgeInsets? { get set }
+    
+    @discardableResult
     func rendered() -> SomeView
+    func padding(_ padding: UIEdgeInsets) -> Self
+    func background(_ color: UIColor) -> Self
+}
+
+public extension FViewable {
+    func padding(_ padding: UIEdgeInsets) -> Self {
+        self.padding = padding
+        return self
+    }
+    func background(_ color: UIColor) -> Self {
+        self.backgroundColor = color
+        return self
+    }
 }
 
 public extension FViewable {

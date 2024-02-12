@@ -7,17 +7,21 @@
 
 import UIKit
 import Nuke
+import SnapKit
 
-public class FImage: FViewable {
+public class FImage: UIView, FViewable {
     public var image: UIImage?
     public var url: URL?
-    public var size: CGSize
-    public var contentMode: UIImageView.ContentMode
-    public var contentHuggingV: UILayoutPriority
-    public var contentHuggingH: UILayoutPriority
-    public var compressionResistanceV: UILayoutPriority
-    public var compressionResistanceH: UILayoutPriority
+    public var size: CGSize = .zero
+    public var contentHuggingV: UILayoutPriority = .defaultLow
+    public var contentHuggingH: UILayoutPriority = .defaultLow
+    public var compressionResistanceV: UILayoutPriority = .defaultHigh
+    public var compressionResistanceH: UILayoutPriority = .defaultHigh
+    
+    public var padding: UIEdgeInsets?
     public var customConfiguration: ((UIImageView, FImage) -> UIImageView)?
+    
+    public private(set) weak var content: UIImageView?
     
     public init(
         image: UIImage? = nil, url: URL? = nil,
@@ -29,16 +33,21 @@ public class FImage: FViewable {
         self.image = image
         self.url = url
         self.size = size
-        self.contentMode = contentMode
         self.contentHuggingV = contentHuggingV
         self.contentHuggingH = contentHuggingH
         self.compressionResistanceV = compressionResistanceV
         self.compressionResistanceH = compressionResistanceH
         self.customConfiguration = customConfiguration
+        super.init(frame: .zero)
+        self.contentMode = contentMode
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
     public func rendered() -> UIImageView {
-        let view = UIImageView(image: image)
+        var view = UIImageView(image: image)
         view.contentMode = contentMode
         view.clipsToBounds = true
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
@@ -56,6 +65,18 @@ public class FImage: FViewable {
             if size.width > 0 { $0.width.equalTo(size.width).priority(.medium) }
             if size.height > 0 { $0.height.equalTo(size.height).priority(.medium) }
         }
-        return customConfiguration?(view, self) ?? view
+        view = customConfiguration?(view, self) ?? view
+        content = view
+        return view
+    }
+    
+    public override func didMoveToSuperview() {
+        addSubview(rendered())
+        snp.makeConstraints {
+            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
+            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
+            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
+            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
+        }
     }
 }
