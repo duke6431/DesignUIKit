@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public final class FLabel: UIView, FViewable {
+public final class FLabel: FBase<UILabel>, FViewable {
     public var text: String = ""
     public var attributedText: NSAttributedString?
     public var font: UIFont = FontSystem.shared.font(with: .body)
@@ -20,11 +20,7 @@ public final class FLabel: UIView, FViewable {
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
     public var compressionResistanceH: UILayoutPriority = .defaultHigh
     
-    public var shape: FShape?
-    public var padding: UIEdgeInsets?
     public var customConfiguration: ((UILabel, FLabel) -> UILabel)?
-    
-    public private(set) weak var content: UILabel?
     
     public init(
         text: String = "", attributedText: NSAttributedString? = nil,
@@ -51,7 +47,8 @@ public final class FLabel: UIView, FViewable {
         super.init(coder: coder)
     }
     
-    public func rendered() -> UILabel {
+    @discardableResult
+    public override func rendered() -> UILabel {
         var view = UILabel()
         view.text = text
         view.font = font
@@ -68,35 +65,5 @@ public final class FLabel: UIView, FViewable {
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
-    }
-    
-    public override func didMoveToSuperview() {
-        addSubview(rendered())
-        snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
-        }
-    }
-    
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        updateCornerRadius()
-    }
-    
-    private func updateCornerRadius() {
-        if let shape {
-            UIView.animate(withDuration: 0.2) {
-                switch shape {
-                case .circle:
-                    self.content?.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
-                case .roundedRectangle(let cornerRadius, let corners):
-                    self.content?.layer.masksToBounds = true
-                    self.content?.layer.maskedCorners = corners.caMask
-                    self.content?.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
-                }
-            }
-        }
     }
 }

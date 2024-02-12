@@ -9,7 +9,7 @@ import UIKit
 import Nuke
 import SnapKit
 
-public class FImage: UIView, FViewable {
+public class FImage: FBase<UIImageView>, FViewable {
     public var image: UIImage?
     public var url: URL?
     public var size: CGSize = .zero
@@ -18,11 +18,7 @@ public class FImage: UIView, FViewable {
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
     public var compressionResistanceH: UILayoutPriority = .defaultHigh
     
-    public var shape: FShape?
-    public var padding: UIEdgeInsets?
     public var customConfiguration: ((UIImageView, FImage) -> UIImageView)?
-    
-    public private(set) weak var content: UIImageView?
     
     public init(
         image: UIImage? = nil, url: URL? = nil,
@@ -47,7 +43,8 @@ public class FImage: UIView, FViewable {
         super.init(coder: coder)
     }
     
-    public func rendered() -> UIImageView {
+    @discardableResult
+    public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)
         view.contentMode = contentMode
         view.clipsToBounds = true
@@ -69,35 +66,5 @@ public class FImage: UIView, FViewable {
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
-    }
-    
-    public override func didMoveToSuperview() {
-        addSubview(rendered())
-        snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
-        }
-    }
-    
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        updateCornerRadius()
-    }
-    
-    private func updateCornerRadius() {
-        if let shape {
-            UIView.animate(withDuration: 0.2) {
-                switch shape {
-                case .circle:
-                    self.content?.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
-                case .roundedRectangle(let cornerRadius, let corners):
-                    self.content?.layer.masksToBounds = true
-                    self.content?.layer.maskedCorners = corners.caMask
-                    self.content?.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
-                }
-            }
-        }
     }
 }

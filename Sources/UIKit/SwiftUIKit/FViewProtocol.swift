@@ -13,23 +13,6 @@ public enum FShape {
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)
 }
 
-extension UIRectCorner {
-    var caMask: CACornerMask {
-        switch self {
-        case .topLeft:
-            return .layerMinXMinYCorner
-        case .topRight:
-            return .layerMaxXMinYCorner
-        case .bottomLeft:
-            return .layerMinXMaxYCorner
-        case .bottomRight:
-            return .layerMaxXMaxYCorner
-        default:
-            return [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        }
-    }
-}
-
 public protocol AnyViewable: AnyObject {
     func rendered() -> UIView
 }
@@ -45,20 +28,27 @@ public protocol FViewable: AnyViewable, Chainable {
     
     @discardableResult
     func rendered() -> SomeView
-    func padding(_ padding: UIEdgeInsets) -> Self
+    func padding(_ padding: CGFloat) -> Self
+    func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self
     func background(_ color: UIColor) -> Self
     func shaped(_ shape: FShape) -> Self
 }
 
 public extension FViewable {
-    func padding(_ padding: UIEdgeInsets) -> Self {
-        self.padding = padding
+    func padding(_ padding: CGFloat) -> Self {
+        self.padding(.all, padding)
+    }
+    
+    func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self {
+        self.padding = self.padding?.add(edges, padding)
         return self
     }
+    
     func background(_ color: UIColor) -> Self {
         self.backgroundColor = color
         return self
     }
+    
     func shaped(_ shape: FShape) -> Self {
         self.shape = shape
         return self

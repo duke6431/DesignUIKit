@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public class FButton: UIView, FViewable {
+public class FButton: FBase<UIButton>, FViewable {
     public var text: String = ""
     public var image: String = ""
     public var font: UIFont = FontSystem.shared.font(with: .body)
@@ -20,11 +20,7 @@ public class FButton: UIView, FViewable {
     public var compressionResistanceH: UILayoutPriority = .defaultHigh
     public var action: (() -> Void)?
     
-    public var shape: FShape?
-    public var padding: UIEdgeInsets?
     public var customConfiguration: ((UIButton, FButton) -> UIButton)?
-    
-    public private(set) weak var content: UIButton?
     
     public init(
         text: String = "", image: String = "",
@@ -52,7 +48,7 @@ public class FButton: UIView, FViewable {
     }
     
     @discardableResult
-    public func rendered() -> UIButton {
+    public override func rendered() -> UIButton {
         var view = UIButton()
         view.setTitle(text, for: .normal)
         view.titleLabel?.font = font
@@ -66,35 +62,5 @@ public class FButton: UIView, FViewable {
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
-    }
-    
-    public override func didMoveToSuperview() {
-        addSubview(rendered())
-        snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
-        }
-    }
-    
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        updateCornerRadius()
-    }
-    
-    private func updateCornerRadius() {
-        if let shape {
-            UIView.animate(withDuration: 0.2) {
-                switch shape {
-                case .circle:
-                    self.content?.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
-                case .roundedRectangle(let cornerRadius, let corners):
-                    self.content?.layer.masksToBounds = true
-                    self.content?.layer.maskedCorners = corners.caMask
-                    self.content?.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
-                }
-            }
-        }
     }
 }
