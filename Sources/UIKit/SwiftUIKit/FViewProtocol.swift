@@ -17,6 +17,7 @@ public protocol FViewable: AnyViewable, Chainable {
     var customConfiguration: ((SomeView, Self) -> SomeView)? { get set }
     var backgroundColor: UIColor? { get set }
     var padding: UIEdgeInsets? { get set }
+    var content: SomeView? { get }
     
     @discardableResult
     func rendered() -> SomeView
