@@ -11,26 +11,31 @@ let package = Package(
     name: "ComponentSystem",
     platforms: [
         .iOS(.v15),
-        .macOS(.v12),
-        .tvOS(.v16)
+        .macOS(.v12)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "DesignCore",
-            targets: ["DesignCore"]),
+            targets: ["DesignCore"]
+        ),
+        .library(
+            name: "DesignExts",
+            targets: ["DesignExts"]
+        ),
         .library(
             name: "DesignUI",
             targets: ["DesignUI"]
         ),
         .library(
-            name: "DesignBridge",
-            targets: ["DesignBridge"]
-        )
+            name: "DesignUIKit",
+            targets: ["DesignUIKit"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        // .package(name: "Logger", path: "../Logger"),
+        .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
+        .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -40,25 +45,29 @@ let package = Package(
             path: "Sources/Core"
         ),
         .target(
-            name: "DesignUI",
+            name: "DesignExts",
             dependencies: [
                 .target(name: "DesignCore")
             ],
-            path: "Sources/UI"
+            path: "Sources/Exts"
         ),
         .target(
-            name: "DesignBridge",
+            name: "DesignUI",
             dependencies: [
-                .target(name: "DesignCore")
+                .target(name: "DesignCore"),
+                .target(name: "DesignExts")
             ],
-            path: "Sources/Bridge"
-        )
-//        .target(
-//            name: "DesignBlink",
-//                dependencies: [
-//            .target(name: "DesignCore")
-//        ], 
-//            path: "Sources/Blink"
-//        )
+            path: "Sources/SwiftUI"
+        ),
+        .target(
+            name: "DesignUIKit",
+            dependencies: [
+                .target(name: "DesignCore"),
+                .target(name: "DesignExts"),
+                "SnapKit",
+                "Nuke"
+            ],
+            path: "Sources/UIKit"
+        ),
     ]
 )

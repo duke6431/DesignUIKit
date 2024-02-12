@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DesignCore
 
 /// To use designable protocol via @Environment,
 /// The FontSystem.shared and ThemeSystem.shared

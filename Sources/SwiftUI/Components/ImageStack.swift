@@ -7,6 +7,7 @@
 
 import SwiftUI
 import DesignCore
+import DesignExts
 
 public struct ImageStack: View, SelfCustomizable {
     public var primary: Model

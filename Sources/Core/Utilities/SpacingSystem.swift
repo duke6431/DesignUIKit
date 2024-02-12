@@ -5,7 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 10/01/2024.
 //
 
-import SwiftUI
+import Foundation
 
 public class SpacingSystem: ObservableObject {
     public static let shared = SpacingSystem()
