@@ -14,7 +14,8 @@ public final class FLabel: FBase<UILabel>, FViewable {
     public var attributedText: NSAttributedString?
     public var font: UIFont = FontSystem.shared.font(with: .body)
     public var color: UIColor = .label
-    public var numberOfLine: Int = 1
+    public var lineLimit: Int = 1
+    public var textAlignment: NSTextAlignment = .left
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
@@ -25,7 +26,7 @@ public final class FLabel: FBase<UILabel>, FViewable {
     public init(
         text: String = "", attributedText: NSAttributedString? = nil,
         font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .label,
-        numberOfLine: Int = 3,
+        lineLimit: Int = 1,
         contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
         compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
         customConfiguration: ((UILabel, FLabel) -> UILabel)? = nil
@@ -34,7 +35,7 @@ public final class FLabel: FBase<UILabel>, FViewable {
         self.font = font
         self.color = color
         self.attributedText = attributedText
-        self.numberOfLine = numberOfLine
+        self.lineLimit = lineLimit
         self.contentHuggingV = contentHuggingV
         self.contentHuggingH = contentHuggingH
         self.compressionResistanceV = compressionResistanceV
@@ -55,9 +56,10 @@ public final class FLabel: FBase<UILabel>, FViewable {
         if let attributedText = attributedText {
             view.attributedText = attributedText
         }
+        view.textAlignment = textAlignment
         view.clipsToBounds = true
         view.textColor = color
-        view.numberOfLines = numberOfLine
+        view.numberOfLines = lineLimit
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
         view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
@@ -65,5 +67,10 @@ public final class FLabel: FBase<UILabel>, FViewable {
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
+    }
+    
+    func textAlignment(_ alignment: NSTextAlignment) -> Self {
+        self.textAlignment = alignment
+        return self
     }
 }
