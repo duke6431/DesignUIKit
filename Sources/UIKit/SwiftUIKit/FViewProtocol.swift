@@ -18,6 +18,7 @@ public protocol FViewable: AnyObject, Chainable {
     var shape: FShape? { get set }
     var backgroundColor: UIColor? { get set }
     var padding: UIEdgeInsets? { get set }
+    var contentInsets: UIEdgeInsets? { get set }
     
     var customConfiguration: ((SomeView, Self) -> SomeView)? { get set }
     var content: SomeView? { get }
@@ -26,6 +27,8 @@ public protocol FViewable: AnyObject, Chainable {
     func rendered() -> SomeView
     func padding(_ padding: CGFloat) -> Self
     func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self
+    func insets(_ insets: CGFloat) -> Self
+    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self
     func background(_ color: UIColor) -> Self
     func shaped(_ shape: FShape) -> Self
 }
@@ -37,6 +40,15 @@ public extension FViewable {
     
     func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self {
         self.padding = self.padding?.add(edges, padding)
+        return self
+    }
+    
+    func insets(_ insets: CGFloat) -> Self {
+        self.insets(.all, insets)
+    }
+    
+    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
+        self.contentInsets = self.contentInsets?.add(edges, insets)
         return self
     }
     

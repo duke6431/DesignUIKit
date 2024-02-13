@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import DesignCore
 
 public class FontSystem: ObservableObject {
     public static var shared: FontSystem = .init()

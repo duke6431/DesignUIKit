@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import SnapKit
 
 public class FBase<Content: UIView>: UIView {
     public var shape: FShape?
     public var padding: UIEdgeInsets?
+    public var contentInsets: UIEdgeInsets?
     public var width: CGFloat?
     public var height: CGFloat?
     
@@ -18,12 +20,16 @@ public class FBase<Content: UIView>: UIView {
     public override func didMoveToSuperview() {
         addSubview(rendered())
         snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.high)
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.high)
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.high)
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.high)
+            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
+            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
+            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
+            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
         }
         content?.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(contentInsets?.top ?? 0).priority(.medium)
+            $0.leading.equalToSuperview().inset(contentInsets?.left ?? 0).priority(.medium)
+            $0.trailing.equalToSuperview().inset(contentInsets?.right ?? 0).priority(.medium)
+            $0.bottom.equalToSuperview().inset(contentInsets?.bottom ?? 0).priority(.medium)
             if let width { $0.width.equalTo(width) }
             if let height { $0.height.equalTo(height) }
         }
