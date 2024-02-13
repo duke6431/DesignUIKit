@@ -7,8 +7,9 @@
 
 import UIKit
 import SnapKit
+import DesignCore
 
-public class FBase<Content: UIView>: UIView {
+public class FBase<Content: UIView>: UIView, Chainable {
     public var contentBackgroundColor: UIColor = .clear
     public var shape: FShape?
     
@@ -17,15 +18,18 @@ public class FBase<Content: UIView>: UIView {
     public var width: CGFloat?
     public var height: CGFloat?
     
+    var shouldConstraintWithParent: Bool = true
     public weak var content: Content?
     
     public override func didMoveToSuperview() {
         addSubview(rendered())
-        snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.high.advanced(by: 100))
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.high.advanced(by: 100))
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.high.advanced(by: 100))
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.high.advanced(by: 100))
+        if shouldConstraintWithParent {
+            snp.makeConstraints {
+                $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.high.advanced(by: 100))
+                $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.high.advanced(by: 100))
+                $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.high.advanced(by: 100))
+                $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.high.advanced(by: 100))
+            }
         }
         content?.snp.makeConstraints {
             $0.top.equalToSuperview().inset(contentInsets?.top ?? 0)//.priority(.high.advanced(by: 100))
