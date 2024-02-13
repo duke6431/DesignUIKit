@@ -8,15 +8,12 @@
 import UIKit
 
 public final class FSpacer: FBase<UIView>, FViewable {
-    public var width: CGFloat = 0
-    public var height: CGFloat = 0
-    
     public var customConfiguration: ((UIView, FSpacer) -> UIView)?
 
     public init(width: CGFloat? = nil, height: CGFloat? = nil) {
-        self.width = width ?? 0
-        self.height = height ?? 0
         super.init(frame: .zero)
+        self.width = width
+        self.height = height
     }
     
     public required init?(coder: NSCoder) {
@@ -26,10 +23,6 @@ public final class FSpacer: FBase<UIView>, FViewable {
     @discardableResult
     public override func rendered() -> UIView {
         var view = UIView()
-        view.snp.makeConstraints {
-            $0.width.equalTo(width).priority(.low)
-            $0.height.equalTo(height).priority(.low)
-        }
         view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
