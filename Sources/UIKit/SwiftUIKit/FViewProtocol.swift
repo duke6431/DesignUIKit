@@ -13,11 +13,7 @@ public enum FShape {
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)
 }
 
-public protocol AnyViewable: AnyObject {
-    func rendered() -> UIView
-}
-
-public protocol FViewable: AnyViewable, Chainable {
+public protocol FViewable: AnyObject, Chainable {
     associatedtype SomeView: UIView
     var shape: FShape? { get set }
     var backgroundColor: UIColor? { get set }
@@ -52,15 +48,5 @@ public extension FViewable {
     func shaped(_ shape: FShape) -> Self {
         self.shape = shape
         return self
-    }
-}
-
-public extension FViewable {
-    func rendered() -> UIView {
-        rendered()
-    }
-    
-    func callAsFunction() -> UIView {
-        rendered()
     }
 }

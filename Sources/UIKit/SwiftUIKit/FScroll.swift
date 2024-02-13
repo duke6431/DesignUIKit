@@ -10,13 +10,13 @@ import SnapKit
 import DesignCore
 
 public final class FScroll: FBase<UIScrollView>, FViewable {
-    public var contentViews: [AnyViewable] = []
+    public var contentViews: [UIView] = []
     public var showsVerticalScrollIndicator: Bool = false
     
     public var customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)?
     
     public init(
-        contentView: AnyViewable? = nil,
+        contentView: UIView? = nil,
         customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)? = nil
     ) {
         if let contentView {
@@ -29,7 +29,7 @@ public final class FScroll: FBase<UIScrollView>, FViewable {
     }
     
     public init(
-        @FBuilder<AnyViewable> contentViews: () -> [AnyViewable],
+        @FBuilder<UIView> contentViews: () -> [UIView],
         customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)? = nil
     ) {
         self.contentViews = contentViews()
@@ -48,7 +48,6 @@ public final class FScroll: FBase<UIScrollView>, FViewable {
         view.showsVerticalScrollIndicator = false
         var topAnchor = view.snp.top
         contentViews.enumerated().forEach { index, subview in
-            let subview = subview.rendered()
             view.addSubview(subview)
             subview.snp.makeConstraints {
                 $0.top.equalTo(topAnchor)

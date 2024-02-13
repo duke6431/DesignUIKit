@@ -10,7 +10,7 @@ import DesignCore
 
 public final class FStack: FBase<UIStackView>, FViewable {
     public var axis: NSLayoutConstraint.Axis = .vertical
-    public var arrangedContents: [AnyViewable]
+    public var arrangedContents: [UIView]
     public var spacing: Double = 0
     public var distribution: UIStackView.Distribution?
     
@@ -19,7 +19,7 @@ public final class FStack: FBase<UIStackView>, FViewable {
     public init(
         axis: NSLayoutConstraint.Axis = .vertical,
         spacing: Double = 0, 
-        @FBuilder<AnyViewable> arrangedContents: () -> [AnyViewable],
+        @FBuilder<UIView> arrangedContents: () -> [UIView],
         distribution: UIStackView.Distribution? = nil,
         customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
     ) {
@@ -49,7 +49,7 @@ public final class FStack: FBase<UIStackView>, FViewable {
         }
         view.spacing = CGFloat(spacing)
         view.clipsToBounds = true
-        arrangedContents.forEach { view.addArrangedSubview($0.rendered()) }
+        arrangedContents.forEach { view.addArrangedSubview($0) }
         view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view

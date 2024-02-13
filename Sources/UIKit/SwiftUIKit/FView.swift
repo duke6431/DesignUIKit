@@ -10,12 +10,12 @@ import DesignCore
 import SnapKit
 
 public final class FView: FBase<UIView>, FViewable {
-    public var contentViews: [AnyViewable] = []
+    public var contentViews: [UIView] = []
     
     public var customConfiguration: ((UIView, FView) -> UIView)?
     
     public init(
-        contentView: AnyViewable? = nil,
+        contentView: UIView? = nil,
         customConfiguration: ((UIView, FView) -> UIView)? = nil
     ) {
         if let contentView {
@@ -28,7 +28,7 @@ public final class FView: FBase<UIView>, FViewable {
     }
     
     public init(
-        @FBuilder<AnyViewable> contentViews: () -> [AnyViewable],
+        @FBuilder<UIView> contentViews: () -> [UIView],
         customConfiguration: ((UIView, FView) -> UIView)? = nil
     ) {
         self.contentViews = contentViews()
@@ -44,7 +44,7 @@ public final class FView: FBase<UIView>, FViewable {
     public override func rendered() -> UIView {
         var view = UIView()
         contentViews.forEach { subview in
-            let subview = subview.rendered()
+            let subview = subview
             view.addSubview(subview)
             subview.snp.makeConstraints { $0.edges.equalToSuperview() }
         }
