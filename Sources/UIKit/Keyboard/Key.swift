@@ -43,7 +43,7 @@ public class Key: KeyRenderable, KeyTappable {
     }
     
     lazy var button: UIButton = {
-        let view = UIButton(type: .system)
+        let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setContentHuggingPriority(.defaultLow, for: .vertical)
         view.setContentHuggingPriority(.defaultLow, for: .horizontal)

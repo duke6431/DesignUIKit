@@ -63,6 +63,7 @@ public class FImage: FBase<UIImageView>, FViewable {
             if size.width > 0 { $0.width.equalTo(size.width).priority(.medium) }
             if size.height > 0 { $0.height.equalTo(size.height).priority(.medium) }
         }
+        view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

@@ -49,7 +49,7 @@ public class FButton: FBase<UIButton>, FViewable {
     
     @discardableResult
     public override func rendered() -> UIButton {
-        var view = UIButton()
+        var view = UIButton(type: .custom)
         view.setTitle(text, for: .normal)
         view.titleLabel?.font = font
         view.clipsToBounds = true
@@ -59,6 +59,7 @@ public class FButton: FBase<UIButton>, FViewable {
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
         if let action = action { view.addAction(for: .touchUpInside, action) }
+        view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

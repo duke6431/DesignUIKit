@@ -50,6 +50,7 @@ public final class FStack: FBase<UIStackView>, FViewable {
         view.spacing = CGFloat(spacing)
         view.clipsToBounds = true
         arrangedContents.forEach { view.addArrangedSubview($0.rendered()) }
+        view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

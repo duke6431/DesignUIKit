@@ -30,6 +30,7 @@ public final class FSpacer: FBase<UIView>, FViewable {
             $0.width.equalTo(width).priority(.low)
             $0.height.equalTo(height).priority(.low)
         }
+        view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

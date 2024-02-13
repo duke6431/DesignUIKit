@@ -59,6 +59,7 @@ public final class FScroll: FBase<UIScrollView>, FViewable {
         view.snp.makeConstraints {
             $0.bottom.equalTo(topAnchor)
         }
+        view.backgroundColor = backgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
