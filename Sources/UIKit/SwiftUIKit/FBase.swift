@@ -10,16 +10,22 @@ import UIKit
 public class FBase<Content: UIView>: UIView {
     public var shape: FShape?
     public var padding: UIEdgeInsets?
+    public var width: CGFloat?
+    public var height: CGFloat?
     
     public weak var content: Content?
     
     public override func didMoveToSuperview() {
         addSubview(rendered())
         snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.medium)
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.medium)
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.medium)
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.medium)
+            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.high)
+            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.high)
+            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.high)
+            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.high)
+        }
+        content?.snp.makeConstraints {
+            if let width { $0.width.equalTo(width) }
+            if let height { $0.height.equalTo(height) }
         }
     }
     
@@ -48,10 +54,8 @@ public class FBase<Content: UIView>: UIView {
     }
     
     public func frame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        content?.snp.makeConstraints {
-            if let width { $0.width.equalTo(width) }
-            if let height { $0.height.equalTo(height) }
-        }
+        self.width = width
+        self.height = height
         return self
     }
 }
