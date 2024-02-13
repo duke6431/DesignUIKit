@@ -23,7 +23,7 @@ public final class FSpacer: FBase<UIView>, FViewable {
     @discardableResult
     public override func rendered() -> UIView {
         var view = UIView()
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

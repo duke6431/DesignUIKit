@@ -48,7 +48,7 @@ public final class FView: FBase<UIView>, FViewable {
             view.addSubview(subview)
             subview.snp.makeConstraints { $0.edges.equalToSuperview() }
         }
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

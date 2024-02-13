@@ -64,7 +64,7 @@ public final class FLabel: FBase<UILabel>, FViewable {
         view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

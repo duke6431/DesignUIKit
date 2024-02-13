@@ -59,7 +59,7 @@ public class FButton: FBase<UIButton>, FViewable {
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
         if let action = action { view.addAction(for: .touchUpInside, action) }
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

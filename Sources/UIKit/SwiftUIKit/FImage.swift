@@ -60,10 +60,10 @@ public class FImage: FBase<UIImageView>, FViewable {
             }
         }
         view.snp.makeConstraints {
-            if size.width > 0 { $0.width.equalTo(size.width).priority(.medium) }
-            if size.height > 0 { $0.height.equalTo(size.height).priority(.medium) }
+            if size.width > 0 { $0.width.equalTo(size.width) }
+            if size.height > 0 { $0.height.equalTo(size.height) }
         }
-        view.backgroundColor = backgroundColor
+        view.backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

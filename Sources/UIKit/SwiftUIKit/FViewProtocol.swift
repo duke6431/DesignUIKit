@@ -16,7 +16,7 @@ public enum FShape {
 public protocol FViewable: AnyObject, Chainable {
     associatedtype SomeView: UIView
     var shape: FShape? { get set }
-    var backgroundColor: UIColor? { get set }
+    var contentBackgroundColor: UIColor { get set }
     var padding: UIEdgeInsets? { get set }
     var contentInsets: UIEdgeInsets? { get set }
     
@@ -53,7 +53,7 @@ public extension FViewable {
     }
     
     func background(_ color: UIColor) -> Self {
-        self.backgroundColor = color
+        self.contentBackgroundColor = color
         return self
     }
     
