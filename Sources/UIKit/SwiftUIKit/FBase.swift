@@ -22,10 +22,10 @@ public class FBase<Content: UIView>: UIView {
     public override func didMoveToSuperview() {
         addSubview(rendered())
         snp.makeConstraints {
-            $0.top.equalToSuperview().inset(padding?.top ?? 0)//.priority(.high.advanced(by: 100))
-            $0.leading.equalToSuperview().inset(padding?.left ?? 0)//.priority(.high.advanced(by: 100))
-            $0.trailing.equalToSuperview().inset(padding?.right ?? 0)//.priority(.high.advanced(by: 100))
-            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0)//.priority(.high.advanced(by: 100))
+            $0.top.equalToSuperview().inset(padding?.top ?? 0).priority(.high.advanced(by: 100))
+            $0.leading.equalToSuperview().inset(padding?.left ?? 0).priority(.high.advanced(by: 100))
+            $0.trailing.equalToSuperview().inset(padding?.right ?? 0).priority(.high.advanced(by: 100))
+            $0.bottom.equalToSuperview().inset(padding?.bottom ?? 0).priority(.high.advanced(by: 100))
         }
         content?.snp.makeConstraints {
             $0.top.equalToSuperview().inset(contentInsets?.top ?? 0)//.priority(.high.advanced(by: 100))
