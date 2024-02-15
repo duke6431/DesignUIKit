@@ -36,19 +36,14 @@ public final class FView: FBase<UIView>, FViewable {
         super.init(frame: .zero)
     }
 
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
     @discardableResult
     public override func rendered() -> UIView {
         var view = UIView()
         contentViews.forEach { subview in
             let subview = subview
             view.addSubview(subview)
-            subview.snp.makeConstraints { $0.edges.equalToSuperview() }
         }
-        view.backgroundColor = contentBackgroundColor
+        backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

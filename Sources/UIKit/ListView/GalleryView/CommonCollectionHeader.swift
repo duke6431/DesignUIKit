@@ -7,9 +7,6 @@
 
 import DesignCore
 import UIKit
-#if canImport(DesignToolbox)
-import DesignToolbox
-#endif
 
 @objc public protocol CommonCollectionReusableModel: NSObjectProtocol {
     var identifier: String { get }
@@ -21,9 +18,6 @@ import DesignToolbox
 
 extension CommonCollection {
     open class ReusableView: UICollectionReusableView, Reusable {
-#if canImport(DesignToolbox)
-        weak public var currentTheme: Theme?
-#endif
         public var identifier: String = ""
         public var section: Int?
 
@@ -42,19 +36,6 @@ extension CommonCollection {
         }
 
         open func configureViews() {
-#if canImport(DesignToolbox)
-            Theme.provider.register(observer: self)
-#endif
         }
-
-#if canImport(DesignToolbox)
-        open func apply(theme: Theme) {
-            currentTheme = theme
-            backgroundColor = .clear
-        }
-#endif
     }
 }
-#if canImport(DesignToolbox)
-extension CommonCollection.ReusableView: Themable { }
-#endif

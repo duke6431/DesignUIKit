@@ -42,11 +42,7 @@ public class FButton: FBase<UIButton>, FViewable {
         self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
+
     @discardableResult
     public override func rendered() -> UIButton {
         var view = UIButton(type: .custom)
@@ -59,7 +55,7 @@ public class FButton: FBase<UIButton>, FViewable {
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
         if let action = action { view.addAction(for: .touchUpInside, action) }
-        view.backgroundColor = contentBackgroundColor
+        backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

@@ -7,11 +7,6 @@
 
 import UIKit
 import DesignCore
-#if canImport(DesignToolbox)
-import DesignToolbox
-#endif
-
-// TODO: Add refresh protocols
 
 public class CommonTableView: UITableView {
     public weak var actionDelegate: CommonTableViewDelegate?
@@ -22,15 +17,15 @@ public class CommonTableView: UITableView {
         }
     }
 
-    private let cellMapper: [CommonCellModel.Type]
-    private let headerMapper: [CommonHeaderModel.Type]
-    private var cellCache: CommonCellModel.Type?
-    private var headerCache: CommonHeaderModel.Type?
-    private var sections: [CommonTableSection] = []
-    private var searchedSections: [CommonTableSection] = []
-    private var keyword = ""
+    let cellMapper: [CommonCellModel.Type]
+    let headerMapper: [CommonHeaderModel.Type]
+    var cellCache: CommonCellModel.Type?
+    var headerCache: CommonHeaderModel.Type?
+    var sections: [CommonTableSection] = []
+    var searchedSections: [CommonTableSection] = []
+    var keyword = ""
 
-    private lazy var customRefreshControl: UIRefreshControl = {
+    lazy var customRefreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.addTarget(self, action: #selector(startRefreshing), for: .valueChanged)
         return view
@@ -92,10 +87,14 @@ public class CommonTableView: UITableView {
             reloadData()
             return
         }
-        searchedSections = sections.map({
-            CommonTableSection(header: $0.header,
-                               items: $0.items.filter({ $0.isHighlighted(with: keyword) }))
-        }).filter({ $0.items.count > 0 })
+        searchedSections = sections.map {
+            CommonTableSection(
+                header: $0.header,
+                items: $0.items.filter {
+                    $0.isHighlighted?(with: keyword) ?? true
+                }
+            )
+        }.filter { $0.items.count > 0 }
         reloadData()
     }
 
@@ -127,7 +126,7 @@ public class CommonTableView: UITableView {
             if stop { break }
         }
         searchedSections[selectedItem.section].items.remove(at: selectedItem.row)
-        for cell in visibleCells as? [CommonCell] ?? [] where cell.identifier == identifier {
+        for cell in visibleCells as? [CommonTableView.Cell] ?? [] where cell.identifier == identifier {
             selectedItem = cell.indexPath ?? selectedItem
         }
         deleteRows(at: [selectedItem], with: .fade)

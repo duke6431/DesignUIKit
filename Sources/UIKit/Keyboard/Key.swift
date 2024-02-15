@@ -39,7 +39,7 @@ public class Key: KeyRenderable, KeyTappable {
     }
     var buttonHeightConstraint: NSLayoutConstraint?
     var shadow: CALayer.ShadowConfiguration = Keyboard.Default.Key.shadow {
-        didSet { button.layer.removeShadow().addShadow(shadow) }
+        didSet { button.layer.removeShadow().add(shadow: shadow) }
     }
     
     lazy var button: UIButton = {
@@ -77,7 +77,7 @@ public class Key: KeyRenderable, KeyTappable {
         buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: height ?? 1)
         buttonHeightConstraint?.priority = .defaultHigh
         if isBaseMeasurement { buttonHeightConstraint?.isActive = true }
-        button.layer.removeShadow().addShadow(shadow)
+        button.layer.removeShadow().add(shadow: shadow)
         return button
     }
     

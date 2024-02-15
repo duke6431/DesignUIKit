@@ -39,7 +39,7 @@ public enum DeviceSystem: Int, Codable, @unchecked Sendable {
             return .carPlay
         case .mac:
             return .mac
-        @unknown default:
+        default:
             if #available(iOS 17.0, tvOS 17.0, *) {
                 if UIDevice.current.userInterfaceIdiom == .vision {
                     return .vision

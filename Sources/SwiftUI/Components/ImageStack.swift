@@ -20,7 +20,7 @@ public struct ImageStack: View, SelfCustomizable {
     
     public var body: some View {
         ZStack {
-            primary.updated(for: \.alignment, with: .center).body()
+            primary.updated(\.alignment, with: .center).body()
             ForEach(stack) {
                 $0.body(relativeTo: primary.size)
             }

@@ -36,11 +36,7 @@ public final class FScroll: FBase<UIScrollView>, FViewable {
         self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
+
     @discardableResult
     public override func rendered() -> UIScrollView {
         var view = UIScrollView()
@@ -58,7 +54,7 @@ public final class FScroll: FBase<UIScrollView>, FViewable {
         view.snp.makeConstraints {
             $0.bottom.equalTo(topAnchor)
         }
-        view.backgroundColor = contentBackgroundColor
+        backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

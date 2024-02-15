@@ -38,11 +38,7 @@ public class FImage: FBase<UIImageView>, FViewable {
         super.init(frame: .zero)
         self.contentMode = contentMode
     }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
+
     @discardableResult
     public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)
@@ -63,7 +59,7 @@ public class FImage: FBase<UIImageView>, FViewable {
             if size.width > 0 { $0.width.equalTo(size.width) }
             if size.height > 0 { $0.height.equalTo(size.height) }
         }
-        view.backgroundColor = contentBackgroundColor
+        backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
         content = view
         return view

@@ -7,9 +7,6 @@
 
 import DesignCore
 import UIKit
-#if canImport(DesignToolbox)
-import DesignToolbox
-#endif
 
 @available(iOS 13.0, *)
 public extension CommonCollection {

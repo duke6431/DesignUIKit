@@ -55,7 +55,7 @@ extension CommonCollection {
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
                 sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
-                pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
+                pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .none
             ) {
                 self.itemWHRatio = itemWHRatio
                 self.itemSpacing = itemSpacing
