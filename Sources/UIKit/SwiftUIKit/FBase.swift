@@ -10,7 +10,7 @@ import SnapKit
 import DesignCore
 import DesignExts
 
-public class FBase<Content: UIView>: BaseView, Chainable {
+public class FBase<Content: UIView>: BaseView {
     public var contentBackgroundColor: UIColor = .clear
     public var shape: FShape?
     public var shadow: CALayer.ShadowConfiguration?
@@ -25,7 +25,7 @@ public class FBase<Content: UIView>: BaseView, Chainable {
     
     public override func didMoveToSuperview() {
         addSubview(rendered())
-        if shouldConstraintWithParent {
+        if shouldConstraintWithParent && superview != nil {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
                 $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)
@@ -83,7 +83,7 @@ public class FBase<Content: UIView>: BaseView, Chainable {
     }
 }
 
-public class FScrollBase<Content: UIView>: BaseScrollView, Chainable {
+public class FScrollBase<Content: UIView>: BaseScrollView {
     public var contentBackgroundColor: UIColor = .clear
     public var shape: FShape?
     public var shadow: CALayer.ShadowConfiguration?
