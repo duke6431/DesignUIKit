@@ -54,13 +54,14 @@ public class FBase<Content: UIView>: BaseView {
     
     func updateLayers() {
         if let shape {
+            clipsToBounds = true
             UIView.animate(withDuration: 0.2) {
                 switch shape {
                 case .circle:
                     self.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
                 case .roundedRectangle(let cornerRadius, let corners):
                     self.layer.maskedCorners = corners.caMask
-                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
+                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height) / 2)
                 }
             }
         }
@@ -126,12 +127,12 @@ public class FScrollBase<Content: UIView>: BaseScrollView {
     
     func updateLayers() {
         if let shape {
+            clipsToBounds = true
             UIView.animate(withDuration: 0.2) {
                 switch shape {
                 case .circle:
                     self.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
                 case .roundedRectangle(let cornerRadius, let corners):
-                    self.layer.masksToBounds = true
                     self.layer.maskedCorners = corners.caMask
                     self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height) / 2)
                 }

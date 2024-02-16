@@ -54,7 +54,6 @@ public final class FStack: FBase<UIStackView>, FViewable {
             view.distribution = distribution
         }
         view.spacing = CGFloat(configuration.spacing)
-        view.clipsToBounds = true
         arrangedContents.forEach {
             guard let content = $0 as? any FViewable else {
                 view.addArrangedSubview($0)
