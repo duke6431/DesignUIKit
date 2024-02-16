@@ -40,8 +40,12 @@ public final class FView: FBase<UIView>, FViewable {
     public override func rendered() -> UIView {
         var view = UIView()
         contentViews.forEach { subview in
-            let subview = subview
             view.addSubview(subview)
+            if subview as? (any FViewable & UIView) == nil {
+                subview.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
         }
         backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view

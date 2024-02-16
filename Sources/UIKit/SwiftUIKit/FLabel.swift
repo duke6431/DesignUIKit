@@ -53,7 +53,6 @@ public final class FLabel: FBase<UILabel>, FViewable {
             view.attributedText = attributedText
         }
         view.textAlignment = textAlignment
-        view.clipsToBounds = true
         view.textColor = color
         view.numberOfLines = lineLimit
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)

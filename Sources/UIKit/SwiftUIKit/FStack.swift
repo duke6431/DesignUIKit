@@ -56,7 +56,10 @@ public final class FStack: FBase<UIStackView>, FViewable {
         view.spacing = CGFloat(configuration.spacing)
         view.clipsToBounds = true
         arrangedContents.forEach {
-            guard let content = $0 as? any FViewable else { return }
+            guard let content = $0 as? any FViewable else {
+                view.addArrangedSubview($0)
+                return
+            }
             let container = FView()
             if content.containerPadding ?? .zero != .zero {
                 container.contentViews = [$0]

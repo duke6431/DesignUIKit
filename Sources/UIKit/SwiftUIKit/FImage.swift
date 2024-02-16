@@ -42,8 +42,8 @@ public class FImage: FBase<UIImageView>, FViewable {
     @discardableResult
     public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)
-        view.contentMode = contentMode
         view.clipsToBounds = true
+        view.contentMode = contentMode
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
         view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
@@ -63,5 +63,18 @@ public class FImage: FBase<UIImageView>, FViewable {
         view = customConfiguration?(view, self) ?? view
         content = view
         return view
+    }
+}
+
+public extension FImage {
+    func reload(image: UIImage? = nil, url: URL?) {
+        content?.image = image
+        if let url = url {
+            ImagePipeline.shared.loadImage(with: url) { [weak self] result in
+                if case .success(let response) = result {
+                    self?.content?.image = response.image
+                }
+            }
+        }
     }
 }

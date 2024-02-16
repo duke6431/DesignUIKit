@@ -24,13 +24,13 @@ public extension Text {
 public extension View {
 #if os(iOS) || os(tvOS)
     @ViewBuilder
-    func foregroundStyle(_ color: UIColor) -> some View {
-        foregroundStyle(Color(color))
+    func foregroundStyle(_ statusColorOff: UIColor) -> some View {
+        foregroundStyle(Color(statusColorOff))
     }
 #elseif os(macOS)
     @ViewBuilder
-    func foregroundStyle(_ color: NSColor) -> some View {
-        foregroundStyle(Color(color))
+    func foregroundStyle(_ statusColorOff: NSColor) -> some View {
+        foregroundStyle(Color(statusColorOff))
     }
 #endif
     

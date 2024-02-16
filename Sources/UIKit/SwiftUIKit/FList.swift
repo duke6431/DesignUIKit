@@ -66,6 +66,8 @@ public class FRow: CommonTableView.Cell {
     }
 
     open func install<T: FViewReusable & UIView>(view: T) {
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
         contentView.addSubview(view)
         view.snp.makeConstraints {
             $0.top.equalToSuperview().inset(view.padding.top)

@@ -19,7 +19,7 @@ public class FBase<Content: UIView>: BaseView {
     public var contentInsets: UIEdgeInsets?
     public var width: CGFloat?
     public var height: CGFloat?
-    
+
     public var shouldConstraintWithParent: Bool = true
     public weak var content: Content?
     
@@ -59,7 +59,6 @@ public class FBase<Content: UIView>: BaseView {
                 case .circle:
                     self.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
                 case .roundedRectangle(let cornerRadius, let corners):
-                    self.layer.masksToBounds = true
                     self.layer.maskedCorners = corners.caMask
                     self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
                 }

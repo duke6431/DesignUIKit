@@ -32,9 +32,15 @@ public protocol FViewable: AnyObject, Chainable {
     func background(_ color: UIColor) -> Self
     func shaped(_ shape: FShape) -> Self
     func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
+    
 }
 
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)
+}
+
+public protocol FTappable: AnyObject, Chainable {
+    var onTap: (() -> Void)? { get set }
+    func onTap(_ gesture: @escaping () -> Void) -> Self
 }

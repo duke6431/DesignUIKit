@@ -32,17 +32,20 @@ public extension FViewable {
     }
     
     func background(_ color: UIColor) -> Self {
-        self.contentBackgroundColor = color
-        return self
+        with(\.contentBackgroundColor, setTo: color)
     }
     
     func shaped(_ shape: FShape) -> Self {
-        self.shape = shape
-        return self
+        with(\.shape, setTo: shape)
     }
     
     func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self {
-        self.shadow = shadow
-        return self
+        with(\.shadow, setTo: shadow)
+    }
+}
+
+public extension FTappable {
+    func onTap(_ gesture: @escaping () -> Void) -> Self {
+        with(\.onTap, setTo: gesture)
     }
 }
