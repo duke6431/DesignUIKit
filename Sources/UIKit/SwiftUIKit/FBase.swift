@@ -97,6 +97,7 @@ public class FScrollBase<Content: UIView>: BaseScrollView {
     public weak var content: Content?
     
     public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         addSubview(rendered())
         if shouldConstraintWithParent {
             snp.makeConstraints {
