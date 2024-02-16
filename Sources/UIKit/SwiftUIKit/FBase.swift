@@ -134,7 +134,7 @@ public class FScrollBase<Content: UIView>: BaseScrollView {
                 case .roundedRectangle(let cornerRadius, let corners):
                     self.layer.masksToBounds = true
                     self.layer.maskedCorners = corners.caMask
-                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height)) / 2
+                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height) / 2)
                 }
             }
         }

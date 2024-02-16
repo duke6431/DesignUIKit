@@ -114,7 +114,8 @@ class FilmItemView: BaseView, FViewReusable {
                     }
                 }
             }
-            .shaped(.roundedRectangle(cornerRadius: SpacingSystem.shared.spacing(.extraSmall) * 3))
+            .background(.white)
+//            .shaped(.roundedRectangle(cornerRadius: SpacingSystem.shared.spacing(.extraSmall) * 3))
             FLabel(
                 text: content.title.isEmpty ? "No title" : content.title,
                 font: FontSystem.shared.font(with: .headline),
