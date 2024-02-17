@@ -12,7 +12,7 @@ open class BaseViewController<ViewModel: BaseViewModel>: UIViewController {
     open var viewModel: ViewModel
     open var cancellables = Set<AnyCancellable>()
     
-    open required init(with viewModel: ViewModel) {
+    public required init(with viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

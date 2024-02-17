@@ -10,7 +10,7 @@ import UIKit
 open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable {
     open weak var navigationController: UINavigationController?
     
-    open init(_ navigationController: UINavigationController? = nil) {
+    public init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }
     

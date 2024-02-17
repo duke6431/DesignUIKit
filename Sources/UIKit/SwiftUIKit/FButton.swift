@@ -53,7 +53,7 @@ public class FButton: FBase<UIButton>, FViewable {
     
     @discardableResult
     public override func rendered() -> UIButton {
-        var view = DimmingButton(type: .custom)
+        let view = DimmingButton(type: .custom)
         if let labels {
             labels.forEach { label in
                 view.addSubview(label)
