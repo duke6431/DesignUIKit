@@ -8,11 +8,11 @@
 import UIKit
 import Combine
 
-public class BaseViewController<ViewModel: BaseViewModel>: UIViewController {
-    var viewModel: ViewModel
-    var cancellables = Set<AnyCancellable>()
+open class BaseViewController<ViewModel: BaseViewModel>: UIViewController {
+    open var viewModel: ViewModel
+    open var cancellables = Set<AnyCancellable>()
     
-    required init(with viewModel: ViewModel) {
+    open required init(with viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -22,17 +22,17 @@ public class BaseViewController<ViewModel: BaseViewModel>: UIViewController {
         fatalError("Coder init not required")
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
         bindViewModel()
     }
     
-    func configureViews() {
+    open func configureViews() {
         
     }
     
-    func bindViewModel() {
+    open func bindViewModel() {
         
     }
 }

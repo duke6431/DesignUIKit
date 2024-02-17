@@ -10,7 +10,7 @@ import UIKit
 open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable {
     open weak var navigationController: UINavigationController?
     
-    public init(_ navigationController: UINavigationController? = nil) {
+    open init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }
     
@@ -18,7 +18,7 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<V
         // Override to prepare scene if needed
     }
     
-    public func toScene() {
+    open func toScene() {
         let scene = Scene(with: ViewModel())
         prepare(scene)
         navigationController?.pushViewController(scene, animated: true)
