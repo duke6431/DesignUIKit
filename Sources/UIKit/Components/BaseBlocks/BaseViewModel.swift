@@ -12,9 +12,13 @@ public protocol ViewModeling: AnyObject {
     var error: Error? { get set }
 }
 
-open class ViewModel: NSObject, ViewModeling {
+open class BaseViewModel: NSObject, ViewModeling {
     @Published
     public var error: Error?
+    
+    public required override init() {
+        super.init()
+    }
     
     @MainActor
     public func load<T: Codable>(target: inout T?, value: T) {
