@@ -13,13 +13,13 @@ public extension CommonCollection {
     class View: UICollectionView {
         public weak var commonDelegate: CommonSlidingViewDelegate?
 
-        private let itemMapper: [CommonCollectionCellModel.Type]
-        private var itemCache: CommonCollectionCellModel.Type?
-        private let sectionMapper: [CommonCollectionReusableModel.Type]?
-        private var sectionCache: CommonCollectionReusableModel.Type?
+        let itemMapper: [CommonCollectionCellModel.Type]
+        var itemCache: CommonCollectionCellModel.Type?
+        let sectionMapper: [CommonCollectionReusableModel.Type]?
+        var sectionCache: CommonCollectionReusableModel.Type?
 
-        private var sections: [Section] = []
-        private var currentDataSource: UICollectionViewDataSource?
+        var sections: [Section] = []
+        var currentDataSource: UICollectionViewDataSource?
 
         public init(itemMapper: [CommonCollectionCellModel.Type], sectionMapper: [CommonCollectionReusableModel.Type]) {
             self.itemMapper = itemMapper
@@ -31,6 +31,52 @@ public extension CommonCollection {
         @available(iOS, unavailable)
         required init?(coder: NSCoder) {
             fatalError("not implemented")
+        }
+        
+        func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
+            // swiftlint:disable:next line_length
+            let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(collectionView: self) { [weak self] collectionView, indexPath, _ in
+                guard let item = self?.sections[indexPath.section].cells[indexPath.row] else {
+                    return UICollectionViewCell()
+                }
+                if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
+                    let cell = collectionView.dequeue(cachedItem, indexPath: indexPath)
+                    cell.indexPath = indexPath
+                    cell.bind(item)
+                    return cell
+                }
+                guard let map = self?.itemMapper.first(where: { item.isKind(of: $0) }) else {
+                    return UICollectionViewCell()
+                }
+                self?.itemCache = map
+                let cell = collectionView.dequeue(map.cellKind, indexPath: indexPath)
+                cell.indexPath = indexPath
+                cell.bind(item)
+                return cell
+            }
+            // swiftlint:disable:next line_length
+            dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
+                guard let headerData = self?.sections[indexPath.section].header else {
+                    return nil
+                }
+                if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
+                    let header = collectionView.dequeue(cachedHeader, indexPath: indexPath)
+                    header.section = indexPath.section
+                    header.bind(headerData)
+                    headerData.customConfiguration?(header)
+                    return header
+                }
+                guard let map = self?.sectionMapper?.first(where: { headerData.isKind(of: $0) }) else {
+                    return nil
+                }
+                self?.sectionCache = map
+                let header = collectionView.dequeue(map.headerKind, indexPath: indexPath)
+                header.section = indexPath.section
+                header.bind(headerData)
+                headerData.customConfiguration?(header)
+                return header
+            }
+            return dataSource
         }
     }
 }
@@ -61,52 +107,6 @@ extension CommonCollection.View {
             guard let section = self?.sections[section] else { return nil }
             return section.layout?(section)
         }
-    }
-
-    func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
-        // swiftlint:disable:next line_length
-        let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(collectionView: self) { [weak self] collectionView, indexPath, _ in
-            guard let item = self?.sections[indexPath.section].cells[indexPath.row] else {
-                return UICollectionViewCell()
-            }
-            if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
-                let cell = collectionView.dequeue(cachedItem, indexPath: indexPath)
-                cell.indexPath = indexPath
-                cell.bind(item)
-                return cell
-            }
-            guard let map = self?.itemMapper.first(where: { item.isKind(of: $0) }) else {
-                return UICollectionViewCell()
-            }
-            self?.itemCache = map
-            let cell = collectionView.dequeue(map.cellKind, indexPath: indexPath)
-            cell.indexPath = indexPath
-            cell.bind(item)
-            return cell
-        }
-        // swiftlint:disable:next line_length
-        dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-            guard let headerData = self?.sections[indexPath.section].header else {
-                return nil
-            }
-            if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
-                let header = collectionView.dequeue(cachedHeader, indexPath: indexPath)
-                header.section = indexPath.section
-                header.bind(headerData)
-                headerData.customConfiguration?(header)
-                return header
-            }
-            guard let map = self?.sectionMapper?.first(where: { headerData.isKind(of: $0) }) else {
-                return nil
-            }
-            self?.sectionCache = map
-            let header = collectionView.dequeue(map.headerKind, indexPath: indexPath)
-            header.section = indexPath.section
-            header.bind(headerData)
-            headerData.customConfiguration?(header)
-            return header
-        }
-        return dataSource
     }
 
     func generateSnapshot() -> NSDiffableDataSourceSnapshot<CommonCollection.Section, String> {

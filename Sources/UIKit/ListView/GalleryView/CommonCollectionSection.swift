@@ -101,22 +101,24 @@ extension CommonCollection.Section {
             trailing: section.dimension.sectionInset.right
         )
         var reusableSizes = [NSCollectionLayoutBoundarySupplementaryItem]()
-        if let headerSize = section.dimension.headerSize {
-            reusableSizes.append(
-                .init(layoutSize: headerSize,
-                      elementKind: UICollectionView.ReusableKind.header.rawValue,
-                      alignment: .topLeading)
-            )
-        }
-        if let footerSize = section.dimension.footerSize {
-            reusableSizes.append(
-                .init(layoutSize: footerSize,
-                      elementKind: UICollectionView.ReusableKind.footer.rawValue,
-                      alignment: .bottomLeading)
-            )
-        }
-        if !reusableSizes.isEmpty {
-            sectionLayout.boundarySupplementaryItems = reusableSizes
+        if section.header != nil {
+            if let headerSize = section.dimension.headerSize {
+                reusableSizes.append(
+                    .init(layoutSize: headerSize,
+                          elementKind: UICollectionView.ReusableKind.header.rawValue,
+                          alignment: .topLeading)
+                )
+            }
+            if let footerSize = section.dimension.footerSize {
+                reusableSizes.append(
+                    .init(layoutSize: footerSize,
+                          elementKind: UICollectionView.ReusableKind.footer.rawValue,
+                          alignment: .bottomLeading)
+                )
+            }
+            if !reusableSizes.isEmpty {
+                sectionLayout.boundarySupplementaryItems = reusableSizes
+            }
         }
         return sectionLayout
     }

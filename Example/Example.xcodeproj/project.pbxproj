@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F3EB6DD2B7BCAC60070F706 /* FilmItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3EB6DC2B7BCAC60070F706 /* FilmItemView.swift */; };
 		3F3EB6DF2B7BCADE0070F706 /* DesignExts in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3EB6DE2B7BCADE0070F706 /* DesignExts */; };
 		3F3EB6E12B7BCADE0070F706 /* DesignUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3EB6E02B7BCADE0070F706 /* DesignUIKit */; };
 		3F6272B02B6F585D00C91BB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6272AF2B6F585D00C91BB9 /* AppDelegate.swift */; };
@@ -15,6 +14,8 @@
 		3F6272B92B6F586000C91BB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6272B82B6F586000C91BB9 /* Assets.xcassets */; };
 		3F6272BC2B6F586000C91BB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F6272BA2B6F586000C91BB9 /* LaunchScreen.storyboard */; };
 		3F6272C72B6F5BD100C91BB9 /* DesignCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3F6272C62B6F5BD100C91BB9 /* DesignCore */; };
+		3F6EBE2A2B8100B400CD9135 /* FilmItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6EBE282B8100B300CD9135 /* FilmItemView.swift */; };
+		3F6EBE2B2B8100B400CD9135 /* FilmSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6EBE292B8100B400CD9135 /* FilmSectionView.swift */; };
 		3FB60F5A2B7E753F00E70586 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F592B7E753F00E70586 /* ViewController.swift */; };
 		3FB60F5C2B7E759A00E70586 /* KeyboardDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F5B2B7E759A00E70586 /* KeyboardDemo.swift */; };
 		3FB60F5E2B7E75CE00E70586 /* CommonTextFieldDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F5D2B7E75CE00E70586 /* CommonTextFieldDemo.swift */; };
@@ -24,13 +25,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3F3EB6DC2B7BCAC60070F706 /* FilmItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmItemView.swift; sourceTree = "<group>"; };
 		3F6272AC2B6F585D00C91BB9 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6272AF2B6F585D00C91BB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F6272B32B6F585D00C91BB9 /* SwiftUIKitDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIKitDemo.swift; sourceTree = "<group>"; };
 		3F6272B82B6F586000C91BB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F6272BB2B6F586000C91BB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F6272BD2B6F586000C91BB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F6EBE282B8100B300CD9135 /* FilmItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmItemView.swift; sourceTree = "<group>"; };
+		3F6EBE292B8100B400CD9135 /* FilmSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilmSectionView.swift; sourceTree = "<group>"; };
 		3FB60F592B7E753F00E70586 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3FB60F5B2B7E759A00E70586 /* KeyboardDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDemo.swift; sourceTree = "<group>"; };
 		3FB60F5D2B7E75CE00E70586 /* CommonTextFieldDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTextFieldDemo.swift; sourceTree = "<group>"; };
@@ -77,7 +79,6 @@
 				3FB60F592B7E753F00E70586 /* ViewController.swift */,
 				3FB60F642B7E78BB00E70586 /* ComponentCell.swift */,
 				3FB60F5F2B7E766B00E70586 /* Demos */,
-				3F3EB6DC2B7BCAC60070F706 /* FilmItemView.swift */,
 				3F6272B82B6F586000C91BB9 /* Assets.xcassets */,
 				3F6272BA2B6F586000C91BB9 /* LaunchScreen.storyboard */,
 				3F6272BD2B6F586000C91BB9 /* Info.plist */,
@@ -92,9 +93,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3F6EBE272B8100A900CD9135 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				3F6EBE292B8100B400CD9135 /* FilmSectionView.swift */,
+				3F6EBE282B8100B300CD9135 /* FilmItemView.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		3FB60F5F2B7E766B00E70586 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
+				3F6EBE272B8100A900CD9135 /* Support */,
 				3F6272B32B6F585D00C91BB9 /* SwiftUIKitDemo.swift */,
 				3FB60F5D2B7E75CE00E70586 /* CommonTextFieldDemo.swift */,
 				3FB60F5B2B7E759A00E70586 /* KeyboardDemo.swift */,
@@ -182,11 +193,12 @@
 				3F6272B42B6F585D00C91BB9 /* SwiftUIKitDemo.swift in Sources */,
 				3FB60F652B7E78BB00E70586 /* ComponentCell.swift in Sources */,
 				3FB60F5E2B7E75CE00E70586 /* CommonTextFieldDemo.swift in Sources */,
-				3F3EB6DD2B7BCAC60070F706 /* FilmItemView.swift in Sources */,
 				3FB60F5A2B7E753F00E70586 /* ViewController.swift in Sources */,
 				3FB60F5C2B7E759A00E70586 /* KeyboardDemo.swift in Sources */,
 				3FB60F612B7E769600E70586 /* CommonGalleryDemo.swift in Sources */,
+				3F6EBE2B2B8100B400CD9135 /* FilmSectionView.swift in Sources */,
 				3F6272B02B6F585D00C91BB9 /* AppDelegate.swift in Sources */,
+				3F6EBE2A2B8100B400CD9135 /* FilmItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

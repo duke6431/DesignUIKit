@@ -23,9 +23,9 @@ public class FList: CommonTableView, FViewable {
 
     public weak var content: CommonTableView?
 
-    public init(prototypes: [(FViewReusable & UIView).Type], style: UITableView.Style = .plain, customConfiguration: ((CommonTableView, FList) -> CommonTableView)? = nil) {
+    public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain, customConfiguration: ((CommonTableView, FList) -> CommonTableView)? = nil) {
         super.init(map: [], headerMap: [], style: style)
-        prototypes.forEach { register(FRow.self, forCellReuseIdentifier: String(describing: $0)) }
+        prototypes.forEach { register(FListCell.self, forCellReuseIdentifier: String(describing: $0)) }
         self.customConfiguration = customConfiguration
     }
     
@@ -85,8 +85,8 @@ public class FList: CommonTableView, FViewable {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FModel,
-              let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: item.model.view)) as? FRow else {
+        guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FListModel,
+              let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: item.model.view)) as? FListCell else {
             return UITableViewCell()
         }
         cell.selectionStyle = .none
@@ -96,29 +96,28 @@ public class FList: CommonTableView, FViewable {
     }
 }
 
-public protocol FModeling {
-    var view: (FViewReusable & UIView).Type { get set }
+public protocol FCellModeling {
+    var view: (FCellReusable & UIView).Type { get set }
 }
 
-public protocol FViewReusable: AnyObject {
+public protocol FCellReusable: AnyObject {
     static var empty: Self { get }
-    var padding: UIEdgeInsets { get set }
-    func bind(_ value: FModeling)
+    func bind(_ value: FCellModeling)
 }
 
-public class FModel: NSObject, CommonCellModel {
+public class FListModel: NSObject, CommonCellModel {
     public var identifier: String = UUID().uuidString
-    public static var cellKind: CommonTableView.Cell.Type = FRow.self
+    public static var cellKind: CommonTableView.Cell.Type = FListCell.self
     public var selectable: Bool = true
     public var customConfiguration: ((CommonTableView.Cell) -> Void)?
     public var leadingActions: [UIContextualAction] = []
     public var trailingActions: [UIContextualAction] = []
     public var padding: UIEdgeInsets = .zero
-    public var model: FModeling
+    public var model: FCellModeling
     public var realData: Any?
     
     public init(
-        model: FModeling,
+        model: FCellModeling,
         realData: Any? = nil
     ) {
         self.model = model
@@ -126,24 +125,24 @@ public class FModel: NSObject, CommonCellModel {
     }
 }
 
-public class FRow: CommonTableView.Cell {
-    weak var content: FViewReusable?
+public class FListCell: CommonTableView.Cell {
+    weak var content: FCellReusable?
     
     public override func bind(_ model: CommonCellModel, highlight text: String) {
-        guard let model = model as? FModel else { return }
+        guard let model = model as? FListModel else { return }
         if content == nil { install(view: model.model.view.empty) }
         content?.bind(model.model)
     }
 
-    open func install<T: FViewReusable & UIView>(view: T) {
+    open func install<T: FCellReusable & UIView>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
         view.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(view.padding.top)
-            $0.leading.equalToSuperview().inset(view.padding.left)
-            $0.trailing.equalToSuperview().inset(view.padding.right)
-            $0.bottom.equalToSuperview().inset(view.padding.bottom)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
         content = view
     }
