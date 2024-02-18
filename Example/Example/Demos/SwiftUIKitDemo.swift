@@ -39,10 +39,6 @@ class SwiftUIKitViewController: UIViewController {
             FilmSectionView().customized({
                 list = $0
             })
-//            FList(prototypes: [FilmSectionView.self]) { [weak self] view, list in
-//                self?.list = list
-//                return view
-//            }
         )
         list?.snp.makeConstraints {
             $0.edges.equalToSuperview()

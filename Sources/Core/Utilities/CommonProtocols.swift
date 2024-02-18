@@ -17,6 +17,10 @@ public enum FBuilder<Node> {
         components.flatMap { $0 }
     }
     
+    public static func buildArray(_ components: [[Node]]) -> [Node] {
+        components.flatMap { $0 }
+    }
+    
     public static func buildArray(_ components: [Node]) -> [Node] {
         components
     }
