@@ -11,6 +11,7 @@ import DesignExts
 
 public class FGrid: CommonCollection.View, FComponent {
     public var shape: FShape?
+    public var opacity: CGFloat = 1
     public var shadow: CALayer.ShadowConfiguration?
     public var contentBackgroundColor: UIColor = .clear
     
@@ -40,6 +41,7 @@ public class FGrid: CommonCollection.View, FComponent {
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        alpha = opacity
         if shouldConstraintWithParent {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)

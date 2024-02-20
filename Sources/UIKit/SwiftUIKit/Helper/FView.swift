@@ -21,6 +21,7 @@ open class FView: BaseView, FContaining {
     open var containerPadding: UIEdgeInsets?
     open var contentInsets: UIEdgeInsets?
     open var shouldConstraintWithParent: Bool = true
+    open var opacity: CGFloat = 1
     
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -32,6 +33,7 @@ open class FView: BaseView, FContaining {
     
     open func configureViews() {
         backgroundColor = contentBackgroundColor
+        alpha = opacity
         subviews.forEach { $0.removeFromSuperview() }
         addSubview(
             FZStack(contentViews: body)
