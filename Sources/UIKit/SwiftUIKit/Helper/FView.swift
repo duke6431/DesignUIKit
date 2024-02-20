@@ -39,7 +39,7 @@ open class FView: BaseView, FContaining {
         )
     }
     @FViewBuilder
-    var body: FBody {
+    open var body: FBody {
         FSpacer()
     }
 }
