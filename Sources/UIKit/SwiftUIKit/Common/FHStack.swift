@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import DesignCore
 
 public class FHStack: FStack {
     public init(
         spacing: Double = 8,
-        arrangedContents: () -> [UIView],
+        @FBuilder<UIView> arrangedContents: () -> [UIView],
         distribution: UIStackView.Distribution? = nil,
         customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
     ) {
