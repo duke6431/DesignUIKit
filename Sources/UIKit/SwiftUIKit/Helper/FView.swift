@@ -32,13 +32,13 @@ open class FView: BaseView, FContaining {
         backgroundColor = contentBackgroundColor
         subviews.forEach { $0.removeFromSuperview() }
         addSubview(
-            FZStack(contentViews: body)
+            FZStack(contentViews: body())
                 .insets(contentInsets ?? .zero)
                 .padding(containerPadding ?? .zero)
         )
     }
     
-    open var body: FBody {
-        fatalError("Overridden required")
+    @FBuilder<UIView & FContaining> open func body() -> FBody {
+        FSpacer()
     }
 }
