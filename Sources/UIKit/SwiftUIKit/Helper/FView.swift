@@ -10,8 +10,9 @@ import DesignExts
 import DesignCore
 import SnapKit
 
-public typealias FBody = [UIView & FContaining]
-public typealias FViewBuilder = FBuilder<UIView & FContaining>
+public typealias FBodyComponent = UIView & FContaining
+public typealias FBody = [FBodyComponent]
+public typealias FViewBuilder = FBuilder<FBodyComponent>
 
 open class FView: BaseView, FContaining {
     open var shadow: CALayer.ShadowConfiguration?
