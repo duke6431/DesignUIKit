@@ -26,8 +26,10 @@ open class FView: BaseView, FContaining {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configureViews()
-        snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        if shouldConstraintWithParent {
+            snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
         }
     }
     
@@ -41,6 +43,7 @@ open class FView: BaseView, FContaining {
                 .padding(containerPadding ?? .zero)
         )
     }
+
     @FViewBuilder
     open var body: FBody {
         FSpacer()
