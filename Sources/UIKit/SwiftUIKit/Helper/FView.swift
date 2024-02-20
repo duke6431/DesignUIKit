@@ -11,6 +11,7 @@ import DesignCore
 import SnapKit
 
 public typealias FBody = [UIView & FContaining]
+public typealias FViewBuilder = FBuilder<UIView & FContaining>
 
 open class FView: BaseView, FContaining {
     open var shadow: CALayer.ShadowConfiguration?
@@ -32,13 +33,13 @@ open class FView: BaseView, FContaining {
         backgroundColor = contentBackgroundColor
         subviews.forEach { $0.removeFromSuperview() }
         addSubview(
-            FZStack(contentViews: body())
+            FZStack(contentViews: body)
                 .insets(contentInsets ?? .zero)
                 .padding(containerPadding ?? .zero)
         )
     }
-    
-    @FBuilder<UIView & FContaining> open func body() -> FBody {
+    @FViewBuilder
+    var body: FBody {
         FSpacer()
     }
 }
