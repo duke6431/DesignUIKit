@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import DesignCore
+import DesignExts
 
 public final class FSpacer: FBase<UIView>, FComponent {
     public var blurStyle: UIBlurEffect.Style?
