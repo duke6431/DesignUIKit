@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import DesignCore
 
-public final class FScroll: FBase<UIScrollView>, FViewable {
+public final class FScroll: FBase<UIScrollView>, FComponent {
     public var contentViews: [UIView] = []
     public var showsVerticalScrollIndicator: Bool = false
     

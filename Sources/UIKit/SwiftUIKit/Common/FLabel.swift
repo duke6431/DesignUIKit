@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public final class FLabel: FBase<UILabel>, FViewable {
+public final class FLabel: FBase<UILabel>, FComponent {
     public var text: String = ""
     public var attributedText: NSAttributedString?
     public var font: UIFont = FontSystem.shared.font(with: .body)

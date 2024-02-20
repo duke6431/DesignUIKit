@@ -1,0 +1,42 @@
+//
+//  FView.swift
+//  
+//
+//  Created by Duc Minh Nguyen on 2/20/24.
+//
+
+import UIKit
+import DesignExts
+import DesignCore
+import SnapKit
+
+open class FView: BaseView, FContaining {
+    open var shadow: CALayer.ShadowConfiguration?
+    open var shape: FShape?
+    open var contentBackgroundColor: UIColor = .clear
+    open var containerPadding: UIEdgeInsets?
+    open var contentInsets: UIEdgeInsets?
+    open var shouldConstraintWithParent: Bool = true
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configureViews()
+        snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    open func configureViews() {
+        backgroundColor = contentBackgroundColor
+        subviews.forEach { $0.removeFromSuperview() }
+        addSubview(
+            FZStack(contentViews: body)
+                .insets(contentInsets ?? .zero)
+                .padding(containerPadding ?? .zero)
+        )
+    }
+    
+    open var body: [FContaining & UIView] {
+        fatalError("Overridden required")
+    }
+}

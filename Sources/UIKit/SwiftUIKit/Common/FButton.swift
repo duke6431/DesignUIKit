@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public class FButton: FBase<UIButton>, FViewable {
+public class FButton: FBase<UIButton>, FComponent {
     public var text: String = ""
     public var image: String = ""
     public var font: UIFont = FontSystem.shared.font(with: .body)
@@ -58,7 +58,7 @@ public class FButton: FBase<UIButton>, FViewable {
             labels.forEach { label in
                 view.addSubview(label)
                 label.isUserInteractionEnabled = false
-                if label as? (any FViewable & UIView) == nil {
+                if label as? (any FComponent & UIView) == nil {
                     label.snp.makeConstraints {
                         $0.edges.equalToSuperview()
                     }

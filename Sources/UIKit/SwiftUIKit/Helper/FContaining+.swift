@@ -7,10 +7,16 @@
 
 import UIKit
 import DesignExts
+import DesignCore
 
-public extension FViewable {
+public extension FContaining {
     func padding() -> Self {
         self.padding(8)
+    }
+    
+    func padding(_ insets: UIEdgeInsets) -> Self {
+        self.containerPadding = (containerPadding ?? .zero) + insets
+        return self
     }
     
     func padding(_ padding: CGFloat) -> Self {
@@ -19,6 +25,11 @@ public extension FViewable {
     
     func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self {
         self.containerPadding = (self.containerPadding ?? .zero).add(edges, padding)
+        return self
+    }
+    
+    func insets(_ insets: UIEdgeInsets) -> Self {
+        self.contentInsets = (contentInsets ?? .zero) + insets
         return self
     }
     

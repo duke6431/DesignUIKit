@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public class FGrid: CommonCollection.View, FViewable {
+public class FGrid: CommonCollection.View, FComponent {
     public var shape: FShape?
     public var shadow: CALayer.ShadowConfiguration?
     public var contentBackgroundColor: UIColor = .clear

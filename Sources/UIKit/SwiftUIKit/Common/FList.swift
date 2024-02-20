@@ -9,7 +9,7 @@ import UIKit
 import DesignExts
 import SnapKit
 
-public class FList: CommonTableView, FViewable {
+public class FList: CommonTableView, FComponent {
     public var shape: FShape?
     public var shadow: CALayer.ShadowConfiguration?
     public var contentBackgroundColor: UIColor = .clear

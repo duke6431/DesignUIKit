@@ -9,7 +9,7 @@ import UIKit
 import Nuke
 import SnapKit
 
-public class FImage: FBase<UIImageView>, FViewable {
+public class FImage: FBase<UIImageView>, FComponent {
     public var image: UIImage?
     public var url: URL?
     public var size: CGSize = .zero

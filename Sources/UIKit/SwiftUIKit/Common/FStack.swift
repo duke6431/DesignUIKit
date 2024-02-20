@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FStack: FBase<UIStackView>, FViewable {
+public class FStack: FBase<UIStackView>, FComponent {
     public class Configuration {
         public var axis: NSLayoutConstraint.Axis
         public var spacing: Double
@@ -55,11 +55,11 @@ public final class FStack: FBase<UIStackView>, FViewable {
         }
         view.spacing = CGFloat(configuration.spacing)
         arrangedContents.forEach {
-            guard let content = $0 as? any FViewable else {
+            guard let content = $0 as? any FComponent else {
                 view.addArrangedSubview($0)
                 return
             }
-            let container = FView()
+            let container = FZStack()
             if content.containerPadding ?? .zero != .zero {
                 container.contentViews = [$0]
                 container.shouldConstraintWithParent = false

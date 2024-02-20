@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class FSpacer: FBase<UIView>, FViewable {
+public final class FSpacer: FBase<UIView>, FComponent {
     public var customConfiguration: ((UIView, FSpacer) -> UIView)?
 
     public init(width: CGFloat? = nil, height: CGFloat? = nil) {

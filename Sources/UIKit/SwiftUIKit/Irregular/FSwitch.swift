@@ -32,7 +32,7 @@ public class FSwitch: UIView {
     private weak var statusImage: UIImageView?
     private var thumbViewTrailing: Constraint?
     private lazy var thumbView: UIView = {
-        let view = FView {
+        let view = FZStack {
             if let thumbImage {
                 FImage(image: thumbImage, contentMode: .scaleAspectFill)
             }
@@ -82,7 +82,7 @@ public class FSwitch: UIView {
     }
     
     public var body: UIView {
-        FView {
+        FZStack {
             FImage(image: statusImageOff, contentMode: .scaleAspectFill) { [weak self] view, _ in
                 self?.statusImage = view
                 return view

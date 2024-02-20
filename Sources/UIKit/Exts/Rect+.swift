@@ -35,6 +35,15 @@ extension UIEdgeInsets: SelfCustomizable {
         }
     }
     
+    static func + (_ lhs: UIEdgeInsets, _ rhs: UIEdgeInsets) -> UIEdgeInsets {
+        .init(
+            top: lhs.top + rhs.top,
+            left: lhs.left + rhs.left,
+            bottom: lhs.bottom + rhs.bottom,
+            right: lhs.right + rhs.right
+        )
+    }
+    
     func add(_ edges: UIRectEdge, _ rhs: CGFloat) -> UIEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
