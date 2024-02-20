@@ -28,8 +28,7 @@ public class FButton: FBase<UIButton>, FComponent {
         font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .systemBlue,
         contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
         compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
-        action: (() -> Void)? = nil,
-        customConfiguration: ((UIButton, FButton) -> UIButton)? = nil
+        action: (() -> Void)? = nil
     ) {
         self.text = text
         self.image = image
@@ -40,14 +39,12 @@ public class FButton: FBase<UIButton>, FComponent {
         self.compressionResistanceV = compressionResistanceV
         self.compressionResistanceH = compressionResistanceH
         self.action = action
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
 
-    public init(@FViewBuilder label: () -> FBody, action: (() -> Void)? = nil, customConfiguration: ((UIButton, FButton) -> UIButton)? = nil) {
+    public init(@FViewBuilder label: () -> FBody, action: (() -> Void)? = nil) {
         self.labels = label()
         self.action = action
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
     

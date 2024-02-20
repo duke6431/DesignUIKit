@@ -24,8 +24,7 @@ public class FImage: FBase<UIImageView>, FComponent {
         image: UIImage? = nil, url: URL? = nil,
         size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
         contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
-        customConfiguration: ((UIImageView, FImage) -> UIImageView)? = nil
+        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
     ) {
         self.image = image
         self.url = url
@@ -34,11 +33,34 @@ public class FImage: FBase<UIImageView>, FComponent {
         self.contentHuggingH = contentHuggingH
         self.compressionResistanceV = compressionResistanceV
         self.compressionResistanceH = compressionResistanceH
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
         self.contentMode = contentMode
     }
 
+    public convenience init(
+        systemImage: String, size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
+        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
+        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+    ) {
+        self.init(
+            image: .init(systemName: systemImage), size: size, contentMode: contentMode,
+            contentHuggingV: contentHuggingV, contentHuggingH: contentHuggingH,
+            compressionResistanceV: compressionResistanceV, compressionResistanceH: compressionResistanceH
+        )
+    }
+    
+    public convenience init(
+        named: String, in bundle: Bundle = .main, size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
+        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
+        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+    ) {
+        self.init(
+            image: .init(named: named, in: bundle, with: nil), size: size, contentMode: contentMode,
+            contentHuggingV: contentHuggingV, contentHuggingH: contentHuggingH,
+            compressionResistanceV: compressionResistanceV, compressionResistanceH: compressionResistanceH
+        )
+    }
+    
     @discardableResult
     public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)

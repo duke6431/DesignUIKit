@@ -12,9 +12,8 @@ public class FVStack: FStack {
     public init(
         spacing: Double = 8,
         @FViewBuilder arrangedContents: () -> FBody,
-        distribution: UIStackView.Distribution? = nil,
-        customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
+        distribution: UIStackView.Distribution? = nil
     ) {
-        super.init(axis: .vertical, spacing: spacing, arrangedContents: arrangedContents, distribution: distribution, customConfiguration: customConfiguration)
+        super.init(axis: .vertical, spacing: spacing, arrangedContents: arrangedContents, distribution: distribution)
     }
 }

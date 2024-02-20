@@ -12,14 +12,12 @@ public class FHStack: FStack {
     public init(
         spacing: Double = 8,
         @FViewBuilder arrangedContents: () -> FBody,
-        distribution: UIStackView.Distribution? = nil,
-        customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
+        distribution: UIStackView.Distribution? = nil
     ) {
         super.init(
             axis: .horizontal, spacing: spacing,
             arrangedContents: arrangedContents, 
-            distribution: distribution,
-            customConfiguration: customConfiguration
+            distribution: distribution
         )
     }
 }

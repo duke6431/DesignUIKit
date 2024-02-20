@@ -83,14 +83,14 @@ public class FSwitch: UIView {
     
     public var body: UIView {
         FZStack {
-            FImage(image: statusImageOff, contentMode: .scaleAspectFill) { [weak self] view, _ in
+            FImage(image: statusImageOff, contentMode: .scaleAspectFill).customConfiguration { [weak self] view, _ in
                 self?.statusImage = view
                 return view
             }
             if let statusImageOn {
                 FImage(image: statusImageOn, contentMode: .scaleAspectFill)
             }
-        } customConfiguration: { view, container in
+        }.customConfiguration { view, container in
             container.layer.borderColor = UIColor.lightGray.cgColor
             container.layer.borderWidth = 0.5
             return view

@@ -33,12 +33,10 @@ public class FStack: FBase<UIStackView>, FComponent {
         axis: NSLayoutConstraint.Axis = .vertical,
         spacing: Double = 8,
         @FViewBuilder arrangedContents: () -> FBody,
-        distribution: UIStackView.Distribution? = nil,
-        customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
+        distribution: UIStackView.Distribution? = nil
     ) {
         self.arrangedContents = arrangedContents()
         self.configuration = .init(axis: axis, spacing: spacing, distribution: distribution)
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
 

@@ -16,24 +16,20 @@ public final class FScroll: FBase<UIScrollView>, FComponent {
     public var customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)?
     
     public init(
-        contentView: UIView? = nil,
-        customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)? = nil
+        contentView: UIView? = nil
     ) {
         if let contentView {
             self.contentViews = [contentView]
         } else {
             self.contentViews = []
         }
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
     
     public init(
-        @FViewBuilder contentViews: () -> FBody,
-        customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)? = nil
+        @FViewBuilder contentViews: () -> FBody
     ) {
         self.contentViews = contentViews()
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
 

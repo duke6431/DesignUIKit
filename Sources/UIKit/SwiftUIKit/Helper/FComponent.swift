@@ -18,6 +18,12 @@ public protocol FComponent: FContaining {
     func rendered() -> SomeView
 }
 
+public extension FComponent {
+    func customConfiguration(_ configuration: ((SomeView, Self) -> SomeView)?) -> Self {
+        with(\.customConfiguration, setTo: configuration)
+    }
+}
+
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)

@@ -24,10 +24,9 @@ public class FList: CommonTableView, FComponent {
 
     public weak var content: CommonTableView?
 
-    public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain, customConfiguration: ((CommonTableView, FList) -> CommonTableView)? = nil) {
+    public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain) {
         super.init(map: [], headerMap: [], style: style)
         prototypes.forEach { register(FListCell.self, forCellReuseIdentifier: String(describing: $0)) }
-        self.customConfiguration = customConfiguration
     }
     
     public override func didMoveToSuperview() {

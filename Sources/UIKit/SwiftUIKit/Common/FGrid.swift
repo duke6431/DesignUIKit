@@ -26,8 +26,7 @@ public class FGrid: CommonCollection.View, FComponent {
     
     public init(
         prototypes: [(FCellReusable & UIView).Type],
-        headerPrototypes: [(FCellReusable & UIView).Type]? = nil,
-        customConfiguration: ((CommonCollection.View, FGrid) -> CommonCollection.View)? = nil
+        headerPrototypes: [(FCellReusable & UIView).Type]? = nil
     ) {
         super.init(itemMapper: [], sectionMapper: [])
         prototypes.forEach {
@@ -36,7 +35,6 @@ public class FGrid: CommonCollection.View, FComponent {
         headerPrototypes?.forEach {
             register(FGridHeader.self, forSupplementaryViewOfKind: ReusableKind.header.rawValue, withReuseIdentifier: String(describing: $0))
         }
-        self.customConfiguration = customConfiguration
     }
     
     public override func didMoveToSuperview() {

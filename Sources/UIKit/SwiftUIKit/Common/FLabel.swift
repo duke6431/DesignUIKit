@@ -24,12 +24,11 @@ public final class FLabel: FBase<UILabel>, FComponent {
     public var customConfiguration: ((UILabel, FLabel) -> UILabel)?
     
     public init(
-        text: String = "", attributedText: NSAttributedString? = nil,
+        _ text: String = "", attributedText: NSAttributedString? = nil,
         font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .label,
         lineLimit: Int = 1,
         contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
-        customConfiguration: ((UILabel, FLabel) -> UILabel)? = nil
+        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
     ) {
         self.text = text
         self.font = font
@@ -40,7 +39,6 @@ public final class FLabel: FBase<UILabel>, FComponent {
         self.contentHuggingH = contentHuggingH
         self.compressionResistanceV = compressionResistanceV
         self.compressionResistanceH = compressionResistanceH
-        self.customConfiguration = customConfiguration
         super.init(frame: .zero)
     }
 
