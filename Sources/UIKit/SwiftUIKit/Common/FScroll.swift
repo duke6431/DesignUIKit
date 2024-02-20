@@ -29,7 +29,7 @@ public final class FScroll: FBase<UIScrollView>, FComponent {
     }
     
     public init(
-        @FBuilder<UIView> contentViews: () -> [UIView],
+        @FViewBuilder contentViews: () -> FBody,
         customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)? = nil
     ) {
         self.contentViews = contentViews()

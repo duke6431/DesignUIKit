@@ -15,7 +15,7 @@ public final class FZStack: FBase<UIView>, FComponent {
     public var customConfiguration: ((UIView, FZStack) -> UIView)?
     
     public init(
-        contentView: UIView? = nil,
+        contentView: FBodyComponent? = nil,
         customConfiguration: ((UIView, FZStack) -> UIView)? = nil
     ) {
         if let contentView {
@@ -37,7 +37,7 @@ public final class FZStack: FBase<UIView>, FComponent {
     }
     
     public init(
-        @FBuilder<UIView> contentViews: () -> [UIView],
+        @FViewBuilder contentViews: () -> FBody,
         customConfiguration: ((UIView, FZStack) -> UIView)? = nil
     ) {
         self.contentViews = contentViews()

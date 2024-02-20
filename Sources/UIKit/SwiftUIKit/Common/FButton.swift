@@ -44,7 +44,7 @@ public class FButton: FBase<UIButton>, FComponent {
         super.init(frame: .zero)
     }
 
-    public init(@FBuilder<UIView> label: () -> [UIView], action: (() -> Void)? = nil, customConfiguration: ((UIButton, FButton) -> UIButton)? = nil) {
+    public init(@FViewBuilder label: () -> FBody, action: (() -> Void)? = nil, customConfiguration: ((UIButton, FButton) -> UIButton)? = nil) {
         self.labels = label()
         self.action = action
         self.customConfiguration = customConfiguration

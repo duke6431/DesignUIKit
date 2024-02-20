@@ -11,7 +11,7 @@ import DesignCore
 public class FVStack: FStack {
     public init(
         spacing: Double = 8,
-        @FBuilder<UIView> arrangedContents: () -> [UIView],
+        @FViewBuilder arrangedContents: () -> FBody,
         distribution: UIStackView.Distribution? = nil,
         customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
     ) {

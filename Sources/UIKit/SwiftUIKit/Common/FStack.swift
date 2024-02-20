@@ -32,7 +32,7 @@ public class FStack: FBase<UIStackView>, FComponent {
     public init(
         axis: NSLayoutConstraint.Axis = .vertical,
         spacing: Double = 8,
-        @FBuilder<UIView> arrangedContents: () -> [UIView],
+        @FViewBuilder arrangedContents: () -> FBody,
         distribution: UIStackView.Distribution? = nil,
         customConfiguration: ((UIStackView, FStack) -> UIStackView)? = nil
     ) {
