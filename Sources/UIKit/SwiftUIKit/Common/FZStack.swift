@@ -25,7 +25,7 @@ public final class FZStack: FBase<UIView>, FComponent {
         super.init(frame: .zero)
     }
     
-    public init(
+    init(
         contentViews: [UIView]
     ) {
         self.contentViews = contentViews
@@ -33,9 +33,9 @@ public final class FZStack: FBase<UIView>, FComponent {
     }
     
     public init(
-        @FViewBuilder contentViews: () -> FBody
+        @FViewBuilder _ builder: () -> FBody
     ) {
-        self.contentViews = contentViews()
+        self.contentViews = builder()
         super.init(frame: .zero)
     }
 
