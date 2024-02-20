@@ -10,6 +10,8 @@ import DesignExts
 import DesignCore
 import SnapKit
 
+public typealias FBody = [UIView & FContaining]
+
 open class FView: BaseView, FContaining {
     open var shadow: CALayer.ShadowConfiguration?
     open var shape: FShape?
@@ -36,7 +38,7 @@ open class FView: BaseView, FContaining {
         )
     }
     
-    open var body: [FContaining & UIView] {
+    open var body: FBody {
         fatalError("Overridden required")
     }
 }
