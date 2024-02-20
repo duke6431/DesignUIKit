@@ -15,10 +15,12 @@ public protocol FContaining: AnyObject, Chainable {
     var contentBackgroundColor: UIColor { get set }
     var containerPadding: UIEdgeInsets? { get set }
     var contentInsets: UIEdgeInsets? { get set }
+    var ratio: CGFloat? { get set }
     var opacity: CGFloat { get set }
     
     var shouldConstraintWithParent: Bool { get set }
     
+    func ratio(_ ratio: CGFloat) -> Self
     func padding() -> Self
     func padding(_ padding: CGFloat) -> Self
     func padding(_ edges: UIRectEdge, _ padding: CGFloat) -> Self

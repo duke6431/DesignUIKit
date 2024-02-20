@@ -15,6 +15,7 @@ public class FBase<Content: UIView>: BaseView {
     public var shape: FShape?
     public var shadow: CALayer.ShadowConfiguration?
     
+    public var ratio: CGFloat?
     public var containerPadding: UIEdgeInsets?
     public var contentInsets: UIEdgeInsets?
     public var width: CGFloat?
@@ -40,6 +41,7 @@ public class FBase<Content: UIView>: BaseView {
             $0.leading.equalToSuperview().inset(contentInsets?.left ?? 0).priority(.high.advanced(by: 50))
             $0.trailing.equalToSuperview().inset(contentInsets?.right ?? 0).priority(.high.advanced(by: 50))
             $0.bottom.equalToSuperview().inset(contentInsets?.bottom ?? 0).priority(.high.advanced(by: 50))
+            if let ratio, let content { $0.width.equalTo(content.snp.height).multipliedBy(ratio) }
             if let width { $0.width.equalTo(width) }
             if let height { $0.height.equalTo(height) }
         }

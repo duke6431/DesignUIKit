@@ -17,6 +17,7 @@ public class FGrid: CommonCollection.View, FComponent {
     
     public var width: CGFloat?
     public var height: CGFloat?
+    public var ratio: CGFloat?
     public var containerPadding: UIEdgeInsets?
     public var contentInsets: UIEdgeInsets?
     public var shouldConstraintWithParent: Bool = true
@@ -46,6 +47,7 @@ public class FGrid: CommonCollection.View, FComponent {
                 $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)
                 $0.trailing.equalToSuperview().inset(containerPadding?.right ?? 0)
                 $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0)
+                if let ratio { $0.width.equalTo(snp.height).multipliedBy(ratio) }
                 if let width { $0.width.equalTo(width) }
                 if let height { $0.height.equalTo(height) }
             }

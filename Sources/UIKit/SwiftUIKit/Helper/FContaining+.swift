@@ -57,6 +57,10 @@ public extension FContaining {
     func opacity(_ opacity: CGFloat) -> Self {
         with(\.opacity, setTo: opacity)
     }
+    
+    func ratio(_ ratio: CGFloat) -> Self {
+        with(\.ratio, setTo: ratio)
+    }
 }
 
 public extension FTappable {

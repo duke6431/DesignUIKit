@@ -17,6 +17,7 @@ public typealias FViewBuilder = FBuilder<FBodyComponent>
 open class FView: BaseView, FContaining {
     open var shadow: CALayer.ShadowConfiguration?
     open var shape: FShape?
+    open var ratio: CGFloat?
     open var contentBackgroundColor: UIColor = .clear
     open var containerPadding: UIEdgeInsets?
     open var contentInsets: UIEdgeInsets?
