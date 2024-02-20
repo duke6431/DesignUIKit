@@ -53,6 +53,10 @@ public extension FContaining {
     func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self {
         with(\.shadow, setTo: shadow)
     }
+    
+    func opacity(_ opacity: CGFloat) -> Self {
+        with(\.opacity, setTo: opacity)
+    }
 }
 
 public extension FTappable {

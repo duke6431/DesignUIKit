@@ -19,12 +19,14 @@ public class FBase<Content: UIView>: BaseView {
     public var contentInsets: UIEdgeInsets?
     public var width: CGFloat?
     public var height: CGFloat?
+    public var opacity: CGFloat = 1
 
     public var shouldConstraintWithParent: Bool = true
     public weak var content: Content?
     
     public override func didMoveToSuperview() {
         addSubview(rendered())
+        alpha = opacity
         if shouldConstraintWithParent && superview != nil {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)

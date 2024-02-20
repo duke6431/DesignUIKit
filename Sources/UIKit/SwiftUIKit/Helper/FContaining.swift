@@ -15,6 +15,7 @@ public protocol FContaining: AnyObject, Chainable {
     var contentBackgroundColor: UIColor { get set }
     var containerPadding: UIEdgeInsets? { get set }
     var contentInsets: UIEdgeInsets? { get set }
+    var opacity: CGFloat { get set }
     
     var shouldConstraintWithParent: Bool { get set }
     
@@ -26,4 +27,5 @@ public protocol FContaining: AnyObject, Chainable {
     func background(_ color: UIColor) -> Self
     func shaped(_ shape: FShape) -> Self
     func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
+    func opacity(_ opacity: CGFloat) -> Self
 }
