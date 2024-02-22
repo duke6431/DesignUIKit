@@ -41,7 +41,7 @@ public class FGrid: CommonCollection.View, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         alpha = opacity
-        if shouldConstraintWithParent {
+        if shouldConstraintWithParent, superview != nil {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
                 $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)

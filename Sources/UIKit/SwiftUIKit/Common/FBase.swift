@@ -28,7 +28,7 @@ public class FBase<Content: UIView>: BaseView {
     public override func didMoveToSuperview() {
         addSubview(rendered())
         alpha = opacity
-        if shouldConstraintWithParent && superview != nil {
+        if shouldConstraintWithParent, superview != nil {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
                 $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)
@@ -103,7 +103,7 @@ public class FScrollBase<Content: UIView>: BaseScrollView {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         addSubview(rendered())
-        if shouldConstraintWithParent {
+        if shouldConstraintWithParent, superview != nil {
             snp.makeConstraints {
                 $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
                 $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)

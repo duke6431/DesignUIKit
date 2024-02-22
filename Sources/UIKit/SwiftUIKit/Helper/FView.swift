@@ -27,7 +27,7 @@ open class FView: BaseView, FContaining {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configureViews()
-        if shouldConstraintWithParent {
+        if shouldConstraintWithParent, superview != nil {
             snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
