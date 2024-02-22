@@ -9,20 +9,20 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public final class FViewController: FViewControllerBase<UIViewController>, FComponent {
-    public var viewController: UIViewController
+public final class FViewController<ViewController: UIViewController>: FViewControllerBase<ViewController>, FComponent {
+    public var viewController: ViewController
     
-    public var customConfiguration: ((UIViewController, FViewController) -> UIViewController)?
+    public var customConfiguration: ((ViewController, FViewController) -> ViewController)?
     
     public init(
-        viewController: UIViewController
+        viewController: ViewController
     ) {
         self.viewController = viewController
         super.init(frame: .zero)
     }
     
     @discardableResult
-    public override func rendered() -> UIViewController {
+    public override func rendered() -> ViewController {
         var controller = viewController
         backgroundColor = contentBackgroundColor
         controller = customConfiguration?(controller, self) ?? controller
