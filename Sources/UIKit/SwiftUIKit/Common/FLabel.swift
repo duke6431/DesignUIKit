@@ -9,13 +9,13 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public final class FLabel: FBase<UILabel>, FComponent {
-    private var _text: String = ""
-    private var _attributedText: NSAttributedString?
-    private var _font: UIFont = FontSystem.shared.font(with: .body)
-    private var _color: UIColor = .label
-    private var _lineLimit: Int = 1
-    private var _textAlignment: NSTextAlignment = .left
+public final class FLabel: FBase<UILabel>, FComponent, FStylable, FContentContaining {
+    private var text: String = ""
+    private var attributedText: NSAttributedString?
+    public var font: UIFont = FontSystem.shared.font(with: .body)
+    public var color: UIColor = .label
+    private var lineLimit: Int = 1
+    private var textAlignment: NSTextAlignment = .left
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
@@ -26,24 +26,24 @@ public final class FLabel: FBase<UILabel>, FComponent {
     public init(
         _ text: String
     ) {
-        self._text = text
+        self.text = text
         super.init(frame: .zero)
     }
     
     public init(_ attributedText: NSAttributedString) {
-        self._attributedText = attributedText
+        self.attributedText = attributedText
         super.init(frame: .zero)
     }
 
     @discardableResult
     public override func rendered() -> UILabel {
         var view = UILabel()
-        view.text = _text
-        view.font = _font
-        view.textAlignment = _textAlignment
-        view.textColor = _color
-        view.numberOfLines = _lineLimit
-        if let attributedText = _attributedText {
+        view.text = text
+        view.font = font
+        view.textAlignment = textAlignment
+        view.textColor = color
+        view.numberOfLines = lineLimit
+        if let attributedText {
             view.attributedText = attributedText
         }
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
@@ -57,42 +57,12 @@ public final class FLabel: FBase<UILabel>, FComponent {
     }
     
     public func textAlignment(_ alignment: NSTextAlignment) -> Self {
-        with(\._textAlignment, setTo: alignment)
-    }
-
-    public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
-        with(\._font, setTo: font)
-    }
-
-    public func foreground(_ color: UIColor = .label) -> Self {
-        with(\._color, setTo: color)
+        self.textAlignment = alignment
+        return self
     }
 
     public func lineLimit(_ lineLimit: Int = 1) -> Self {
-        with(\._lineLimit, setTo: lineLimit)
-    }
-    
-    public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            contentHuggingH = priority
-        case .vertical:
-            contentHuggingV = priority
-        @unknown default:
-            break
-        }
-        return self
-    }
-    
-    public func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            compressionResistanceH = priority
-        case .vertical:
-            compressionResistanceV = priority
-        @unknown default:
-            break
-        }
+        self.lineLimit = lineLimit
         return self
     }
 }

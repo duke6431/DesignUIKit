@@ -24,6 +24,54 @@ public extension FComponent {
     }
 }
 
+public protocol FContentContaining {
+    var contentHuggingV: UILayoutPriority { get set }
+    var contentHuggingH: UILayoutPriority { get set }
+    var compressionResistanceV: UILayoutPriority { get set }
+    var compressionResistanceH: UILayoutPriority { get set }
+}
+
+public extension FContentContaining {
+    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            contentHuggingH = priority
+        case .vertical:
+            contentHuggingV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+    
+    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            compressionResistanceH = priority
+        case .vertical:
+            compressionResistanceV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+}
+
+public protocol FStylable {
+    var font: UIFont { get set }
+    var color: UIColor { get set }
+}
+
+public extension FStylable {
+    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        with(\.font, setTo: font)
+    }
+
+    func foreground(_ color: UIColor = .label) -> Self {
+        with(\.color, setTo: color)
+    }
+}
+
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)

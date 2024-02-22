@@ -123,7 +123,8 @@ public class FSwitch: UIView {
     }
 
     func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
-        with(\.onSwitch, setTo: onSwitch)
+        self.onSwitch = onSwitch
+        return self
     }
     
     func thumb(_ color: UIColor) -> Self {

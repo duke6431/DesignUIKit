@@ -36,6 +36,7 @@ public final class FSpacer: FBase<UIView>, FComponent {
     }
 
     public func blurred(_ style: UIBlurEffect.Style) -> Self {
-        with(\.blurStyle, setTo: style)
+        blurStyle = style
+        return self
     }
 }

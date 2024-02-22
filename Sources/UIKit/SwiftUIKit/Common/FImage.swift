@@ -10,10 +10,9 @@ import Nuke
 import SnapKit
 import DesignCore
 
-public class FImage: FBase<UIImageView>, FComponent {
+public class FImage: FBase<UIImageView>, FComponent, FContentContaining {
     public var image: UIImage?
     public var url: URL?
-    private lazy var _contentMode: UIView.ContentMode = { contentMode }()
     
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
@@ -70,30 +69,7 @@ public class FImage: FBase<UIImageView>, FComponent {
     }
 
     public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
-        with(\._contentMode, setTo: contentMode)
-    }
-    
-    public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            contentHuggingH = priority
-        case .vertical:
-            contentHuggingV = priority
-        @unknown default:
-            break
-        }
-        return self
-    }
-    
-    public func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            compressionResistanceH = priority
-        case .vertical:
-            compressionResistanceV = priority
-        @unknown default:
-            break
-        }
+        self.contentMode = contentMode
         return self
     }
 }
