@@ -10,12 +10,12 @@ import DesignCore
 import SnapKit
 
 public final class FLabel: FBase<UILabel>, FComponent {
-    public var text: String = ""
-    public var attributedText: NSAttributedString?
-    public var font: UIFont = FontSystem.shared.font(with: .body)
-    public var color: UIColor = .label
-    public var lineLimit: Int = 1
-    public var textAlignment: NSTextAlignment = .left
+    private var text: String = ""
+    private var attributedText: NSAttributedString?
+    private var font: UIFont = FontSystem.shared.font(with: .body)
+    private var color: UIColor = .label
+    private var lineLimit: Int = 1
+    private var textAlignment: NSTextAlignment = .left
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh

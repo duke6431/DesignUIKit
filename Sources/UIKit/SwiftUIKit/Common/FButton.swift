@@ -10,15 +10,15 @@ import DesignCore
 import SnapKit
 
 public class FButton: FBase<UIButton>, FComponent {
-    public var text: String = ""
-    public var font: UIFont = FontSystem.shared.font(with: .body)
-    public var color: UIColor = .systemBlue
+    private var text: String = ""
+    private var font: UIFont = FontSystem.shared.font(with: .body)
+    private var color: UIColor = .systemBlue
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
     public var compressionResistanceH: UILayoutPriority = .defaultHigh
-    public var labels: [UIView]?
-    public var action: (() -> Void)?
+    private var labels: [UIView]?
+    private var action: (() -> Void)?
     
     public var customConfiguration: ((UIButton, FButton) -> UIButton)?
     
@@ -65,9 +65,7 @@ public class FButton: FBase<UIButton>, FComponent {
         content = final
         return final
     }
-}
 
-public extension FButton {
     func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }

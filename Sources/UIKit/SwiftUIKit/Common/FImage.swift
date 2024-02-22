@@ -67,9 +67,7 @@ public class FImage: FBase<UIImageView>, FComponent {
         content = view
         return view
     }
-}
 
-public extension FImage {
     func contentMode(_ contentMode: UIView.ContentMode) -> Self {
         with(\.contentMode, setTo: contentMode)
     }
