@@ -10,7 +10,7 @@ import DesignCore
 import DesignExts
 
 public protocol FComponent: FContaining {
-    associatedtype SomeView: UIView
+    associatedtype SomeView
     var customConfiguration: ((SomeView, Self) -> SomeView)? { get set }
     var content: SomeView? { get }
     
