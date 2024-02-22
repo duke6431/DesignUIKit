@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import DesignCore
 
 public class FSwitch: UIView {
     public enum Style {
@@ -120,12 +121,9 @@ public class FSwitch: UIView {
             break
         }
     }
-}
 
-public extension FSwitch {
     func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
-        self.onSwitch = onSwitch
-        return self
+        with(\.onSwitch, setTo: onSwitch)
     }
     
     func thumb(_ color: UIColor) -> Self {

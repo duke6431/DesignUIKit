@@ -57,12 +57,9 @@ public final class FLabel: FBase<UILabel>, FComponent {
     }
     
     func textAlignment(_ alignment: NSTextAlignment) -> Self {
-        self.textAlignment = alignment
-        return self
+        with(\.textAlignment, setTo: alignment)
     }
-}
 
-public extension FLabel {
     func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }
