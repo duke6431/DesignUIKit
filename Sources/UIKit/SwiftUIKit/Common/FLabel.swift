@@ -10,12 +10,12 @@ import DesignCore
 import SnapKit
 
 public final class FLabel: FBase<UILabel>, FComponent {
-    private var text: String = ""
-    private var attributedText: NSAttributedString?
-    private var font: UIFont = FontSystem.shared.font(with: .body)
-    private var color: UIColor = .label
-    private var lineLimit: Int = 1
-    private var textAlignment: NSTextAlignment = .left
+    public var text: String = ""
+    public var attributedText: NSAttributedString?
+    public var font: UIFont = FontSystem.shared.font(with: .body)
+    public var color: UIColor = .label
+    public var lineLimit: Int = 1
+    public var textAlignment: NSTextAlignment = .left
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
@@ -56,23 +56,23 @@ public final class FLabel: FBase<UILabel>, FComponent {
         return view
     }
     
-    func textAlignment(_ alignment: NSTextAlignment) -> Self {
+    public func textAlignment(_ alignment: NSTextAlignment) -> Self {
         with(\.textAlignment, setTo: alignment)
     }
 
-    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }
 
-    func foreground(_ color: UIColor = .label) -> Self {
+    public func foreground(_ color: UIColor = .label) -> Self {
         with(\.color, setTo: color)
     }
 
-    func lineLimit(_ lineLimit: Int = 1) -> Self {
+    public func lineLimit(_ lineLimit: Int = 1) -> Self {
         with(\.lineLimit, setTo: lineLimit)
     }
     
-    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             contentHuggingH = priority
@@ -84,7 +84,7 @@ public final class FLabel: FBase<UILabel>, FComponent {
         return self
     }
     
-    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             compressionResistanceH = priority

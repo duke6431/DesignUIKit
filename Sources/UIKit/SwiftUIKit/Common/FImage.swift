@@ -68,11 +68,11 @@ public class FImage: FBase<UIImageView>, FComponent {
         return view
     }
 
-    func contentMode(_ contentMode: UIView.ContentMode) -> Self {
+    public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
         with(\.contentMode, setTo: contentMode)
     }
     
-    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             contentHuggingH = priority
@@ -84,7 +84,7 @@ public class FImage: FBase<UIImageView>, FComponent {
         return self
     }
     
-    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             compressionResistanceH = priority

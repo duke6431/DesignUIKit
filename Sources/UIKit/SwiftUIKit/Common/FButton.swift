@@ -10,15 +10,15 @@ import DesignCore
 import SnapKit
 
 public class FButton: FBase<UIButton>, FComponent {
-    private var text: String = ""
-    private var font: UIFont = FontSystem.shared.font(with: .body)
-    private var color: UIColor = .systemBlue
+    public var text: String = ""
+    public var font: UIFont = FontSystem.shared.font(with: .body)
+    public var color: UIColor = .systemBlue
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
     public var compressionResistanceH: UILayoutPriority = .defaultHigh
-    private var labels: [UIView]?
-    private var action: (() -> Void)?
+    public var labels: [UIView]?
+    public var action: (() -> Void)?
     
     public var customConfiguration: ((UIButton, FButton) -> UIButton)?
     
@@ -66,15 +66,15 @@ public class FButton: FBase<UIButton>, FComponent {
         return final
     }
 
-    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }
 
-    func foreground(_ color: UIColor = .label) -> Self {
+    public func foreground(_ color: UIColor = .label) -> Self {
         with(\.color, setTo: color)
     }
     
-    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             contentHuggingH = priority
@@ -86,7 +86,7 @@ public class FButton: FBase<UIButton>, FComponent {
         return self
     }
     
-    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    public func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         switch axis {
         case .horizontal:
             compressionResistanceH = priority
