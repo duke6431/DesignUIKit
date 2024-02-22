@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
@@ -14,7 +14,7 @@ struct FilmSection {
     var items: [FilmItemView.Content]
 }
 
-public class FilmSectionView: FContainer, FCellReusable {
+public class FilmSectionView: FView, FCellReusable {
     public static var empty: Self { .init() }
     public var padding: UIEdgeInsets = .zero
     
@@ -23,7 +23,7 @@ public class FilmSectionView: FContainer, FCellReusable {
     var content: Content = .init()
     
     public class Content: FCellModeling {
-        public var view: (UIView & DesignUIKit.FCellReusable).Type = FilmSectionView.self
+        public var view: (UIView & FCellReusable).Type = FilmSectionView.self
         
         var sections: [CommonCollection.Section] = []
         
@@ -36,7 +36,7 @@ public class FilmSectionView: FContainer, FCellReusable {
                     }
                 )
                 .with(dimension: .init(
-                    itemWHRatio: 1.4, groupWidthRatio: 1.0, groupSpacing: 0,
+                    itemWHRatio: 1.15, groupWidthRatio: 0.93, groupSpacing: 0,
                     sectionInset: .zero,
                     headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
                     pagingBehaviour: .groupPaging
@@ -57,24 +57,25 @@ public class FilmSectionView: FContainer, FCellReusable {
         grid?.reloadData(sections: value.sections)
     }
     
-    public override var body: UIView {
+    @FViewBuilder
+    public override var body: FBody {
         FGrid(
             prototypes: [FilmItemView.self],
             headerPrototypes: [FilmSectionHeader.self]
-        ) { [weak self] view, grid in
+        ).customConfiguration { [weak self] view, grid in
             self?.grid = grid
             return view
         }
     }
 }
 
-public class FilmSectionHeader: FContainer, FCellReusable {
+public class FilmSectionHeader: FView, FCellReusable {
     public static var empty: Self { .init() }
-
+    
     public func bind(_ value: FCellModeling) {
         guard let value = value as? Content else { return }
         content = value
-        titleLabel?.text = value.title
+        titleLabel?.text = value.title?.capitalized
     }
     
     public class Content: FCellModeling {
@@ -93,19 +94,17 @@ public class FilmSectionHeader: FContainer, FCellReusable {
         content = .init(title: title)
         super.init(frame: .zero)
     }
-    
-    public override var body: UIView {
+
+    @FViewBuilder
+    public override var body: FBody {
         FStack(axis: .horizontal) {
-            FLabel(
-                text: content.title ?? "",
-                font: FontSystem.shared.font(
-                    with: .title2.updated(\.weight, with: .semibold)
-                )
-            ) { [weak self] view, label in
-                self?.titleLabel = view
-                return view
-            }
+            FLabel(content.title?.capitalized ?? "")
+                .font(FontSystem.shared.font(with: .title2.updated(\.weight, with: .semibold)))
+                .customConfiguration { [weak self] view, label in
+                    self?.titleLabel = view
+                    return view
+                }
         }
-        .padding([.left, .right], SpacingSystem.shared.spacing(.regular))
+        .padding([.left, .right], SpacingSystem.shared.spacing(.large))
     }
 }

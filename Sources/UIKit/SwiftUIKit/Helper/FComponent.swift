@@ -24,7 +24,7 @@ public extension FComponent {
     }
 }
 
-public protocol FContentContaining {
+public protocol FContentContaining: AnyObject {
     var contentHuggingV: UILayoutPriority { get set }
     var contentHuggingH: UILayoutPriority { get set }
     var compressionResistanceV: UILayoutPriority { get set }
@@ -57,7 +57,7 @@ public extension FContentContaining {
     }
 }
 
-public protocol FStylable {
+public protocol FStylable: AnyObject, Chainable {
     var font: UIFont { get set }
     var color: UIColor { get set }
 }

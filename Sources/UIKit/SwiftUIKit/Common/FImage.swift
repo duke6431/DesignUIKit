@@ -49,7 +49,7 @@ public class FImage: FBase<UIImageView>, FComponent, FContentContaining {
     public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)
         view.clipsToBounds = true
-        view.contentMode = _contentMode
+        view.contentMode = contentMode
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
         view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)

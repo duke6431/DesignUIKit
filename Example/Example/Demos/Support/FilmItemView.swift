@@ -9,7 +9,7 @@ import UIKit
 import DesignUIKit
 import DesignCore
 
-class FilmItemView: BaseView, FCellReusable {
+class FilmItemView: FView, FCellReusable {
     static var empty: Self {
         .init(title: "", imageUrl: "")
     }
@@ -21,7 +21,7 @@ class FilmItemView: BaseView, FCellReusable {
         public var note: String?
         public var duration: String = ""
         
-        public init(title: String = "", imageUrl: String = "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg",
+        public init(title: String = "", imageUrl: String = "",
                     note: String? = nil, duration: String = "0:00:00") {
             self.title = title
             self.imageUrl = imageUrl
@@ -32,7 +32,6 @@ class FilmItemView: BaseView, FCellReusable {
     
     var content: Content = .init()
     
-    var imageHeight: CGFloat? = 180
     var isSecure: Bool = true
     
     weak var imageView: FImage?
@@ -54,11 +53,6 @@ class FilmItemView: BaseView, FCellReusable {
         configureViews()
     }
     
-    func configureViews() {
-        subviews.forEach { $0.removeFromSuperview() }
-        addSubview(body)
-    }
-    
     func bind(_ value: FCellModeling) {
         guard let value = value as? Content else { return }
         content = value
@@ -70,71 +64,64 @@ class FilmItemView: BaseView, FCellReusable {
         noteLabel?.superview?.isHidden = value.note?.isEmpty ?? true
     }
     
-    var body: UIView {
-        FView {
-            FStack(spacing: SpacingSystem.shared.spacing(.small)) {
-                FView {
-                    FImage(url: .init(string: content.imageUrl)) { [weak self] view, container in
-                        self?.imageView = container
-                        view.contentMode = .scaleAspectFill
-                        return view
-                    }
-                    .frame(height: imageHeight)
-                    FStack {
+    @FViewBuilder
+    override var body: FBody {
+        FZStack {
+            FVStack(spacing: 0) {
+                FZStack {
+                    FImage(url: .init(string: content.imageUrl))
+                        .with(\.shouldConstraintWithParent, setTo: false)
+                    FVStack {
                         FSpacer()
-                        FStack(axis: .horizontal) {
+                        FHStack {
                             if let note = content.note, !note.isEmpty {
-                                FLabel(
-                                    text: note,
-                                    font: FontSystem.shared.font(with: .body),
-                                    color: .white
-                                ) { [weak self] view, _ in
-                                    self?.noteLabel = view
-                                    return view
-                                }
-                                .background(.systemBlue.withAlphaComponent(0.6))
-                                .shaped(.roundedRectangle(cornerRadius: 8))
-                                .insets(SpacingSystem.shared.spacing(.extraSmall))
-                                .padding([.left, .bottom], SpacingSystem.shared.spacing(.extraSmall))
+                                FLabel(note)
+                                    .font(FontSystem.shared.font(with: .body))
+                                    .foreground(.white)
+                                    .customConfiguration { [weak self] view, _ in
+                                        self?.noteLabel = view
+                                        return view
+                                    }
+                                    .background(.systemBlue.withAlphaComponent(0.6))
+                                    .shaped(.roundedRectangle(cornerRadius: 8))
+                                    .insets(SpacingSystem.shared.spacing(.extraSmall))
+                                    .padding([.left, .bottom], SpacingSystem.shared.spacing(.extraSmall))
                                 
                             }
                             FSpacer()
-                            FLabel(
-                                text: content.duration,
-                                font: FontSystem.shared.font(with: .body),
-                                color: .white
-                            ) { [weak self] view, _ in
-                                self?.durationLabel = view
-                                return view
-                            }
-                            .background(.lightGray.withAlphaComponent(0.3))
-                            .shaped(.roundedRectangle(cornerRadius: 8))
-                            .insets(SpacingSystem.shared.spacing(.extraSmall))
-                            .padding([.right, .bottom], SpacingSystem.shared.spacing(.extraSmall))
+                            FLabel(content.duration)
+                                .font(FontSystem.shared.font(with: .body))
+                                .foreground(.white)
+                                .customConfiguration { [weak self] view, _ in
+                                    self?.durationLabel = view
+                                    return view
+                                }
+                                .background(.lightGray.withAlphaComponent(0.3))
+                                .shaped(.roundedRectangle(cornerRadius: 8))
+                                .insets(SpacingSystem.shared.spacing(.extraSmall))
+                                .padding([.right, .bottom], SpacingSystem.shared.spacing(.extraSmall))
                         }
                     }
                 }
-                FStack(axis: .horizontal) {
-                    FLabel(
-                        text: content.title.isEmpty ? "No title" : content.title,
-                        font: FontSystem.shared.font(with: .headline),
-                        color: .label,
-                        lineLimit: 2
-                    ) { [weak self] view, _ in
-                        self?.titleLabel = view
-                        return view
-                    }
+                FVStack(spacing: 0) {
+                    FLabel(content.title.isEmpty ? "No title" : content.title)
+                        .font(FontSystem.shared.font(with: .headline))
+                        .foreground(.black)
+                        .lineLimit(2)
+                        .customConfiguration { [weak self] view, _ in
+                            self?.titleLabel = view
+                            return view
+                        }
                     FSpacer()
-                    FSwitch()
                 }
-                .padding([.left, .right], SpacingSystem.shared.spacing(.small))
-                FSpacer()
+                .padding([.top, .bottom], SpacingSystem.shared.spacing(.small))
+                .padding([.left, .right], SpacingSystem.shared.spacing(.extraSmall) * 3)
             }
             .background(.white)
             .shaped(.roundedRectangle(cornerRadius: 16))
         }
-        .shadow(.init(opacity: 0.3))
+        .shadow(.init(opacity: 0.6, color: .black))
         .padding([.left, .right], SpacingSystem.shared.spacing(.regular))
-        .padding([.top, .bottom], SpacingSystem.shared.spacing(.small))
+        .padding([.top, .bottom], SpacingSystem.shared.spacing(.regular))
     }
 }
