@@ -13,6 +13,7 @@ import DesignCore
 public class FImage: FBase<UIImageView>, FComponent {
     public var image: UIImage?
     public var url: URL?
+    private lazy var _contentMode: UIView.ContentMode = { contentMode }()
     
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
@@ -49,7 +50,7 @@ public class FImage: FBase<UIImageView>, FComponent {
     public override func rendered() -> UIImageView {
         var view = UIImageView(image: image)
         view.clipsToBounds = true
-        view.contentMode = contentMode
+        view.contentMode = _contentMode
         view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
         view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
@@ -69,7 +70,7 @@ public class FImage: FBase<UIImageView>, FComponent {
     }
 
     public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
-        with(\.contentMode, setTo: contentMode)
+        with(\._contentMode, setTo: contentMode)
     }
     
     public func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
