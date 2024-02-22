@@ -8,11 +8,12 @@
 import UIKit
 import Nuke
 import SnapKit
+import DesignCore
 
 public class FImage: FBase<UIImageView>, FComponent {
     public var image: UIImage?
     public var url: URL?
-    public var size: CGSize = .zero
+    
     public var contentHuggingV: UILayoutPriority = .defaultLow
     public var contentHuggingH: UILayoutPriority = .defaultLow
     public var compressionResistanceV: UILayoutPriority = .defaultHigh
@@ -21,43 +22,26 @@ public class FImage: FBase<UIImageView>, FComponent {
     public var customConfiguration: ((UIImageView, FImage) -> UIImageView)?
     
     public init(
-        image: UIImage? = nil, url: URL? = nil,
-        size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
-        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+        image: UIImage? = nil, url: URL? = nil
     ) {
         self.image = image
         self.url = url
-        self.size = size
-        self.contentHuggingV = contentHuggingV
-        self.contentHuggingH = contentHuggingH
-        self.compressionResistanceV = compressionResistanceV
-        self.compressionResistanceH = compressionResistanceH
         super.init(frame: .zero)
-        self.contentMode = contentMode
     }
 
     public convenience init(
-        systemImage: String, size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
-        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+        systemImage: String
     ) {
         self.init(
-            image: .init(systemName: systemImage), size: size, contentMode: contentMode,
-            contentHuggingV: contentHuggingV, contentHuggingH: contentHuggingH,
-            compressionResistanceV: compressionResistanceV, compressionResistanceH: compressionResistanceH
+            image: .init(systemName: systemImage)
         )
     }
     
     public convenience init(
-        named: String, in bundle: Bundle = .main, size: CGSize = .zero, contentMode: UIImageView.ContentMode = .scaleAspectFit,
-        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+        named: String, in bundle: Bundle = .main
     ) {
         self.init(
-            image: .init(named: named, in: bundle, with: nil), size: size, contentMode: contentMode,
-            contentHuggingV: contentHuggingV, contentHuggingH: contentHuggingH,
-            compressionResistanceV: compressionResistanceV, compressionResistanceH: compressionResistanceH
+            image: .init(named: named, in: bundle, with: nil)
         )
     }
     
@@ -71,15 +55,12 @@ public class FImage: FBase<UIImageView>, FComponent {
         view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
         view.setContentHuggingPriority(contentHuggingV, for: .vertical)
         if let url = url {
-            ImagePipeline.shared.loadImage(with: url) { result in
-                if case .success(let response) = result {
+            ImagePipeline.shared.loadImage(with: url) { [weak self] result in
+                if case .success(let response) = result, response.urlResponse?.url == self?.url {
+                    
                     view.image = response.image
                 }
             }
-        }
-        view.snp.makeConstraints {
-            if size.width > 0 { $0.width.equalTo(size.width) }
-            if size.height > 0 { $0.height.equalTo(size.height) }
         }
         backgroundColor = contentBackgroundColor
         view = customConfiguration?(view, self) ?? view
@@ -89,7 +70,39 @@ public class FImage: FBase<UIImageView>, FComponent {
 }
 
 public extension FImage {
+    func contentMode(_ contentMode: UIView.ContentMode) -> Self {
+        with(\.contentMode, setTo: contentMode)
+    }
+    
+    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            contentHuggingH = priority
+        case .vertical:
+            contentHuggingV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+    
+    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            compressionResistanceH = priority
+        case .vertical:
+            compressionResistanceV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+}
+
+public extension FImage {
     func reload(image: UIImage? = nil, url: URL?) {
+        self.image = image ?? self.image
+        self.url = url ?? self.url
         content?.image = image
         if let url = url {
             ImagePipeline.shared.loadImage(with: url) { [weak self] result in

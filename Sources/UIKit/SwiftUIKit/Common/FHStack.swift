@@ -11,13 +11,12 @@ import DesignCore
 public class FHStack: FStack {
     public init(
         spacing: Double = 8,
-        @FViewBuilder arrangedContents: () -> FBody,
-        distribution: UIStackView.Distribution? = nil
+        distribution: UIStackView.Distribution? = nil,
+        @FViewBuilder arrangedContents: () -> FBody
     ) {
         super.init(
             axis: .horizontal, spacing: spacing,
-            arrangedContents: arrangedContents, 
-            distribution: distribution
+            distribution: distribution, arrangedContents: arrangedContents
         )
     }
 }

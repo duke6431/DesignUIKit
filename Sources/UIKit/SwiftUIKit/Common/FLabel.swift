@@ -24,21 +24,14 @@ public final class FLabel: FBase<UILabel>, FComponent {
     public var customConfiguration: ((UILabel, FLabel) -> UILabel)?
     
     public init(
-        _ text: String = "", attributedText: NSAttributedString? = nil,
-        font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .label,
-        lineLimit: Int = 1,
-        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh
+        _ text: String
     ) {
         self.text = text
-        self.font = font
-        self.color = color
+        super.init(frame: .zero)
+    }
+    
+    public init(_ attributedText: NSAttributedString) {
         self.attributedText = attributedText
-        self.lineLimit = lineLimit
-        self.contentHuggingV = contentHuggingV
-        self.contentHuggingH = contentHuggingH
-        self.compressionResistanceV = compressionResistanceV
-        self.compressionResistanceH = compressionResistanceH
         super.init(frame: .zero)
     }
 
@@ -65,6 +58,44 @@ public final class FLabel: FBase<UILabel>, FComponent {
     
     func textAlignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
+        return self
+    }
+}
+
+public extension FLabel {
+    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        with(\.font, setTo: font)
+    }
+
+    func foreground(_ color: UIColor = .label) -> Self {
+        with(\.color, setTo: color)
+    }
+
+    func lineLimit(_ lineLimit: Int = 1) -> Self {
+        with(\.lineLimit, setTo: lineLimit)
+    }
+    
+    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            contentHuggingH = priority
+        case .vertical:
+            contentHuggingV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+    
+    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            compressionResistanceH = priority
+        case .vertical:
+            compressionResistanceV = priority
+        @unknown default:
+            break
+        }
         return self
     }
 }

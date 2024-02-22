@@ -24,16 +24,16 @@ public class FStack: FBase<UIStackView>, FComponent {
             self.distribution = distribution
         }
     }
-    public var configuration: Configuration = .init()
+    public var configuration: Configuration
     public var arrangedContents: [UIView]
     
     public var customConfiguration: ((UIStackView, FStack) -> UIStackView)?
     
     public init(
-        axis: NSLayoutConstraint.Axis = .vertical,
+        axis: NSLayoutConstraint.Axis,
         spacing: Double = 8,
-        @FViewBuilder arrangedContents: () -> FBody,
-        distribution: UIStackView.Distribution? = nil
+        distribution: UIStackView.Distribution? = nil,
+        @FViewBuilder arrangedContents: () -> FBody
     ) {
         self.arrangedContents = arrangedContents()
         self.configuration = .init(axis: axis, spacing: spacing, distribution: distribution)

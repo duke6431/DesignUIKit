@@ -11,7 +11,6 @@ import SnapKit
 
 public class FButton: FBase<UIButton>, FComponent {
     public var text: String = ""
-    public var image: String = ""
     public var font: UIFont = FontSystem.shared.font(with: .body)
     public var color: UIColor = .systemBlue
     public var contentHuggingV: UILayoutPriority = .defaultLow
@@ -24,20 +23,10 @@ public class FButton: FBase<UIButton>, FComponent {
     public var customConfiguration: ((UIButton, FButton) -> UIButton)?
     
     public init(
-        text: String = "", image: String = "",
-        font: UIFont = FontSystem.shared.font(with: .body), color: UIColor = .systemBlue,
-        contentHuggingV: UILayoutPriority = .defaultLow, contentHuggingH: UILayoutPriority = .defaultLow,
-        compressionResistanceV: UILayoutPriority = .defaultHigh, compressionResistanceH: UILayoutPriority = .defaultHigh,
+        _ text: String = "",
         action: (() -> Void)? = nil
     ) {
         self.text = text
-        self.image = image
-        self.font = font
-        self.color = color
-        self.contentHuggingV = contentHuggingV
-        self.contentHuggingH = contentHuggingH
-        self.compressionResistanceV = compressionResistanceV
-        self.compressionResistanceH = compressionResistanceH
         self.action = action
         super.init(frame: .zero)
     }
@@ -75,5 +64,39 @@ public class FButton: FBase<UIButton>, FComponent {
         let final = customConfiguration?(view, self) ?? view
         content = final
         return final
+    }
+}
+
+public extension FButton {
+    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        with(\.font, setTo: font)
+    }
+
+    func foreground(_ color: UIColor = .label) -> Self {
+        with(\.color, setTo: color)
+    }
+    
+    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            contentHuggingH = priority
+        case .vertical:
+            contentHuggingV = priority
+        @unknown default:
+            break
+        }
+        return self
+    }
+    
+    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        switch axis {
+        case .horizontal:
+            compressionResistanceH = priority
+        case .vertical:
+            compressionResistanceV = priority
+        @unknown default:
+            break
+        }
+        return self
     }
 }
