@@ -30,6 +30,7 @@ open class FView: BaseView, FContaining {
         if shouldConstraintWithParent, superview != nil {
             snp.makeConstraints {
                 $0.edges.equalToSuperview()
+                if let ratio { $0.width.equalTo(snp.height).multipliedBy(ratio) }
             }
         }
     }

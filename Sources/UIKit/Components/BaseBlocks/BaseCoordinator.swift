@@ -8,7 +8,11 @@
 import UIKit
 import DesignCore
 
-open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable, Chainable {
+protocol BaseCoordinating: Chainable {
+    
+}
+
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable, BaseCoordinating {
     open weak var navigationController: UINavigationController?
     
     public init(_ navigationController: UINavigationController? = nil) {
