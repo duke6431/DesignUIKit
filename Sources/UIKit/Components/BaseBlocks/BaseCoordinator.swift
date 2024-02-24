@@ -14,13 +14,14 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<V
         self.navigationController = navigationController
     }
     
-    open func prepare(_ scene: Scene) {
+    open func prepare(_ viewModel: ViewModel, _ scene: Scene) {
         // Override to prepare scene if needed
     }
     
     open func toScene() {
-        let scene = Scene(with: ViewModel())
-        prepare(scene)
+        let viewModel = ViewModel()
+        let scene = Scene(with: viewModel)
+        prepare(viewModel, scene)
         navigationController?.pushViewController(scene, animated: true)
     }
 }
