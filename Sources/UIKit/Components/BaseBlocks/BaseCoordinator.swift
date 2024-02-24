@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import DesignCore
 
-open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable {
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable, Chainable {
     open weak var navigationController: UINavigationController?
     
     public init(_ navigationController: UINavigationController? = nil) {
