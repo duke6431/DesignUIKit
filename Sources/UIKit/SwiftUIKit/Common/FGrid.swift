@@ -137,6 +137,11 @@ public extension FGrid {
         guard let data = data as? FGridModel else { return }
         onSelect?(data)
     }
+    
+    func onSelect(_ action: @escaping (FGridModel) -> Void) -> Self {
+        onSelect = action
+        return self
+    }
 }
 
 public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {

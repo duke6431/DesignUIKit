@@ -106,6 +106,11 @@ public extension FList {
         guard let model = model as? FListModel else { return }
         onSelect?(model)
     }
+    
+    func onSelect(_ action: @escaping (FListModel) -> Void) -> Self {
+        onSelect = action
+        return self
+    }
 }
 
 public protocol FCellModeling {
