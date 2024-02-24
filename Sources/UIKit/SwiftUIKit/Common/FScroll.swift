@@ -9,15 +9,16 @@ import UIKit
 import SnapKit
 import DesignCore
 
-public final class FScroll: FBase<UIScrollView>, FComponent {
+public class FScroll: BaseScrollView, FConfigurable, FComponent {
+    public var axis: NSLayoutConstraint.Axis
     public var contentViews: [UIView] = []
-    public var showsVerticalScrollIndicator: Bool = false
-    
-    public var customConfiguration: ((UIScrollView, FScroll) -> UIScrollView)?
-    
+    public var customConfiguration: ((FScroll) -> Void)?
+
     public init(
+        axis: NSLayoutConstraint.Axis,
         contentView: UIView? = nil
     ) {
+        self.axis = axis
         if let contentView {
             self.contentViews = [contentView]
         } else {
@@ -27,32 +28,67 @@ public final class FScroll: FBase<UIScrollView>, FComponent {
     }
     
     public init(
+        axis: NSLayoutConstraint.Axis,
         @FViewBuilder contentViews: () -> FBody
     ) {
+        self.axis = axis
         self.contentViews = contentViews()
         super.init(frame: .zero)
     }
-
-    @discardableResult
-    public override func rendered() -> UIScrollView {
-        var view = UIScrollView()
-        view.alwaysBounceVertical = true
-        view.showsVerticalScrollIndicator = false
-        var topAnchor = view.snp.top
-        contentViews.enumerated().forEach { index, subview in
-            view.addSubview(subview)
-            subview.snp.makeConstraints {
-                $0.top.equalTo(topAnchor)
-                $0.leading.trailing.centerX.equalToSuperview()
+    
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configuration?.didMoveToSuperview(superview, with: self)
+        var top = topAnchor
+        var leading = leadingAnchor
+        contentViews.forEach { view in
+            addSubview(view)
+            NSLayoutConstraint.activate {
+                switch axis {
+                case .horizontal:
+                    view.topAnchor.constraint(equalTo: topAnchor)
+                    view.bottomAnchor.constraint(equalTo: bottomAnchor)
+                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding?.leading ?? 0)
+                    view.centerYAnchor.constraint(equalTo: centerYAnchor)
+                case .vertical:
+                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding?.top ?? 0)
+                    view.leadingAnchor.constraint(equalTo: leadingAnchor)
+                    view.trailingAnchor.constraint(equalTo: trailingAnchor)
+                    view.centerXAnchor.constraint(equalTo: centerXAnchor)
+                @unknown default:
+                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding?.top ?? 0)
+                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding?.bottom ?? 0))
+                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding?.leading ?? 0)
+                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding?.trailing ?? 0))
+                }
             }
-            topAnchor = subview.snp.bottom
+            switch axis {
+            case .horizontal:
+                leading = view.trailingAnchor
+            case .vertical:
+                top = view.bottomAnchor
+            @unknown default:
+                break
+            }
+            
         }
-        view.snp.makeConstraints {
-            $0.bottom.equalTo(topAnchor)
+        switch axis {
+        case .horizontal:
+            NSLayoutConstraint.activate {
+                leading.constraint(equalTo: trailingAnchor)
+            }
+        case .vertical:
+            NSLayoutConstraint.activate {
+                top.constraint(equalTo: bottomAnchor)
+            }
+        @unknown default:
+            break
         }
-        backgroundColor = contentBackgroundColor
-        view = customConfiguration?(view, self) ?? view
-        content = view
-        return view
+        customConfiguration?(self)
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
     }
 }

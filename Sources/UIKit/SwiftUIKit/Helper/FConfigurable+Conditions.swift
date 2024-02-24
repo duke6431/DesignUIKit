@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public extension FContaining where Self: UIView {
+public extension FConfigurable where Self: UIView {
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - condition: The condition to evaluate.

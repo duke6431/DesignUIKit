@@ -9,24 +9,35 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public final class FViewController<ViewController: UIViewController>: FViewControllerBase<ViewController>, FComponent {
-    public var viewController: ViewController
+public class FViewController: BaseView, FConfigurable, FComponent {
+    public var customConfiguration: ((FViewController) -> Void)?
+
+    public weak var parentViewController: UIViewController?
+    public var contentViewController: UIViewController
     
-    public var customConfiguration: ((ViewController, FViewController) -> ViewController)?
-    
-    public init(
-        viewController: ViewController
-    ) {
-        self.viewController = viewController
+    init(_ contentViewController: UIViewController) {
+        self.contentViewController = contentViewController
         super.init(frame: .zero)
     }
     
-    @discardableResult
-    public override func rendered() -> ViewController {
-        var controller = viewController
-        backgroundColor = contentBackgroundColor
-        controller = customConfiguration?(controller, self) ?? controller
-        content = controller
-        return controller
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configuration?.didMoveToSuperview(superview, with: self)
+        guard let parentViewController else { return }
+        contentViewController.willMove(toParent: parentViewController)
+        addSubview(contentViewController.view)
+        parentViewController.addChild(contentViewController)
+        contentViewController.didMove(toParent: parentViewController)
+        customConfiguration?(self)
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
+    }
+    
+    public func parent(_ viewController: UIViewController) -> Self {
+        parentViewController = viewController
+        return self
     }
 }

@@ -9,60 +9,40 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public class FButton: FBase<UIButton>, FComponent, FStylable, FContentContaining {
-    public var text: String = ""
-    public var font: UIFont = FontSystem.shared.font(with: .body)
-    public var color: UIColor = .systemBlue
-    public var contentHuggingV: UILayoutPriority = .defaultLow
-    public var contentHuggingH: UILayoutPriority = .defaultLow
-    public var compressionResistanceV: UILayoutPriority = .defaultHigh
-    public var compressionResistanceH: UILayoutPriority = .defaultHigh
-    public var labels: [UIView]?
-    public var action: (() -> Void)?
-    
-    public var customConfiguration: ((UIButton, FButton) -> UIButton)?
+public class FButton: BaseButton, FComponent, FStylable, FContentConstraintable {
+    public var customConfiguration: ((FButton) -> Void)?
     
     public init(
         _ text: String = "",
-        action: (() -> Void)? = nil
+        action: @escaping () -> Void
     ) {
-        self.text = text
-        self.action = action
         super.init(frame: .zero)
+        self.setTitle(text, for: .normal)
+        addAction(for: .touchUpInside, action)
     }
 
-    public init(@FViewBuilder label: () -> FBody, action: (() -> Void)? = nil) {
-        self.labels = label()
-        self.action = action
+    public init(@FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
         super.init(frame: .zero)
-    }
-    
-    @discardableResult
-    public override func rendered() -> UIButton {
-        let view = DimmingButton(type: .custom)
-        if let labels {
-            labels.forEach { label in
-                view.addSubview(label)
-                label.isUserInteractionEnabled = false
-                if label as? (any FComponent & UIView) == nil {
-                    label.snp.makeConstraints {
-                        $0.edges.equalToSuperview()
-                    }
+        addAction(for: .touchUpInside, action)
+        label().forEach { label in
+            addSubview(label)
+            label.isUserInteractionEnabled = false
+            if label as? (any FComponent & UIView) == nil {
+                label.snp.remakeConstraints {
+                    $0.edges.equalToSuperview()
                 }
             }
-        } else {
-            view.setTitle(text, for: .normal)
-            view.titleLabel?.font = font
-            view.setTitleColor(color, for: .normal)
         }
-        view.setContentCompressionResistancePriority(compressionResistanceH, for: .horizontal)
-        view.setContentCompressionResistancePriority(compressionResistanceV, for: .vertical)
-        view.setContentHuggingPriority(contentHuggingH, for: .horizontal)
-        view.setContentHuggingPriority(contentHuggingV, for: .vertical)
-        if let action = action { view.addAction(for: .touchUpInside, action) }
-        backgroundColor = contentBackgroundColor
-        let final = customConfiguration?(view, self) ?? view
-        content = final
-        return final
+    }
+    
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configuration?.didMoveToSuperview(superview, with: self)
+        customConfiguration?(self)
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
     }
 }

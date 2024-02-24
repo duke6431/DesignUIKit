@@ -1,0 +1,78 @@
+//
+//  File.swift
+//  
+//
+//  Created by Duc Minh Nguyen on 2/20/24.
+//
+
+import UIKit
+import DesignCore
+import DesignExts
+import SnapKit
+
+public protocol FConfigurable: AnyObject, Chainable {
+    var configuration: FConfiguration? { get }
+    
+    func ratio(_ ratio: CGFloat) -> Self
+    func padding() -> Self
+    func padding(_ padding: CGFloat) -> Self
+    func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    func background(_ color: UIColor) -> Self
+    func shaped(_ shape: FShape) -> Self
+    func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
+    func attachToParent(_ status: Bool) -> Self
+    func opacity(_ opacity: CGFloat) -> Self
+}
+
+public class FConfiguration: Chainable {
+    var width: CGFloat?
+    var height: CGFloat?
+    var shadow: CALayer.ShadowConfiguration?
+    var shape: FShape?
+    var backgroundColor: UIColor = .clear
+    var containerPadding: NSDirectionalEdgeInsets?
+    var ratio: CGFloat?
+    var opacity: CGFloat = 1
+
+    var shouldConstraintWithParent: Bool = true
+    
+    func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
+        target.backgroundColor = backgroundColor
+        target.alpha = opacity
+        if shouldConstraintWithParent, superview != nil {
+            target.snp.remakeConstraints {
+                $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
+                $0.leading.equalToSuperview().inset(containerPadding?.leading ?? 0)
+                $0.trailing.equalToSuperview().inset(containerPadding?.trailing ?? 0)
+                $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0)
+                if let width, width > 0 { $0.width.equalTo(width) }
+                if let height, height > 0 { $0.height.equalTo(height) }
+                if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio) }
+            }
+        }
+    }
+    
+    func updateLayers(for target: UIView) {
+        if let shape {
+            target.clipsToBounds = true
+            UIView.animate(withDuration: 0.2) {
+                switch shape {
+                case .circle:
+                    target.layer.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
+                case .roundedRectangle(let cornerRadius, let corners):
+                    target.layer.maskedCorners = corners.caMask
+                    target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                }
+            }
+        }
+        if let shadow {
+            UIView.animate(withDuration: 0.2) {
+                target.layer.add(
+                    shadow: shadow.updated(
+                        \.path, with: UIBezierPath(rect: target.bounds).cgPath
+                    )
+                )
+            }
+        }
+    }
+}

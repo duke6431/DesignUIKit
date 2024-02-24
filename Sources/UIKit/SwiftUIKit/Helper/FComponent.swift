@@ -9,75 +9,84 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public protocol FComponent: FContaining {
-    associatedtype SomeView
-    var customConfiguration: ((SomeView, Self) -> SomeView)? { get set }
-    var content: SomeView? { get }
-    
-    @discardableResult
-    func rendered() -> SomeView
+public protocol FComponent: AnyObject, Chainable {
+    var configuration: FConfiguration? { get }
+    var customConfiguration: ((Self) -> Void)? { get set }
 }
 
 public extension FComponent {
-    func customConfiguration(_ configuration: ((SomeView, Self) -> SomeView)?) -> Self {
+    func customConfiguration(_ configuration: ((Self) -> Void)?) -> Self {
         with(\.customConfiguration, setTo: configuration)
     }
 }
 
-public protocol FContentContaining: AnyObject {
-    var contentHuggingV: UILayoutPriority { get set }
-    var contentHuggingH: UILayoutPriority { get set }
-    var compressionResistanceV: UILayoutPriority { get set }
-    var compressionResistanceH: UILayoutPriority { get set }
+public protocol FContentConstraintable: AnyObject {
+    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self
+    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self
 }
 
-public extension FContentContaining {
+public extension FContentConstraintable where Self: UIView {
     func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            contentHuggingH = priority
-        case .vertical:
-            contentHuggingV = priority
-        @unknown default:
-            break
-        }
+        setContentHuggingPriority(priority, for: axis)
         return self
     }
     
     func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
-        switch axis {
-        case .horizontal:
-            compressionResistanceH = priority
-        case .vertical:
-            compressionResistanceV = priority
-        @unknown default:
-            break
-        }
+        setContentCompressionResistancePriority(priority, for: axis)
+        return self
+    }
+}
+
+public protocol FContentAvailable: FContentConstraintable {
+    func insets(_ insets: UIEdgeInsets) -> Self
+    func insets(_ insets: CGFloat) -> Self
+    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self
+}
+
+public extension FContentAvailable where Self: BaseLabel {
+    func insets(_ insets: UIEdgeInsets) -> Self {
+        contentInsets = contentInsets + insets
+        return self
+    }
+    
+    func insets(_ insets: CGFloat) -> Self {
+        self.insets(.all, insets)
+    }
+    
+    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
+        contentInsets = contentInsets.add(edges, insets)
         return self
     }
 }
 
 public protocol FStylable: AnyObject, Chainable {
-    var font: UIFont { get set }
-    var color: UIColor { get set }
+    func font(_ font: UIFont) -> Self
+    func foreground(_ color: UIColor) -> Self
 }
 
-public extension FStylable {
+public extension FStylable where Self: UILabel {
     func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }
 
     func foreground(_ color: UIColor = .label) -> Self {
-        with(\.color, setTo: color)
+        with(\.textColor, setTo: color)
+    }
+}
+
+public extension FStylable where Self: UIButton {
+    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        titleLabel?.with(\.font, setTo: font)
+        return self
+    }
+
+    func foreground(_ color: UIColor = .label) -> Self {
+        setTitleColor(color, for: .normal)
+        return self
     }
 }
 
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)
-}
-
-public protocol FTappable: AnyObject, Chainable {
-    var onTap: (() -> Void)? { get set }
-    func onTap(_ gesture: @escaping () -> Void) -> Self
 }

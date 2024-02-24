@@ -33,6 +33,7 @@ extension CommonCollection {
         }
 
         public struct LayoutDimension {
+            var autoHeight: Bool = false
             var itemWHRatio: CGFloat = 1
             var itemSpacing: CGFloat = 8
 
@@ -51,7 +52,7 @@ extension CommonCollection {
             var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
 
             public init(
-                itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8,
+                itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
                 sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
@@ -59,6 +60,7 @@ extension CommonCollection {
             ) {
                 self.itemWHRatio = itemWHRatio
                 self.itemSpacing = itemSpacing
+                self.autoHeight = autoHeight
                 self.groupWidthRatio = groupWidthRatio
                 self.groupSpacing = groupSpacing
                 self.numberOfItemsPerGroup = numberItemsPerGroup
@@ -77,14 +79,14 @@ extension CommonCollection.Section {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1 / section.dimension.itemWHRatio)
+                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
             )
         )
 
         // Show one item plus peek
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
-            heightDimension: .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
+            heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
         let groupLayout = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup

@@ -10,44 +10,46 @@ import DesignExts
 import DesignCore
 import SnapKit
 
-public typealias FBodyComponent = UIView & FContaining
+public typealias FBodyComponent = UIView & FConfigurable
 public typealias FBody = [FBodyComponent]
 public typealias FViewBuilder = FBuilder<FBodyComponent>
 
-open class FView: BaseView, FContaining {
-    open var shadow: CALayer.ShadowConfiguration?
-    open var shape: FShape?
-    open var ratio: CGFloat?
-    open var contentBackgroundColor: UIColor = .clear
-    open var containerPadding: UIEdgeInsets?
-    open var contentInsets: UIEdgeInsets?
-    open var shouldConstraintWithParent: Bool = true
-    open var opacity: CGFloat = 1
-    
+open class FView: BaseView, FConfigurable, FComponent {
+    public var customConfiguration: ((FView) -> Void)?
+
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configureViews()
-        if shouldConstraintWithParent, superview != nil {
-            snp.makeConstraints {
-                $0.edges.equalToSuperview()
-                if let ratio { $0.width.equalTo(snp.height).multipliedBy(ratio) }
-            }
-        }
+        configuration?.didMoveToSuperview(superview, with: self)
+        customConfiguration?(self)
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
     }
     
     open func configureViews() {
-        backgroundColor = contentBackgroundColor
-        alpha = opacity
-        subviews.forEach { $0.removeFromSuperview() }
-        addSubview(
-            FZStack(contentViews: body)
-                .insets(contentInsets ?? .zero)
-                .padding(containerPadding ?? .zero)
-        )
+        addSubview(body)
     }
+    
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
+    }
+}
 
-    @FViewBuilder
-    open var body: FBody {
-        FSpacer()
+open class FScene<ViewModel: BaseViewModel>: BaseViewController<ViewModel> {
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        configureViews()
+    }
+    
+    open override func configureViews() {
+        super.configureViews()
+        view.addSubview(body)
+    }
+    
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
 }

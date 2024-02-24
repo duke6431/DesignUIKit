@@ -8,26 +8,8 @@
 import UIKit
 import DesignCore
 
-public class FStack: FBase<UIStackView>, FComponent {
-    public class Configuration {
-        public var axis: NSLayoutConstraint.Axis
-        public var spacing: Double
-        public var distribution: UIStackView.Distribution?
-        
-        init(
-            axis: NSLayoutConstraint.Axis = .vertical,
-            spacing: Double = 8,
-            distribution: UIStackView.Distribution? = nil
-        ) {
-            self.axis = axis
-            self.spacing = spacing
-            self.distribution = distribution
-        }
-    }
-    public var configuration: Configuration
-    public var arrangedContents: [UIView]
-    
-    public var customConfiguration: ((UIStackView, FStack) -> UIStackView)?
+public class FStack: BaseStackView, FConfigurable, FComponent {
+    public var customConfiguration: ((FStack) -> Void)?
     
     public init(
         axis: NSLayoutConstraint.Axis,
@@ -35,41 +17,24 @@ public class FStack: FBase<UIStackView>, FComponent {
         distribution: UIStackView.Distribution? = nil,
         @FViewBuilder arrangedContents: () -> FBody
     ) {
-        self.arrangedContents = arrangedContents()
-        self.configuration = .init(axis: axis, spacing: spacing, distribution: distribution)
         super.init(frame: .zero)
+        self.axis = axis
+        self.spacing = spacing
+        self.distribution = distribution ?? .fill
+        arrangedContents().forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addArrangedSubview($0)
+        }
     }
 
-    @discardableResult
-    public override func rendered() -> UIStackView {
-        var view = UIStackView()
-        view.snp.makeConstraints {
-            $0.width.equalTo(0).priority(.low)
-            $0.height.equalTo(0).priority(.low)
-        }
-        view.axis = configuration.axis
-        if let distribution =  configuration.distribution {
-            view.distribution = distribution
-        }
-        view.spacing = CGFloat(configuration.spacing)
-        arrangedContents.forEach {
-            guard let content = $0 as? any FComponent else {
-                view.addArrangedSubview($0)
-                return
-            }
-            let container = FZStack()
-            if content.containerPadding ?? .zero != .zero {
-                container.contentViews = [$0]
-                container.shouldConstraintWithParent = false
-                view.addArrangedSubview(container)
-            } else {
-                content.shouldConstraintWithParent = false
-                view.addArrangedSubview($0)
-            }
-        }
-        backgroundColor = contentBackgroundColor
-        view = customConfiguration?(view, self) ?? view
-        content = view
-        return view
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configuration?.didMoveToSuperview(superview, with: self)
+        customConfiguration?(self)
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
     }
 }

@@ -36,7 +36,7 @@ public class FilmSectionView: FView, FCellReusable {
                     }
                 )
                 .with(dimension: .init(
-                    itemWHRatio: 1.15, groupWidthRatio: 0.93, groupSpacing: 0,
+                    itemWHRatio: 1.15, autoHeight: true, groupWidthRatio: 0.93, groupSpacing: 0,
                     sectionInset: .zero,
                     headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
                     pagingBehaviour: .groupPaging
@@ -57,14 +57,12 @@ public class FilmSectionView: FView, FCellReusable {
         grid?.reloadData(sections: value.sections)
     }
     
-    @FViewBuilder
-    public override var body: FBody {
+    public override var body: FBodyComponent {
         FGrid(
             prototypes: [FilmItemView.self],
             headerPrototypes: [FilmSectionHeader.self]
-        ).customConfiguration { [weak self] view, grid in
+        ).customConfiguration { [weak self] grid in
             self?.grid = grid
-            return view
         }
     }
 }
@@ -95,16 +93,14 @@ public class FilmSectionHeader: FView, FCellReusable {
         super.init(frame: .zero)
     }
 
-    @FViewBuilder
-    public override var body: FBody {
+    public override var body: FBodyComponent {
         FStack(axis: .horizontal) {
             FLabel(content.title?.capitalized ?? "")
                 .font(FontSystem.shared.font(with: .title2.updated(\.weight, with: .semibold)))
-                .customConfiguration { [weak self] view, label in
+                .customConfiguration { [weak self] view in
                     self?.titleLabel = view
-                    return view
                 }
         }
-        .padding([.left, .right], SpacingSystem.shared.spacing(.large))
+        .padding([.leading, .trailing], SpacingSystem.shared.spacing(.large))
     }
 }

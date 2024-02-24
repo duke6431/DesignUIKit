@@ -9,32 +9,34 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public final class FSpacer: FBase<UIView>, FComponent {
+public class FSpacer: BaseView, FConfigurable, FComponent {
     public var blurStyle: UIBlurEffect.Style?
-    public var customConfiguration: ((UIView, FSpacer) -> UIView)?
+    public var customConfiguration: ((FSpacer) -> Void)?
 
     public init(width: CGFloat? = nil, height: CGFloat? = nil) {
         super.init(frame: .zero)
-        self.width = width
-        self.height = height
+        self.configuration?.width = width
+        self.configuration?.height = height
     }
 
-    @discardableResult
-    public override func rendered() -> UIView {
-        var view = UIView()
-        backgroundColor = contentBackgroundColor
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        configuration?.didMoveToSuperview(superview, with: self)
         if !UIAccessibility.isReduceTransparencyEnabled, let blurStyle {
             let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: blurStyle))
-            view.addSubview(blurEffectView)
-            blurEffectView.snp.makeConstraints {
+            addSubview(blurEffectView)
+            blurEffectView.snp.remakeConstraints {
                 $0.edges.equalToSuperview()
             }
         }
-        view = customConfiguration?(view, self) ?? view
-        content = view
-        return view
+        customConfiguration?(self)
     }
-
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        configuration?.updateLayers(for: self)
+    }
+    
     public func blurred(_ style: UIBlurEffect.Style) -> Self {
         blurStyle = style
         return self

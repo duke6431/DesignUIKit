@@ -53,3 +53,32 @@ extension UIEdgeInsets: SelfCustomizable {
         }
     }
 }
+
+extension NSDirectionalEdgeInsets: SelfCustomizable {
+    static func + (_ lhs: NSDirectionalEdgeInsets, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
+        lhs.custom { insets in
+            insets.top += rhs
+            insets.leading += rhs
+            insets.trailing += rhs
+            insets.bottom += rhs
+        }
+    }
+    
+    static func + (_ lhs: NSDirectionalEdgeInsets, _ rhs: NSDirectionalEdgeInsets) -> NSDirectionalEdgeInsets {
+        .init(
+            top: lhs.top + rhs.top,
+            leading: lhs.leading + rhs.leading,
+            bottom: lhs.bottom + rhs.bottom,
+            trailing: lhs.trailing + rhs.trailing
+        )
+    }
+    
+    func add(_ edges: NSDirectionalRectEdge, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
+        return custom { insets in
+            insets.top += edges.contains(.top) ? rhs : 0
+            insets.leading += edges.contains(.leading) ? rhs : 0
+            insets.trailing += edges.contains(.trailing) ? rhs : 0
+            insets.bottom += edges.contains(.bottom) ? rhs : 0
+        }
+    }
+}

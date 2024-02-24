@@ -50,7 +50,6 @@ class FilmItemView: FView, FCellReusable {
             note: note, duration: duration
         )
         self.isSecure = isSecure
-        configureViews()
     }
     
     func bind(_ value: FCellModeling) {
@@ -64,42 +63,41 @@ class FilmItemView: FView, FCellReusable {
         noteLabel?.superview?.isHidden = value.note?.isEmpty ?? true
     }
     
-    @FViewBuilder
-    override var body: FBody {
+    override var body: FBodyComponent {
         FZStack {
             FVStack(spacing: 0) {
                 FZStack {
                     FImage(url: .init(string: content.imageUrl))
-                        .with(\.shouldConstraintWithParent, setTo: false)
+                        .ratio(2)
                     FVStack {
                         FSpacer()
                         FHStack {
                             if let note = content.note, !note.isEmpty {
-                                FLabel(note)
-                                    .font(FontSystem.shared.font(with: .body))
-                                    .foreground(.white)
-                                    .customConfiguration { [weak self] view, _ in
-                                        self?.noteLabel = view
-                                        return view
-                                    }
-                                    .background(.systemBlue.withAlphaComponent(0.6))
-                                    .shaped(.roundedRectangle(cornerRadius: 8))
-                                    .insets(SpacingSystem.shared.spacing(.extraSmall))
-                                    .padding([.left, .bottom], SpacingSystem.shared.spacing(.extraSmall))
-                                
+                                FZStack {
+                                    FLabel(note)
+                                        .font(FontSystem.shared.font(with: .body))
+                                        .foreground(.white)
+                                        .shaped(.roundedRectangle(cornerRadius: 8))
+                                        .background(.systemBlue.withAlphaComponent(0.6))
+                                        .padding([.leading, .bottom], SpacingSystem.shared.spacing(.extraSmall))
+                                        .customConfiguration { [weak self] view in
+                                            self?.noteLabel = view
+                                        }
+                                }
                             }
                             FSpacer()
-                            FLabel(content.duration)
-                                .font(FontSystem.shared.font(with: .body))
-                                .foreground(.white)
-                                .customConfiguration { [weak self] view, _ in
-                                    self?.durationLabel = view
-                                    return view
-                                }
-                                .background(.lightGray.withAlphaComponent(0.3))
-                                .shaped(.roundedRectangle(cornerRadius: 8))
-                                .insets(SpacingSystem.shared.spacing(.extraSmall))
-                                .padding([.right, .bottom], SpacingSystem.shared.spacing(.extraSmall))
+                            FZStack {
+                                FLabel(content.duration)
+                                    .font(FontSystem.shared.font(with: .body))
+                                    .foreground(.white)
+                                    .customConfiguration { [weak self] view in
+                                        self?.durationLabel = view
+                                    }
+                                    .background(.lightGray.withAlphaComponent(0.3))
+                                    .shaped(.roundedRectangle(cornerRadius: 8))
+                                    .insets(SpacingSystem.shared.spacing(.extraSmall))
+                                    .padding([.trailing, .bottom], SpacingSystem.shared.spacing(.extraSmall))
+                            }
                         }
                     }
                 }
@@ -107,21 +105,21 @@ class FilmItemView: FView, FCellReusable {
                     FLabel(content.title.isEmpty ? "No title" : content.title)
                         .font(FontSystem.shared.font(with: .headline))
                         .foreground(.black)
+                        .insets(SpacingSystem.shared.spacing(.regular))
                         .lineLimit(2)
-                        .customConfiguration { [weak self] view, _ in
+                        .customConfiguration { [weak self] view in
                             self?.titleLabel = view
-                            return view
                         }
                     FSpacer()
                 }
                 .padding([.top, .bottom], SpacingSystem.shared.spacing(.small))
-                .padding([.left, .right], SpacingSystem.shared.spacing(.extraSmall) * 3)
+                .padding([.leading, .trailing], SpacingSystem.shared.spacing(.extraSmall) * 3)
             }
             .background(.white)
             .shaped(.roundedRectangle(cornerRadius: 16))
         }
         .shadow(.init(opacity: 0.6, color: .black))
-        .padding([.left, .right], SpacingSystem.shared.spacing(.regular))
+        .padding([.leading, .trailing], SpacingSystem.shared.spacing(.regular))
         .padding([.top, .bottom], SpacingSystem.shared.spacing(.regular))
     }
 }

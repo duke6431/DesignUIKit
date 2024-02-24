@@ -9,19 +9,8 @@ import UIKit
 import DesignExts
 import SnapKit
 
-public class FList: CommonTableView, FComponent {
-    public var shape: FShape?
-    public var opacity: CGFloat = 1
-    public var shadow: CALayer.ShadowConfiguration?
-    public var contentBackgroundColor: UIColor = .clear
-    
-    public var width: CGFloat?
-    public var height: CGFloat?
-    public var ratio: CGFloat?
-    public var containerPadding: UIEdgeInsets?
-    public var contentInsets: UIEdgeInsets?
-    public var shouldConstraintWithParent: Bool = true
-    public var customConfiguration: ((CommonTableView, FList) -> CommonTableView)?
+public class FList: CommonTableView, FConfigurable, FComponent {
+    public var customConfiguration: ((FList) -> Void)?
 
     public var onSelect: ((FListModel) -> Void)?
     public weak var content: CommonTableView?
@@ -29,63 +18,18 @@ public class FList: CommonTableView, FComponent {
     public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain) {
         super.init(map: [], headerMap: [], style: style)
         prototypes.forEach { register(FListCell.self, forCellReuseIdentifier: String(describing: $0)) }
+        loadConfiguration()
     }
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        alpha = opacity
-        if shouldConstraintWithParent, superview != nil {
-            snp.makeConstraints {
-                $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
-                $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)
-                $0.trailing.equalToSuperview().inset(containerPadding?.right ?? 0)
-                $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0)
-                if let ratio { $0.width.equalTo(snp.height).multipliedBy(ratio) }
-                if let width { $0.width.equalTo(width) }
-                if let height { $0.height.equalTo(height) }
-            }
-        }
-        _ = customConfiguration?(self, self)
+        configuration?.didMoveToSuperview(superview, with: self)
+        customConfiguration?(self)
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateLayers()
-    }
-    
-    func updateLayers() {
-        if let shape {
-            clipsToBounds = true
-            UIView.animate(withDuration: 0.2) {
-                switch shape {
-                case .circle:
-                    self.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
-                case .roundedRectangle(let cornerRadius, let corners):
-                    self.layer.maskedCorners = corners.caMask
-                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height) / 2)
-                }
-            }
-        }
-        if let shadow {
-            UIView.animate(withDuration: 0.2) {
-                self.layer.add(
-                    shadow: shadow.updated(
-                        \.path, with: UIBezierPath(rect: self.bounds).cgPath
-                    )
-                )
-            }
-        }
-    }
-    
-    public func frame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        self.width = width
-        self.height = height
-        return self
-    }
-    
-    @available(iOS, deprecated, message: "This function of FList and FGrid should not be called")
-    public func rendered() -> CommonTableView {
-        fatalError("Never call this function of FList!")
+        configuration?.updateLayers(for: self)
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,6 +41,10 @@ public class FList: CommonTableView, FComponent {
         cell.indexPath = indexPath
         cell.bind(item, highlight: keyword)
         return cell
+    }
+
+    open func loadConfiguration() {
+        configuration = .init()
     }
 }
 
@@ -155,7 +103,7 @@ public class FListCell: CommonTableView.Cell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
-        view.snp.makeConstraints {
+        view.snp.remakeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()

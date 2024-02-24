@@ -9,20 +9,8 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public class FGrid: CommonCollection.View, FComponent {
-    public var shape: FShape?
-    public var opacity: CGFloat = 1
-    public var shadow: CALayer.ShadowConfiguration?
-    public var contentBackgroundColor: UIColor = .clear
-    
-    public var width: CGFloat?
-    public var height: CGFloat?
-    public var ratio: CGFloat?
-    public var containerPadding: UIEdgeInsets?
-    public var contentInsets: UIEdgeInsets?
-    public var shouldConstraintWithParent: Bool = true
-    public var customConfiguration: ((CommonCollection.View, FGrid) -> CommonCollection.View)?
-    
+public class FGrid: CommonCollection.View, FConfigurable, FComponent {
+    public var customConfiguration: ((FGrid) -> Void)?
     public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?
     
@@ -37,65 +25,20 @@ public class FGrid: CommonCollection.View, FComponent {
         headerPrototypes?.forEach {
             register(FGridHeader.self, forSupplementaryViewOfKind: ReusableKind.header.rawValue, withReuseIdentifier: String(describing: $0))
         }
+        loadConfiguration()
     }
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        alpha = opacity
-        if shouldConstraintWithParent, superview != nil {
-            snp.makeConstraints {
-                $0.top.equalToSuperview().inset(containerPadding?.top ?? 0)
-                $0.leading.equalToSuperview().inset(containerPadding?.left ?? 0)
-                $0.trailing.equalToSuperview().inset(containerPadding?.right ?? 0)
-                $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0)
-                if let ratio { $0.width.equalTo(snp.height).multipliedBy(ratio) }
-                if let width { $0.width.equalTo(width) }
-                if let height { $0.height.equalTo(height) }
-            }
-        }
-        _ = customConfiguration?(self, self)
+        configuration?.didMoveToSuperview(superview, with: self)
+        customConfiguration?(self)
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateLayers()
+        configuration?.updateLayers(for: self)
     }
-    
-    func updateLayers() {
-        if let shape {
-            clipsToBounds = true
-            UIView.animate(withDuration: 0.2) {
-                switch shape {
-                case .circle:
-                    self.layer.cornerRadius = min(self.bounds.width, self.bounds.height) / 2
-                case .roundedRectangle(let cornerRadius, let corners):
-                    self.layer.maskedCorners = corners.caMask
-                    self.layer.cornerRadius = min(cornerRadius, min(self.bounds.width, self.bounds.height) / 2)
-                }
-            }
-        }
-        if let shadow {
-            UIView.animate(withDuration: 0.2) {
-                self.layer.add(
-                    shadow: shadow.updated(
-                        \.path, with: UIBezierPath(rect: self.bounds).cgPath
-                    )
-                )
-            }
-        }
-    }
-    
-    public func frame(width: CGFloat? = nil, height: CGFloat? = nil) -> Self {
-        self.width = width
-        self.height = height
-        return self
-    }
-    
-    @available(iOS, deprecated, message: "This function of FList and FGrid should not be called")
-    public func rendered() -> CommonCollection.View {
-        fatalError("Never call this function of FList!")
-    }
-    
+
     override func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
         // swiftlint:disable:next line_length
         let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(
@@ -129,9 +72,14 @@ public class FGrid: CommonCollection.View, FComponent {
         }
         return dataSource
     }
+    
+    open func loadConfiguration() {
+        configuration = .init()
+    }
 }
 
 public extension FGrid {
+    
     override func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel) {
         super.didSelectCell(at: indexPath, with: data)
         guard let data = data as? FGridModel else { return }
@@ -167,7 +115,7 @@ public class FGridHeader: CommonCollection.ReusableView {
     open func install<T: FCellReusable & UIView>(view: T) {
         backgroundColor = .clear
         addSubview(view)
-        view.snp.makeConstraints {
+        view.snp.remakeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
@@ -207,7 +155,7 @@ public class FGridCell: CommonCollection.Cell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
-        view.snp.makeConstraints {
+        view.snp.remakeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()

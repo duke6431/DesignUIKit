@@ -41,8 +41,10 @@ public class FSwitch: UIView {
             .background(thumbColor)
             .shaped(.circle)
             .shadow(.init(opacity: 0.4, radius: 3))
-            .with(\.shouldConstraintWithParent, setTo: false)
-        view.snp.makeConstraints {
+            .customized {
+                $0.configuration?.shouldConstraintWithParent = false
+            }
+        view.snp.remakeConstraints {
             $0.width.equalTo(view.snp.height)
         }
         return view
@@ -57,7 +59,7 @@ public class FSwitch: UIView {
         addGestureRecognizer(tapGesture)
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(onSwipe))
         addGestureRecognizer(swipeGesture)
-        snp.makeConstraints {
+        snp.remakeConstraints {
             $0.width.equalTo(snp.height).multipliedBy(1.8)
         }
         configureViews()
@@ -65,7 +67,7 @@ public class FSwitch: UIView {
     
     public func configureViews() {
         addSubview(thumbView)
-        thumbView.snp.makeConstraints {
+        thumbView.snp.remakeConstraints {
             $0.verticalEdges.equalToSuperview().inset(2)
             $0.leading.equalToSuperview().inset(2).priority(.medium)
             thumbViewTrailing = $0.trailing.equalToSuperview().inset(2).constraint
@@ -84,17 +86,15 @@ public class FSwitch: UIView {
     
     public var body: UIView {
         FZStack {
-            FImage(image: statusImageOff).contentMode(.scaleAspectFill).customConfiguration { [weak self] view, _ in
+            FImage(image: statusImageOff).contentMode(.scaleAspectFill).customConfiguration { [weak self] view in
                 self?.statusImage = view
-                return view
             }
             if let statusImageOn {
                 FImage(image: statusImageOn).contentMode(.scaleAspectFill)
             }
-        }.customConfiguration { view, container in
-            container.layer.borderColor = UIColor.lightGray.cgColor
-            container.layer.borderWidth = 0.5
-            return view
+        }.customConfiguration { view in
+            view.layer.borderColor = UIColor.lightGray.cgColor
+            view.layer.borderWidth = 0.5
         }.shaped(.circle)
     }
     
