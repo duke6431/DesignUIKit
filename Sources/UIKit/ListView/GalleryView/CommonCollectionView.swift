@@ -11,7 +11,7 @@ import UIKit
 @available(iOS 13.0, *)
 public extension CommonCollection {
     class View: UICollectionView {
-        public weak var commonDelegate: CommonSlidingViewDelegate?
+        public weak var commonDelegate: CommonCollectionViewDelegate?
 
         let itemMapper: [CommonCollectionCellModel.Type]
         var itemCache: CommonCollectionCellModel.Type?

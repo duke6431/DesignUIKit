@@ -23,6 +23,7 @@ public class FGrid: CommonCollection.View, FComponent {
     public var shouldConstraintWithParent: Bool = true
     public var customConfiguration: ((CommonCollection.View, FGrid) -> CommonCollection.View)?
     
+    public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?
     
     public init(
@@ -127,6 +128,14 @@ public class FGrid: CommonCollection.View, FComponent {
             return header
         }
         return dataSource
+    }
+}
+
+public extension FGrid {
+    override func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel) {
+        super.didSelectCell(at: indexPath, with: data)
+        guard let data = data as? FGridModel else { return }
+        onSelect?(data)
     }
 }
 

@@ -8,7 +8,7 @@
 import DesignCore
 import UIKit
 
-@objc public protocol CommonSlidingViewDelegate: AnyObject {
+@objc public protocol CommonCollectionViewDelegate: AnyObject {
     @objc optional func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel)
 }
 

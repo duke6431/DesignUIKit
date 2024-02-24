@@ -23,6 +23,7 @@ public class FList: CommonTableView, FComponent {
     public var shouldConstraintWithParent: Bool = true
     public var customConfiguration: ((CommonTableView, FList) -> CommonTableView)?
 
+    public var onSelect: ((FListModel) -> Void)?
     public weak var content: CommonTableView?
 
     public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain) {
@@ -96,6 +97,14 @@ public class FList: CommonTableView, FComponent {
         cell.indexPath = indexPath
         cell.bind(item, highlight: keyword)
         return cell
+    }
+}
+
+public extension FList {
+    override func didSelectCell(at indexPath: IndexPath, with model: CommonCellModel) {
+        super.didSelectCell(at: indexPath, with: model)
+        guard let model = model as? FListModel else { return }
+        onSelect?(model)
     }
 }
 
