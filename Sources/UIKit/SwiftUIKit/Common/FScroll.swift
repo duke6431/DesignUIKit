@@ -11,12 +11,12 @@ import DesignCore
 
 public class FScroll: BaseScrollView, FConfigurable, FComponent {
     public var axis: NSLayoutConstraint.Axis
-    public var contentViews: [UIView] = []
+    public var contentViews: [FBodyComponent] = []
     public var customConfiguration: ((FScroll) -> Void)?
 
     public init(
         axis: NSLayoutConstraint.Axis,
-        contentView: UIView? = nil
+        contentView: FBodyComponent? = nil
     ) {
         self.axis = axis
         if let contentView {
@@ -42,7 +42,8 @@ public class FScroll: BaseScrollView, FConfigurable, FComponent {
         var top = topAnchor
         var leading = leadingAnchor
         contentViews.forEach { view in
-            addSubview(view)
+            addSubview(view.attachToParent(false))
+            view.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate {
                 switch axis {
                 case .horizontal:
