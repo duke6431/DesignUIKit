@@ -9,13 +9,13 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public class FViewController: BaseView, FConfigurable, FComponent {
+public class FViewController<ViewController: UIViewController>: BaseView, FConfigurable, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
 
     public weak var parentViewController: UIViewController?
-    public var contentViewController: UIViewController
+    public var contentViewController: ViewController
     
-    public init(_ contentViewController: UIViewController) {
+    public init(_ contentViewController: ViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
     }
