@@ -48,10 +48,12 @@ public class FConfiguration: Chainable {
                 $0.leading.equalToSuperview().inset(containerPadding?.leading ?? 0)
                 $0.trailing.equalToSuperview().inset(containerPadding?.trailing ?? 0)
                 $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0)
-                if let width, width > 0 { $0.width.equalTo(width) }
-                if let height, height > 0 { $0.height.equalTo(height) }
-                if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio) }
             }
+        }
+        target.snp.makeConstraints {
+            if let width, width > 0 { $0.width.equalTo(width) }
+            if let height, height > 0 { $0.height.equalTo(height) }
+            if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio) }
         }
     }
     
