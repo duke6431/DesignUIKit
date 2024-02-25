@@ -39,11 +39,6 @@ open class FView: BaseView, FConfigurable, FComponent {
 }
 
 open class FScene<ViewModel: BaseViewModel>: BaseViewController<ViewModel> {
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        configureViews()
-    }
-    
     open override func configureViews() {
         super.configureViews()
         view.addSubview(body)
