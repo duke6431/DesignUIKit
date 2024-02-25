@@ -15,7 +15,7 @@ public class FViewController: BaseView, FConfigurable, FComponent {
     public weak var parentViewController: UIViewController?
     public var contentViewController: UIViewController
     
-    init(_ contentViewController: UIViewController) {
+    public init(_ contentViewController: UIViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
     }

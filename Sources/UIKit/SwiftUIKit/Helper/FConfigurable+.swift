@@ -57,4 +57,19 @@ public extension FConfigurable {
         configuration?.with(\.shouldConstraintWithParent, setTo: status)
         return self
     }
+    
+    func frame(height: CGFloat) -> Self {
+        configuration?.with(\.height, setTo: height)
+        return self
+    }
+    
+    func frame(width: CGFloat) -> Self {
+        configuration?.with(\.width, setTo: width)
+        return self
+    }
+    
+    func frame(width: CGFloat, height: CGFloat) -> Self {
+        configuration?.with(\.height, setTo: height).with(\.width, setTo: width)
+        return self
+    }
 }

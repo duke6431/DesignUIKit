@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public class FButton: BaseButton, FComponent, FStylable, FContentConstraintable {
+public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContentConstraintable {
     public var customConfiguration: ((FButton) -> Void)?
     
     public init(

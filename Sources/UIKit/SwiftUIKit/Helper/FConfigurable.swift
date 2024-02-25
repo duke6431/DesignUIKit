@@ -13,6 +13,9 @@ import SnapKit
 public protocol FConfigurable: AnyObject, Chainable {
     var configuration: FConfiguration? { get }
     
+    func frame(height: CGFloat) -> Self
+    func frame(width: CGFloat) -> Self
+    func frame(width: CGFloat, height: CGFloat) -> Self
     func ratio(_ ratio: CGFloat) -> Self
     func padding() -> Self
     func padding(_ padding: CGFloat) -> Self
