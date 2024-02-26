@@ -38,6 +38,8 @@ public class FScroll: BaseScrollView, FConfigurable, FComponent {
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        alwaysBounceVertical = true
+        alwaysBounceHorizontal = true
         configuration?.didMoveToSuperview(superview, with: self)
         var top = topAnchor
         var leading = leadingAnchor

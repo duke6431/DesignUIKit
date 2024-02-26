@@ -10,6 +10,14 @@ import DesignExts
 import DesignCore
 
 public extension FConfigurable {
+    func offset(x: CGFloat, y: CGFloat) -> Self {
+        configuration?.offset = .init(
+            x: x + (configuration?.offset.x ?? 0),
+            y: y + (configuration?.offset.y ?? 0)
+        )
+        return self
+    }
+    
     func padding() -> Self {
         self.padding(8)
     }

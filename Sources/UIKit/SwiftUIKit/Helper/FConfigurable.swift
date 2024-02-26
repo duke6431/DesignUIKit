@@ -20,6 +20,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     func padding() -> Self
     func padding(_ padding: CGFloat) -> Self
     func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    func offset(x: CGFloat, y: CGFloat) -> Self
     func background(_ color: UIColor) -> Self
     func shaped(_ shape: FShape) -> Self
     func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
@@ -30,6 +31,7 @@ public protocol FConfigurable: AnyObject, Chainable {
 public class FConfiguration: Chainable {
     var width: CGFloat?
     var height: CGFloat?
+    var offset: CGPoint = .zero
     var shadow: CALayer.ShadowConfiguration?
     var shape: FShape?
     var backgroundColor: UIColor = .clear
@@ -55,6 +57,7 @@ public class FConfiguration: Chainable {
             if let height, height > 0 { $0.height.equalTo(height) }
             if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio) }
         }
+        target.transform = .init(translationX: offset.x, y: offset.y)
     }
     
     func updateLayers(for target: UIView) {
