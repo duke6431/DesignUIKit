@@ -10,10 +10,14 @@ import DesignExts
 import DesignCore
 
 public extension FConfigurable {
-    func offset(x: CGFloat, y: CGFloat) -> Self {
+    func offset(_ size: CGSize) -> Self {
+        offset(width: size.width, height: size.height)
+    }
+    
+    func offset(width: CGFloat, height: CGFloat) -> Self {
         configuration?.offset = .init(
-            x: x + (configuration?.offset.x ?? 0),
-            y: y + (configuration?.offset.y ?? 0)
+            width: width + (configuration?.offset.width ?? 0),
+            height: height + (configuration?.offset.height ?? 0)
         )
         return self
     }
