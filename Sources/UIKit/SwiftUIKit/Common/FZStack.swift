@@ -22,13 +22,12 @@ public class FZStack: BaseView, FConfigurable, FComponent {
         super.init(frame: .zero)
     }
     
-    init(contentViews: FBody) {
-        self.contentViews = contentViews
-        super.init(frame: .zero)
+    public convenience init(@FViewBuilder _ builder: () -> FBody) {
+        self.init(contentViews: builder())
     }
     
-    public init(@FViewBuilder _ builder: () -> FBody) {
-        self.contentViews = builder()
+    public init(contentViews: FBody) {
+        self.contentViews = contentViews
         super.init(frame: .zero)
     }
     
