@@ -30,17 +30,17 @@ public protocol FConfigurable: AnyObject, Chainable {
 }
 
 public class FConfiguration: Chainable {
-    var width: CGFloat?
-    var height: CGFloat?
-    var offset: CGSize = .zero
-    var shadow: CALayer.ShadowConfiguration?
-    var shape: FShape?
-    var backgroundColor: UIColor = .clear
-    var containerPadding: NSDirectionalEdgeInsets?
-    var ratio: CGFloat?
-    var opacity: CGFloat = 1
+    public var width: CGFloat?
+    public var height: CGFloat?
+    public var offset: CGSize = .zero
+    public var shadow: CALayer.ShadowConfiguration?
+    public var shape: FShape?
+    public var backgroundColor: UIColor = .clear
+    public var containerPadding: NSDirectionalEdgeInsets?
+    public var ratio: CGFloat?
+    public var opacity: CGFloat = 1
 
-    var shouldConstraintWithParent: Bool = true
+    public var shouldConstraintWithParent: Bool = true
     
     func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
         target.backgroundColor = backgroundColor
