@@ -47,10 +47,10 @@ public class FConfiguration: Chainable {
         target.alpha = opacity
         if shouldConstraintWithParent, superview != nil {
             target.snp.remakeConstraints {
-                $0.top.equalToSuperview().inset(containerPadding?.top ?? 0).offset(offset.height)
-                $0.leading.equalToSuperview().inset(containerPadding?.leading ?? 0).offset(offset.width)
-                $0.trailing.equalToSuperview().inset(containerPadding?.trailing ?? 0).offset(offset.width)
-                $0.bottom.equalToSuperview().inset(containerPadding?.bottom ?? 0).offset(offset.height)
+                $0.top.equalToSuperview().offset(offset.height + (containerPadding?.top ?? 0))
+                $0.leading.equalToSuperview().offset(offset.width + (containerPadding?.leading ?? 0))
+                $0.trailing.equalToSuperview().offset(offset.width - (containerPadding?.trailing ?? 0))
+                $0.bottom.equalToSuperview().offset(offset.height - (containerPadding?.bottom ?? 0))
             }
         }
         target.snp.makeConstraints {
