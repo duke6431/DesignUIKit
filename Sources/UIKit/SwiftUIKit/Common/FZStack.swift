@@ -11,7 +11,7 @@ import SnapKit
 
 public class FZStack: BaseView, FConfigurable, FComponent {
     public var customConfiguration: ((FZStack) -> Void)?
-    var contentViews: [UIView]
+    public var contentViews: [FBodyComponent]
     
     public init(contentView: FBodyComponent? = nil) {
         if let contentView {
