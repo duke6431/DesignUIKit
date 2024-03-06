@@ -42,7 +42,7 @@ public class FConfiguration: Chainable {
 
     public var shouldConstraintWithParent: Bool = true
     
-    func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
+    public func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
         target.backgroundColor = backgroundColor
         target.alpha = opacity
         if shouldConstraintWithParent, superview != nil {
@@ -60,7 +60,7 @@ public class FConfiguration: Chainable {
         }
     }
     
-    func updateLayers(for target: UIView) {
+    public func updateLayers(for target: UIView) {
         if let shape {
             target.clipsToBounds = true
             UIView.animate(withDuration: 0.2) {
