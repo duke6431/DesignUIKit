@@ -14,12 +14,14 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(
-        _ textPublisher: AnyPublisher<String, Never>
+        _ textPublisher: AnyPublisher<String, Never>,
+        action: @escaping () -> Void
     ) {
         self.init(style: .system)
         self.bind(to: textPublisher) { button, title in
             button.setTitle(title, for: .normal)
         }
+        addAction(for: .touchUpInside, action)
     }
     
     public convenience init(
