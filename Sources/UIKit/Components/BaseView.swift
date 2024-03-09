@@ -111,30 +111,13 @@ open class BaseImageView: UIImageView, Combinable {
 }
 
 open class BaseButton: UIButton, Combinable {
-    private var _buttonType: UIButton.ButtonType = .system
-    
     public var cancellables = Set<AnyCancellable>()
     
-    public override init(frame: CGRect = .zero) {
-        super.init(frame: .zero)
+    public convenience init(style buttonType: UIButton.ButtonType) {
+        self.init(type: buttonType)
         loadConfiguration()
     }
-    
-    public convenience init(type buttonType: UIButton.ButtonType) {
-        self.init(frame: .zero)
-        self._buttonType = buttonType
-    }
 
-    
-    @available(iOS, unavailable)
-    public required init?(coder: NSCoder) {
-        fatalError()
-    }
-
-    open override var buttonType: UIButton.ButtonType {
-        _buttonType
-    }
-    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import Nuke
 import SnapKit
 import DesignCore
@@ -36,6 +37,20 @@ public class FImage: BaseImageView, FConfigurable, FComponent, FContentConstrain
         self.init(
             image: .init(named: named, in: bundle, with: nil)
         )
+    }
+    
+    public init(
+        _ systemImagePublisher: AnyPublisher<String, Never>
+    ) {
+        super.init(frame: .zero)
+        self.bind(to: systemImagePublisher) { imageView, name in imageView.image = .init(systemName: name) }
+    }
+    
+    public init(
+        _ imagePublisher: AnyPublisher<UIImage, Never>
+    ) {
+        super.init(frame: .zero)
+        self.bind(to: imagePublisher) { imageView, image in imageView.image = image }
     }
     
     public override func didMoveToSuperview() {

@@ -20,6 +20,13 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
         self.text = text
     }
     
+    public init(
+        _ textPublisher: AnyPublisher<String, Never>
+    ) {
+        super.init(frame: .zero)
+        self.bind(to: textPublisher) { label, text in label.text = text }
+    }
+    
     public init(_ attributedText: NSAttributedString) {
         super.init(frame: .zero)
         self.attributedText = attributedText

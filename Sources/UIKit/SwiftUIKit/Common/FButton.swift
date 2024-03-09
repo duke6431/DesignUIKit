@@ -6,23 +6,33 @@
 //
 
 import UIKit
+import Combine
 import DesignCore
 import SnapKit
 
 public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContentConstraintable {
     public var customConfiguration: ((FButton) -> Void)?
     
-    public init(
+    public convenience init(
+        _ textPublisher: AnyPublisher<String, Never>
+    ) {
+        self.init(style: .system)
+        self.bind(to: textPublisher) { button, title in
+            button.setTitle(title, for: .normal)
+        }
+    }
+    
+    public convenience init(
         _ text: String = "",
         action: @escaping () -> Void
     ) {
-        super.init(frame: .zero)
+        self.init(style: .system)
         self.setTitle(text, for: .normal)
         addAction(for: .touchUpInside, action)
     }
 
-    public init(@FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
-        super.init(frame: .zero)
+    public convenience init(@FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
+        self.init(style: .system)
         addAction(for: .touchUpInside, action)
         label().forEach { label in
             addSubview(label)
