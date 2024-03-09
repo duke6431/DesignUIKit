@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import DesignCore
 import DesignExts
 
@@ -13,6 +14,7 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent {
     public var customConfiguration: ((FGrid) -> Void)?
     public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?
+    public var cancellables = Set<AnyCancellable>()
     
     public init(
         prototypes: [(FCellReusable & UIView).Type],

@@ -9,6 +9,7 @@ import UIKit
 import DesignCore
 import DesignExts
 import SnapKit
+import Combine
 
 public protocol FConfigurable: AnyObject, Chainable {
     var configuration: FConfiguration? { get }
@@ -41,6 +42,9 @@ public class FConfiguration: Chainable {
     public var opacity: CGFloat = 1
 
     public var shouldConstraintWithParent: Bool = true
+    public weak var owner: UIView?
+    
+    private var cancellables = Set<AnyCancellable>()
     
     public func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
         target.backgroundColor = backgroundColor
@@ -82,5 +86,26 @@ public class FConfiguration: Chainable {
                 )
             }
         }
+    }
+
+    @discardableResult
+    func bind<Subject, Failure>(
+        to publisher: AnyPublisher<Subject, Failure>,
+        next: @escaping (UIView, Subject) -> Void,
+        error: ((Failure) -> Void)? = nil,
+        complete: (() -> Void)? = nil
+    ) -> Self {
+        publisher.sink { completion in
+            switch completion {
+            case .failure(let failure):
+                error?(failure)
+            case .finished:
+                complete?()
+            }
+        } receiveValue: { [weak self] subject in
+            guard let owner = self?.owner else { return }
+            next(owner, subject)
+        }.store(in: &cancellables)
+        return self
     }
 }

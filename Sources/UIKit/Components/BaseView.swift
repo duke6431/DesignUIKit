@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Combine
 
-open class BaseView: UIView {
+open class BaseView: UIView, Combinable {
+    public var cancellables = Set<AnyCancellable>()
+    
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -23,7 +26,9 @@ open class BaseView: UIView {
     }
 }
 
-open class BaseStackView: UIStackView {
+open class BaseStackView: UIStackView, Combinable {
+    public var cancellables = Set<AnyCancellable>()
+    
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -48,10 +53,13 @@ open class BaseStackView: UIStackView {
     
     open func loadConfiguration() {
         configuration = .init()
+        configuration?.owner = self
     }
 }
 
-open class BaseScrollView: UIScrollView {
+open class BaseScrollView: UIScrollView, Combinable {
+    public var cancellables = Set<AnyCancellable>()
+    
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -69,10 +77,13 @@ open class BaseScrollView: UIScrollView {
     
     open func loadConfiguration() {
         configuration = .init()
+        configuration?.owner = self
     }
 }
 
-open class BaseImageView: UIImageView {
+open class BaseImageView: UIImageView, Combinable {
+    public var cancellables = Set<AnyCancellable>()
+    
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -95,11 +106,14 @@ open class BaseImageView: UIImageView {
 
     open func loadConfiguration() {
         configuration = .init()
+        configuration?.owner = self
     }
 }
 
-open class BaseButton: UIButton {
+open class BaseButton: UIButton, Combinable {
     private var _buttonType: UIButton.ButtonType = .system
+    
+    public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
@@ -123,11 +137,14 @@ open class BaseButton: UIButton {
     
     open func loadConfiguration() {
         configuration = .init()
+        configuration?.owner = self
     }
 }
 
-open class BaseLabel: UILabel {
+open class BaseLabel: UILabel, Combinable {
     var contentInsets: UIEdgeInsets = .zero
+    
+    public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
@@ -141,6 +158,7 @@ open class BaseLabel: UILabel {
     
     open func loadConfiguration() {
         configuration = .init()
+        configuration?.owner = self
     }
     
     open override func drawText(in rect: CGRect) {

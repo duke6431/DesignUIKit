@@ -6,12 +6,40 @@
 //
 
 import UIKit
+import Combine
 import DesignCore
 import DesignExts
 
-public protocol FComponent: AnyObject, Chainable {
+public protocol Combinable: AnyObject {
+    var cancellables: Set<AnyCancellable> { get set }
+}
+
+public protocol FComponent: AnyObject, Chainable, Combinable {
     var configuration: FConfiguration? { get }
     var customConfiguration: ((Self) -> Void)? { get set }
+}
+
+public extension FComponent where Self: UIView, Self: Combinable {
+    @discardableResult
+    func bind<Subject, Failure>(
+        to publisher: AnyPublisher<Subject, Failure>,
+        next: @escaping (Self, Subject) -> Void,
+        error: ((Failure) -> Void)? = nil,
+        complete: (() -> Void)? = nil
+    ) -> Self {
+        publisher.sink { completion in
+            switch completion {
+            case .failure(let failure):
+                error?(failure)
+            case .finished:
+                complete?()
+            }
+        } receiveValue: { [weak self] subject in
+            guard let self = self else { return }
+            next(self, subject)
+        }.store(in: &cancellables)
+        return self
+    }
 }
 
 public extension FComponent {

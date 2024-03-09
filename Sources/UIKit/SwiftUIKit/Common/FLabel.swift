@@ -8,6 +8,7 @@
 import UIKit
 import DesignCore
 import SnapKit
+import Combine
 
 public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FContentAvailable {
     public var customConfiguration: ((FLabel) -> Void)?

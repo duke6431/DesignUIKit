@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import DesignExts
 import SnapKit
 
@@ -14,6 +15,8 @@ public class FList: CommonTableView, FConfigurable, FComponent {
 
     public var onSelect: ((FListModel) -> Void)?
     public weak var content: CommonTableView?
+    
+    public var cancellables = Set<AnyCancellable>()
 
     public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain) {
         super.init(map: [], headerMap: [], style: style)

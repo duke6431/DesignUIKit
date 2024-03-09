@@ -9,6 +9,7 @@ import UIKit
 import DesignExts
 import DesignCore
 import SnapKit
+import Combine
 
 public typealias FBodyComponent = UIView & FConfigurable
 public typealias FBody = [FBodyComponent]
@@ -16,7 +17,7 @@ public typealias FViewBuilder = FBuilder<FBodyComponent>
 
 open class FView: BaseView, FConfigurable, FComponent {
     public var customConfiguration: ((FView) -> Void)?
-
+    
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configureViews()
