@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 import DesignCore
 import DesignExts
 
@@ -28,6 +29,9 @@ public class FViewController<ViewController: UIViewController>: BaseView, FConfi
         addSubview(contentViewController.view)
         parentViewController.addChild(contentViewController)
         contentViewController.didMove(toParent: parentViewController)
+        contentViewController.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         customConfiguration?(self)
     }
     
