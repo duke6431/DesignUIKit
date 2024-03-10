@@ -34,7 +34,8 @@ public class FSpacer: BaseView, FConfigurable, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        add(blurStyle: .systemUltraThinMaterial)
+        blurView = add(blurStyle: blurStyle ?? .systemUltraThinMaterial)
+        blurView?.alpha = blurStyle != nil ? 1 : 0
         customConfiguration?(self)
     }
     
@@ -43,17 +44,15 @@ public class FSpacer: BaseView, FConfigurable, FComponent {
         configuration?.updateLayers(for: self)
     }
     
-    public func add(blurStyle: UIBlurEffect.Style) {
+    public func add(blurStyle: UIBlurEffect.Style) -> UIVisualEffectView {
         let blurEffectView = UIVisualEffectView(
-            effect: UIVibrancyEffect(
-                blurEffect: .init(style: blurStyle)
-            )
+            effect: UIBlurEffect(style: blurStyle)
         )
-        blurView = blurEffectView
         addSubview(blurEffectView)
         blurEffectView.snp.remakeConstraints {
             $0.edges.equalToSuperview()
         }
+        return blurEffectView
     }
     
     @discardableResult
