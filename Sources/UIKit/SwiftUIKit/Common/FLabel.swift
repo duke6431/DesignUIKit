@@ -54,10 +54,12 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
     }
     
     @discardableResult public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
-        with(\.font, setTo: font)
+        self.font = font
+        return self
     }
 
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
-        with(\.textColor, setTo: color)
+        self.textColor = color
+        return self
     }
 }
