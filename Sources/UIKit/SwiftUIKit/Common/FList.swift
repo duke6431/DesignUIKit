@@ -58,7 +58,7 @@ public extension FList {
         onSelect?(model)
     }
     
-    func onSelect(_ action: @escaping (FListModel) -> Void) -> Self {
+    @discardableResult func onSelect(_ action: @escaping (FListModel) -> Void) -> Self {
         onSelect = action
         return self
     }

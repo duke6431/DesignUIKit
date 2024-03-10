@@ -40,7 +40,7 @@ public class FViewController<ViewController: UIViewController>: BaseView, FConfi
         configuration?.updateLayers(for: self)
     }
     
-    public func parent(_ viewController: UIViewController) -> Self {
+    @discardableResult public func parent(_ viewController: UIViewController) -> Self {
         parentViewController = viewController
         return self
     }

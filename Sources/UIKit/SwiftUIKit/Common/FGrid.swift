@@ -88,7 +88,7 @@ public extension FGrid {
         onSelect?(data)
     }
     
-    func onSelect(_ action: @escaping (FGridModel) -> Void) -> Self {
+    @discardableResult func onSelect(_ action: @escaping (FGridModel) -> Void) -> Self {
         onSelect = action
         return self
     }

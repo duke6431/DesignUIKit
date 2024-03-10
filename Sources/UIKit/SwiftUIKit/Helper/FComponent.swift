@@ -43,13 +43,16 @@ public extension FComponent where Self: UIView, Self: Combinable {
 }
 
 public extension FComponent {
+    @discardableResult
     func customConfiguration(_ configuration: ((Self) -> Void)?) -> Self {
         with(\.customConfiguration, setTo: configuration)
     }
 }
 
 public protocol FContentConstraintable: AnyObject {
+    @discardableResult
     func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self
+    @discardableResult
     func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self
 }
 
@@ -66,9 +69,9 @@ public extension FContentConstraintable where Self: UIView {
 }
 
 public protocol FContentAvailable: FContentConstraintable {
-    func insets(_ insets: UIEdgeInsets) -> Self
-    func insets(_ insets: CGFloat) -> Self
-    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self
+    @discardableResult func insets(_ insets: UIEdgeInsets) -> Self
+    @discardableResult func insets(_ insets: CGFloat) -> Self
+    @discardableResult func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self
 }
 
 public extension FContentAvailable where Self: BaseLabel {
@@ -88,8 +91,8 @@ public extension FContentAvailable where Self: BaseLabel {
 }
 
 public protocol FStylable: AnyObject, Chainable {
-    func font(_ font: UIFont) -> Self
-    func foreground(_ color: UIColor) -> Self
+    @discardableResult func font(_ font: UIFont) -> Self
+    @discardableResult func foreground(_ color: UIColor) -> Self
 }
 
 public extension FStylable where Self: UILabel {

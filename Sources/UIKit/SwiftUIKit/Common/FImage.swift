@@ -72,7 +72,7 @@ public class FImage: BaseImageView, FConfigurable, FComponent, FContentConstrain
         configuration?.updateLayers(for: self)
     }
     
-    public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
+    @discardableResult public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
         self.contentMode = contentMode
         return self
     }

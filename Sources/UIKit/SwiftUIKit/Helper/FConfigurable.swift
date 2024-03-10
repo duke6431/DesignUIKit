@@ -14,20 +14,20 @@ import Combine
 public protocol FConfigurable: AnyObject, Chainable {
     var configuration: FConfiguration? { get }
     
-    func frame(height: CGFloat) -> Self
-    func frame(width: CGFloat) -> Self
-    func frame(width: CGFloat, height: CGFloat) -> Self
-    func ratio(_ ratio: CGFloat) -> Self
-    func padding() -> Self
-    func padding(_ padding: CGFloat) -> Self
-    func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
-    func offset(_ size: CGSize) -> Self
-    func offset(width: CGFloat, height: CGFloat) -> Self
-    func background(_ color: UIColor) -> Self
-    func shaped(_ shape: FShape) -> Self
-    func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
-    func attachToParent(_ status: Bool) -> Self
-    func opacity(_ opacity: CGFloat) -> Self
+    @discardableResult func frame(height: CGFloat) -> Self
+    @discardableResult func frame(width: CGFloat) -> Self
+    @discardableResult func frame(width: CGFloat, height: CGFloat) -> Self
+    @discardableResult func ratio(_ ratio: CGFloat) -> Self
+    @discardableResult func padding() -> Self
+    @discardableResult func padding(_ padding: CGFloat) -> Self
+    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    @discardableResult func offset(_ size: CGSize) -> Self
+    @discardableResult func offset(width: CGFloat, height: CGFloat) -> Self
+    @discardableResult func background(_ color: UIColor) -> Self
+    @discardableResult func shaped(_ shape: FShape) -> Self
+    @discardableResult func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
+    @discardableResult func attachToParent(_ status: Bool) -> Self
+    @discardableResult func opacity(_ opacity: CGFloat) -> Self
 }
 
 public class FConfiguration: Chainable {

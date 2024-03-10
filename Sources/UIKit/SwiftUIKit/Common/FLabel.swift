@@ -43,12 +43,12 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
         configuration?.updateLayers(for: self)
     }
 
-    public func textAlignment(_ alignment: NSTextAlignment) -> Self {
+    @discardableResult public func textAlignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
         return self
     }
 
-    public func lineLimit(_ lineLimit: Int = 1) -> Self {
+    @discardableResult public func lineLimit(_ lineLimit: Int = 1) -> Self {
         self.numberOfLines = lineLimit
         return self
     }
