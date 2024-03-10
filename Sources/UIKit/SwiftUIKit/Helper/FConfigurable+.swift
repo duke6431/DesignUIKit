@@ -10,11 +10,11 @@ import DesignExts
 import DesignCore
 
 public extension FConfigurable {
-    func offset(_ size: CGSize) -> Self {
+    @discardableResult func offset(_ size: CGSize) -> Self {
         offset(width: size.width, height: size.height)
     }
     
-    func offset(width: CGFloat, height: CGFloat) -> Self {
+    @discardableResult func offset(width: CGFloat, height: CGFloat) -> Self {
         configuration?.offset = .init(
             width: width + (configuration?.offset.width ?? 0),
             height: height + (configuration?.offset.height ?? 0)
@@ -22,65 +22,65 @@ public extension FConfigurable {
         return self
     }
     
-    func padding() -> Self {
+    @discardableResult func padding() -> Self {
         self.padding(8)
     }
     
-    func padding(_ insets: NSDirectionalEdgeInsets) -> Self {
+    @discardableResult func padding(_ insets: NSDirectionalEdgeInsets) -> Self {
         configuration?.containerPadding = (configuration?.containerPadding ?? .zero) + insets
         return self
     }
     
-    func padding(_ padding: CGFloat) -> Self {
+    @discardableResult func padding(_ padding: CGFloat) -> Self {
         self.padding(.all, padding)
     }
     
-    func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self {
+    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self {
         configuration?.containerPadding = (configuration?.containerPadding ?? .zero).add(edges, padding)
         return self
     }
     
-    func background(_ color: UIColor) -> Self {
+    @discardableResult func background(_ color: UIColor) -> Self {
         configuration?.with(\.backgroundColor, setTo: color)
         return self
     }
     
-    func shaped(_ shape: FShape) -> Self {
+    @discardableResult func shaped(_ shape: FShape) -> Self {
         configuration?.with(\.shape, setTo: shape)
         return self
     }
     
-    func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self {
+    @discardableResult func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self {
         configuration?.with(\.shadow, setTo: shadow)
         return self
     }
     
-    func opacity(_ opacity: CGFloat) -> Self {
+    @discardableResult func opacity(_ opacity: CGFloat) -> Self {
         configuration?.with(\.opacity, setTo: opacity)
         return self
     }
     
-    func ratio(_ ratio: CGFloat) -> Self {
+    @discardableResult func ratio(_ ratio: CGFloat) -> Self {
         configuration?.with(\.ratio, setTo: ratio)
         return self
     }
     
-    func attachToParent(_ status: Bool) -> Self {
+    @discardableResult func attachToParent(_ status: Bool) -> Self {
         configuration?.with(\.shouldConstraintWithParent, setTo: status)
         return self
     }
     
-    func frame(height: CGFloat) -> Self {
+    @discardableResult func frame(height: CGFloat) -> Self {
         configuration?.with(\.height, setTo: height)
         return self
     }
     
-    func frame(width: CGFloat) -> Self {
+    @discardableResult func frame(width: CGFloat) -> Self {
         configuration?.with(\.width, setTo: width)
         return self
     }
     
-    func frame(width: CGFloat, height: CGFloat) -> Self {
+    @discardableResult func frame(width: CGFloat, height: CGFloat) -> Self {
         configuration?.with(\.height, setTo: height).with(\.width, setTo: width)
         return self
     }

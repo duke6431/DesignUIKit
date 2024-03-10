@@ -20,8 +20,7 @@ public protocol FComponent: AnyObject, Chainable, Combinable {
 }
 
 public extension FComponent where Self: UIView, Self: Combinable {
-    @discardableResult
-    func bind<Subject, Failure>(
+    @discardableResult func bind<Subject, Failure>(
         to publisher: AnyPublisher<Subject, Failure>,
         next: @escaping (Self, Subject) -> Void,
         error: ((Failure) -> Void)? = nil,
@@ -43,8 +42,7 @@ public extension FComponent where Self: UIView, Self: Combinable {
 }
 
 public extension FComponent {
-    @discardableResult
-    func customConfiguration(_ configuration: ((Self) -> Void)?) -> Self {
+    @discardableResult func customConfiguration(_ configuration: ((Self) -> Void)?) -> Self {
         with(\.customConfiguration, setTo: configuration)
     }
 }
@@ -57,12 +55,12 @@ public protocol FContentConstraintable: AnyObject {
 }
 
 public extension FContentConstraintable where Self: UIView {
-    func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    @discardableResult func huggingPriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         setContentHuggingPriority(priority, for: axis)
         return self
     }
     
-    func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+    @discardableResult func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         setContentCompressionResistancePriority(priority, for: axis)
         return self
     }
@@ -75,16 +73,16 @@ public protocol FContentAvailable: FContentConstraintable {
 }
 
 public extension FContentAvailable where Self: BaseLabel {
-    func insets(_ insets: UIEdgeInsets) -> Self {
+    @discardableResult func insets(_ insets: UIEdgeInsets) -> Self {
         contentInsets = contentInsets + insets
         return self
     }
     
-    func insets(_ insets: CGFloat) -> Self {
+    @discardableResult func insets(_ insets: CGFloat) -> Self {
         self.insets(.all, insets)
     }
     
-    func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
+    @discardableResult func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
         contentInsets = contentInsets.add(edges, insets)
         return self
     }
@@ -96,22 +94,22 @@ public protocol FStylable: AnyObject, Chainable {
 }
 
 public extension FStylable where Self: UILabel {
-    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    @discardableResult func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         with(\.font, setTo: font)
     }
 
-    func foreground(_ color: UIColor = .label) -> Self {
+    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
         with(\.textColor, setTo: color)
     }
 }
 
 public extension FStylable where Self: UIButton {
-    func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    @discardableResult func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
         titleLabel?.with(\.font, setTo: font)
         return self
     }
 
-    func foreground(_ color: UIColor = .label) -> Self {
+    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
         setTitleColor(color, for: .normal)
         return self
     }

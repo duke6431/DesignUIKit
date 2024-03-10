@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import DesignCore
 
-public class FSwitch: UIView {
+public class FSwitch: UIView, FComponent {
+    public var customConfiguration: ((FSwitch) -> Void)?
+    public var cancellables = Set<AnyCancellable>()
+    
     public enum Style {
         case sliding
         case checkbox
@@ -122,28 +126,28 @@ public class FSwitch: UIView {
         }
     }
 
-    func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
+    @discardableResult func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
         self.onSwitch = onSwitch
         return self
     }
     
-    func thumb(_ color: UIColor) -> Self {
+    @discardableResult func thumb(_ color: UIColor) -> Self {
         self.thumbColor = color
         return self
     }
     
-    func thumb(_ image: UIImage) -> Self {
+    @discardableResult func thumb(_ image: UIImage) -> Self {
         self.thumbImage = image
         return self
     }
     
-    func background(on: UIColor = .white, off: UIColor = .systemGreen) -> Self {
+    @discardableResult func background(on: UIColor = .white, off: UIColor = .systemGreen) -> Self {
         self.statusColorOff = off
         self.statusColorOn = on
         return self
     }
     
-    func background(on: UIImage, off: UIImage) -> Self {
+    @discardableResult func background(on: UIImage, off: UIImage) -> Self {
         self.statusImageOff = off
         self.statusImageOn = on
         return self
