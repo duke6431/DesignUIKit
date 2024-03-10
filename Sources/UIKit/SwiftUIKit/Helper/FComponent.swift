@@ -93,35 +93,6 @@ public extension FContentAvailable where Self: BaseLabel {
     @discardableResult func foreground(_ color: UIColor) -> Self
 }
 
-public extension FStylable where Self: UIImageView {
-    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
-        image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
-        return self
-    }
-}
-
-public extension FStylable where Self: UILabel {
-    @discardableResult func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
-        with(\.font, setTo: font)
-    }
-
-    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
-        with(\.textColor, setTo: color)
-    }
-}
-
-public extension FStylable where Self: UIButton {
-    @discardableResult func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
-        titleLabel?.with(\.font, setTo: font)
-        return self
-    }
-
-    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
-        setTitleColor(color, for: .normal)
-        return self
-    }
-}
-
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)

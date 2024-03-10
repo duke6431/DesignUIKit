@@ -52,4 +52,12 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
         self.numberOfLines = lineLimit
         return self
     }
+    
+    @discardableResult public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        with(\.font, setTo: font)
+    }
+
+    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+        with(\.textColor, setTo: color)
+    }
 }

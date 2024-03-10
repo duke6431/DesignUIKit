@@ -76,6 +76,11 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
         self.contentMode = contentMode
         return self
     }
+    
+    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+        image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
+        return self
+    }
 }
 
 public extension FImage {

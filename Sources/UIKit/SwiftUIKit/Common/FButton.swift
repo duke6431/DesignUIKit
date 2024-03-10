@@ -57,4 +57,14 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
+    
+    @discardableResult public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+        titleLabel?.with(\.font, setTo: font)
+        return self
+    }
+
+    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+        setTitleColor(color, for: .normal)
+        return self
+    }
 }
