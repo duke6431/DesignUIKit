@@ -88,9 +88,16 @@ public extension FContentAvailable where Self: BaseLabel {
     }
 }
 
-public protocol FStylable: AnyObject, Chainable {
-    @discardableResult func font(_ font: UIFont) -> Self
+@objc public protocol FStylable: AnyObject, Chainable {
+    @discardableResult @objc optional func font(_ font: UIFont) -> Self
     @discardableResult func foreground(_ color: UIColor) -> Self
+}
+
+public extension FStylable where Self: UIImageView {
+    @discardableResult func foreground(_ color: UIColor = .label) -> Self {
+        image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
+        return self
+    }
 }
 
 public extension FStylable where Self: UILabel {

@@ -11,7 +11,7 @@ import Nuke
 import SnapKit
 import DesignCore
 
-public class FImage: BaseImageView, FConfigurable, FComponent, FContentConstraintable {
+public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FContentConstraintable {
     public var url: URL?
     
     public var customConfiguration: ((FImage) -> Void)?
