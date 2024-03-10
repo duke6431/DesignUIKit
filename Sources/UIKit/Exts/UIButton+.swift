@@ -125,8 +125,8 @@ extension UIButton {
     }
     
     public func attachLongHold(
-        _ onHold: @escaping (UIButton) -> Void,
-        _ onRelease: ((UIButton) -> Void)? = nil,
+        onHold: @escaping (UIButton) -> Void,
+        onRelease: ((UIButton) -> Void)? = nil,
         shouldRepeat: Bool = false
     ) {
         self.shouldRepeat = shouldRepeat
