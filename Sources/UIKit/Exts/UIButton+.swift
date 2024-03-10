@@ -107,7 +107,7 @@ extension UIButton {
     @objc func startHold() {
         holding = true
         guard let timer = timer else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
             if self?.holding ?? false {
                 RunLoop.main.add(timer, forMode: .default)
                 self?.onHold?.invoke()
