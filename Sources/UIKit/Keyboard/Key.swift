@@ -73,7 +73,7 @@ public class Key: KeyRenderable, KeyTappable {
         button.titleLabel?.font = font
         button.layer.cornerRadius = cornerRadius
         button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
-        if case .delete = value { button.attachLongHold { [weak self] _ in self?.tapped() } }
+        if case .delete = value { button.attachLongHold({ [weak self] _ in self?.tapped() }, shouldRepeat: true) }
         buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: height ?? 1)
         buttonHeightConstraint?.priority = .defaultHigh
         if isBaseMeasurement { buttonHeightConstraint?.isActive = true }

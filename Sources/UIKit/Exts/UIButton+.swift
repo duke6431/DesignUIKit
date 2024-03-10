@@ -77,13 +77,19 @@ extension UIControl.Failure.Action: LocalizedError {
 }
 
 extension UIButton {
-    private static let action = ObjectAssociation<ClosureSleeve>()
+    private static let onHold = ObjectAssociation<ClosureSleeve>()
+    private static let onRelease = ObjectAssociation<ClosureSleeve>()
     private static let timerHolder = ObjectAssociation<Timer>()
     private static let holding = ObjectAssociation<StructWrapper<Bool>>()
+    private static let shouldRepeat = ObjectAssociation<StructWrapper<Bool>>()
     
-    var action: ClosureSleeve? {
-        get { Self.action[self] }
-        set { Self.action[self] = newValue }
+    var onHold: ClosureSleeve? {
+        get { Self.onHold[self] }
+        set { Self.onHold[self] = newValue }
+    }
+    var onRelease: ClosureSleeve? {
+        get { Self.onRelease[self] }
+        set { Self.onRelease[self] = newValue }
     }
     var timer: Timer? {
         get { Self.timerHolder[self] }
@@ -93,29 +99,49 @@ extension UIButton {
         get { Self.holding[self]?.value ?? false }
         set { Self.holding[self] = StructWrapper(value: newValue) }
     }
+    var shouldRepeat: Bool {
+        get { Self.shouldRepeat[self]?.value ?? false }
+        set { Self.shouldRepeat[self] = StructWrapper(value: newValue) }
+    }
     
     @objc func startHold() {
         holding = true
         guard let timer = timer else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            if self?.holding ?? false { RunLoop.main.add(timer, forMode: .default) }
+            if self?.holding ?? false {
+                RunLoop.main.add(timer, forMode: .default)
+                self?.onHold?.invoke()
+            }
         }
     }
     
     @objc func stopHold() {
+        onRelease?.invoke()
         holding = false
         timer?.invalidate()
-        timer = Timer(timeInterval: 0.1, repeats: true, block: { [weak self] _ in
-            self?.action?.invoke()
+        timer = Timer(timeInterval: 0.1, repeats: shouldRepeat, block: { [weak self] _ in
+            self?.onHold?.invoke()
         })
     }
     
-    public func attachLongHold(_ action: @escaping (UIButton) -> Void, repeat: Bool = true) {
-        stopHold()
-        self.action = .init({ [weak self] in
-            guard let self = self else { return }
-            action(self)
+    public func attachLongHold(
+        _ onHold: @escaping (UIButton) -> Void,
+        _ onRelease: ((UIButton) -> Void)? = nil,
+        shouldRepeat: Bool = false
+    ) {
+        self.shouldRepeat = shouldRepeat
+        timer?.invalidate()
+        timer = Timer(timeInterval: 0.1, repeats: shouldRepeat, block: { [weak self] _ in
+            self?.onHold?.invoke()
         })
+        self.onHold = .init { [weak self] in
+            guard let self = self else { return }
+            onHold(self)
+        }
+        self.onRelease = .init { [weak self] in
+            guard let self = self else { return }
+            onRelease?(self)
+        }
         self.addTarget(self, action: #selector(startHold), for: .touchDown)
         self.addTarget(self, action: #selector(stopHold), for: [.touchUpInside, .touchUpOutside])
     }
