@@ -6,12 +6,24 @@
 //
 
 import UIKit
+import SnapKit
 import DesignCore
 import DesignExts
 
 public class FSpacer: BaseView, FConfigurable, FComponent {
-    public var blurStyle: UIBlurEffect.Style?
+    public var blurStyle: UIBlurEffect.Style? {
+        didSet {
+            if let blurStyle {
+                blurView?.alpha = 1
+                blurView?.effect = UIVibrancyEffect(blurEffect: .init(style: blurStyle))
+            } else {
+                blurView?.alpha = 0
+            }
+        }
+    }
     public var customConfiguration: ((FSpacer) -> Void)?
+    
+    fileprivate weak var blurView: UIVisualEffectView?
 
     public init(width: CGFloat? = nil, height: CGFloat? = nil) {
         super.init(frame: .zero)
@@ -22,13 +34,7 @@ public class FSpacer: BaseView, FConfigurable, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if !UIAccessibility.isReduceTransparencyEnabled, let blurStyle {
-            let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: blurStyle))
-            addSubview(blurEffectView)
-            blurEffectView.snp.remakeConstraints {
-                $0.edges.equalToSuperview()
-            }
-        }
+        add(blurStyle: .systemUltraThinMaterial)
         customConfiguration?(self)
     }
     
@@ -37,6 +43,20 @@ public class FSpacer: BaseView, FConfigurable, FComponent {
         configuration?.updateLayers(for: self)
     }
     
+    public func add(blurStyle: UIBlurEffect.Style) {
+        let blurEffectView = UIVisualEffectView(
+            effect: UIVibrancyEffect(
+                blurEffect: .init(style: blurStyle)
+            )
+        )
+        blurView = blurEffectView
+        addSubview(blurEffectView)
+        blurEffectView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    @discardableResult
     public func blurred(_ style: UIBlurEffect.Style) -> Self {
         blurStyle = style
         return self
