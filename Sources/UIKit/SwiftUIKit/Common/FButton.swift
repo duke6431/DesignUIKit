@@ -14,7 +14,7 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(
-        _ textPublisher: AnyPublisher<String, Never>,
+        _ textPublisher: FBinder<String>,
         action: @escaping () -> Void
     ) {
         self.init(style: .system)

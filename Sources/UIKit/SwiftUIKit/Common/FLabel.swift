@@ -21,7 +21,7 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
     }
     
     public init(
-        _ textPublisher: AnyPublisher<String, Never>
+        _ textPublisher: FBinder<String>
     ) {
         super.init(frame: .zero)
         self.bind(to: textPublisher) { label, text in label.text = text }

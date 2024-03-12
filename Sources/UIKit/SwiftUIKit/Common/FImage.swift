@@ -40,14 +40,14 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
     }
     
     public init(
-        _ systemImagePublisher: AnyPublisher<String, Never>
+        _ systemImagePublisher: FBinder<String>
     ) {
         super.init(frame: .zero)
         self.bind(to: systemImagePublisher) { imageView, name in imageView.image = .init(systemName: name) }
     }
     
     public init(
-        _ imagePublisher: AnyPublisher<UIImage, Never>
+        _ imagePublisher: FBinder<UIImage>
     ) {
         super.init(frame: .zero)
         self.bind(to: imagePublisher) { imageView, image in imageView.image = image }

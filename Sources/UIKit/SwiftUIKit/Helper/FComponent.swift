@@ -10,6 +10,8 @@ import Combine
 import DesignCore
 import DesignExts
 
+public typealias FBinder<Subject> = AnyPublisher<Subject, Never>
+
 public protocol Combinable: AnyObject {
     var cancellables: Set<AnyCancellable> { get set }
 }
