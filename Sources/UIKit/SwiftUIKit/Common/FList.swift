@@ -66,6 +66,11 @@ public extension FList {
 
 public protocol FCellModeling {
     var view: (FCellReusable & UIView).Type { get set }
+    func layoutConfiguration(container: UIView, view: UIView?)
+}
+
+public extension FCellModeling {
+    func layoutConfiguration(container: UIView, view: UIView?) { }
 }
 
 public protocol FCellReusable: AnyObject {
@@ -94,11 +99,14 @@ public class FListModel: NSObject, CommonCellModel {
 }
 
 public class FListCell: CommonTableView.Cell {
-    weak var content: FCellReusable?
+    weak var content: (UIView & FCellReusable)?
     
     public override func bind(_ model: CommonCellModel, highlight text: String) {
         guard let model = model as? FListModel else { return }
-        if content == nil { install(view: model.model.view.empty) }
+        if content == nil {
+            install(view: model.model.view.empty)
+            model.model.layoutConfiguration(container: contentView, view: content)
+        }
         content?.bind(model.model)
     }
 
@@ -106,12 +114,6 @@ public class FListCell: CommonTableView.Cell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
-        view.snp.remakeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
         content = view
     }
 }

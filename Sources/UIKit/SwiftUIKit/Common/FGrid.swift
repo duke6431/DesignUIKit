@@ -81,7 +81,6 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent {
 }
 
 public extension FGrid {
-    
     override func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel) {
         super.didSelectCell(at: indexPath, with: data)
         guard let data = data as? FGridModel else { return }
@@ -106,23 +105,20 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
 }
 
 public class FGridHeader: CommonCollection.ReusableView {
-    weak var content: FCellReusable?
+    weak var content: (UIView & FCellReusable)?
     
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
-        if content == nil { install(view: model.model.view.empty) }
+        if content == nil {
+            install(view: model.model.view.empty)
+            model.model.layoutConfiguration(container: self, view: content)
+        }
         content?.bind(model.model)
     }
     
     open func install<T: FCellReusable & UIView>(view: T) {
         backgroundColor = .clear
         addSubview(view)
-        view.snp.remakeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
         content = view
     }
 }
@@ -145,11 +141,14 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
 }
 
 public class FGridCell: CommonCollection.Cell {
-    weak var content: FCellReusable?
+    weak var content: (UIView & FCellReusable)?
     
     public override func bind(_ model: CommonCollectionCellModel) {
         guard let model = model as? FGridModel else { return }
-        if content == nil { install(view: model.model.view.empty) }
+        if content == nil {
+            install(view: model.model.view.empty)
+            model.model.layoutConfiguration(container: contentView, view: content)
+        }
         content?.bind(model.model)
     }
     
@@ -157,12 +156,6 @@ public class FGridCell: CommonCollection.Cell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
-        view.snp.remakeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
         content = view
     }
 }
