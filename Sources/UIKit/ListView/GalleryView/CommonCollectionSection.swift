@@ -82,7 +82,7 @@ extension CommonCollection.Section {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(500) : .fractionalWidth(1 / section.dimension.itemWHRatio)
+                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
             )
         )
 
@@ -90,7 +90,7 @@ extension CommonCollection.Section {
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
             heightDimension: section.dimension.autoHeight 
-            ? .estimated(500)
+            ? .estimated(CGFloat(44 * section.dimension.numberOfItemsPerGroup) + CGFloat(section.dimension.numberOfItemsPerGroup) * section.dimension.itemSpacing)
             : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
         var groupLayout: NSCollectionLayoutGroup

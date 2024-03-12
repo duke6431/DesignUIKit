@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SnapKit
 import DesignCore
 import DesignExts
 
@@ -105,7 +106,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
 }
 
 public class FGridHeader: CommonCollection.ReusableView {
-    weak var content: (UIView & FCellReusable)?
+    weak var content: (FBodyComponent & FCellReusable)?
     
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
@@ -116,7 +117,7 @@ public class FGridHeader: CommonCollection.ReusableView {
         content?.bind(model.model)
     }
     
-    open func install<T: FCellReusable & UIView>(view: T) {
+    open func install<T: FBodyComponent & FCellReusable>(view: T) {
         backgroundColor = .clear
         addSubview(view)
         content = view
@@ -141,7 +142,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
 }
 
 public class FGridCell: CommonCollection.Cell {
-    weak var content: (UIView & FCellReusable)?
+    weak var content: (FBodyComponent & FCellReusable)?
     
     public override func bind(_ model: CommonCollectionCellModel) {
         guard let model = model as? FGridModel else { return }
@@ -152,10 +153,14 @@ public class FGridCell: CommonCollection.Cell {
         content?.bind(model.model)
     }
     
-    open func install<T: FCellReusable & UIView>(view: T) {
+    open func install<T: FBodyComponent & FCellReusable>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
+        view.attachToParent(false)
         contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+        }
         content = view
     }
 }

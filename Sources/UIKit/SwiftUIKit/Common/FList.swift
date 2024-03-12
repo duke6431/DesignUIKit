@@ -65,7 +65,7 @@ public extension FList {
 }
 
 public protocol FCellModeling {
-    var view: (FCellReusable & UIView).Type { get set }
+    var view: (FBodyComponent & FCellReusable).Type { get set }
     func layoutConfiguration(container: UIView, view: UIView?)
 }
 
@@ -99,7 +99,7 @@ public class FListModel: NSObject, CommonCellModel {
 }
 
 public class FListCell: CommonTableView.Cell {
-    weak var content: (UIView & FCellReusable)?
+    weak var content: (FBodyComponent & FCellReusable)?
     
     public override func bind(_ model: CommonCellModel, highlight text: String) {
         guard let model = model as? FListModel else { return }
@@ -110,10 +110,14 @@ public class FListCell: CommonTableView.Cell {
         content?.bind(model.model)
     }
 
-    open func install<T: FCellReusable & UIView>(view: T) {
+    open func install<T: FBodyComponent & FCellReusable>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
+        view.attachToParent(false)
         contentView.addSubview(view)
+        view.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+        }
         content = view
     }
 }
