@@ -119,7 +119,8 @@ extension UIButton {
         onHold: @escaping (UIButton) -> Void,
         onRelease: ((UIButton) -> Void)? = nil
     ) {
-        self.holdConfiguration.shouldRepeat = shouldRepeat
+        holdConfiguration = .init()
+        holdConfiguration.shouldRepeat = shouldRepeat
         holdConfiguration.timer?.invalidate()
         holdConfiguration.timer = Timer(timeInterval: 0.1, repeats: shouldRepeat, block: { [weak self] _ in
             self?.holdConfiguration.onHold?.invoke()
