@@ -79,18 +79,15 @@ extension CommonCollection {
 @available(iOS 13.0, *)
 extension CommonCollection.Section {
     public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
+            heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
+        )
         let itemLayout = NSCollectionLayoutItem(
-            layoutSize: .init(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
-            )
+            layoutSize: groupSize
         )
 
         // Show one item plus peek
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
-            heightDimension: section.dimension.autoHeight ? .estimated(44 * CGFloat(section.dimension.numberOfItemsPerGroup)) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
-        )
         var groupLayout: NSCollectionLayoutGroup
         switch section.dimension.groupAxis {
         case .vertical:
