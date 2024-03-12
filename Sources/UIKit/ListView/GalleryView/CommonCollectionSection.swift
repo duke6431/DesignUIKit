@@ -89,7 +89,9 @@ extension CommonCollection.Section {
         // Show one item plus peek
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
-            heightDimension: section.dimension.autoHeight ? .estimated(CGFloat(44 * section.dimension.numberOfItemsPerGroup)) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
+            heightDimension: section.dimension.autoHeight 
+            ? .estimated(CGFloat(44 * section.dimension.numberOfItemsPerGroup) + CGFloat(section.dimension.numberOfItemsPerGroup) * section.dimension.itemSpacing)
+            : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
         var groupLayout: NSCollectionLayoutGroup
         switch section.dimension.groupAxis {
