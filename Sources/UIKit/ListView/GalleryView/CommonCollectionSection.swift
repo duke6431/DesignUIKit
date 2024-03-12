@@ -129,14 +129,14 @@ extension CommonCollection.Section {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1 / section.dimension.itemWHRatio)
+                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
             )
         )
 
         // Show one item plus peek
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
-            heightDimension: .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
+            heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
         let groupLayout = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
