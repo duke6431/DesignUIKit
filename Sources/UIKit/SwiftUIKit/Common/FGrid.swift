@@ -120,8 +120,6 @@ public class FGridHeader: CommonCollection.ReusableView {
         backgroundColor = .clear
         addSubview(view)
         content = view
-        setNeedsLayout()
-        layoutIfNeeded()
     }
 }
 
@@ -152,8 +150,6 @@ public class FGridCell: CommonCollection.Cell {
             model.model.layoutConfiguration(container: contentView, view: content)
         }
         content?.bind(model.model)
-        setNeedsLayout()
-        layoutIfNeeded()
     }
     
     open func install<T: FCellReusable & UIView>(view: T) {

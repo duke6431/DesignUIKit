@@ -82,7 +82,7 @@ extension CommonCollection.Section {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
+                heightDimension: section.dimension.autoHeight ? .estimated(500) : .fractionalWidth(1 / section.dimension.itemWHRatio)
             )
         )
 
@@ -90,7 +90,7 @@ extension CommonCollection.Section {
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
             heightDimension: section.dimension.autoHeight 
-            ? .estimated(CGFloat(44 * section.dimension.numberOfItemsPerGroup) + CGFloat(section.dimension.numberOfItemsPerGroup) * section.dimension.itemSpacing)
+            ? .estimated(500)
             : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
         var groupLayout: NSCollectionLayoutGroup
@@ -137,53 +137,4 @@ extension CommonCollection.Section {
         }
         return sectionLayout
     }
-
-    public static func list(section: CommonCollection.Section) -> NSCollectionLayoutSection {
-        let itemLayout = NSCollectionLayoutItem(
-            layoutSize: .init(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
-            )
-        )
-
-        // Show one item plus peek
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
-            heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
-        )
-        let groupLayout = NSCollectionLayoutGroup.vertical(
-            layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
-        )
-        groupLayout.interItemSpacing = .fixed(section.dimension.itemSpacing)
-
-        let sectionLayout = NSCollectionLayoutSection(group: groupLayout)
-        sectionLayout.interGroupSpacing = section.dimension.groupSpacing
-        sectionLayout.orthogonalScrollingBehavior = section.dimension.pagingBehaviour
-        sectionLayout.contentInsets = .init(
-            top: section.dimension.sectionInset.top,
-            leading: section.dimension.sectionInset.left,
-            bottom: section.dimension.sectionInset.bottom,
-            trailing: section.dimension.sectionInset.right
-        )
-        var reusableSizes = [NSCollectionLayoutBoundarySupplementaryItem]()
-        if let headerSize = section.dimension.headerSize {
-            reusableSizes.append(
-                .init(layoutSize: headerSize,
-                      elementKind: UICollectionView.ReusableKind.header.rawValue,
-                      alignment: .topLeading)
-            )
-        }
-        if let footerSize = section.dimension.footerSize {
-            reusableSizes.append(
-                .init(layoutSize: footerSize,
-                      elementKind: UICollectionView.ReusableKind.footer.rawValue,
-                      alignment: .bottomLeading)
-            )
-        }
-        if !reusableSizes.isEmpty {
-            sectionLayout.boundarySupplementaryItems = reusableSizes
-        }
-        return sectionLayout
-    }
-
 }
