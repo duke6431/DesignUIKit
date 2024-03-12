@@ -114,6 +114,7 @@ public class FListCell: CommonTableView.Cell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
         content = view
     }
 }
