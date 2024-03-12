@@ -108,13 +108,14 @@ public class FListCell: CommonTableView.Cell {
             model.model.layoutConfiguration(container: contentView, view: content)
         }
         content?.bind(model.model)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 
     open func install<T: FCellReusable & UIView>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         contentView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
         content = view
     }
 }
