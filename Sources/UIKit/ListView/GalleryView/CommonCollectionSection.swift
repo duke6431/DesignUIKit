@@ -38,6 +38,7 @@ extension CommonCollection {
             var itemSpacing: CGFloat = 8
 
             // Group
+            var groupAxis: NSLayoutConstraint.Axis = .horizontal
             var groupWidthRatio: CGFloat = 0.95
             var groupSpacing: CGFloat = 8
             var numberOfItemsPerGroup: Int = 1
@@ -53,6 +54,7 @@ extension CommonCollection {
 
             public init(
                 itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
+                groupAxis: NSLayoutConstraint.Axis = .horizontal,
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
                 sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
@@ -61,6 +63,7 @@ extension CommonCollection {
                 self.itemWHRatio = itemWHRatio
                 self.itemSpacing = itemSpacing
                 self.autoHeight = autoHeight
+                self.groupAxis = groupAxis
                 self.groupWidthRatio = groupWidthRatio
                 self.groupSpacing = groupSpacing
                 self.numberOfItemsPerGroup = numberItemsPerGroup
@@ -76,21 +79,26 @@ extension CommonCollection {
 @available(iOS 13.0, *)
 extension CommonCollection.Section {
     public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
-        let itemLayout = NSCollectionLayoutItem(
-            layoutSize: .init(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
-            )
-        )
-
-        // Show one item plus peek
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
             heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio)
         )
-        let groupLayout = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
+        let itemLayout = NSCollectionLayoutItem(
+            layoutSize: groupSize
         )
+
+        // Show one item plus peek
+        var groupLayout: NSCollectionLayoutGroup
+        switch section.dimension.groupAxis {
+        case .vertical:
+            groupLayout = NSCollectionLayoutGroup.vertical(
+                layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
+            )
+        default:
+            groupLayout = NSCollectionLayoutGroup.horizontal(
+                layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
+            )
+        }
         groupLayout.interItemSpacing = .fixed(section.dimension.itemSpacing)
 
         let sectionLayout = NSCollectionLayoutSection(group: groupLayout)
