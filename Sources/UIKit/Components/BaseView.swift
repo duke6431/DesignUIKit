@@ -161,3 +161,22 @@ open class BaseLabel: UILabel, Combinable {
         }
     }
 }
+
+open class BaseTextField: UITextField, Combinable {
+    public var cancellables = Set<AnyCancellable>()
+    
+    public override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
+        loadConfiguration()
+    }
+    
+    @available(iOS, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    open func loadConfiguration() {
+        configuration = .init()
+        configuration?.owner = self
+    }
+}
