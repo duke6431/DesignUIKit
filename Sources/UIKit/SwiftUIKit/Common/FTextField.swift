@@ -14,17 +14,21 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
     public var customConfiguration: ((FTextField) -> Void)?
     
     public init(
+        _ placeholder: String,
         _ text: String
     ) {
         super.init(frame: .zero)
         self.text = text
+        self.placeholder = placeholder
     }
     
     public init(
+        _ placeholder: String,
         _ textPublisher: FBinder<String>
     ) {
         super.init(frame: .zero)
-        self.bind(to: textPublisher) { label, text in label.text = text }
+        self.placeholder = placeholder
+        self.bind(to: textPublisher) { field, text in field.text = text }
     }
     
     public init(_ attributedText: NSAttributedString) {
