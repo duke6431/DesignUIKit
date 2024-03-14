@@ -47,12 +47,12 @@ public class FConfiguration: Chainable {
     public func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if shouldConstraintWithParent, superview != nil {
+        if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
-                $0.top.equalToSuperview().offset(offset.height + (containerPadding?.top ?? 0))
-                $0.leading.equalToSuperview().offset(offset.width + (containerPadding?.leading ?? 0))
-                $0.trailing.equalToSuperview().offset(offset.width - (containerPadding?.trailing ?? 0))
-                $0.bottom.equalToSuperview().offset(offset.height - (containerPadding?.bottom ?? 0))
+                $0.top.equalTo(superview.safeAreaLayoutGuide).offset(offset.height + (containerPadding?.top ?? 0))
+                $0.leading.equalTo(superview.safeAreaLayoutGuide).offset(offset.width + (containerPadding?.leading ?? 0))
+                $0.trailing.equalTo(superview.safeAreaLayoutGuide).offset(offset.width - (containerPadding?.trailing ?? 0))
+                $0.bottom.equalTo(superview.safeAreaLayoutGuide).offset(offset.height - (containerPadding?.bottom ?? 0))
             }
         }
         target.snp.makeConstraints {

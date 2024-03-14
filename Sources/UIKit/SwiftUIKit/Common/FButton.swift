@@ -41,7 +41,7 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
             label.isUserInteractionEnabled = false
             if label as? (any FComponent & UIView) == nil {
                 label.snp.remakeConstraints {
-                    $0.edges.equalToSuperview()
+                    $0.edges.equalTo(superview!.safeAreaLayoutGuide)
                 }
             }
         }

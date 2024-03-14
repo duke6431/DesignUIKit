@@ -30,7 +30,7 @@ public class FViewController<ViewController: UIViewController>: BaseView, FConfi
         parentViewController.addChild(contentViewController)
         contentViewController.didMove(toParent: parentViewController)
         contentViewController.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(superview!.safeAreaLayoutGuide)
         }
         customConfiguration?(self)
     }
