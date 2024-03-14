@@ -12,6 +12,7 @@ import Combine
 
 public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylable {
     public var customConfiguration: ((FTextField) -> Void)?
+    fileprivate var onSubmitAction: (() -> Void)?
     
     public init(
         _ placeholder: String,
@@ -65,5 +66,17 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
         self.textColor = color
         return self
+    }
+    
+    @discardableResult public func onSubmit(_ onSubmit: (() -> Void)? = nil) -> Self {
+        self.onSubmitAction = onSubmit
+        return self
+    }
+}
+
+extension FTextField: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        onSubmitAction?()
+        return true
     }
 }
