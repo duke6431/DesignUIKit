@@ -39,6 +39,7 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        delegate = self
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
