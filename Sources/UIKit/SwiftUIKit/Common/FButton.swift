@@ -37,7 +37,6 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
         self.init(style: .system)
         addAction(for: .touchUpInside, action)
         label().forEach { label in
-            let label = label.attachToParent(false)
             addSubview(label)
             label.isUserInteractionEnabled = false
             if label as? (any FComponent & UIView) == nil {
