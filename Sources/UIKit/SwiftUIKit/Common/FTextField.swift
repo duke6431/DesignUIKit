@@ -43,6 +43,12 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
         delegate = self
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
+        addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    }
+    
+    public override func removeFromSuperview() {
+        super.removeFromSuperview()
+        removeTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     public override func layoutSubviews() {
@@ -82,8 +88,12 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
 }
 
 extension FTextField: UITextFieldDelegate {
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        onChangeAction?(textField.text ?? "")
+    }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         onSubmitAction?()
+        textField.endEditing(true)
         return true
     }
 }
