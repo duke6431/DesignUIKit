@@ -67,6 +67,7 @@ public class FConfiguration: Chainable {
     }
     
     public func updateLayers(for target: BView) {
+        target.layer.mainLayer.frame = target.layer.frame
         if let shape {
             target.clipsToBounds = true
             BView.animate(withDuration: 0.2) {
