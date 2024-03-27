@@ -91,7 +91,7 @@ public extension CALayer {
         }
         let layer = CALayer()
         layer.name = Self.mainLayerTag
-        addSublayer(layer)
+        insertSublayer(layer, at: 0)
     }
 }
 
