@@ -89,7 +89,7 @@ public class FSwitch: BView, FComponent {
     }
     
     func updateLayers() {
-        layer.mainLayer.cornerRadius = min(bounds.width, bounds.height) / 2
+        layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
     
     public var body: BView {
@@ -101,8 +101,8 @@ public class FSwitch: BView, FComponent {
                 FImage(image: statusImageOn).contentMode(.scaleAspectFill)
             }
         }.customConfiguration { view in
-            view.layer.mainLayer.borderColor = BColor.lightGray.cgColor
-            view.layer.mainLayer.borderWidth = 0.5
+            view.layer.borderColor = BColor.lightGray.cgColor
+            view.layer.borderWidth = 0.5
         }.shaped(.circle)
     }
     

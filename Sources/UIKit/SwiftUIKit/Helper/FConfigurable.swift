@@ -49,7 +49,7 @@ public class FConfiguration: Chainable {
     public weak var owner: BView?
     
     public func didMoveToSuperview(_ superview: BView?, with target: BView) {
-        target.layer.mainLayer.backgroundColor = backgroundColor.cgColor
+        target.backgroundColor = backgroundColor
         target.alpha = opacity
         if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
@@ -67,21 +67,20 @@ public class FConfiguration: Chainable {
     }
     
     public func updateLayers(for target: BView) {
-        target.layer.mainLayer.frame = target.layer.frame
         if let shape {
             target.clipsToBounds = true
             BView.animate(withDuration: 0.2) {
                 switch shape {
                 case .circle:
 #if canImport(UIKit)
-                    target.layer.mainLayer.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
+                    target.layer.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
 #else
                     target.layer?.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
 #endif
                 case .roundedRectangle(let cornerRadius, let corners):
 #if canImport(UIKit)
-                    target.layer.mainLayer.maskedCorners = corners.caMask
-                    target.layer.mainLayer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    target.layer.maskedCorners = corners.caMask
+                    target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
 #else
                     target.layer?.maskedCorners = corners.caMask
                     target.layer?.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)

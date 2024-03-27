@@ -73,39 +73,4 @@ public extension CALayer {
         masksToBounds = false
         return self
     }
-    
-    fileprivate static let mainLayerTag = "ca-main"
-    
-    var mainLayer: CALayer {
-        get {
-            createMainLayerIfNeeded()
-            return sublayers?.first(where: { $0.name == Self.mainLayerTag }) ?? CALayer()
-        }
-    }
-    
-    func createMainLayerIfNeeded() {
-        if sublayers?.first(where: {
-            $0.name == Self.mainLayerTag
-        }) != nil {
-            return
-        }
-        let layer = CALayer()
-        layer.name = Self.mainLayerTag
-        insertSublayer(layer, at: 0)
-    }
-}
-
-public extension BView {
-    @discardableResult
-    func add(shadow config: CALayer.ShadowConfiguration) -> CALayer {
-        let shadowLayer = CALayer().add(shadow: config)
-#if canImport(UIKit)
-        layer.createMainLayerIfNeeded()
-        layer.insertSublayer(shadowLayer, at: 0)
-#else
-        layer?.createMainLayerIfNeeded()
-        layer?.insertSublayer(shadowLayer, at: 0)
-#endif
-        return shadowLayer
-    }
 }

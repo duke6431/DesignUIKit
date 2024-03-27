@@ -28,8 +28,8 @@ extension PanModal {
         public private(set) lazy var contentView: BView = {
             let view = BView()
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.layer.mainLayer.cornerRadius = 16
-            view.layer.mainLayer.masksToBounds = true
+            view.layer.cornerRadius = 16
+            view.layer.masksToBounds = true
             self.view.addSubview(view)
             view.backgroundColor = .white
             return view
