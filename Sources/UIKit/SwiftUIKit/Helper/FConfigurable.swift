@@ -49,7 +49,7 @@ public class FConfiguration: Chainable {
     public weak var owner: BView?
     
     public func didMoveToSuperview(_ superview: BView?, with target: BView) {
-        target.backgroundColor = backgroundColor
+        target.layer.mainLayer.backgroundColor = backgroundColor.cgColor
         target.alpha = opacity
         if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
