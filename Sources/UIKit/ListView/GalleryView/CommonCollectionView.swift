@@ -6,7 +6,11 @@
 //
 
 import DesignCore
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 @available(iOS 13.0, *)
 public extension CommonCollection {

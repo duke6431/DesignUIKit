@@ -5,10 +5,14 @@
 //  Created by Duc IT. Nguyen Minh on 12/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 
-extension UIRectCorner {
+extension BRectCorner {
     var caMask: CACornerMask {
         switch self {
         case .topLeft:
@@ -25,8 +29,8 @@ extension UIRectCorner {
     }
 }
 
-extension UIEdgeInsets: SelfCustomizable {
-    static func + (_ lhs: UIEdgeInsets, _ rhs: CGFloat) -> UIEdgeInsets {
+extension BEdgeInsets: SelfCustomizable {
+    static func + (_ lhs: BEdgeInsets, _ rhs: CGFloat) -> BEdgeInsets {
         lhs.custom { insets in
             insets.top += rhs
             insets.left += rhs
@@ -35,7 +39,7 @@ extension UIEdgeInsets: SelfCustomizable {
         }
     }
     
-    static func + (_ lhs: UIEdgeInsets, _ rhs: UIEdgeInsets) -> UIEdgeInsets {
+    static func + (_ lhs: BEdgeInsets, _ rhs: BEdgeInsets) -> BEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
             left: lhs.left + rhs.left,
@@ -44,7 +48,7 @@ extension UIEdgeInsets: SelfCustomizable {
         )
     }
     
-    func add(_ edges: UIRectEdge, _ rhs: CGFloat) -> UIEdgeInsets {
+    func add(_ edges: BRectEdge, _ rhs: CGFloat) -> BEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
             insets.left += edges.contains(.left) ? rhs : 0

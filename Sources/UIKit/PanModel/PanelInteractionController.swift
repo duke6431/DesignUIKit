@@ -5,7 +5,9 @@
 //  Created by Duc IT. Nguyen Minh on 15/06/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 extension PanModal {
     class InteractionController: UIPercentDrivenInteractiveTransition {
@@ -13,14 +15,14 @@ extension PanModal {
         private var shouldCompleteTransition = false
         private var beginTranslationY: CGFloat = 0
         private var gestures: [UIGestureRecognizer] = []
-        private weak var viewController: UIViewController?
+        private weak var viewController: BViewController?
         private var direction: OriginDirection
 
         init(direction: OriginDirection) {
             self.direction = direction
         }
 
-        func wireToViewController(viewController: UIViewController, interactive: Bool = true) {
+        func wireToViewController(viewController: BViewController, interactive: Bool = true) {
             self.viewController = viewController
             if interactive {
                 updateGesture(for: viewController.view, type: UIPanGestureRecognizer.self,
@@ -28,7 +30,7 @@ extension PanModal {
             }
         }
 
-        func wireToView(view: UIView, interactive: Bool = true) {
+        func wireToView(view: BView, interactive: Bool = true) {
             if interactive {
                 updateGesture(for: view, type: UIPanGestureRecognizer.self, target: self,
                               action: #selector(handlePanGestureRecognizer))
@@ -37,7 +39,7 @@ extension PanModal {
             }
         }
 
-        func updateGesture<T: UIGestureRecognizer>(for view: UIView, type: T.Type, target: Any?, action: Selector?) {
+        func updateGesture<T: UIGestureRecognizer>(for view: BView, type: T.Type, target: Any?, action: Selector?) {
             let gestureRecognizer = T.init(target: target, action: action)
             gestureRecognizer.delegate = self
             view.addGestureRecognizer(gestureRecognizer)
@@ -100,3 +102,4 @@ extension PanModal.InteractionController: UIGestureRecognizerDelegate {
         return true
     }
 }
+#endif

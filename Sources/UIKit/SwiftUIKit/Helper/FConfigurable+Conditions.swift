@@ -5,10 +5,14 @@
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 
-public extension FConfigurable where Self: UIView {
+public extension FConfigurable where Self: BView {
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - condition: The condition to evaluate.

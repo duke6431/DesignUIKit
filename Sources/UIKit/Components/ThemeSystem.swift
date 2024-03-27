@@ -7,13 +7,14 @@
 
 import UIKit
 import DesignCore
+import Foundation
 
 public protocol Themable: AnyObject {
     func apply(theme: ThemeProvider)
 }
 
 public protocol ThemeProvider {
-    func color(key: ThemeKey) -> UIColor
+    func color(key: ThemeKey) -> BColor
 }
 
 public class ThemeSystem: ThemeProvider {
@@ -47,7 +48,7 @@ public class ThemeSystem: ThemeProvider {
         }
     }
     
-    public func color(key: ThemeKey) -> UIColor {
+    public func color(key: ThemeKey) -> BColor {
         current.color(key: key)
     }
 }
@@ -66,6 +67,7 @@ public class Theme: ObservableObject, Identifiable, Codable {
             return _defaultImage
         }
         set {
+            _defaultImageChanged = true
             _defaultImage = newValue
         }
     }
@@ -80,22 +82,22 @@ public class Theme: ObservableObject, Identifiable, Codable {
         self.styles = styles
     }
     
-    public func color(key: ThemeKey) -> UIColor {
+    public func color(key: ThemeKey) -> BColor {
         return .init(dynamicProvider: { [weak self] collection in
             return .init(hexString: self?.styles[collection.userInterfaceStyle.style]?[key.name] ?? Self.defaultColor)
         })
     }
     
-    public func image(key: ThemeKey, bundle: Bundle = .main) -> UIImage {
-        guard let light = UIImage(named: styles[.light]?[key.name] ?? "", in: bundle, with: nil),
-              let dark = UIImage(named: styles[.dark]?[key.name] ?? "", in: bundle, with: nil) else {
+    public func image(key: ThemeKey, bundle: Bundle = .main) -> BImage {
+        guard let light = BImage(named: styles[.light]?[key.name] ?? "", in: bundle, with: nil),
+              let dark = BImage(named: styles[.dark]?[key.name] ?? "", in: bundle, with: nil) else {
             if Self._defaultImageChanged {
-                return UIImage(named: Self.defaultImage, in: bundle, with: nil) ?? UIImage()
+                return BImage(named: Self.defaultImage, in: bundle, with: nil) ?? BImage()
             } else {
-                return UIImage(systemName: Self.defaultImage) ?? UIImage()
+                return BImage(systemName: Self.defaultImage) ?? BImage()
             }
         }
-        return UIImage(dynamicImageWithLight: light, dark: dark) ?? UIImage()
+        return BImage(dynamicImageWithLight: light, dark: dark) ?? BImage()
     }
     
     enum CodingKeys: String, CodingKey {
@@ -145,10 +147,10 @@ extension UIUserInterfaceStyle {
     }
 }
 
-extension UIImage {
+extension BImage {
     /// Creates a dynamic image that supports displaying a different image asset when dark mode is active.
-    convenience init?(dynamicImageWithLight makeLight: @autoclosure () -> UIImage?,
-                      dark makeDark: @autoclosure () -> UIImage?
+    convenience init?(dynamicImageWithLight makeLight: @autoclosure () -> BImage?,
+                      dark makeDark: @autoclosure () -> BImage?
     ) {
         self.init()
         guard let lightImg = makeLight(), let darkImg = makeDark() else { return nil }

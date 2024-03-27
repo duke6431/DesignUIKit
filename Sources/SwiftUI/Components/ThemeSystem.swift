@@ -43,6 +43,7 @@ public class Theme: ObservableObject, Identifiable, Codable {
             return _defaultImage
         }
         set {
+            _defaultImageChanged = true
             _defaultImage = newValue
         }
     }

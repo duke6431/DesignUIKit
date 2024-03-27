@@ -5,7 +5,11 @@
 //  Created by Duc Minh Nguyen on 2/27/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import Combine
 import AVFoundation
 import DesignCore
@@ -43,10 +47,14 @@ public class FVideoPlayer: BaseView, FConfigurable, FComponent {
 public extension FVideoPlayer {
     func load() {
         let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.backgroundColor = UIColor.black.cgColor
+        playerLayer.backgroundColor = BColor.black.cgColor
         self.playerLayer = playerLayer
         playerLayer.frame = bounds
+        #if canImport(UIKit)
         layer.addSublayer(playerLayer)
+        #else
+        layer?.addSublayer(playerLayer)
+        #endif
     }
     
     func stop() {

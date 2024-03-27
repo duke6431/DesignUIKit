@@ -5,12 +5,16 @@
 //  Created by Duc IT. Nguyen Minh on 16/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import Combine
 import SnapKit
 import DesignCore
 
-public class FSwitch: UIView, FComponent {
+public class FSwitch: BView, FComponent {
     public var customConfiguration: ((FSwitch) -> Void)?
     public var cancellables = Set<AnyCancellable>()
     
@@ -25,18 +29,18 @@ public class FSwitch: UIView, FComponent {
         }
     }
     
-    public var thumbImage: UIImage?
-    public var thumbColor: UIColor = .white
-    public var statusColorOff: UIColor = .white
-    public var statusColorOn: UIColor = .systemGreen
-    public var statusImageOff: UIImage?
-    public var statusImageOn: UIImage?
+    public var thumbImage: BImage?
+    public var thumbColor: BColor = .white
+    public var statusColorOff: BColor = .white
+    public var statusColorOn: BColor = .systemGreen
+    public var statusImageOff: BImage?
+    public var statusImageOn: BImage?
     
     private var onSwitch: ((Bool) -> Void)?
     
-    private weak var statusImage: UIImageView?
+    private weak var statusImage: BImageView?
     private var thumbViewTrailing: Constraint?
-    private lazy var thumbView: UIView = {
+    private lazy var thumbView: BView = {
         let view = FZStack {
             if let thumbImage {
                 FImage(image: thumbImage).contentMode(.scaleAspectFill)
@@ -85,10 +89,10 @@ public class FSwitch: UIView, FComponent {
     }
     
     func updateLayers() {
-        layer.cornerRadius = min(bounds.width, bounds.height) / 2
+        layer.mainLayer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
     
-    public var body: UIView {
+    public var body: BView {
         FZStack {
             FImage(image: statusImageOff).contentMode(.scaleAspectFill).customConfiguration { [weak self] view in
                 self?.statusImage = view
@@ -97,8 +101,8 @@ public class FSwitch: UIView, FComponent {
                 FImage(image: statusImageOn).contentMode(.scaleAspectFill)
             }
         }.customConfiguration { view in
-            view.layer.borderColor = UIColor.lightGray.cgColor
-            view.layer.borderWidth = 0.5
+            view.layer.mainLayer.borderColor = BColor.lightGray.cgColor
+            view.layer.mainLayer.borderWidth = 0.5
         }.shaped(.circle)
     }
     
@@ -131,23 +135,23 @@ public class FSwitch: UIView, FComponent {
         return self
     }
     
-    @discardableResult func thumb(_ color: UIColor) -> Self {
+    @discardableResult func thumb(_ color: BColor) -> Self {
         self.thumbColor = color
         return self
     }
     
-    @discardableResult func thumb(_ image: UIImage) -> Self {
+    @discardableResult func thumb(_ image: BImage) -> Self {
         self.thumbImage = image
         return self
     }
     
-    @discardableResult func background(on: UIColor = .white, off: UIColor = .systemGreen) -> Self {
+    @discardableResult func background(on: BColor = .white, off: BColor = .systemGreen) -> Self {
         self.statusColorOff = off
         self.statusColorOn = on
         return self
     }
     
-    @discardableResult func background(on: UIImage, off: UIImage) -> Self {
+    @discardableResult func background(on: BImage, off: BImage) -> Self {
         self.statusImageOff = off
         self.statusImageOn = on
         return self

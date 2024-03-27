@@ -5,7 +5,11 @@
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignExts
 import DesignCore
 

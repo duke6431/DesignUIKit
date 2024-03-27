@@ -5,10 +5,15 @@
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
+import DesignCore
 import Combine
 
-open class BaseViewController<ViewModel: BaseViewModel>: UIViewController {
+open class BaseViewController<ViewModel: BaseViewModel>: BViewController {
     open var viewModel: ViewModel
     open var cancellables = Set<AnyCancellable>()
     

@@ -4,7 +4,7 @@
 //
 //  Created by Duc IT. Nguyen Minh on 25/05/2022.
 //
-
+#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -23,7 +23,7 @@ import DesignCore
  Text field will filling the rest.
  Textfield have fixed height => the only thing that's ambiguous while using constraint is width of the field
  */
-public class CommonTextField: UIView {
+public class CommonTextField: BView {
     public struct Default {
         public struct Icon {
             public static var height: CGFloat = 24
@@ -50,8 +50,8 @@ public class CommonTextField: UIView {
             iconView.image = icon
         }
     }
-    public var inputKeyboard: UIView? { didSet { textField.inputView = inputView } }
-    public override var inputView: UIView? {
+    public var inputKeyboard: BView? { didSet { textField.inputView = inputView } }
+    public override var inputView: BView? {
         get { inputKeyboard }
         set { inputKeyboard = newValue }
     }
@@ -80,7 +80,7 @@ public class CommonTextField: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    public private(set) lazy var trailingView: UIView = {
+    public private(set) lazy var trailingView: BView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -188,3 +188,4 @@ extension CommonTextField: UITextFieldDelegate {
         delegate?.textFieldDidEndEditing?(textField, reason: reason)
     }
 }
+#endif

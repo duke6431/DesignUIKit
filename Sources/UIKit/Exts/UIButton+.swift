@@ -5,7 +5,17 @@
 //  Created by Duc IT. Nguyen Minh on 31/05/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+
+public typealias BControl = UIControl
+public typealias BControlEvent = UIControl.Event
+#else
+import AppKit
+
+public typealias BControl = NSControl
+public typealias BControlEvent = NSEvent.EventTypeMask
+#endif
 import DesignCore
 
 @objc public class ClosureSleeve: NSObject {
@@ -13,7 +23,9 @@ import DesignCore
     public init(_ closure: @escaping() -> Void) { self.closure = closure }
     @objc public func invoke() { closure() }
 }
-public extension UIControl {
+
+#if canImport(UIKit)
+public extension BControl {
     class Failure: Error {
         var message: String?
         class Action: Failure {
@@ -25,9 +37,9 @@ public extension UIControl {
         }
     }
     
-    private static let actionIDs = ObjectAssociation<StructWrapper<[(UIControl.Event, String)]>>()
+    private static let actionIDs = ObjectAssociation<StructWrapper<[(BControlEvent, String)]>>()
     
-    var actionIDs: [(UIControl.Event, String)] {
+    var actionIDs: [(BControlEvent, String)] {
         get { Self.actionIDs[self]?() ?? [] }
         set { Self.actionIDs[self] = .init(value: newValue) }
     }
@@ -37,7 +49,7 @@ public extension UIControl {
     ///   - controlEvent: Control event for action to be triggered
     ///   - closure: Things happen
     @discardableResult
-    func addAction(for controlEvent: UIControl.Event = .touchUpInside, _ closure: @escaping() -> Void) -> String {
+    func addAction(for controlEvent: BControlEvent, _ closure: @escaping() -> Void) -> String {
         var identifier: String
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }
@@ -53,7 +65,7 @@ public extension UIControl {
         return identifier
     }
     
-    func removeAction(for controlEvent: UIControl.Event = .touchUpInside, identifier: String? = nil) throws {
+    func removeAction(for controlEvent: BControlEvent, identifier: String? = nil) throws {
         guard let identifier = identifier else {
             try actionIDs.forEach(removeAction(for:identifier:))
             return
@@ -70,7 +82,7 @@ public extension UIControl {
     }
 }
 
-extension UIControl.Failure.Action: LocalizedError {
+extension BControl.Failure.Action: LocalizedError {
     public var errorDescription: String? {
         message ?? String(describing: self)
     }
@@ -85,7 +97,7 @@ class HoldConfiguration {
     var shouldRepeat: Bool = false
 }
 
-extension UIButton {
+extension BButton {
     private static let holdConfiguration = ObjectAssociation<HoldConfiguration>()
 
     var holdConfiguration: HoldConfiguration {
@@ -116,8 +128,8 @@ extension UIButton {
     public func attachLongHold(
         delay: TimeInterval = 0.15,
         shouldRepeat: Bool = false,
-        onHold: @escaping (UIButton) -> Void,
-        onRelease: ((UIButton) -> Void)? = nil
+        onHold: @escaping (BButton) -> Void,
+        onRelease: ((BButton) -> Void)? = nil
     ) {
         holdConfiguration = .init()
         holdConfiguration.shouldRepeat = shouldRepeat
@@ -137,3 +149,4 @@ extension UIButton {
         self.addTarget(self, action: #selector(stopHold), for: [.touchUpInside, .touchUpOutside])
     }
 }
+#endif

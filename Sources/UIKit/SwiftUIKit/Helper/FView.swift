@@ -5,13 +5,17 @@
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignExts
 import DesignCore
 import SnapKit
 import Combine
 
-public typealias FBodyComponent = UIView & FConfigurable
+public typealias FBodyComponent = BView & FConfigurable
 public typealias FBody = [FBodyComponent]
 public typealias FViewBuilder = FBuilder<FBodyComponent>
 

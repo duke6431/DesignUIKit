@@ -5,11 +5,24 @@
 //  Created by Duc IT. Nguyen Minh on 13/03/2023.
 //
 
+#if canImport(UIKit)
 import UIKit
+
+public typealias BCollectionViewCell = UICollectionViewCell
+public typealias BCollectionView = UICollectionView
+public typealias BCollectionLayoutSectionOrthogonalScrollingBehavior = UICollectionLayoutSectionOrthogonalScrollingBehavior
+#else
+import AppKit
+
+public typealias BCollectionViewCell = NSCollectionViewItem
+public typealias BCollectionView = NSCollectionView
+public typealias BCollectionLayoutSectionOrthogonalScrollingBehavior = NSCollectionLayoutSectionOrthogonalScrollingBehavior
+#endif
+import DesignCore
 
 @available(iOS 13.0, *)
 extension CommonCollection {
-    public final class Section: NSObject, Sendable {
+    public final class Section: NSObject, @unchecked Sendable {
         public var header: CommonCollectionReusableModel?
         public var cells: [CommonCollectionCellModel]
         public var scrollable: Bool = true
@@ -38,27 +51,27 @@ extension CommonCollection {
             var itemSpacing: CGFloat = 8
 
             // Group
-            var groupAxis: NSLayoutConstraint.Axis = .horizontal
+            var groupAxis: BAxis = .horizontal
             var groupWidthRatio: CGFloat = 0.95
             var groupSpacing: CGFloat = 8
             var numberOfItemsPerGroup: Int = 1
 
             // Section
-            var sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
+            var sectionInset: BEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
             // Header
             var headerSize: NSCollectionLayoutSize?
             // Footer
             var footerSize: NSCollectionLayoutSize?
 
-            var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
+            var pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
 
             public init(
                 itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
-                groupAxis: NSLayoutConstraint.Axis = .horizontal,
+                groupAxis: BAxis = .horizontal,
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
-                sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
+                sectionInset: BEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
-                pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
+                pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
             ) {
                 self.itemWHRatio = itemWHRatio
                 self.itemSpacing = itemSpacing
@@ -120,14 +133,14 @@ extension CommonCollection.Section {
             if let headerSize = section.dimension.headerSize {
                 reusableSizes.append(
                     .init(layoutSize: headerSize,
-                          elementKind: UICollectionView.ReusableKind.header.rawValue,
+                          elementKind: BCollectionView.ReusableKind.header.rawValue,
                           alignment: .topLeading)
                 )
             }
             if let footerSize = section.dimension.footerSize {
                 reusableSizes.append(
                     .init(layoutSize: footerSize,
-                          elementKind: UICollectionView.ReusableKind.footer.rawValue,
+                          elementKind: BCollectionView.ReusableKind.footer.rawValue,
                           alignment: .bottomLeading)
                 )
             }

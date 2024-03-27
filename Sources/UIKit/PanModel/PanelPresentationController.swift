@@ -5,7 +5,9 @@
 //  Created by Duc IT. Nguyen Minh on 14/06/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 protocol DimmingViewProtocol {
     func animateDimming(_ alpha: CGFloat)
@@ -14,7 +16,7 @@ protocol DimmingViewProtocol {
 
 extension PanModal {
     class PanelPresentationController: UIPresentationController {
-        private var dimmingView: UIView!
+        private var dimmingView: BView!
         private var direction: OriginDirection
 
         override var frameOfPresentedViewInContainerView: CGRect {
@@ -32,9 +34,9 @@ extension PanModal {
             )
         }
 
-        init(presentedViewController: UIViewController,
-             presenting presentingViewController: UIViewController?,
-             direction: OriginDirection, with dimmingView: UIView?) {
+        init(presentedViewController: BViewController,
+             presenting presentingViewController: BViewController?,
+             direction: OriginDirection, with dimmingView: BView?) {
             self.direction = direction
             super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
             setupDimming(view: dimmingView)
@@ -42,7 +44,7 @@ extension PanModal {
 
         // MARK: Private
 
-        private func setupDimming(view: UIView? = nil) {
+        private func setupDimming(view: BView? = nil) {
             if let view = view {
                 dimmingView = view
             } else {
@@ -117,3 +119,4 @@ extension PanModal {
         }
     }
 }
+#endif

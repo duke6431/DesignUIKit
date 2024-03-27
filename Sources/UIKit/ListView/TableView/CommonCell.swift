@@ -5,8 +5,13 @@
 //  Created by Duc IT. Nguyen Minh on 21/05/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
+#if canImport(UIKit)
 @objc public protocol CommonCellModel: NSObjectProtocol {
     var identifier: String { get }
     static var cellKind: CommonTableView.Cell.Type { get }
@@ -17,6 +22,7 @@ import UIKit
     var leadingActions: [UIContextualAction] { get set }
     var trailingActions: [UIContextualAction] { get set }
     var realData: Any? { get }
+
     @objc optional func isHighlighted(with keyword: String) -> Bool
 }
 extension CommonTableView {
@@ -42,3 +48,4 @@ extension CommonTableView {
         }
     }
 }
+#endif

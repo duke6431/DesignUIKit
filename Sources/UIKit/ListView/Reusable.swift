@@ -4,9 +4,13 @@
 //  Created by Son le on 1/11/21.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
-public extension UICollectionView {
+public extension BCollectionView {
     enum ReusableKind: String {
         case header
         case footer
@@ -14,16 +18,16 @@ public extension UICollectionView {
         public var rawValue: String {
             switch self {
             case .header:
-                return UICollectionView.elementKindSectionHeader
+                return BCollectionView.elementKindSectionHeader
             case .footer:
-                return UICollectionView.elementKindSectionFooter
+                return BCollectionView.elementKindSectionFooter
             }
         }
     }
     
     // swiftlint:disable:next line_length
     /// Registers a nib or a UICollectionViewCell object containing a cell with the collection view under a specified identifier.
-    func register<T: UICollectionViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
+    func register<T: BCollectionViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
         if bundle?.path(forResource: name, ofType: "nib") != nil {
             let nib = UINib(nibName: name, bundle: bundle)
@@ -50,7 +54,7 @@ public extension UICollectionView {
     }
     
     /// Returns a reusable collection-view cell object located by its identifier.
-    func dequeue<T: UICollectionViewCell>(_ aClass: T.Type, indexPath: IndexPath) -> T {
+    func dequeue<T: BCollectionViewCell>(_ aClass: T.Type, indexPath: IndexPath) -> T {
         let name = String(describing: aClass)
         guard let cell = dequeueReusableCell(withReuseIdentifier: name, for: indexPath) as? T else {
             fatalError("`\(name)` is not registered")
@@ -72,7 +76,7 @@ public extension UICollectionView {
         return header
     }
 }
-
+#if canImport(UIKit)
 public extension UITableView {
     /// Registers a nib or a UITableViewCell object containing a cell with the table view under a specified identifier.
     func register<T: UITableViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
@@ -115,7 +119,7 @@ public extension UITableView {
         return cell
     }
 }
-
+#endif
 public protocol Reusable {
     static var reuseIdentifier: String { get }
 }

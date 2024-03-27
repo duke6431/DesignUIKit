@@ -5,7 +5,11 @@
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import Combine
 import DesignCore
 import SnapKit
@@ -14,27 +18,37 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(
+        style: BButton.ButtonType? = nil,
         _ textPublisher: FBinder<String>,
         action: @escaping () -> Void
     ) {
-        self.init(style: .system)
+        self.init(style: style)
         self.bind(to: textPublisher) { button, title in
+#if canImport(UIKit)
             button.setTitle(title, for: .normal)
+#else
+            button.title = title
+#endif
         }
         addAction(for: .touchUpInside, action)
     }
     
     public convenience init(
+        style: BButton.ButtonType? = nil,
         _ text: String = "",
         action: @escaping () -> Void
     ) {
-        self.init(style: .system)
-        self.setTitle(text, for: .normal)
+        self.init(style: style)
+#if canImport(UIKit)
+            setTitle(text, for: .normal)
+#else
+            title = text
+#endif
         addAction(for: .touchUpInside, action)
     }
 
-    public convenience init(@FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
-        self.init(style: .system)
+    public convenience init(style: BButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
+        self.init(style: style)
         addAction(for: .touchUpInside, action)
         label().forEach { label in
             addSubview(label)
@@ -58,12 +72,12 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
         configuration?.updateLayers(for: self)
     }
     
-    @discardableResult public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    @discardableResult public func font(_ font: BFont = FontSystem.shared.font(with: .body)) -> Self {
         titleLabel?.with(\.font, setTo: font)
         return self
     }
 
-    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+    @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         setTitleColor(color, for: .normal)
         return self
     }

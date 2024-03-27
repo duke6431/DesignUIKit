@@ -5,12 +5,13 @@
 //  Created by Duc IT. Nguyen Minh on 15/06/2022.
 //
 
-import UIKit
 import DesignCore
+#if canImport(UIKit)
+import UIKit
 
 extension PanModal {
-    public class ViewController: UIViewController {
-        var contentConfigure: ((UIView, UIViewController) -> Void)?
+    public class ViewController: BViewController {
+        var contentConfigure: ((BView, BViewController) -> Void)?
         var direction: OriginDirection
 
         @available(iOS, unavailable)
@@ -24,11 +25,11 @@ extension PanModal {
         }
 
         // MARK: - Views
-        public private(set) lazy var contentView: UIView = {
-            let view = UIView()
+        public private(set) lazy var contentView: BView = {
+            let view = BView()
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.layer.cornerRadius = 16
-            view.clipsToBounds = true
+            view.layer.mainLayer.cornerRadius = 16
+            view.layer.mainLayer.masksToBounds = true
             self.view.addSubview(view)
             view.backgroundColor = .white
             return view
@@ -65,15 +66,15 @@ extension PanModal.ViewController {
     }
 }
 
-extension UIViewController {
-    func prepareToPresentAsPanel(with dimmingView: UIView?,
+extension BViewController {
+    func prepareToPresentAsPanel(with dimmingView: BView?,
                                  direction: PanModal.OriginDirection = .bottom) {
         _storedTransitioningDelegate = PanModal.TransitioningDelegate(dimmingView: dimmingView, direction: direction)
         transitioningDelegate = _storedTransitioningDelegate
         modalPresentationStyle = .custom
     }
 
-    public func present(_ viewController: UIViewController?, dimmingView: UIView? = nil,
+    public func present(_ viewController: BViewController?, dimmingView: BView? = nil,
                         direction: PanModal.OriginDirection = .top, animated: Bool = true) {
         let panel = PanModal.ViewController(direction: direction)
         panel.prepareToPresentAsPanel(with: dimmingView, direction: direction)
@@ -115,10 +116,11 @@ extension UIViewController {
     }
 }
 
-extension UIView: Chainable {
-    public static var dimmingDefault: UIView {
-        .init().with(\.backgroundColor, setTo: UIColor.black.withAlphaComponent(0.4))
+extension BView: Chainable {
+    public static var dimmingDefault: BView {
+        .init().with(\.backgroundColor, setTo: BColor.black.withAlphaComponent(0.4))
     }
 }
 
 extension NSLayoutConstraint: Chainable { }
+#endif

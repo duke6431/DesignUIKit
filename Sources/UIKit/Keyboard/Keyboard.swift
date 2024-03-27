@@ -5,6 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 21/05/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -97,3 +98,4 @@ extension Keyboard: KeyTappableDelegate {
         }
     }
 }
+#endif

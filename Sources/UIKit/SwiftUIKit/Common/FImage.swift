@@ -5,7 +5,11 @@
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import Combine
 import Nuke
 import SnapKit
@@ -17,7 +21,7 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
     public var customConfiguration: ((FImage) -> Void)?
     
     public init(
-        image: UIImage? = nil, url: URL? = nil
+        image: BImage? = nil, url: URL? = nil
     ) {
         self.url = url
         super.init(image: image)
@@ -47,12 +51,12 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
     }
     
     public init(
-        _ imagePublisher: FBinder<UIImage>
+        _ imagePublisher: FBinder<BImage>
     ) {
         super.init(frame: .zero)
         self.bind(to: imagePublisher) { imageView, image in imageView.image = image }
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -72,19 +76,19 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
         configuration?.updateLayers(for: self)
     }
     
-    @discardableResult public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
+    @discardableResult public func contentMode(_ contentMode: BView.ContentMode) -> Self {
         self.contentMode = contentMode
         return self
     }
     
-    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+    @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
         return self
     }
 }
 
 public extension FImage {
-    func reload(image: UIImage? = nil, url: URL?) {
+    func reload(image: BImage? = nil, url: URL?) {
         self.image = image
         self.url = url ?? self.url
         if let url = url {

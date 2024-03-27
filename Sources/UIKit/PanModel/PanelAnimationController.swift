@@ -5,7 +5,9 @@
 //  Created by Duc IT. Nguyen Minh on 14/06/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 extension PanModal {
     class AnimationController: NSObject, UIViewControllerAnimatedTransitioning {
@@ -80,7 +82,7 @@ extension PanModal {
         }
 
         func frame(presenting: Bool, for direction: OriginDirection,
-                   of targetView: UIView, in containerView: UIView) -> CGRect {
+                   of targetView: BView, in containerView: BView) -> CGRect {
             switch direction {
             case .bottom:
                 return .init(
@@ -102,3 +104,4 @@ extension PanModal {
         }
     }
 }
+#endif

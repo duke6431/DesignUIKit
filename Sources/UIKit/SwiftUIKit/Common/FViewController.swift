@@ -5,15 +5,19 @@
 //  Created by Duc Minh Nguyen on 2/23/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import SnapKit
 import DesignCore
 import DesignExts
 
-public class FViewController<ViewController: UIViewController>: BaseView, FConfigurable, FComponent {
+public class FViewController<ViewController: BViewController>: BaseView, FConfigurable, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
 
-    public weak var parentViewController: UIViewController?
+    public weak var parentViewController: BViewController?
     public var contentViewController: ViewController
     
     public init(_ contentViewController: ViewController) {
@@ -40,7 +44,7 @@ public class FViewController<ViewController: UIViewController>: BaseView, FConfi
         configuration?.updateLayers(for: self)
     }
     
-    @discardableResult public func parent(_ viewController: UIViewController) -> Self {
+    @discardableResult public func parent(_ viewController: BViewController) -> Self {
         parentViewController = viewController
         return self
     }

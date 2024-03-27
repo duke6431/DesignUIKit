@@ -5,17 +5,21 @@
 //  Created by Duc IT. Nguyen Minh on 12/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import SnapKit
 import DesignCore
 
 public class FScroll: BaseScrollView, FConfigurable, FComponent {
-    public var axis: NSLayoutConstraint.Axis
+    public var axis: BAxis
     public var contentViews: [FBodyComponent] = []
     public var customConfiguration: ((FScroll) -> Void)?
 
     public init(
-        axis: NSLayoutConstraint.Axis,
+        axis: BAxis,
         contentView: FBodyComponent? = nil
     ) {
         self.axis = axis
@@ -28,7 +32,7 @@ public class FScroll: BaseScrollView, FConfigurable, FComponent {
     }
     
     public init(
-        axis: NSLayoutConstraint.Axis,
+        axis: BAxis,
         @FViewBuilder contentViews: () -> FBody
     ) {
         self.axis = axis

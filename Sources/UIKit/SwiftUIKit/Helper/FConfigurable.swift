@@ -1,11 +1,15 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 import DesignExts
 import SnapKit
@@ -23,7 +27,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
     @discardableResult func offset(_ size: CGSize) -> Self
     @discardableResult func offset(width: CGFloat, height: CGFloat) -> Self
-    @discardableResult func background(_ color: UIColor) -> Self
+    @discardableResult func background(_ color: BColor) -> Self
     @discardableResult func shaped(_ shape: FShape) -> Self
     @discardableResult func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
     @discardableResult func attachToParent(_ status: Bool) -> Self
@@ -36,15 +40,15 @@ public class FConfiguration: Chainable {
     public var offset: CGSize = .zero
     public var shadow: CALayer.ShadowConfiguration?
     public var shape: FShape?
-    public var backgroundColor: UIColor = .clear
+    public var backgroundColor: BColor = .clear
     public var containerPadding: NSDirectionalEdgeInsets?
     public var ratio: CGFloat?
     public var opacity: CGFloat = 1
-
-    public var shouldConstraintWithParent: Bool = true
-    public weak var owner: UIView?
     
-    public func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
+    public var shouldConstraintWithParent: Bool = true
+    public weak var owner: BView?
+    
+    public func didMoveToSuperview(_ superview: BView?, with target: BView) {
         target.backgroundColor = backgroundColor
         target.alpha = opacity
         if shouldConstraintWithParent, let superview {
@@ -62,26 +66,43 @@ public class FConfiguration: Chainable {
         }
     }
     
-    public func updateLayers(for target: UIView) {
+    public func updateLayers(for target: BView) {
         if let shape {
             target.clipsToBounds = true
-            UIView.animate(withDuration: 0.2) {
+            BView.animate(withDuration: 0.2) {
                 switch shape {
                 case .circle:
+#if canImport(UIKit)
                     target.layer.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
+#else
+                    target.layer?.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
+#endif
                 case .roundedRectangle(let cornerRadius, let corners):
+#if canImport(UIKit)
                     target.layer.maskedCorners = corners.caMask
                     target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+#else
+                    target.layer?.maskedCorners = corners.caMask
+                    target.layer?.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+#endif
                 }
             }
         }
         if let shadow {
-            UIView.animate(withDuration: 0.2) {
+            BView.animate(withDuration: 0.2) {
+#if canImport(UIKit)
                 target.layer.add(
                     shadow: shadow.updated(
                         \.path, with: UIBezierPath(rect: target.bounds).cgPath
                     )
                 )
+#else
+                target.layer?.add(
+                    shadow: shadow.updated(
+                        \.path, with: BBezierPath(rect: target.bounds).cgPath
+                    )
+                )
+#endif
             }
         }
     }

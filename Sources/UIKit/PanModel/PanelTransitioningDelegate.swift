@@ -5,17 +5,19 @@
 //  Created by Duc IT. Nguyen Minh on 15/06/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 extension PanModal {
     class TransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
         private var animationController: AnimationController
         private var interactionController: InteractionController
-        private let dimmingView: UIView?
+        private let dimmingView: BView?
         private var direction: OriginDirection = .bottom
         private var interactive: Bool = true
 
-        init(dimmingView: UIView? = nil, direction: OriginDirection = .bottom, interactive: Bool = true) {
+        init(dimmingView: BView? = nil, direction: OriginDirection = .bottom, interactive: Bool = true) {
             self.dimmingView = dimmingView
             self.direction = direction
             self.animationController = .init(direction: direction)
@@ -23,9 +25,9 @@ extension PanModal {
             self.interactive = interactive
         }
 
-        func presentationController(forPresented presented: UIViewController,
-                                    presenting: UIViewController?,
-                                    source: UIViewController) -> UIPresentationController? {
+        func presentationController(forPresented presented: BViewController,
+                                    presenting: BViewController?,
+                                    source: BViewController) -> UIPresentationController? {
             let presentationController = PanelPresentationController(
                 presentedViewController: presented, presenting: presenting,
                 direction: direction, with: dimmingView
@@ -37,13 +39,13 @@ extension PanModal {
             return presentationController
         }
 
-        func animationController(forPresented presented: UIViewController,
-                                 presenting: UIViewController,
-                                 source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        func animationController(forPresented presented: BViewController,
+                                 presenting: BViewController,
+                                 source: BViewController) -> UIViewControllerAnimatedTransitioning? {
             return animationController
         }
 
-        func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        func animationController(forDismissed dismissed: BViewController) -> UIViewControllerAnimatedTransitioning? {
             return animationController
         }
 
@@ -57,3 +59,4 @@ extension PanModal {
         }
     }
 }
+#endif

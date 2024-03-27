@@ -5,7 +5,13 @@
 //  Created by Duc IT. Nguyen Minh on 21/05/2022.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
+
+#if canImport(UIKit)
 @objc public protocol CommonTableViewDelegate: AnyObject {
     @objc optional func refreshStarted()
     @objc optional func didSelectCell(at indexPath: IndexPath, with data: CommonCellModel)
@@ -20,3 +26,4 @@ public class CommonTableSection {
         self.items = items
     }
 }
+#endif

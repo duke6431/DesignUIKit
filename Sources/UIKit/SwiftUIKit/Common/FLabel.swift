@@ -5,7 +5,11 @@
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 import SnapKit
 import Combine
@@ -53,12 +57,12 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
         return self
     }
     
-    @discardableResult public func font(_ font: UIFont = FontSystem.shared.font(with: .body)) -> Self {
+    @discardableResult public func font(_ font: BFont = FontSystem.shared.font(with: .body)) -> Self {
         self.font = font
         return self
     }
 
-    @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
+    @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         self.textColor = color
         return self
     }

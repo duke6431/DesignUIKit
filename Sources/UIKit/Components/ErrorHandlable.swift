@@ -4,7 +4,7 @@
 //
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
-
+#if canImport(UIKit)
 import UIKit
 
 public protocol MessageHandlable {
@@ -15,3 +15,4 @@ public protocol MessageHandlable {
     // unknown error: pop up: center in screen, nothing can be done here
     // The style should be configurable
 }
+#endif

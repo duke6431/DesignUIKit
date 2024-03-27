@@ -5,11 +5,16 @@
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import Combine
+import DesignCore
 import DesignExts
 import SnapKit
-
+#if canImport(UIKit)
 public class FList: CommonTableView, FConfigurable, FComponent {
     public var customConfiguration: ((FList) -> Void)?
 
@@ -66,11 +71,11 @@ public extension FList {
 
 public protocol FCellModeling {
     var view: (FBodyComponent & FCellReusable).Type { get set }
-    func layoutConfiguration(container: UIView, view: UIView?)
+    func layoutConfiguration(container: BView, view: BView?)
 }
 
 public extension FCellModeling {
-    func layoutConfiguration(container: UIView, view: UIView?) { }
+    func layoutConfiguration(container: BView, view: BView?) { }
 }
 
 public protocol FCellReusable: AnyObject {
@@ -121,3 +126,4 @@ public class FListCell: CommonTableView.Cell {
         content = view
     }
 }
+#endif

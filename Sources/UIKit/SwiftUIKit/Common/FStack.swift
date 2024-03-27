@@ -5,14 +5,18 @@
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 
 public class FStack: BaseStackView, FConfigurable, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
     
     public init(
-        axis: NSLayoutConstraint.Axis,
+        axis: BAxis,
         spacing: Double = 8,
         distribution: UIStackView.Distribution? = nil,
         @FViewBuilder arrangedContents: () -> FBody

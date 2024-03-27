@@ -5,17 +5,22 @@
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import DesignCore
 
 protocol BaseCoordinating: Chainable {
     
 }
 
-open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: MessageHandlable, BaseCoordinating {
-    open weak var navigationController: UINavigationController?
+// TODO: Handle message `MessageHandlable`
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: BaseCoordinating {
+    open weak var navigationController: BNavigationController?
     
-    public init(_ navigationController: UINavigationController? = nil) {
+    public init(_ navigationController: BNavigationController? = nil) {
         self.navigationController = navigationController
     }
     
