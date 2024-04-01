@@ -8,12 +8,12 @@
 import Foundation
 
 @propertyWrapper
-struct PreferenceItem<T> {
+public struct PreferenceItem<T> {
     let key: String
     let defaultValue: T
     let calculatedValue: ((T) -> (T))?
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             let res = UserDefaults.standard.value(forKey: key) as? T ?? defaultValue
             return calculatedValue?(res) ?? res
@@ -23,7 +23,7 @@ struct PreferenceItem<T> {
         }
     }
 
-    init(_ key: String, _ defaultValue: T, _ calculatedValue: ((T) -> (T))? = nil) {
+    public init(_ key: String, _ defaultValue: T, _ calculatedValue: ((T) -> (T))? = nil) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue
@@ -31,12 +31,12 @@ struct PreferenceItem<T> {
 }
 
 @propertyWrapper
-struct PreferenceData<T: Codable> {
+public struct PreferenceData<T: Codable> {
     let key: String
     let defaultValue: T
     let calculatedValue: ((T) -> (T))?
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             guard let decoded = UserDefaults.standard.data(forKey: key)
             else { return defaultValue }
@@ -59,7 +59,7 @@ struct PreferenceData<T: Codable> {
         }
     }
 
-    init(_ key: String, _ defaultValue: T, calculatedValue: ((T) -> (T))? = nil) {
+    public init(_ key: String, _ defaultValue: T, calculatedValue: ((T) -> (T))? = nil) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue

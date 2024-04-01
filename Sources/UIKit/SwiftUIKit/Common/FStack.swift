@@ -31,6 +31,22 @@ public class FStack: BaseStackView, FConfigurable, FComponent {
         }
     }
 
+    public init(
+        axis: BAxis,
+        spacing: Double = 8,
+        distribution: UIStackView.Distribution? = nil,
+        arrangedContents: FBody
+    ) {
+        super.init(frame: .zero)
+        self.axis = axis
+        self.spacing = spacing
+        self.distribution = distribution ?? .fill
+        arrangedContents.forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addArrangedSubview($0)
+        }
+    }
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
