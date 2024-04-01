@@ -130,7 +130,7 @@ public enum AnimationChainType {
     case serial
 }
 
-public class AnimationChain {
+public class AnimationChain: Chainable {
     public var actionGroup: AnimationChainGroup
     public var target: BView
     public var sequential: AnimationChain?
@@ -156,5 +156,15 @@ public class AnimationChain {
         }
         target.layer.add(actionGroup(using: target), forKey: nil)
         parallel?.execute()
+    }
+    
+    public func parallel(_ chain: AnimationChain) -> Self {
+        parallel = chain
+        return self
+    }
+    
+    public func sequential(_ chain: AnimationChain) -> Self {
+        sequential = chain
+        return self
     }
 }
