@@ -19,6 +19,7 @@ public enum AnimationChainEffect {
     case offset(x: CGFloat, y: CGFloat)
     case scale(multiplier: CGFloat)
     case rotate(radians: CGFloat)
+    case custom(configuration: (CABasicAnimation) -> Void)
 }
 
 public enum AnimationChainSpringOption {
@@ -70,7 +71,10 @@ public class AnimationChainAction: AnimationChainable, Chainable {
             animation.keyPath = "transform.rotation.z"
             animation.fromValue = view.layer.presentation()?.value(forKey: "transform.rotation.z")
             animation.toValue = radians
+        case .custom(let configuration):
+            configuration(animation)
         }
+        animation.beginTime = CACurrentMediaTime() + (delay ?? 0)
         animation.duration = duration
         if let timingFunction { animation.timingFunction = timingFunction }
         group.animations = [animation] + (next?(using: view).animations ?? [])
