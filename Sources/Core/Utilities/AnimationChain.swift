@@ -95,7 +95,7 @@ public class AnimationChain: NSObject, Chainable {
         return animation
     }
     
-    func execute() {
+    public func execute() {
         guard let target else { return }
         target.layer.add(animation(using: target), forKey: nil)
         parallel?.execute()
