@@ -28,11 +28,11 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
     }
 
     public convenience init(
-        systemImage: String
+        systemImage: String, configuration: BImage.SymbolConfiguration? = nil
     ) {
-        self.init(
-            image: .init(systemName: systemImage)
-        )
+        var image = UIImage(systemName: systemImage)
+        if let configuration { image = image?.withConfiguration(configuration) }
+        self.init(image: image)
     }
     
     public convenience init(

@@ -9,6 +9,7 @@ import Foundation
 import QuartzCore
 
 open class ACBaseEffect: Chainable {
+    weak var target: BView?
     public var delay: TimeInterval? = nil
     public var duration: TimeInterval = 0.25
     public var spring: ACSpringOption = .none()
@@ -24,6 +25,7 @@ open class ACBaseEffect: Chainable {
     }
     
     public func animation(for view: BView) -> CABasicAnimation {
+        target = view
         let animation = CASpringAnimation()
         configure(animation, with: view)
         animation.initialVelocity = spring.initialVelocity
@@ -37,11 +39,15 @@ open class ACBaseEffect: Chainable {
     func configure(_ animation: CASpringAnimation, with view: BView) {
         fatalError("Configuration must be overidden")
     }
+    
+    func saveProperty() {
+        fatalError("Save property must be overidden")
+    }
 }
 
 public class ACOpacity: ACBaseEffect {
     public var alpha: CGFloat
-    public init(alpha: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+    public init(_ alpha: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
         self.alpha = alpha
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
@@ -50,6 +56,10 @@ public class ACOpacity: ACBaseEffect {
         animation.keyPath = "opacity"
         animation.fromValue = view.layer.presentation()?.value(forKey: "opacity")
         animation.toValue = alpha
+    }
+    
+    override func saveProperty() {
+        target?.alpha = alpha
     }
 }
 
@@ -72,7 +82,7 @@ public class ACOffset: ACBaseEffect {
 
 public class ACScale: ACBaseEffect {
     var multiplier: CGFloat
-    public init(multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+    public init(_ multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
         self.multiplier = multiplier
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
@@ -98,15 +108,38 @@ public class ACRotate: ACBaseEffect {
     }
 }
 
+public class ACCornerRadius: ACBaseEffect {
+    var radius: CGFloat
+    public init(radius: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.radius = radius
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        animation.keyPath = "cornerRadius"
+        animation.toValue = radius
+    }
+    
+    override func saveProperty() {
+        target?.layer.cornerRadius = radius
+    }
+}
+
 public class ACCustom: ACBaseEffect {
     var configuration: (CABasicAnimation) -> Void
-    public init(configuration: @escaping (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+    var updateProperties: ((BView) -> Void)?
+    public init(_ configuration: @escaping (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
         self.configuration = configuration
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
     override func configure(_ animation: CASpringAnimation, with view: BView) {
         configuration(animation)
+    }
+    
+    override func saveProperty() {
+        guard let target else { return }
+        updateProperties?(target)
     }
 }
 
