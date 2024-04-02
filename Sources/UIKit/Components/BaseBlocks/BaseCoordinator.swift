@@ -28,10 +28,12 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<V
         // Override to prepare scene if needed
     }
     
-    open func toScene() {
+    @discardableResult
+    open func toScene() -> Self {
         let viewModel = ViewModel()
         let scene = Scene(with: viewModel)
         prepare(viewModel, scene)
         navigationController?.pushViewController(scene, animated: true)
+        return self
     }
 }
