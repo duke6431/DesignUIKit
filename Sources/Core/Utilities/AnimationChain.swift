@@ -15,11 +15,11 @@ import QuartzCore
 //}
 
 public enum AnimationChainEffect {
-    case opacity(CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none, timingFunction: CAMediaTimingFunction? = nil)
-    case offset(x: CGFloat, y: CGFloat, delay: TimeInterval?, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none, timingFunction: CAMediaTimingFunction? = nil)
-    case scale(multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none, timingFunction: CAMediaTimingFunction? = nil)
-    case rotate(radians: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none, timingFunction: CAMediaTimingFunction? = nil)
-    case custom(configuration: (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none, timingFunction: CAMediaTimingFunction? = nil)
+    case opacity(CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
+    case offset(x: CGFloat, y: CGFloat, delay: TimeInterval?, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
+    case scale(multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
+    case rotate(radians: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
+    case custom(configuration: (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
     
     var delay: TimeInterval? {
         switch self {
@@ -99,15 +99,16 @@ public class AnimationChain: NSObject, Chainable {
         effects: [AnimationChainEffect]
     ) {
         self.effects = effects
+        super.init()
     }
     
-    public init(
+    public convenience init(
         _ target: BView,
         @FBuilder<AnimationChainEffect> effects: () -> [AnimationChainEffect]
     ) {
+        self.init(effects: effects())
         target.animationChain = self
         self.target = target
-        self.effects = effects()
     }
     
     public func animation(using view: BView) -> CAAnimation {
