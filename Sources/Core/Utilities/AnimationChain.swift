@@ -101,6 +101,15 @@ public class AnimationChain: NSObject, Chainable {
         self.effects = effects
     }
     
+    public init(
+        _ target: BView,
+        @FBuilder<AnimationChainEffect> effects: () -> [AnimationChainEffect]
+    ) {
+        target.animationChain = self
+        self.target = target
+        self.effects = effects()
+    }
+    
     public func animation(using view: BView) -> CAAnimation {
         let group = CAAnimationGroup()
         group.animations = effects.map { animation(using: view, effect: $0) }
@@ -161,6 +170,12 @@ public class AnimationChain: NSObject, Chainable {
     @discardableResult
     public func parallel(_ action: AnimationChain) -> Self {
         self.parallel = action
+        return self
+    }
+    
+    @discardableResult
+    public func completion(_ completion: @escaping () -> Void) -> Self {
+        self.completion = completion
         return self
     }
 }
