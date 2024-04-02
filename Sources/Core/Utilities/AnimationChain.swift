@@ -62,10 +62,30 @@ public enum AnimationChainEffect {
 }
 
 public enum AnimationChainSpringOption {
-    case none
-    case light
-    case medium
-    case heavy
+    public static var defaultInitialVelocity: CGFloat = 30
+
+    case none(initialVelocity: CGFloat? = nil, damping: CGFloat = .greatestFiniteMagnitude)
+    case light(initialVelocity: CGFloat? = nil, damping: CGFloat = 5)
+    case medium(initialVelocity: CGFloat? = nil, damping: CGFloat = 10)
+    case heavy(initialVelocity: CGFloat? = nil, damping: CGFloat = 15)
+    
+    public var initialVelocity: CGFloat {
+        switch self {
+        case .none(let initialVelocity, _): initialVelocity ?? Self.defaultInitialVelocity
+        case .light(let initialVelocity, _): initialVelocity ?? Self.defaultInitialVelocity
+        case .medium(let initialVelocity, _): initialVelocity ?? Self.defaultInitialVelocity
+        case .heavy(let initialVelocity, _): initialVelocity ?? Self.defaultInitialVelocity
+        }
+    }
+    
+    public var damping: CGFloat {
+        switch self {
+        case .none(_, let damping): damping
+        case .light(_, let damping): damping
+        case .medium(_, let damping): damping
+        case .heavy(_, let damping): damping
+        }
+    }
 }
 
 public class AnimationChain: NSObject, Chainable {
@@ -89,7 +109,7 @@ public class AnimationChain: NSObject, Chainable {
     
     public func animation(using view: BView, effect: AnimationChainEffect) -> CAAnimation {
         let animation = CASpringAnimation()
-        animation.initialVelocity = 30
+        animation.initialVelocity = effect.spring.initialVelocity
         switch effect {
         case .opacity(let alpha, _, _, _, _):
             animation.keyPath = "opacity"
@@ -111,17 +131,7 @@ public class AnimationChain: NSObject, Chainable {
         case .custom(let configuration, _, _, _, _):
             configuration(animation)
         }
-        switch effect.spring {
-        case .none:
-            animation.damping = .greatestFiniteMagnitude
-        case .light:
-            animation.damping = 3
-        case .medium:
-            animation.damping = 7
-        case .heavy:
-            animation.damping = 10
-        }
-        
+        animation.damping = effect.spring.damping
         animation.delegate = self
         animation.beginTime = CACurrentMediaTime() + (effect.delay ?? 0)
         animation.duration = effect.duration
