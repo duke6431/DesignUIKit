@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 3/29/24.
 //
@@ -8,62 +8,111 @@
 import Foundation
 import QuartzCore
 
-//public protocol AnimationChainable: Chainable {
-//    var totalTime: TimeInterval { get }
-//    func callAsFunction(using view: BView) -> CAAnimationGroup
-//    var next: AnimationChainable? { get }
-//}
-
-public enum AnimationChainEffect {
-    case opacity(CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
-    case offset(x: CGFloat, y: CGFloat, delay: TimeInterval?, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
-    case scale(multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
-    case rotate(radians: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
-    case custom(configuration: (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: AnimationChainSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil)
-    
-    var delay: TimeInterval? {
-        switch self {
-        case .opacity(_, let delay, _, _, _): delay
-        case .offset(_, _, let delay, _, _, _): delay
-        case .scale(_, let delay, _, _, _): delay
-        case .rotate(_, let delay, _, _, _): delay
-        case .custom(_, let delay, _, _, _): delay
-        }
-    }
-    var duration: TimeInterval {
-        switch self {
-        case .opacity(_, _, let duration, _, _): duration
-        case .offset(_, _, _, let duration, _, _): duration
-        case .scale(_, _, let duration, _, _): duration
-        case .rotate(_, _, let duration, _, _): duration
-        case .custom(_, _, let duration, _, _): duration
-        }
+open class ACBaseEffect: Chainable {
+    public var delay: TimeInterval? = nil
+    public var duration: TimeInterval = 0.25
+    public var spring: ACSpringOption = .none()
+    public var timingFunction: CAMediaTimingFunction? = nil
+    public init(
+        delay: TimeInterval? = nil, duration: TimeInterval = 0.25,
+        spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil
+    ) {
+        self.delay = delay
+        self.duration = duration
+        self.spring = spring
+        self.timingFunction = timingFunction
     }
     
-    var spring: AnimationChainSpringOption {
-        switch self {
-        case .opacity(_, _, _, let spring, _): spring
-        case .offset(_, _, _, _, let spring, _): spring
-        case .scale(_, _, _, let spring, _): spring
-        case .rotate(_, _, _, let spring, _): spring
-        case .custom(_, _, _, let spring, _): spring
-        }
+    public func animation(for view: BView) -> CAAnimation {
+        let animation = CASpringAnimation()
+        configure(animation, with: view)
+        animation.initialVelocity = spring.initialVelocity
+        animation.damping = spring.damping
+        animation.beginTime = CACurrentMediaTime() + (delay ?? 0)
+        animation.duration = duration
+        if let timingFunction { animation.timingFunction = timingFunction }
+        return animation
     }
     
-    var timingFunction: CAMediaTimingFunction? {
-        switch self {
-        case .opacity(_, _, _, _, let timingFunction): timingFunction
-        case .offset(_, _, _, _, _, let timingFunction): timingFunction
-        case .scale(_, _, _, _, let timingFunction): timingFunction
-        case .rotate(_, _, _, _, let timingFunction): timingFunction
-        case .custom(_, _, _, _, let timingFunction): timingFunction
-        }
+    func configure(_ animation: CASpringAnimation, with view: BView) {
+        fatalError("Configuration must be overidden")
     }
 }
 
-public enum AnimationChainSpringOption {
-    public static var defaultInitialVelocity: CGFloat = 30
+public class ACOpacity: ACBaseEffect {
+    public var alpha: CGFloat
+    public init(alpha: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.alpha = alpha
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        animation.keyPath = "opacity"
+        animation.fromValue = view.layer.presentation()?.value(forKey: "opacity")
+        animation.toValue = alpha
+    }
+}
 
+public class ACOffset: ACBaseEffect {
+    var x: CGFloat
+    var y: CGFloat
+    public init(x: CGFloat, y: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.x = x
+        self.y = y
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        animation.keyPath = "position"
+        guard let currentPosition = view.layer.presentation()?.value(forKey: "position") as? CGPoint else { return }
+        animation.fromValue = view.layer.presentation()?.value(forKey: "position")
+        animation.toValue = CGPoint(x: currentPosition.x + x, y: currentPosition.y + y)
+    }
+}
+
+public class ACScale: ACBaseEffect {
+    var multiplier: CGFloat
+    public init(multiplier: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.multiplier = multiplier
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        animation.keyPath = "transform.scale"
+        animation.fromValue = view.layer.presentation()?.value(forKey: "transform.scale")
+        animation.toValue = multiplier
+    }
+}
+
+public class ACRotate: ACBaseEffect {
+    var radians: CGFloat
+    public init(radians: CGFloat, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.radians = radians
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        animation.keyPath = "transform.rotation.z"
+        animation.fromValue = view.layer.presentation()?.value(forKey: "transform.rotation.z")
+        animation.toValue = radians
+    }
+}
+
+public class ACCustom: ACBaseEffect {
+    var configuration: (CABasicAnimation) -> Void
+    public init(configuration: @escaping (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
+        self.configuration = configuration
+        super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
+    }
+    
+    override func configure(_ animation: CASpringAnimation, with view: BView) {
+        configuration(animation)
+    }
+}
+
+public enum ACSpringOption {
+    public static var defaultInitialVelocity: CGFloat = 30
+    
     case none(initialVelocity: CGFloat? = nil, damping: CGFloat = .greatestFiniteMagnitude)
     case light(initialVelocity: CGFloat? = nil, damping: CGFloat = 5)
     case medium(initialVelocity: CGFloat? = nil, damping: CGFloat = 10)
@@ -90,13 +139,13 @@ public enum AnimationChainSpringOption {
 
 public class AnimationChain: NSObject, Chainable {
     fileprivate weak var target: BView?
-    public var effects: [AnimationChainEffect]
+    public var effects: [ACBaseEffect]
     public var completion: (() -> Void)?
     public var sequential: AnimationChain?
     public var parallel: AnimationChain?
-
+    
     public init(
-        effects: [AnimationChainEffect]
+        effects: [ACBaseEffect]
     ) {
         self.effects = effects
         super.init()
@@ -104,7 +153,7 @@ public class AnimationChain: NSObject, Chainable {
     
     public convenience init(
         _ target: BView,
-        @FBuilder<AnimationChainEffect> effects: () -> [AnimationChainEffect]
+        @FBuilder<ACBaseEffect> effects: () -> [ACBaseEffect]
     ) {
         self.init(effects: effects())
         target.animationChain = self
@@ -113,40 +162,9 @@ public class AnimationChain: NSObject, Chainable {
     
     public func animation(using view: BView) -> CAAnimation {
         let group = CAAnimationGroup()
-        group.animations = effects.map { animation(using: view, effect: $0) }
+        group.delegate = self
+        group.animations = effects.map { $0.animation(for: view) }
         return group
-    }
-    
-    public func animation(using view: BView, effect: AnimationChainEffect) -> CAAnimation {
-        let animation = CASpringAnimation()
-        animation.initialVelocity = effect.spring.initialVelocity
-        switch effect {
-        case .opacity(let alpha, _, _, _, _):
-            animation.keyPath = "opacity"
-            animation.fromValue = view.layer.presentation()?.value(forKey: "opacity")
-            animation.toValue = alpha
-        case .offset(let x, let y, _, _, _, _):
-            animation.keyPath = "position"
-            guard let currentPosition = view.layer.presentation()?.value(forKey: "position") as? CGPoint else { break }
-            animation.fromValue = view.layer.presentation()?.value(forKey: "position")
-            animation.toValue = CGPoint(x: currentPosition.x + x, y: currentPosition.y + y)
-        case .scale(let multiplier, _, _, _, _):
-            animation.keyPath = "transform.scale"
-            animation.fromValue = view.layer.presentation()?.value(forKey: "transform.scale")
-            animation.toValue = multiplier
-        case .rotate(let radians, _, _, _, _):
-            animation.keyPath = "transform.rotation.z"
-            animation.fromValue = view.layer.presentation()?.value(forKey: "transform.rotation.z")
-            animation.toValue = radians
-        case .custom(let configuration, _, _, _, _):
-            configuration(animation)
-        }
-        animation.damping = effect.spring.damping
-        animation.delegate = self
-        animation.beginTime = CACurrentMediaTime() + (effect.delay ?? 0)
-        animation.duration = effect.duration
-        if let timingFunction = effect.timingFunction { animation.timingFunction = timingFunction }
-        return animation
     }
     
     public func execute() {
@@ -280,7 +298,7 @@ public extension BView {
 //import UIKit
 //
 //protocol StepAnimatable {
-//    
+//
 //    /// Start a sequence where you add each step in the `addSteps` closure. Use the provided `AnimationSequence` object
 //    /// to add each step which should either be an actual animation or a delay.
 //    /// The `completion` closure is executed when the last animation has finished.
@@ -291,13 +309,13 @@ public extension BView {
 //}
 //
 //class AnimationSequence {
-//    
+//
 //    /// A step for each animation in the sequence.
 //    enum Step {
 //        /// A step that merely adds a delay, accumulated for the next step with actual animations
 //        /// - Parameter duration: Duration of the delay in seconds
 //        case delay(duration: TimeInterval)
-//        
+//
 //        /// An animation step that results in a `UIView.animate()` call with all the necessary options
 //        /// - Parameter duration: Duration of the animation
 //        /// - Parameter options: Animation options, when `.repeats` make sure to set a limit or any subsequent next step might not be executed
@@ -308,17 +326,17 @@ public extension BView {
 //            options: UIView.AnimationOptions = [],
 //            timingFunction: CAMediaTimingFunction? = nil,
 //            animations: () -> Void)
-//        
+//
 //        /// Step that contains group of animation steps, all of which should be performed simultaniously
 //        /// - Parameter animations: All the steps to animate at the same time
 //        case group(animations: [Self])
 //    }
-//    
+//
 //    fileprivate(set) var steps: [Step] = []
 //}
 //
 //fileprivate extension AnimationSequence.Step {
-//    
+//
 //    /// Full duration for each step type, uses longest duration of animations in a group
 //    var duration: TimeInterval {
 //        switch self {
@@ -336,7 +354,7 @@ public extension BView {
 //}
 //
 //extension AnimationSequence {
-//    
+//
 //    /// Adds an animation to the sequence with all the available options.
 //    ///
 //    /// Adding each steps can by done in a chain, as this method returns `Self`
@@ -358,7 +376,7 @@ public extension BView {
 //        )
 //        return self
 //    }
-//    
+//
 //    /// Adds a delay to the animation sequence
 //    ///
 //    /// While this adds an actual step to the sequence, in practice the next step that actually does
@@ -374,12 +392,12 @@ public extension BView {
 //}
 //
 //extension AnimationSequence {
-//    
+//
 //    /// Group of animation steps, all of which should be performed simultaniously
 //    class AnimationGroup {
-//        
+//
 //        private(set) var animations: [Step] = []
-//        
+//
 //        /// Adds an animation to the animation group with all the available options.
 //        ///
 //        /// Adding each animation can by done in a chain, as this method returns `Self`
@@ -402,7 +420,7 @@ public extension BView {
 //            return self
 //        }
 //    }
-//    
+//
 //    /// Adds a group of animations, all of which will be executed add once.
 //    /// - Parameter addAnimations: Closure used to add animations to the provided `AnimationGroup` object
 //    /// - Returns: Returns self, enabling the use of chaining mulitple calls
@@ -418,7 +436,7 @@ public extension BView {
 //
 //// MARK: - Actual animation logic
 //fileprivate extension AnimationSequence.Step {
-//    
+//
 //    /// Perform the animation for this step
 //    ///
 //    /// Wraps animation steps with a `timingFunction` in a `CATransaction` commit
@@ -440,15 +458,15 @@ public extension BView {
 //                    completion: completion
 //                )
 //            }
-//            
+//
 //            if let timingFunction = timingFunction {
 //                CATransaction.begin()
 //                CATransaction.setAnimationDuration(duration)
 //                CATransaction.setAnimationTimingFunction(timingFunction)
 //                CATransaction.setCompletionBlock({ completion?(true) })
-//                
+//
 //                createAnimations(nil)
-//                
+//
 //                CATransaction.commit()
 //            } else {
 //                createAnimations(completion)
@@ -473,29 +491,29 @@ public extension BView {
 //}
 //
 //extension UIView: StepAnimatable {
-//    
+//
 //    class func animateSteps(_ addSteps: (AnimationSequence) -> Void, completion: ((Bool) -> Void)? = nil) {
 //        let sequence = AnimationSequence()
-//        
+//
 //        // Call the block with the sequence object,
 //        // hopefully resulting in steps added to the sequence
 //        addSteps(sequence)
-//        
+//
 //        // Start animating all the steps
 //        animate(remainingSteps: sequence.steps, completion: completion)
 //    }
 //}
 //
 //fileprivate extension UIView {
-//    
+//
 //    /// Recursive method that calls itself with less remaining steps each time
 //    /// - Parameters:
 //    ///   - steps: Array of steps that needs to be animated
 //    ///   - completion: Completion closure to be executed when last step has finished
 //    private class func animate(remainingSteps steps: [AnimationSequence.Step], completion: ((Bool) -> Void)? = nil) {
-//        
+//
 //        var cummulativeDelay: TimeInterval = 0
-//        
+//
 //        // Drop any initial steps with just a delay, but keep track of their delay
 //        let animatableSteps = steps.drop { step in
 //            if case let .delay(delay) = step {
@@ -504,7 +522,7 @@ public extension BView {
 //            }
 //            return false
 //        }
-//        
+//
 //        guard let step = animatableSteps.first else {
 //            // When there's no more steps available, there's no more animations to be done
 //            guard let completion = completion else {
@@ -522,9 +540,9 @@ public extension BView {
 //            }
 //            return
 //        }
-//        
+//
 //        let remainingSteps = animatableSteps.dropFirst()
-//        
+//
 //        // Actually perform animation for first step to animate
 //        // with the accumulated delay of possible previous delay steps
 //        step.animate(withDelay: cummulativeDelay) { finished in
