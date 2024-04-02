@@ -23,4 +23,15 @@ public class FHStack: FStack {
             distribution: distribution, arrangedContents: arrangedContents
         )
     }
+
+    public init(
+        spacing: Double = 8,
+        distribution: BStackView.Distribution? = nil,
+        arrangedContents: FBody
+    ) {
+        super.init(
+            axis: .horizontal, spacing: spacing,
+            distribution: distribution, arrangedContents: arrangedContents
+        )
+    }
 }
