@@ -14,7 +14,7 @@ import DesignCore
 import SnapKit
 import Combine
 
-public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylable {
+public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylable, FThemableForeground {
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
@@ -88,6 +88,13 @@ public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylab
     @discardableResult public func onSubmit(_ onSubmit: (() -> Void)? = nil) -> Self {
         self.onSubmitAction = onSubmit
         return self
+    }
+    
+    public var foregroundKey: ThemeKey?
+    public override func apply(theme: ThemeProvider) {
+        super.apply(theme: theme)
+        guard let foregroundKey else { return }
+        foreground(ThemeSystem.shared.color(key: foregroundKey))
     }
 }
 

@@ -99,6 +99,34 @@ public extension FContentAvailable where Self: BaseLabel {
     @discardableResult func foreground(_ color: BColor) -> Self
 }
 
+public protocol FThemableForeground: Themable {
+    var foregroundKey: ThemeKey? { get set }
+    @discardableResult func foreground(_ color: BColor) -> Self
+}
+
+public protocol FThemableBackground: Themable {
+    var backgroundKey: ThemeKey? { get set }
+    @discardableResult func background(_ key: ThemeKey) -> Self
+}
+
+extension FThemableBackground {
+    @discardableResult
+    public func background(_ key: ThemeKey) -> Self {
+        backgroundKey = key
+        ThemeSystem.shared.register(observer: self)
+        return self
+    }
+}
+
+extension FThemableForeground {
+    @discardableResult
+    public func foreground(_ key: ThemeKey) -> Self {
+        foregroundKey = key
+        ThemeSystem.shared.register(observer: self)
+        return self
+    }
+}
+
 public enum FShape {
     case circle
     case roundedRectangle(cornerRadius: CGFloat, corners: BRectCorner = .allCorners)

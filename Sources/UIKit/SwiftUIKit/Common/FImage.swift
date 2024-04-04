@@ -15,7 +15,7 @@ import Nuke
 import SnapKit
 import DesignCore
 
-public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FContentConstraintable {
+public class FImage: BaseImageView, FConfigurable, FStylable, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
     
     public var customConfiguration: ((FImage) -> Void)?
@@ -84,6 +84,13 @@ public class FImage: BaseImageView, FConfigurable, FStylable, FComponent, FConte
     @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
         return self
+    }
+    
+    public var foregroundKey: ThemeKey?
+    public override func apply(theme: ThemeProvider) {
+        super.apply(theme: theme)
+        guard let foregroundKey else { return }
+        foreground(ThemeSystem.shared.color(key: foregroundKey))
     }
 }
 

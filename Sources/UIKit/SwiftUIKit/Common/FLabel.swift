@@ -14,7 +14,7 @@ import DesignCore
 import SnapKit
 import Combine
 
-public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FContentAvailable {
+public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FThemableForeground, FContentAvailable {
     public var customConfiguration: ((FLabel) -> Void)?
     
     public init(
@@ -65,5 +65,12 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FCon
     @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         self.textColor = color
         return self
+    }
+    
+    public var foregroundKey: ThemeKey?
+    public override func apply(theme: ThemeProvider) {
+        super.apply(theme: theme)
+        guard let foregroundKey else { return }
+        foreground(ThemeSystem.shared.color(key: foregroundKey))
     }
 }

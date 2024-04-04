@@ -14,7 +14,7 @@ import Combine
 import DesignCore
 import SnapKit
 
-public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContentConstraintable {
+public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FThemableForeground, FContentConstraintable {
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(
@@ -80,5 +80,12 @@ public class FButton: BaseButton, FConfigurable, FComponent, FStylable, FContent
     @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         setTitleColor(color, for: .normal)
         return self
+    }
+    
+    public var foregroundKey: ThemeKey?
+    public override func apply(theme: ThemeProvider) {
+        super.apply(theme: theme)
+        guard let foregroundKey else { return }
+        foreground(ThemeSystem.shared.color(key: foregroundKey))
     }
 }
