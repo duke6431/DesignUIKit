@@ -67,17 +67,22 @@ public class FConfiguration: Chainable {
     }
     
     public func updateLayers(for target: BView) {
+        var shadowCornerRadius: CGFloat = 0
+        var shadowCorners: BRectCorner = .allCorners
         if let shape {
             target.clipsToBounds = true
             BView.animate(withDuration: 0.2) {
                 switch shape {
                 case .circle:
+                    shadowCornerRadius = min(target.bounds.width, target.bounds.height) / 2
 #if canImport(UIKit)
-                    target.layer.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
+                    target.layer.cornerRadius = shadowCornerRadius
 #else
                     target.layer?.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
 #endif
                 case .roundedRectangle(let cornerRadius, let corners):
+                    shadowCornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    shadowCorners = corners
 #if canImport(UIKit)
                     target.layer.maskedCorners = corners.caMask
                     target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
@@ -90,10 +95,11 @@ public class FConfiguration: Chainable {
         }
         if let shadow {
             BView.animate(withDuration: 0.2) {
+                let path = UIBezierPath(roundedRect: target.bounds, byRoundingCorners: shadowCorners, cornerRadii: .init(width: shadowCornerRadius, height: shadowCornerRadius))
 #if canImport(UIKit)
                 target.layer.add(
                     shadow: shadow.updated(
-                        \.path, with: UIBezierPath(rect: target.bounds).cgPath
+                        \.path, with: path.cgPath
                     )
                 )
 #else
