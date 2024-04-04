@@ -37,6 +37,7 @@ open class BaseView: BView, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -82,6 +83,7 @@ open class BaseStackView: BStackView, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -116,6 +118,7 @@ open class BaseScrollView: BScrollView, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -163,6 +166,7 @@ open class BaseImageView: BImageView, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -190,6 +194,7 @@ open class BaseButton: BButton, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -240,6 +245,7 @@ open class BaseLabel: BLabel, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
@@ -269,6 +275,7 @@ open class BaseTextField: BTextField, Combinable, FThemableBackground {
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
+        configuration?.backgroundColor = theme.color(key: backgroundKey)
         backgroundColor = theme.color(key: backgroundKey)
     }
 }
