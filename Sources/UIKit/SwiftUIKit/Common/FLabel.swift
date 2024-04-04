@@ -71,6 +71,6 @@ public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FThe
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
         guard let foregroundKey else { return }
-        foreground(ThemeSystem.shared.color(key: foregroundKey))
+        foreground(theme.color(key: foregroundKey))
     }
 }

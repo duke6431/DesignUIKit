@@ -13,7 +13,7 @@ import AppKit
 import DesignCore
 import Combine
 
-open class BaseViewController<ViewModel: BaseViewModel>: BViewController {
+open class BaseViewController<ViewModel: BaseViewModel>: BViewController, FThemableBackground {
     open var viewModel: ViewModel
     open var cancellables = Set<AnyCancellable>()
     
@@ -39,5 +39,11 @@ open class BaseViewController<ViewModel: BaseViewModel>: BViewController {
     
     open func bindViewModel() {
         
+    }
+    
+    public var backgroundKey: ThemeKey?
+    public func apply(theme: ThemeProvider) {
+        guard let backgroundKey else { return }
+        view.backgroundColor = theme.color(key: backgroundKey)
     }
 }
