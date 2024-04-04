@@ -101,17 +101,17 @@ public extension FContentAvailable where Self: BaseLabel {
 
 public protocol FThemableForeground: Themable {
     var foregroundKey: ThemeKey? { get set }
-    @discardableResult func foreground(_ color: BColor) -> Self
+    @discardableResult func foreground(key: ThemeKey) -> Self
 }
 
 public protocol FThemableBackground: Themable {
     var backgroundKey: ThemeKey? { get set }
-    @discardableResult func background(_ key: ThemeKey) -> Self
+    @discardableResult func background(key: ThemeKey) -> Self
 }
 
 extension FThemableBackground {
     @discardableResult
-    public func background(_ key: ThemeKey) -> Self {
+    public func background(key: ThemeKey) -> Self {
         backgroundKey = key
         ThemeSystem.shared.register(observer: self)
         return self
@@ -120,7 +120,7 @@ extension FThemableBackground {
 
 extension FThemableForeground {
     @discardableResult
-    public func foreground(_ key: ThemeKey) -> Self {
+    public func foreground(key: ThemeKey) -> Self {
         foregroundKey = key
         ThemeSystem.shared.register(observer: self)
         return self
