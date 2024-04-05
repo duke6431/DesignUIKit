@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
@@ -45,7 +45,8 @@ open class BaseView: BView, FConfigurable, Combinable, FThemableBackground, FThe
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -63,7 +64,7 @@ open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackgr
         views.forEach(addArrangedSubview)
         loadConfiguration()
     }
-
+    
 #if canImport(UIKit)
     @available(iOS, unavailable)
     public required init(coder: NSCoder) {
@@ -99,7 +100,8 @@ open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackgr
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -120,7 +122,7 @@ open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBack
     public required init?(coder: NSCoder) {
         fatalError()
     }
-
+    
     open override func addSubview(_ view: BView) {
         view.configuration?.shouldConstraintWithParent = false
         super.addSubview(view)
@@ -142,7 +144,8 @@ open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBack
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -155,7 +158,7 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
         loadConfiguration()
     }
     
-    #if canImport(UIKit)
+#if canImport(UIKit)
     public override init(image: BImage?) {
         super.init(image: image)
         loadConfiguration()
@@ -165,13 +168,13 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
         super.init(image: image, highlightedImage: highlightedImage)
         loadConfiguration()
     }
-    #else
+#else
     public init(image: BImage? = nil) {
         super.init(frame: .zero)
         self.image = image
         loadConfiguration()
     }
-    #endif
+#endif
     
 #if canImport(UIKit)
     @available(iOS, unavailable)
@@ -181,7 +184,7 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
     public required init?(coder: NSCoder) {
         fatalError()
     }
-
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -198,7 +201,8 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -207,17 +211,17 @@ open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, 
     public var cancellables = Set<AnyCancellable>()
     
     public convenience init(style buttonType: BButton.ButtonType? = nil) {
-        #if canImport(UIKit)
+#if canImport(UIKit)
         self.init(type: buttonType ?? .system)
-        #else
+#else
         self.init(frame: .zero)
         if let buttonType {
             self.setButtonType(buttonType)
         }
-        #endif
+#endif
         loadConfiguration()
     }
-
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -234,7 +238,8 @@ open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, 
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -263,11 +268,11 @@ open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FT
         configuration?.owner = self
     }
     
-    #if canImport(UIKit)
+#if canImport(UIKit)
     open override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: contentInsets))
     }
-    #endif
+#endif
     
     open override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
@@ -293,7 +298,8 @@ open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FT
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
@@ -331,7 +337,8 @@ open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackgr
             configuration?.shadow = configuration?.shadow?.custom {
                 $0.color = theme.color(key: shadowKey)
             }
-            setNeedsDisplay()
+            setNeedsLayout()
+            layoutIfNeeded()
         }
     }
 }
