@@ -14,7 +14,7 @@ import SnapKit
 import DesignCore
 import DesignExts
 
-public class FViewController<ViewController: BViewController>: BaseView, FConfigurable, FComponent {
+public class FViewController<ViewController: BViewController>: BaseView, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
 
     public weak var parentViewController: BViewController?

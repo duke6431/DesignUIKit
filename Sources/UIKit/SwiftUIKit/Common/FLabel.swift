@@ -14,7 +14,7 @@ import DesignCore
 import SnapKit
 import Combine
 
-public final class FLabel: BaseLabel, FConfigurable, FComponent, FStylable, FThemableForeground, FContentAvailable {
+public final class FLabel: BaseLabel, FComponent, FStylable, FThemableForeground, FContentAvailable {
     public var customConfiguration: ((FLabel) -> Void)?
     
     public init(

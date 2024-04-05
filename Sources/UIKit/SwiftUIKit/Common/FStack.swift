@@ -12,7 +12,7 @@ import AppKit
 #endif
 import DesignCore
 
-public class FStack: BaseStackView, FConfigurable, FComponent {
+public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
     
     public init(

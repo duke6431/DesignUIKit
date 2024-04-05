@@ -14,7 +14,7 @@ import SnapKit
 import DesignCore
 import DesignExts
 
-public class FSpacer: BaseView, FConfigurable, FComponent {
+public class FSpacer: BaseView, FComponent {
     public var blurStyle: UIBlurEffect.Style? {
         didSet {
             if let blurStyle {

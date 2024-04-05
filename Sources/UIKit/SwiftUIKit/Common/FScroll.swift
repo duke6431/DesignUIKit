@@ -13,7 +13,7 @@ import AppKit
 import SnapKit
 import DesignCore
 
-public class FScroll: BaseScrollView, FConfigurable, FComponent {
+public class FScroll: BaseScrollView, FComponent {
     public var axis: BAxis
     public var contentViews: [FBodyComponent] = []
     public var customConfiguration: ((FScroll) -> Void)?

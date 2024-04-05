@@ -13,7 +13,7 @@ import AppKit
 import DesignCore
 import SnapKit
 
-public class FZStack: BaseView, FConfigurable, FComponent {
+public class FZStack: BaseView, FComponent {
     public var customConfiguration: ((FZStack) -> Void)?
     public var contentViews: [FBodyComponent]
     

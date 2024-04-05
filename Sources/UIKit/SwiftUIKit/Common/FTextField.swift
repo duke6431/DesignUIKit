@@ -14,7 +14,7 @@ import DesignCore
 import SnapKit
 import Combine
 
-public final class FTextField: BaseTextField, FConfigurable, FComponent, FStylable, FThemableForeground {
+public final class FTextField: BaseTextField, FComponent, FStylable, FThemableForeground {
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?

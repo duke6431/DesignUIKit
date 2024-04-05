@@ -13,7 +13,7 @@ import AppKit
 import DesignCore
 import Combine
 
-open class BaseView: BView, Combinable, FThemableBackground {
+open class BaseView: BView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
@@ -35,14 +35,22 @@ open class BaseView: BView, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseStackView: BStackView, Combinable, FThemableBackground {
+open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
@@ -81,14 +89,22 @@ open class BaseStackView: BStackView, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseScrollView: BScrollView, Combinable, FThemableBackground {
+open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
@@ -116,14 +132,22 @@ open class BaseScrollView: BScrollView, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseImageView: BImageView, Combinable, FThemableBackground {
+open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
@@ -164,14 +188,22 @@ open class BaseImageView: BImageView, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseButton: BButton, Combinable, FThemableBackground {
+open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public convenience init(style buttonType: BButton.ButtonType? = nil) {
@@ -192,14 +224,22 @@ open class BaseButton: BButton, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseLabel: BLabel, Combinable, FThemableBackground {
+open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     var contentInsets: BEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     
     public var cancellables = Set<AnyCancellable>()
@@ -243,14 +283,22 @@ open class BaseLabel: BLabel, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
 
-open class BaseTextField: BTextField, Combinable, FThemableBackground {
+open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
     public override init(frame: CGRect = .zero) {
@@ -273,9 +321,17 @@ open class BaseTextField: BTextField, Combinable, FThemableBackground {
     }
     
     public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        configuration?.backgroundColor = theme.color(key: backgroundKey)
-        backgroundColor = theme.color(key: backgroundKey)
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsDisplay()
+        }
     }
 }
