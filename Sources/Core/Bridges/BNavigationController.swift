@@ -8,6 +8,7 @@
 #if canImport(UIKit)
 import UIKit
 
+/// Unification of UINavigationController
 public typealias BNavigationController = UINavigationController
 #else
 import AppKit

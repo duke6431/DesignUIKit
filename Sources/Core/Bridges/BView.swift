@@ -8,12 +8,19 @@
 #if canImport(UIKit)
 import UIKit
 
+/// Unification of View
 public typealias BView = UIView
+/// Unification of Label
 public typealias BLabel = UILabel
+/// Unification of TextField
 public typealias BTextField = UITextField
+/// Unification of Button
 public typealias BButton = UIButton
+/// Unification of ScrollView
 public typealias BScrollView = UIScrollView
+/// Unification of StackView
 public typealias BStackView = UIStackView
+/// Unification of ImageView
 public typealias BImageView = UIImageView
 #else
 import AppKit

@@ -8,12 +8,14 @@
 import Foundation
 
 public extension CharacterSet {
-    func characters() -> [Character] {
+    /// Get raw character array of a predefined/custom created CharacterSet
+    var characters: [Character] {
         // A Unicode scalar is any Unicode code point in the range U+0000 to U+D7FF inclusive or U+E000 to U+10FFFF inclusive.
-        return codePoints().compactMap { UnicodeScalar($0) }.map { Character($0) }
+        codePoints.compactMap { UnicodeScalar($0) }.map { Character($0) }
     }
     
-    func codePoints() -> [Int] {
+    /// Convert character in CharacterSet to code point (HEX)
+    var codePoints: [Int] {
         var result: [Int] = []
         var plane = 0
         // following documentation at https://developer.apple.com/documentation/foundation/nscharacterset/1417719-bitmaprepresentation
@@ -34,7 +36,8 @@ public extension CharacterSet {
 }
 
 public extension String {
+    /// Filter all characters in certain CharacterSet
     func remove(allCharactersIn characters: CharacterSet) -> String {
-        filter { characters.inverted.characters().contains($0) }
+        filter { characters.inverted.characters.contains($0) }
     }
 }

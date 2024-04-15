@@ -18,6 +18,7 @@ import DesignCore
 public class FImage: BaseImageView, FStylable, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
     
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FImage) -> Void)?
     
     public init(
@@ -67,6 +68,9 @@ public class FImage: BaseImageView, FStylable, FThemableForeground, FComponent, 
                     self?.image = response.image
                 }
             }
+        }
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
         }
         customConfiguration?(self)
     }

@@ -106,6 +106,16 @@ public class Theme: ObservableObject, Identifiable, Codable {
     }
 }
 
+extension Theme: Hashable {
+    public static func == (lhs: Theme, rhs: Theme) -> Bool {
+        lhs.name == rhs.name
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+}
+
 public extension Theme {
     /// Theme might only has 2 styles: dark and light
     @frozen

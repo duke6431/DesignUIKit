@@ -14,6 +14,7 @@ import DesignCore
 import SnapKit
 
 public class FZStack: BaseView, FComponent {
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FZStack) -> Void)?
     public var contentViews: [FBodyComponent]
     
@@ -39,6 +40,9 @@ public class FZStack: BaseView, FComponent {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         contentViews.forEach(addSubview)
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
+        }
         customConfiguration?(self)
     }
     

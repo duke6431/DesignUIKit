@@ -16,6 +16,7 @@ import DesignCore
 public class FScroll: BaseScrollView, FComponent {
     public var axis: BAxis
     public var contentViews: [FBodyComponent] = []
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FScroll) -> Void)?
 
     public init(
@@ -96,6 +97,9 @@ public class FScroll: BaseScrollView, FComponent {
             }
         @unknown default:
             break
+        }
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
         }
         customConfiguration?(self)
     }

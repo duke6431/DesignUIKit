@@ -47,7 +47,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "DesignCore",
-            path: "Sources/Core"
+            path: "Sources/Core",
+            exclude: [
+                "Archived/"
+            ]
         ),
         .target(
             name: "DesignExts",
@@ -74,6 +77,13 @@ let package = Package(
             ],
             path: "Sources/UIKit"
         ),
+        .testTarget(
+            name: "DesignCoreTests",
+            dependencies: [
+                .target(name: "DesignCore")
+            ],
+            path: "Tests/Core"
+        )
 //        .target(
 //            name: "DesignRxUIKit",
 //            dependencies: [

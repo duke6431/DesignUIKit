@@ -20,12 +20,16 @@ public typealias FBody = [FBodyComponent]
 public typealias FViewBuilder = FBuilder<FBodyComponent>
 
 open class FView: BaseView, FComponent {
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FView) -> Void)?
     
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configureViews()
         configuration?.didMoveToSuperview(superview, with: self)
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
+        }
         customConfiguration?(self)
     }
     

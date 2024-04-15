@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "74DAEED1-0DB9-4854-BB96-482F0461E4EC",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DesignCoreTests",
+        "name" : "DesignCoreTests"
+      }
+    }
+  ],
+  "version" : 1
+}

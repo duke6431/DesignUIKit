@@ -8,6 +8,7 @@
 #if canImport(UIKit)
 import UIKit
 
+/// Unification of ViewController
 public typealias BViewController = UIViewController
 #else
 import AppKit

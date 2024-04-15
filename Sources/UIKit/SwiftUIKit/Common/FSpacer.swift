@@ -25,6 +25,7 @@ public class FSpacer: BaseView, FComponent {
             }
         }
     }
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FSpacer) -> Void)?
     
     fileprivate weak var blurView: UIVisualEffectView?
@@ -40,6 +41,9 @@ public class FSpacer: BaseView, FComponent {
         configuration?.didMoveToSuperview(superview, with: self)
         blurView = add(blurStyle: blurStyle ?? .systemUltraThinMaterial)
         blurView?.alpha = blurStyle != nil ? 1 : 0
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
+        }
         customConfiguration?(self)
     }
     

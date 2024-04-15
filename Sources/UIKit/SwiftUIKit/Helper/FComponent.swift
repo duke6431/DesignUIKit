@@ -13,6 +13,7 @@ import AppKit
 import Combine
 import DesignCore
 import DesignExts
+import SnapKit
 
 public typealias FBinder<Subject> = AnyPublisher<Subject, Never>
 
@@ -22,6 +23,7 @@ public protocol Combinable: AnyObject {
 
 public protocol FComponent: AnyObject, Chainable, Combinable {
     var configuration: FConfiguration? { get }
+    var layoutConfiguration: ((_ make: ConstraintMaker) -> Void)? { get set }
     var customConfiguration: ((Self) -> Void)? { get set }
 }
 
@@ -48,6 +50,10 @@ public extension FComponent where Self: BView, Self: Combinable {
 }
 
 public extension FComponent {
+    @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker) -> Void) -> Self {
+        with(\.layoutConfiguration, setTo: layoutConfiguration)
+    }
+    
     @discardableResult func customConfiguration(_ configuration: ((Self) -> Void)?) -> Self {
         with(\.customConfiguration, setTo: configuration)
     }

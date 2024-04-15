@@ -16,6 +16,7 @@ import DesignCore
 import DesignExts
 
 public class FVideoPlayer: BaseView, FComponent {
+    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
     public var customConfiguration: ((FVideoPlayer) -> Void)?
 
     fileprivate weak var player: AVPlayer?
@@ -30,6 +31,9 @@ public class FVideoPlayer: BaseView, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
+        if let layoutConfiguration, superview != nil {
+            snp.makeConstraints(layoutConfiguration)
+        }
         customConfiguration?(self)
     }
     

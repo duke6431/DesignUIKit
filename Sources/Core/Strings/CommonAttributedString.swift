@@ -18,12 +18,30 @@ public class CommonAttributedString {
     public func build() -> NSAttributedString {
         NSMutableAttributedString(string: string, attributes: attributes)
     }
+    
+    /// Existed key-value will be replaced
+    public func merged(_ attributes: [NSAttributedString.Key: Any]) -> Self {
+        self.attributes.merge(attributes) { _, second in second }
+        return self
+    }
 
     // swiftlint:disable:next line_length
     public static func build(@FBuilder<CommonAttributedString> _ strings: () -> [CommonAttributedString]) -> NSAttributedString {
         strings().reduce(into: NSMutableAttributedString()) { partialResult, prototype in
             partialResult.append(prototype.build())
         }
+    }
+    
+    func foreground(_ color: BColor) -> Self {
+        merged([.foregroundColor: color])
+    }
+    
+    func background(_ color: BColor) -> Self {
+        merged([.backgroundColor: color])
+    }
+    
+    func font(_ font: BFont) -> Self {
+        merged([.font: font])
     }
 }
 

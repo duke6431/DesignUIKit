@@ -8,6 +8,7 @@
 import Foundation
 
 public extension String {
+    /// Search for ranges of substring from a self
     func ranges(of string: String) -> [NSRange] {
         var indices = [Int]()
         var searchStartIndex = self.startIndex
@@ -24,6 +25,7 @@ public extension String {
         return indices.map { NSRange(location: $0, length: string.count) }
     }
 
+    /// Trimming leading and trailing whitespaces and new line
     var stripped: String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
