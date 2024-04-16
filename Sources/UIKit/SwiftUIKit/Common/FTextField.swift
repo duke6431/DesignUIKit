@@ -15,7 +15,7 @@ import SnapKit
 import Combine
 
 public final class FTextField: BaseTextField, FComponent, FStylable, FThemableForeground {
-    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
@@ -47,8 +47,10 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
         super.didMoveToSuperview()
         delegate = self
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, superview != nil {
-            snp.makeConstraints(layoutConfiguration)
+        if let layoutConfiguration, let superview {
+            snp.makeConstraints { make in
+                layoutConfiguration(make, superview)
+            }
         }
         customConfiguration?(self)
         addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)

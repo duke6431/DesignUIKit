@@ -23,7 +23,7 @@ public protocol Combinable: AnyObject {
 
 public protocol FComponent: AnyObject, Chainable, Combinable {
     var configuration: FConfiguration? { get }
-    var layoutConfiguration: ((_ make: ConstraintMaker) -> Void)? { get set }
+    var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)? { get set }
     var customConfiguration: ((Self) -> Void)? { get set }
 }
 
@@ -50,7 +50,7 @@ public extension FComponent where Self: BView, Self: Combinable {
 }
 
 public extension FComponent {
-    @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker) -> Void) -> Self {
+    @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: UIView) -> Void) -> Self {
         with(\.layoutConfiguration, setTo: layoutConfiguration)
     }
     

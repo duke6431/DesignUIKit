@@ -16,7 +16,7 @@ import DesignExts
 import SnapKit
 #if canImport(UIKit)
 public class FList: CommonTableView, FConfigurable, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     public var customConfiguration: ((FList) -> Void)?
 
     public var onSelect: ((FListModel) -> Void)?
@@ -33,8 +33,10 @@ public class FList: CommonTableView, FConfigurable, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, superview != nil {
-            snp.makeConstraints(layoutConfiguration)
+        if let layoutConfiguration, let superview {
+            snp.makeConstraints { make in
+                layoutConfiguration(make, superview)
+            }
         }
         customConfiguration?(self)
     }
