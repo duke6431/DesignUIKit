@@ -10,7 +10,7 @@ import DesignCore
 import UIKit
 
 public extension Theme {
-    static func scan(bundle: Bundle, subdirectory: String?) throws -> [Theme] {
+    static func scan(bundle: Bundle, subdirectory: String? = nil) throws -> [Theme] {
         guard let paths = bundle.urls(forResourcesWithExtension: "json", subdirectory: subdirectory) else {
             throw ThemeError.empty(subdirectory)
         }
@@ -41,8 +41,10 @@ public extension Theme {
         return themes
     }
     
-    static func load(from bundle: Bundle, name: String) throws -> Theme {
-        guard let path = bundle.url(forResource: name, withExtension: "json") else {
+    static func load(from bundle: Bundle, subdirectory: String? = nil, name: String) throws -> Theme {
+        guard let path = bundle.urls(forResourcesWithExtension: "json", subdirectory: subdirectory)?.first(where: {
+            $0.lastPathComponent.contains(name)
+        }) else {
             throw ThemeError.notFound(name)
         }
         return try load(from: path, name: name)
