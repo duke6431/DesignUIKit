@@ -42,9 +42,13 @@ public class Theme: ObservableObject, Identifiable, Codable {
         try FileKit.write(self, to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json")
     }
     
+    public func color(key: ThemeKey, style: Theme.Style) -> BColor {
+        .init(hexString: styles[style]?[key.name] ?? Self.defaultColor)
+    }
+    
     public func color(key: ThemeKey) -> BColor {
-        return .init(dynamicProvider: { [weak self] collection in
-            return .init(hexString: self?.styles[collection.userInterfaceStyle.style]?[key.name] ?? Self.defaultColor)
+        .init(dynamicProvider: { [weak self] collection in
+            .init(hexString: self?.styles[collection.userInterfaceStyle.style]?[key.name] ?? Self.defaultColor)
         })
     }
     
