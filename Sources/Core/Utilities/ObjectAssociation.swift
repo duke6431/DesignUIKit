@@ -50,9 +50,9 @@ public final class ObjectAssociation<T: AnyObject> {
 public class GenericClosureSleeve<T>: NSObject {
     public let closure: (T) -> Void
     
-    init(closure: @escaping (T) -> Void) { self.closure = closure }
+    public init(_ closure: @escaping (T) -> Void) { self.closure = closure }
     
-    func invoke(_ value: T) { closure(value) }
+    public func invoke(_ value: T) { closure(value) }
     
     public func callAsFunction(_ value: T) { invoke(value) }
 }
