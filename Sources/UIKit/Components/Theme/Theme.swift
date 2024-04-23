@@ -42,6 +42,13 @@ public class Theme: ObservableObject, Identifiable, Codable {
         try FileKit.write(self, to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json")
     }
     
+    public func set(color: BColor, for key: ThemeKey, style: Theme.Style) throws {
+        guard var newStyle = styles[style] else { throw ThemeError.missingPalette(style.rawValue) }
+        newStyle[key.name] = color.hexString
+        styles.remove(newStyle)
+        styles.insert(newStyle)
+    }
+    
     public func color(key: ThemeKey, style: Theme.Style) -> BColor {
         .init(hexString: styles[style]?[key.name] ?? Self.defaultColor)
     }
@@ -67,6 +74,12 @@ public class Theme: ObservableObject, Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case name
         case styles
+    }
+}
+
+public extension Theme {
+    func clone() -> Theme {
+        .init(name: name, styles: styles)
     }
 }
 

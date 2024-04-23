@@ -24,7 +24,12 @@ public extension Theme {
         }
         
         subscript(_ key: String) -> String? {
-            colors[key]
+            get {
+                colors[key]
+            }
+            set {
+                colors[key] = newValue
+            }
         }
     }
 }

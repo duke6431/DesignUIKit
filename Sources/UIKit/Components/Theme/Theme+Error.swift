@@ -11,6 +11,9 @@ public enum ThemeError: Error {
     case empty(_ subdirectory: String?)
     case notFound(_ name: String)
     case decodeFailed(_ name: String, error: Error)
+    
+    case missingPalette(_ name: String)
+    case noSuchKey(_ name: String)
 }
 
 extension ThemeError: LocalizedError {
@@ -22,6 +25,10 @@ extension ThemeError: LocalizedError {
             return "Theme \(name) not found"
         case .decodeFailed(let name, let error):
             return "Decoding theme \(name) failed with error:\n\(error.localizedDescription)"
+        case .missingPalette(let name):
+            return "Missing \(name) palette"
+        case .noSuchKey(let name):
+            return "Color key \(name) not found"
         }
     }
 }
