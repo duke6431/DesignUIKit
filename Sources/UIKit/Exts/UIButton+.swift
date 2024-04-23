@@ -18,12 +18,6 @@ public typealias BControlEvent = NSEvent.EventTypeMask
 #endif
 import DesignCore
 
-@objc public class ClosureSleeve: NSObject {
-    let closure: () -> Void
-    public init(_ closure: @escaping() -> Void) { self.closure = closure }
-    @objc public func invoke() { closure() }
-}
-
 #if canImport(UIKit)
 public extension BControl {
     class Failure: Error {
