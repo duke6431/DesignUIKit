@@ -38,13 +38,23 @@ public final class ObjectAssociation<T: AnyObject> {
 }
 
 @objc public class ClosureSleeve: NSObject {
-    let closure: () -> Void
+    public let closure: () -> Void
     
     public init(_ closure: @escaping() -> Void) { self.closure = closure }
     
     @objc public func invoke() { closure() }
     
     public func callAsFunction() { invoke() }
+}
+
+public class GenericClosureSleeve<T>: NSObject {
+    public let closure: (T) -> Void
+    
+    init(closure: @escaping (T) -> Void) { self.closure = closure }
+    
+    func invoke(_ value: T) { closure(value) }
+    
+    public func callAsFunction(_ value: T) { invoke(value) }
 }
 
 public class StructWrapper<T>: NSObject {
