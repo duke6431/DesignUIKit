@@ -39,9 +39,9 @@ public extension BColor {
     var hexString: String {
         .init(
             format: "#%02lX%02lX%02lX",
-            lroundf(Float(cgColor.components?[safe: 0] ?? 0.0 * 255)),
-            lroundf(Float(cgColor.components?[safe: 1] ?? 0.0 * 255)),
-            lroundf(Float(cgColor.components?[safe: 2] ?? 0.0 * 255))
+            lroundf(Float((cgColor.components?[safe: 0] ?? 0.0) * 255)),
+            lroundf(Float((cgColor.components?[safe: 1] ?? 0.0) * 255)),
+            lroundf(Float((cgColor.components?[safe: 2] ?? 0.0) * 255))
         )
     }
 }
