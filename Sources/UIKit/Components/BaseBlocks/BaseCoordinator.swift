@@ -12,8 +12,8 @@ import AppKit
 #endif
 import DesignCore
 
-protocol BaseCoordinating: Chainable {
-    
+public protocol BaseCoordinating: Chainable {
+    var navigationController: BNavigationController? { get }
 }
 
 // TODO: Handle message `MessageHandlable`

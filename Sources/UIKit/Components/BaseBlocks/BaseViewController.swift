@@ -13,6 +13,10 @@ import AppKit
 import DesignCore
 import Combine
 
+protocol Coordinatable {
+    var coordinator: BaseCoordinating? { get }
+}
+
 open class BaseViewController<ViewModel: BaseViewModel>: BViewController, FThemableBackground {
     open var viewModel: ViewModel
     open var cancellables = Set<AnyCancellable>()
