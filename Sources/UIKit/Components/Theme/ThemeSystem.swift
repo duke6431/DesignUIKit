@@ -7,6 +7,7 @@
 
 import DesignCore
 import Foundation
+import FileKit
 
 public protocol Themable: AnyObject {
     func apply(theme: ThemeProvider)
@@ -55,7 +56,7 @@ public class ThemeSystem: ThemeProvider {
         try Theme.scan(bundle: bundle, subdirectory: subdirectory)
     }
     
-    public func themes(in directory: URL) throws -> [Theme] {
+    public func themes(in directory: Path) throws -> [Theme] {
         try Theme.scan(directory)
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import DesignCore
 import UIKit
+import FileKit
 
 public extension Theme {
     static func scan(bundle: Bundle, subdirectory: String? = nil) throws -> [Theme] {
@@ -24,21 +25,15 @@ public extension Theme {
         }
     }
     
-    static func scan(_ directory: URL) throws -> [Theme] {
-        guard let themes = FileManager.default.enumerator(atPath: directory.absoluteString)?.compactMap({ element -> (URL, String)? in
-            guard let path = element as? String, let url = URL(string: path) else { return nil }
-            return (url, url.lastPathComponent)
-        }).compactMap({
+    static func scan(_ directory: Path) throws -> [Theme] {
+        directory.compactMap({ elem in (elem, elem.fileName) }).compactMap({
             do {
-                return try load(from: $0, name: $1)
+                return try load(from: $0.url, name: $1)
             } catch {
                 print(error.localizedDescription)
                 return nil
             }
-        }) else {
-            throw ThemeError.empty(directory.absoluteString)
-        }
-        return themes
+        })
     }
     
     static func load(from bundle: Bundle, subdirectory: String? = nil, name: String) throws -> Theme {
