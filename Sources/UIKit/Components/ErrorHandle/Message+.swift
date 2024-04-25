@@ -19,8 +19,8 @@ public protocol ErrorHandlable {
     func handle(_ error: Error)
 }
 
-extension ErrorHandlable {
-    public func handle(_ error: Error) {
+public extension ErrorHandlable {
+    func handle(_ error: Error) {
         guard let coordinator = coordinator as? BaseCoordinator, let error = error as? MPresentable else { return }
         coordinator.handle(error)
     }
