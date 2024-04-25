@@ -5,17 +5,9 @@
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
 
-#if canImport(UIKit)
-import UIKit
-#else
-import AppKit
-#endif
+import Foundation
 import DesignCore
 import Combine
-
-protocol Coordinatable {
-    var coordinator: BaseCoordinating? { get }
-}
 
 open class BaseViewController<ViewModel: BaseViewModel>: BViewController, FThemableBackground {
     open var viewModel: ViewModel

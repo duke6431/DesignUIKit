@@ -25,7 +25,7 @@ public class FSpacer: BaseView, FComponent {
             }
         }
     }
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FSpacer) -> Void)?
     
     fileprivate weak var blurView: UIVisualEffectView?

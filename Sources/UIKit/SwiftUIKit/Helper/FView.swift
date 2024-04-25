@@ -5,11 +5,7 @@
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
-#if canImport(UIKit)
-import UIKit
-#else
-import AppKit
-#endif
+import Foundation
 import DesignExts
 import DesignCore
 import SnapKit
@@ -20,7 +16,7 @@ public typealias FBody = [FBodyComponent]
 public typealias FViewBuilder = FBuilder<FBodyComponent>
 
 open class FView: BaseView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FView) -> Void)?
     
     open override func didMoveToSuperview() {

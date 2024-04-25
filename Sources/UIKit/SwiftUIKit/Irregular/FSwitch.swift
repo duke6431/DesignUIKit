@@ -15,7 +15,7 @@ import SnapKit
 import DesignCore
 
 public class FSwitch: BView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FSwitch) -> Void)?
     public var cancellables = Set<AnyCancellable>()
     
@@ -109,7 +109,7 @@ public class FSwitch: BView, FComponent {
     
     public func set(on: Bool, animated: Bool = true) {
         thumbViewTrailing?.isActive = isOn
-        UIView.animate(withDuration: 0.2) {
+        BView.animate(withDuration: 0.2) {
             self.backgroundColor = self.isOn ? self.statusColorOn : self.statusColorOff
             self.statusImage?.image = self.isOn ? self.statusImageOn : self.statusImageOff
             self.layoutIfNeeded()

@@ -15,7 +15,7 @@ import SnapKit
 import Combine
 
 public final class FLabel: BaseLabel, FComponent, FStylable, FThemableForeground, FContentAvailable {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FLabel) -> Void)?
     
     public init(

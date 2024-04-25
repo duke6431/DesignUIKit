@@ -16,7 +16,7 @@ import DesignCore
 public class FScroll: BaseScrollView, FComponent {
     public var axis: BAxis
     public var contentViews: [FBodyComponent] = []
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FScroll) -> Void)?
 
     public init(

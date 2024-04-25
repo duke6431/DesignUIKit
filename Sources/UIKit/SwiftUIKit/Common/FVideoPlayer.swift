@@ -5,18 +5,14 @@
 //  Created by Duc Minh Nguyen on 2/27/24.
 //
 
-#if canImport(UIKit)
-import UIKit
-#else
-import AppKit
-#endif
 import Combine
 import AVFoundation
 import DesignCore
 import DesignExts
+import SnapKit
 
 public class FVideoPlayer: BaseView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FVideoPlayer) -> Void)?
 
     fileprivate weak var player: AVPlayer?

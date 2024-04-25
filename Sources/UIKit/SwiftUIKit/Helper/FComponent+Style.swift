@@ -5,14 +5,10 @@
 //  Created by Duc Minh Nguyen on 4/5/24.
 //
 
+import QuartzCore
 import DesignCore
 import DesignExts
 import Foundation
-#if canImport(UIKit)
-import UIKit
-#else
-import AppKit
-#endif
 
 @objc public protocol FStylable: AnyObject, Chainable {
     @discardableResult @objc optional func font(_ font: BFont) -> Self

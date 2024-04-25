@@ -15,7 +15,7 @@ import SnapKit
 import Combine
 
 public final class FTextField: BaseTextField, FComponent, FStylable, FThemableForeground {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?

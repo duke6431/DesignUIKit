@@ -15,7 +15,7 @@ import DesignCore
 import SnapKit
 
 public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FContentConstraintable {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(

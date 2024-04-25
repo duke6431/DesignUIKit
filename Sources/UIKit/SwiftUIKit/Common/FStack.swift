@@ -13,13 +13,13 @@ import AppKit
 import DesignCore
 
 public class FStack: BaseStackView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FStack) -> Void)?
     
     public init(
         axis: BAxis,
         spacing: Double = 8,
-        distribution: UIStackView.Distribution? = nil,
+        distribution: BStackView.Distribution? = nil,
         @FViewBuilder arrangedContents: () -> FBody
     ) {
         super.init(frame: .zero)
@@ -35,7 +35,7 @@ public class FStack: BaseStackView, FComponent {
     public init(
         axis: BAxis,
         spacing: Double = 8,
-        distribution: UIStackView.Distribution? = nil,
+        distribution: BStackView.Distribution? = nil,
         arrangedContents: FBody
     ) {
         super.init(frame: .zero)

@@ -16,15 +16,15 @@ import DesignCore
 import DesignExts
 
 public class FGrid: CommonCollection.View, FConfigurable, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FGrid) -> Void)?
     public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?
     public var cancellables = Set<AnyCancellable>()
     
     public init(
-        prototypes: [(FCellReusable & UIView).Type],
-        headerPrototypes: [(FCellReusable & UIView).Type]? = nil
+        prototypes: [(FCellReusable & BView).Type],
+        headerPrototypes: [(FCellReusable & BView).Type]? = nil
     ) {
         super.init(itemMapper: [], sectionMapper: [])
         prototypes.forEach {

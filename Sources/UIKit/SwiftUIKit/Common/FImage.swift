@@ -18,7 +18,7 @@ import DesignCore
 public class FImage: BaseImageView, FStylable, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
     
-    public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
+    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FImage) -> Void)?
     
     public init(
@@ -31,7 +31,7 @@ public class FImage: BaseImageView, FStylable, FThemableForeground, FComponent, 
     public convenience init(
         systemImage: String, configuration: BImage.SymbolConfiguration? = nil
     ) {
-        var image = UIImage(systemName: systemImage)
+        var image = BImage(systemName: systemImage)
         if let configuration { image = image?.withConfiguration(configuration) }
         self.init(image: image)
     }
