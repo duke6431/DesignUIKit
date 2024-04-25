@@ -33,6 +33,7 @@ public protocol MHandlerStyle {
     func handle(using navigationController: BNavigationController, with message: MPresentable)
 }
 
+// TODO: Handle Toast Messages
 public struct MToastHandler: MHandlerStyle, SelfCustomizable {
     public static var instance: MToastHandler { .init() }
     
@@ -44,10 +45,15 @@ public struct MToastHandler: MHandlerStyle, SelfCustomizable {
 public struct MSheetHandler: MHandlerStyle, SelfCustomizable {
     public static var instance: MSheetHandler { .init() }
     
+    var content: ((MPresentable) -> FBodyComponent)?
     var direction: PanModal.OriginDirection = .top
     
     public func handle(using navigationController: BNavigationController, with message: MPresentable) {
-        navigationController.present(BViewController(), direction: direction)
+        guard let content else { return }
+        navigationController.present(
+            FViewContainer { content(message) },
+            direction: direction
+        )
     }
 }
 
