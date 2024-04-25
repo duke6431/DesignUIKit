@@ -28,6 +28,18 @@ public protocol MPresentable {
     var presentationStyle: MPresentationStyle { get }
 }
 
+public extension MPresentable {
+    var icon: BImage? { nil }
+    var title: String? { nil }
+    var messageDescription: String? { nil }
+    var attributedTitle: NSAttributedString? { nil }
+    var attributedMessageDescription: NSAttributedString? { nil }
+
+    var actions: [MAction] { [.ok] }
+    
+    var presentationStyle: MPresentationStyle { .center }
+}
+
 public protocol MHandlable {
     var navigationController: BNavigationController? { get }
     

@@ -53,3 +53,12 @@ public class MAction: FView {
         }
     }
 }
+
+public extension MAction {
+    static var ok: MAction {
+        .init().customized {
+            $0.title = "OK"
+            $0.style = .cancel
+        }
+    }
+}
