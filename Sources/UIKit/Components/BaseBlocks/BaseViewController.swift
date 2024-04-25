@@ -34,8 +34,10 @@ open class BaseViewController<ViewModel: BaseViewModel>: BViewController, FThema
     }
     
     open func bindViewModel() {
-        
+        bindError()
     }
+    
+    @objc open dynamic func bindError() { }
     
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
