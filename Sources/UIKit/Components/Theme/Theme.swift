@@ -39,7 +39,7 @@ public class Theme: ObservableObject, Identifiable, Codable {
     }
     
     public func save(as filename: String) throws {
-        try FileKit.write(self, to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json")
+        try FileKit.write(self, to: Path.userDocuments + String(filename.replacingOccurrences(of: " ", with: "-") + ".json"))
     }
     
     public func set(color: BColor, for key: ThemeKey, style: Theme.Style) throws {
