@@ -38,9 +38,9 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
     public override var font: BFont? {
         didSet {
             if let font = self.font {
-                textLayer.fontSize = font.pointSize
+                textLayer.font = font
             } else {
-                textLayer.fontSize = 12.0
+                textLayer.fontSize = 17.0
             }
         }
     }
@@ -51,7 +51,7 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
     ) {
         self.init(frame: .zero)
         self.text = text
-        preparePlaceholder()
+        preconditions()
     }
     
     public convenience init(
@@ -61,7 +61,17 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
         self.init(frame: .zero)
         self.placeholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
+        preconditions()
+    }
+    
+    func preconditions() {
+        removeTextContainerInsets()
         preparePlaceholder()
+    }
+    
+    func removeTextContainerInsets() {
+        textContainer.lineFragmentPadding = 0
+        textContainerInset = .zero
     }
     
     func preparePlaceholder() {
