@@ -14,6 +14,8 @@ public typealias BView = UIView
 public typealias BLabel = UILabel
 /// Unification of TextField
 public typealias BTextField = UITextField
+/// Unification of TextView
+public typealias BTextView = UITextView
 /// Unification of Button
 public typealias BButton = UIButton
 /// Unification of ScrollView
@@ -27,6 +29,7 @@ import AppKit
 
 public typealias BView = NSView
 public typealias BTextField = NSTextField
+public typealias BTextView = NSTextView
 public typealias BButton = NSButton
 public typealias BScrollView = NSScrollView
 public typealias BStackView = NSStackView

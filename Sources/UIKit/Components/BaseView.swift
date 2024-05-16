@@ -342,3 +342,42 @@ open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackgr
         }
     }
 }
+
+open class BaseTextView: BTextView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
+    public var cancellables = Set<AnyCancellable>()
+    
+    public init(frame: CGRect = .zero, textContainer: NSTextContainer) {
+        super.init(frame: frame, textContainer: textContainer)
+        loadConfiguration()
+    }
+    
+#if canImport(UIKit)
+    @available(iOS, unavailable)
+#else
+    @available(macOS, unavailable)
+#endif
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    open func loadConfiguration() {
+        configuration = .init()
+        configuration?.owner = self
+    }
+    
+    public var backgroundKey: ThemeKey?
+    public var shadowKey: ThemeKey?
+    open func apply(theme: ThemeProvider) {
+        if let backgroundKey {
+            configuration?.backgroundColor = theme.color(key: backgroundKey)
+            backgroundColor = theme.color(key: backgroundKey)
+        }
+        if let shadowKey {
+            configuration?.shadow = configuration?.shadow?.custom {
+                $0.color = theme.color(key: shadowKey)
+            }
+            setNeedsLayout()
+            layoutIfNeeded()
+        }
+    }
+}
