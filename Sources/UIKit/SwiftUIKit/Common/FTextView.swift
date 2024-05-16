@@ -51,6 +51,7 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
     ) {
         self.init(frame: .zero)
         self.text = text
+        preparePlaceholder()
     }
     
     public convenience init(
@@ -60,6 +61,7 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
         self.init(frame: .zero)
         self.placeholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
+        preparePlaceholder()
     }
     
     func preparePlaceholder() {
