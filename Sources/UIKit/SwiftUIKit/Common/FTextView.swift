@@ -45,19 +45,19 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
         }
     }
     
-    public init(
+    public convenience init(
         _ placeholder: String,
         _ text: String
     ) {
-        super.init(frame: .zero, textContainer: .init())
+        self.init(frame: .zero)
         self.text = text
     }
     
-    public init(
+    public convenience init(
         _ placeholder: String,
         _ textPublisher: FBinder<String>
     ) {
-        super.init(frame: .zero, textContainer: .init())
+        self.init(frame: .zero)
         self.placeholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
     }

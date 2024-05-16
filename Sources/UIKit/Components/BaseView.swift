@@ -346,8 +346,8 @@ open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackgr
 open class BaseTextView: BTextView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
     public var cancellables = Set<AnyCancellable>()
     
-    public init(frame: CGRect = .zero, textContainer: NSTextContainer) {
-        super.init(frame: frame, textContainer: textContainer)
+    public convenience init(frame: CGRect = .zero) {
+        self.init(frame: frame)
         loadConfiguration()
     }
     
