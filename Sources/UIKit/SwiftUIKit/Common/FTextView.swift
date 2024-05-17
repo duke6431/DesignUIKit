@@ -51,6 +51,7 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
     ) {
         self.init(frame: .zero)
         self.text = text
+        self.placeholder = placeholder
         preconditions()
     }
     
