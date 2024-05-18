@@ -34,7 +34,9 @@ public class ThemeSystem: ThemeProvider {
     }
     
     public func register<Observer: Themable>(observer: Observer) {
-        observers.add(observer)
+        if !observers.contains(observer) {
+            observers.add(observer)
+        }
         observer.apply(theme: self)
     }
     func unregister<Observer: Theme>(_ observer: Observer) {

@@ -19,7 +19,7 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
-    
+
     public init(
         _ placeholder: String,
         _ text: String
@@ -99,8 +99,7 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
-        guard let foregroundKey else { return }
-        foreground(theme.color(key: foregroundKey))
+        if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
     }
 }
 

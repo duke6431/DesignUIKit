@@ -15,7 +15,7 @@ import UIKit
 import AppKit
 #endif
 
-open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
+open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, FThemablePlaceholder {
     public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FTextView) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
@@ -135,6 +135,11 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
         return self
     }
     
+    @discardableResult public func placeholder(_ color: BColor = .secondaryLabel) -> Self {
+        self.placeholderColor = color
+        return self
+    }
+    
     @discardableResult public func onChange(_ onChange: ((String) -> Void)? = nil) -> Self {
         self.onChangeAction = onChange
         return self
@@ -146,21 +151,22 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
     }
     
     public var foregroundKey: ThemeKey?
+    public var placeholderKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
-        guard let foregroundKey else { return }
-        foreground(theme.color(key: foregroundKey))
+        if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
+        if let placeholderKey { placeholder(theme.color(key: placeholderKey)) }
     }
     
 #if canImport(UIKit)
-    @objc open func textViewDidChange(_ textView: UITextView) {
+    @objc dynamic open func textViewDidChange(_ textView: UITextView) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
             textLayer.opacity = textView.text.isEmpty ? 1.0 : 0.0
         }
         onChangeAction?(textView.text ?? "")
     }
 #else
-    @objc open override func textDidChange(_ notification: Notification) {
+    @objc dynamic open override func textDidChange(_ notification: Notification) {
         onChangeAction?(text)
     }
 #endif

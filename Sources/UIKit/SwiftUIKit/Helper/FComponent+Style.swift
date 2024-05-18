@@ -20,6 +20,11 @@ public protocol FThemableForeground: Themable {
     @discardableResult func foreground(key: ThemeKey) -> Self
 }
 
+public protocol FThemablePlaceholder: Themable {
+    var placeholderKey: ThemeKey? { get set }
+    @discardableResult func placeholder(key: ThemeKey) -> Self
+}
+
 public protocol FThemableBackground: Themable {
     var backgroundKey: ThemeKey? { get set }
     @discardableResult func background(key: ThemeKey) -> Self
@@ -36,6 +41,15 @@ extension FThemableBackground {
     @discardableResult
     public func background(key: ThemeKey) -> Self {
         backgroundKey = key
+        ThemeSystem.shared.register(observer: self)
+        return self
+    }
+}
+
+extension FThemablePlaceholder {
+    @discardableResult
+    public func placeholder(key: ThemeKey) -> Self {
+        placeholderKey = key
         ThemeSystem.shared.register(observer: self)
         return self
     }
