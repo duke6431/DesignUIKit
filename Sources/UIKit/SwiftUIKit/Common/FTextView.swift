@@ -15,7 +15,7 @@ import UIKit
 import AppKit
 #endif
 
-public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
+open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
     public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FTextView) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
@@ -65,7 +65,7 @@ public class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground
         preconditions()
     }
     
-    func preconditions() {
+    open func preconditions() {
         removeTextContainerInsets()
         preparePlaceholder()
     }
