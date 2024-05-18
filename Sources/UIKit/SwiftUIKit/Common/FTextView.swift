@@ -151,22 +151,21 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground {
         guard let foregroundKey else { return }
         foreground(theme.color(key: foregroundKey))
     }
-}
-
+    
 #if canImport(UIKit)
-extension FTextView: UITextViewDelegate {
-    @objc public func textViewDidChange(_ textView: UITextView) {
+    @objc open func textViewDidChange(_ textView: UITextView) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
             textLayer.opacity = textView.text.isEmpty ? 1.0 : 0.0
         }
         onChangeAction?(textView.text ?? "")
     }
-}
 #else
-extension FTextView {
-    public override func textDidChange(_ notification: Notification) {
+    @objc open override func textDidChange(_ notification: Notification) {
         onChangeAction?(text)
     }
-}
 #endif
+}
 
+#if canImport(UIKit)
+extension FTextView: UITextViewDelegate { }
+#endif
