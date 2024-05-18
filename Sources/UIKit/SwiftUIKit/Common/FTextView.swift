@@ -66,8 +66,10 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, 
     }
     
     open func preconditions() {
+        textLayer.string = placeholder
         removeTextContainerInsets()
         preparePlaceholder()
+        setNeedsLayout()
     }
     
     func removeTextContainerInsets() {
