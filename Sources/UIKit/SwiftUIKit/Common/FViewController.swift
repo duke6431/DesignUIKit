@@ -50,6 +50,10 @@ public class FViewController<ViewController: BViewController>: BaseView, FCompon
 public class FViewContainer: BViewController, Chainable {
     public var content: BView
     
+    var onLoad: ((FViewContainer) -> Void)?
+    var onAppear: ((FViewContainer) -> Void)?
+    var onDisappear: ((FViewContainer) -> Void)?
+    
     public convenience init(@FViewBuilder _ content: () -> FBody) {
         self.init(content())
     }
@@ -65,8 +69,34 @@ public class FViewContainer: BViewController, Chainable {
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(content)
-        content.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+        content.snp.makeConstraints { $0.edges.equalToSuperview() }
+        onLoad?(self)
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        onAppear?(self)
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        onDisappear?(self)
+    }
+}
+
+public extension FViewContainer {
+    func onLoad(_ action: @escaping (FViewContainer) -> Void) -> Self {
+        onLoad = action
+        return self
+    }
+    
+    func onAppear(_ action: @escaping (FViewContainer) -> Void) -> Self {
+        onAppear = action
+        return self
+    }
+    
+    func onDisappear(_ action: @escaping (FViewContainer) -> Void) -> Self {
+        onDisappear = action
+        return self
     }
 }
