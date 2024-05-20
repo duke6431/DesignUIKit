@@ -16,7 +16,6 @@ import DesignCore
 import DesignExts
 
 public class FGrid: CommonCollection.View, FConfigurable, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FGrid) -> Void)?
     public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?
@@ -39,11 +38,6 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     

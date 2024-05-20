@@ -21,6 +21,8 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func frame(height: CGFloat) -> Self
     @discardableResult func frame(width: CGFloat) -> Self
     @discardableResult func frame(width: CGFloat, height: CGFloat) -> Self
+    @discardableResult func centerInParent() -> Self
+    @discardableResult func centerInParent(offset: CGSize) -> Self
     @discardableResult func ratio(_ ratio: CGFloat) -> Self
     @discardableResult func padding() -> Self
     @discardableResult func padding(_ padding: CGFloat) -> Self
@@ -32,6 +34,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
     @discardableResult func attachToParent(_ status: Bool) -> Self
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
+    @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: BView) -> Void) -> Self
 }
 
 public class FConfiguration: Chainable {
@@ -44,14 +47,22 @@ public class FConfiguration: Chainable {
     public var containerPadding: NSDirectionalEdgeInsets?
     public var ratio: CGFloat?
     public var opacity: CGFloat = 1
+    public var centerOffset: CGSize?
+    public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: BView) -> Void)?
     
     public var shouldConstraintWithParent: Bool = true
     public weak var owner: BView?
     
+    
     public func didMoveToSuperview(_ superview: BView?, with target: BView) {
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if shouldConstraintWithParent, let superview {
+        if let centerOffset, let superview {
+            target.snp.makeConstraints {
+                $0.centerX.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.width)
+                $0.centerY.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.height)
+            }
+        } else if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
                 $0.top.equalTo(superview.safeAreaLayoutGuide).offset(offset.height + (containerPadding?.top ?? 0))
                 $0.leading.equalTo(superview.safeAreaLayoutGuide).offset(offset.width + (containerPadding?.leading ?? 0))
@@ -63,6 +74,11 @@ public class FConfiguration: Chainable {
             if let width, width > 0 { $0.width.equalTo(width) }
             if let height, height > 0 { $0.height.equalTo(height) }
             if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio) }
+        }
+        if let layoutConfiguration, let superview {
+            target.snp.makeConstraints {
+                layoutConfiguration($0, superview)
+            }
         }
     }
     

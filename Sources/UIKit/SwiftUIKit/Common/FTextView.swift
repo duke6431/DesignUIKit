@@ -16,7 +16,6 @@ import AppKit
 #endif
 
 open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, FThemablePlaceholder {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FTextView) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
@@ -100,11 +99,6 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, 
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     

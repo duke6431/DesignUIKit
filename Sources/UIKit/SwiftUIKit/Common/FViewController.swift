@@ -12,7 +12,6 @@ import Combine
 import Foundation
 
 public class FViewController<ViewController: BViewController>: BaseView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FViewController) -> Void)?
 
     public weak var parentViewController: BViewController?
@@ -33,11 +32,6 @@ public class FViewController<ViewController: BViewController>: BaseView, FCompon
         contentViewController.didMove(toParent: parentViewController)
         contentViewController.view.snp.makeConstraints {
             $0.edges.equalTo(superview!.safeAreaLayoutGuide)
-        }
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
         }
         customConfiguration?(self)
     }

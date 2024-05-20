@@ -15,7 +15,6 @@ import SnapKit
 import Combine
 
 public final class FLabel: BaseLabel, FComponent, FStylable, FThemableForeground, FContentAvailable {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FLabel) -> Void)?
     
     public init(
@@ -40,11 +39,6 @@ public final class FLabel: BaseLabel, FComponent, FStylable, FThemableForeground
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     

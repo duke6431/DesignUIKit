@@ -15,7 +15,6 @@ import SnapKit
 import DesignCore
 
 public class FSwitch: BView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FSwitch) -> Void)?
     public var cancellables = Set<AnyCancellable>()
     

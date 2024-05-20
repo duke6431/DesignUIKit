@@ -13,7 +13,6 @@ import AppKit
 import DesignCore
 
 public class FStack: BaseStackView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FStack) -> Void)?
     
     public init(
@@ -51,11 +50,6 @@ public class FStack: BaseStackView, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     

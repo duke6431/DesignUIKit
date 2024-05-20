@@ -12,6 +12,7 @@ import AppKit
 #endif
 import DesignExts
 import DesignCore
+import SnapKit
 
 public extension FConfigurable {
     @discardableResult func offset(_ size: CGSize) -> Self {
@@ -86,6 +87,20 @@ public extension FConfigurable {
     
     @discardableResult func frame(width: CGFloat, height: CGFloat) -> Self {
         configuration?.with(\.height, setTo: height).with(\.width, setTo: width)
+        return self
+    }
+    
+    @discardableResult func centerInParent() -> Self {
+        centerInParent(offset: .zero)
+    }
+
+    @discardableResult func centerInParent(offset: CGSize) -> Self {
+        configuration?.with(\.centerOffset, setTo: offset)
+        return self
+    }
+    
+    @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: BView) -> Void) -> Self {
+        configuration?.with(\.layoutConfiguration, setTo: layoutConfiguration)
         return self
     }
 }

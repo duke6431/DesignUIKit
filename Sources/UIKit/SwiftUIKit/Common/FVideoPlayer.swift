@@ -12,7 +12,6 @@ import DesignExts
 import SnapKit
 
 public class FVideoPlayer: BaseView, FComponent {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FVideoPlayer) -> Void)?
 
     fileprivate weak var player: AVPlayer?
@@ -27,11 +26,6 @@ public class FVideoPlayer: BaseView, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     

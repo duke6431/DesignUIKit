@@ -15,7 +15,6 @@ import DesignCore
 import SnapKit
 
 public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FContentConstraintable {
-    public var layoutConfiguration: ((ConstraintMaker, BView) -> Void)?
     public var customConfiguration: ((FButton) -> Void)?
     
     public convenience init(
@@ -65,11 +64,6 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        if let layoutConfiguration, let superview {
-            snp.makeConstraints { make in
-                layoutConfiguration(make, superview)
-            }
-        }
         customConfiguration?(self)
     }
     
