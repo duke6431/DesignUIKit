@@ -86,7 +86,7 @@ open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, 
         if let font = self.font {
             textLayer.fontSize = font.pointSize
         } else {
-            textLayer.fontSize = 12.0
+            textLayer.fontSize = 17.0
         }
         
         // insert the textLayer
