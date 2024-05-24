@@ -14,18 +14,20 @@ import DesignCore
 
 extension BRectCorner {
     var caMask: CACornerMask {
-        switch self {
-        case .topLeft:
-            return .layerMinXMinYCorner
-        case .topRight:
-            return .layerMaxXMinYCorner
-        case .bottomLeft:
-            return .layerMinXMaxYCorner
-        case .bottomRight:
-            return .layerMaxXMaxYCorner
-        default:
-            return [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        var masks: [CACornerMask] = []
+        if self.contains(.topLeft) {
+            masks.append(.layerMinXMinYCorner)
         }
+        if self.contains(.topRight) {
+            masks.append(.layerMaxXMinYCorner)
+        }
+        if self.contains(.bottomLeft) {
+            masks.append(.layerMinXMaxYCorner)
+        }
+        if self.contains(.bottomRight) {
+            masks.append(.layerMaxXMaxYCorner)
+        }
+        return .init(masks)
     }
 }
 
