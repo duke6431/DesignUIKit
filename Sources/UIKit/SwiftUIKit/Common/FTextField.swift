@@ -41,6 +41,11 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
             }
         }
     }
+    public override var textAlignment: NSTextAlignment {
+        didSet {
+            textLayer.alignmentMode = textAlignment.caMode
+        }
+    }
 
     public init(
         _ placeholder: String,
@@ -188,3 +193,22 @@ extension FTextField {
 //    }
 }
 #endif
+
+extension NSTextAlignment {
+    var caMode: CATextLayerAlignmentMode {
+        switch self {
+        case .left:
+            return .left
+        case .center:
+            return .center
+        case .right:
+            return .right
+        case .justified:
+            return .justified
+        case .natural:
+            return .natural
+        @unknown default:
+            return .left
+        }
+    }
+}
