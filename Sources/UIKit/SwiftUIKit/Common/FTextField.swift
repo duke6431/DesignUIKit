@@ -19,7 +19,7 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
 
-    private let textLayer = CATextLayer()
+    private let textLayer = CCATextLayer()
     public var customPlaceholder: String = "" {
         didSet {
             textLayer.string = customPlaceholder

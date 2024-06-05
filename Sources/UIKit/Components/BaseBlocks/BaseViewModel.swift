@@ -15,10 +15,14 @@ public protocol ViewModeling: AnyObject {
 open class BaseViewModel: NSObject, ViewModeling {
     @Published
     public var error: Error?
+    open var cancellables = Set<AnyCancellable>()
     
     public required override init() {
         super.init()
+        bind()
     }
+    
+    @objc dynamic open func bind() { }
     
     @MainActor
     public func load<T: Codable>(target: inout T?, value: T) {
