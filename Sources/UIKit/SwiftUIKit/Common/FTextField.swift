@@ -108,11 +108,12 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        textLayer.frame = textRect(forBounds: bounds)
         configuration?.updateLayers(for: self)
     }
 
     @discardableResult public func placeholder(_ placeholder: String?) -> Self {
-        self.placeholder = placeholder
+        self.customPlaceholder = placeholder ?? ""
         return self
     }
     
@@ -172,6 +173,9 @@ extension FTextField: UITextFieldDelegate {
 #else
 extension FTextField {
     public override func textDidChange(_ notification: Notification) {
+        UIView.animate(withDuration: 0.15) { [textLayer] in
+            textLayer.opacity = textField.text?.isEmpty ?? true ? 1.0 : 0.0
+        }
         onChangeAction?(text)
     }
 //    @objc func textFieldDidChange(_ textField: UITextField) {
