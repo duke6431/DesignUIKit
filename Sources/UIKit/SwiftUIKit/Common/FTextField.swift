@@ -14,10 +14,33 @@ import DesignCore
 import SnapKit
 import Combine
 
-public final class FTextField: BaseTextField, FComponent, FStylable, FThemableForeground {
+public final class FTextField: BaseTextField, FComponent, FStylable, FThemableForeground, FThemablePlaceholder {
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?
+
+    private let textLayer = CATextLayer()
+    public var customPlaceholder: String = "" {
+        didSet {
+            textLayer.string = customPlaceholder
+            setNeedsLayout()
+        }
+    }
+    public var placeholderColor: BColor = .lightGray {
+        didSet {
+            textLayer.foregroundColor = placeholderColor.cgColor
+            setNeedsLayout()
+        }
+    }
+    public override var font: BFont? {
+        didSet {
+            if let font = self.font {
+                textLayer.font = font
+            } else {
+                textLayer.fontSize = 17.0
+            }
+        }
+    }
 
     public init(
         _ placeholder: String,
@@ -25,7 +48,8 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     ) {
         super.init(frame: .zero)
         self.text = text
-        self.placeholder = placeholder
+        self.customPlaceholder = placeholder
+        preconditions()
     }
     
     public init(
@@ -33,18 +57,45 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
         _ textPublisher: FBinder<String>
     ) {
         super.init(frame: .zero)
-        self.placeholder = placeholder
+        self.customPlaceholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
+        preconditions()
     }
     
     public init(_ attributedText: NSAttributedString) {
         super.init(frame: .zero)
         self.attributedText = attributedText
+        preconditions()
+    }
+    
+    public func preconditions() {
+        textLayer.string = customPlaceholder
+        preparePlaceholder()
+        setNeedsLayout()
+    }
+    
+    func preparePlaceholder() {
+        // textLayer properties
+        textLayer.contentsScale = UIScreen.main.scale
+        textLayer.alignmentMode = .left
+        textLayer.isWrapped = true
+        textLayer.foregroundColor = placeholderColor.cgColor
+        
+        if let font = self.font {
+            textLayer.fontSize = font.pointSize
+        } else {
+            textLayer.fontSize = 17.0
+        }
+        
+        // insert the textLayer
+        layer.insertSublayer(textLayer, at: 0)
+        
+        // set delegate to self
+        delegate = self
     }
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        delegate = self
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
         addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -80,6 +131,11 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
         return self
     }
     
+    @discardableResult public func placeholder(_ color: BColor = .secondaryLabel) -> Self {
+        self.placeholderColor = color
+        return self
+    }
+    
     @discardableResult public func onChange(_ onChange: ((String) -> Void)? = nil) -> Self {
         self.onChangeAction = onChange
         return self
@@ -91,15 +147,20 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     }
     
     public var foregroundKey: ThemeKey?
+    public var placeholderKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
         if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
+        if let placeholderKey { placeholder(theme.color(key: placeholderKey)) }
     }
 }
 
 #if canImport(UIKit)
 extension FTextField: UITextFieldDelegate {
     @objc func textFieldDidChange(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.15) { [textLayer] in
+            textLayer.opacity = textField.text?.isEmpty ?? true ? 1.0 : 0.0
+        }
         onChangeAction?(textField.text ?? "")
     }
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
