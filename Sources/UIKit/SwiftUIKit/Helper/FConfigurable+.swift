@@ -103,4 +103,9 @@ public extension FConfigurable {
         configuration?.with(\.layoutConfiguration, setTo: layoutConfiguration)
         return self
     }
+    
+    @discardableResult func onUpdateLayers(_ layerConfiguration: @escaping (UIView) -> Void) -> Self {
+        configuration?.with(\.layerConfiguration, setTo: layerConfiguration)
+        return self
+    }
 }

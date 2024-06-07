@@ -35,6 +35,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func attachToParent(_ status: Bool) -> Self
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: BView) -> Void) -> Self
+    @discardableResult func onUpdateLayers(_ layerConfiguration: @escaping (UIView) -> Void) -> Self
 }
 
 public class FConfiguration: Chainable {
@@ -49,6 +50,7 @@ public class FConfiguration: Chainable {
     public var opacity: CGFloat = 1
     public var centerOffset: CGSize?
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: BView) -> Void)?
+    public var layerConfiguration: ((UIView) -> Void)?
     
     public var shouldConstraintWithParent: Bool = true
     public weak var owner: BView?
@@ -127,5 +129,6 @@ public class FConfiguration: Chainable {
 #endif
             }
         }
+        layerConfiguration?(target)
     }
 }
