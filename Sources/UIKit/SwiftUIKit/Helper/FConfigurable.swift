@@ -35,7 +35,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func attachToParent(_ status: Bool) -> Self
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: BView) -> Void) -> Self
-    @discardableResult func onUpdateLayers(_ layerConfiguration: @escaping (UIView) -> Void) -> Self
+    @discardableResult func layer(_ layerConfiguration: @escaping (UIView) -> Void) -> Self
 }
 
 public class FConfiguration: Chainable {
