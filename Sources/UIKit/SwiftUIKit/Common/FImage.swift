@@ -47,14 +47,20 @@ public class FImage: BaseImageView, FStylable, FThemableForeground, FComponent, 
         _ systemImagePublisher: FBinder<String>
     ) {
         super.init(frame: .zero)
-        self.bind(to: systemImagePublisher) { imageView, name in imageView.image = .init(systemName: name) }
+        self.bind(to: systemImagePublisher) { [weak self] imageView, name in
+            imageView.image = .init(systemName: name)
+            if let foregroundKey = self?.foregroundKey { imageView.foreground(key: foregroundKey) }
+        }
     }
     
     public init(
         _ imagePublisher: FBinder<BImage>
     ) {
         super.init(frame: .zero)
-        self.bind(to: imagePublisher) { imageView, image in imageView.image = image }
+        self.bind(to: imagePublisher) { [weak self] imageView, image in
+            imageView.image = image
+            if let foregroundKey = self?.foregroundKey { imageView.foreground(key: foregroundKey) }
+        }
     }
 
     public override func didMoveToSuperview() {
