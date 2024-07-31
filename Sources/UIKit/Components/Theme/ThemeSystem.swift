@@ -8,9 +8,14 @@
 import DesignCore
 import Foundation
 import FileKit
+import UIKit
 
 public protocol Themable: AnyObject {
     func apply(theme: ThemeProvider)
+}
+
+public protocol CGThemable: Themable {
+    func applyCG(theme: ThemeProvider)
 }
 
 public protocol ThemeProvider {
@@ -33,11 +38,19 @@ public class ThemeSystem: ThemeProvider {
         notifyObservers()
     }
     
+    public func onTraitCollectionChange() {
+        DispatchQueue.main.async {
+            self.observers.allObjects
+                .compactMap({ $0 as? CGThemable })
+                .forEach(self.notify)
+        }
+    }
+    
     public func register<Observer: Themable>(observer: Observer) {
         if !observers.contains(observer) {
             observers.add(observer)
         }
-        observer.apply(theme: self)
+        notify(observer)
     }
     func unregister<Observer: Theme>(_ observer: Observer) {
         observers.remove(observer)
@@ -46,8 +59,19 @@ public class ThemeSystem: ThemeProvider {
         DispatchQueue.main.async {
             self.observers.allObjects
                 .compactMap({ $0 as? Themable })
-                .forEach({ $0.apply(theme: self) })
+                .forEach(self.notify)
         }
+    }
+    
+    func notify(_ observer: Themable) {
+        observer.apply(theme: self)
+        if let observer = observer as? CGThemable {
+            notifyCG(observer)
+        }
+    }
+    
+    func notifyCG(_ observer: CGThemable) {
+        observer.applyCG(theme: self)
     }
     
     public func color(key: ThemeKey) -> BColor {
