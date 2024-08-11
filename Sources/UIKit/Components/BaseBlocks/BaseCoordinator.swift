@@ -9,6 +9,8 @@ import DesignCore
 
 public protocol BaseCoordinating: Chainable {
     var navigationController: BNavigationController? { get }
+
+    func toScene() -> Self
 }
 
 // TODO: Handle message `MessageHandlable`

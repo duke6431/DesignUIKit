@@ -20,6 +20,7 @@ public class FList: CommonTableView, FConfigurable, FComponent {
     public var customConfiguration: ((FList) -> Void)?
 
     public var onSelect: ((FListModel) -> Void)?
+    public var onMore: (() -> Void)?
     public weak var content: CommonTableView?
     
     public var cancellables = Set<AnyCancellable>()
@@ -69,8 +70,18 @@ public extension FList {
         onSelect?(model)
     }
     
+    override func shouldLoadMore() {
+        super.shouldLoadMore()
+        onMore?()
+    }
+    
     @discardableResult func onSelect(_ action: @escaping (FListModel) -> Void) -> Self {
         onSelect = action
+        return self
+    }
+    
+    @discardableResult func onMore(_ action: @escaping () -> Void) -> Self {
+        onMore = action
         return self
     }
 }

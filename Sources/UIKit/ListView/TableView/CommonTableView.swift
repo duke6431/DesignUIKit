@@ -57,6 +57,7 @@ public class CommonTableView: UITableView {
         register(UITableViewCell.self)
         dataSource = self
         delegate = self
+        prefetchDataSource = self
         backgroundColor = .clear
         tableFooterView = UIView()
         keyboardDismissMode = .onDrag
@@ -203,6 +204,10 @@ extension CommonTableView: UITableViewDataSource {
     @objc public func didSelectCell(at indexPath: IndexPath, with model: CommonCellModel) {
         actionDelegate?.didSelectCell?(at: indexPath, with: model)
     }
+    
+    @objc public func shouldLoadMore() {
+        actionDelegate?.loadMore?()
+    }
 }
 
 extension CommonTableView: UITableViewDelegate {
@@ -230,6 +235,15 @@ extension CommonTableView: UITableViewDelegate {
     // swiftlint:disable:next line_length
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         .init(actions: searchedSections[indexPath.section].items[indexPath.row].trailingActions)
+    }
+}
+
+extension CommonTableView: UITableViewDataSourcePrefetching {
+    public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard let count = searchedSections.last?.items.count else { return }
+        if indexPaths.map({ ($0.section, $0.row) }).contains(where: { $0.0 == searchedSections.count - 1 && $0.1 == count - 1 }) {
+            shouldLoadMore()
+        }
     }
 }
 #endif

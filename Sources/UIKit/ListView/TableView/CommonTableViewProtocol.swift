@@ -15,6 +15,7 @@ import AppKit
 @objc public protocol CommonTableViewDelegate: AnyObject {
     @objc optional func refreshStarted()
     @objc optional func didSelectCell(at indexPath: IndexPath, with data: CommonCellModel)
+    @objc optional func loadMore()
 }
 
 public class CommonTableSection {
