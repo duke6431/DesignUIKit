@@ -7,13 +7,20 @@
 
 import Foundation
 import DesignCore
+import Toast
 
 public enum MPresentationStyle {
-    case toast
-    case top
-    case bottom
+    case toast(dir: Toast.Direction)
+    
+    case sheet(dir: PanModal.OriginDirection)
+
+    /// System UIAlertViewController/Customable
     case center
-    case fullscreen
+    ///
+    case present
+    case push
+    
+    case custom(_ presenter: MHandlerStyle)
 }
 
 public protocol MPresentable {
@@ -41,7 +48,7 @@ public extension MPresentable {
 }
 
 public protocol MHandlable {
-    var navigationController: BNavigationController? { get }
+    var viewController: BViewController? { get }
     
     // TODO: 5 alert style: pop up, toast, drop down, bottom sheet, fullscreen
     // low: toast: just for show

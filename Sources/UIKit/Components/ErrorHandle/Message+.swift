@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import DesignCore
 
-extension BaseCoordinator: MHandlable { }
+extension BaseCoordinator: MHandlable {
+    public var viewController: BViewController? { navigationController }
+}
 
 extension BaseCoordinating {
     public func handle(_ message: MPresentable) {
-        MHandler.instance.with(\.navigationController, setTo: navigationController).handle(message)
+        MHandler.instance.with(\.viewController, setTo: navigationController).handle(message)
     }
 }
 

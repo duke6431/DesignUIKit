@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension Error where Self: MPresentable {
+public extension Error where Self: MPresentable {
     var messageDescription: String? { localizedDescription }
     
     var presentationStyle: MPresentationStyle { .center }
 }
 
-typealias MInfo = Error
-typealias MWarning = Error
-typealias MError = Error
+public typealias MInfo = Error
+public typealias MWarning = Error
+public typealias MError = Error
