@@ -15,7 +15,7 @@ class FilmItemView: FView, FCellReusable {
     }
     
     public class Content: NSObject, Chainable, FCellModeling {
-        public var view: (UIView & FCellReusable).Type = FilmItemView.self
+        public var view: (FBodyComponent & FCellReusable).Type = FilmItemView.self
         public var title: String = ""
         public var imageUrl: String = ""
         public var note: String?

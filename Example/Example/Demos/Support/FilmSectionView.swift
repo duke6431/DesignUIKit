@@ -23,7 +23,7 @@ public class FilmSectionView: FView, FCellReusable {
     var content: Content = .init()
     
     public class Content: FCellModeling {
-        public var view: (UIView & FCellReusable).Type = FilmSectionView.self
+        public var view: (FBodyComponent & FCellReusable).Type = FilmSectionView.self
         
         var sections: [CommonCollection.Section] = []
         
@@ -77,7 +77,7 @@ public class FilmSectionHeader: FView, FCellReusable {
     }
     
     public class Content: FCellModeling {
-        public var view: (UIView & DesignUIKit.FCellReusable).Type = FilmSectionHeader.self
+        public var view: (FBodyComponent & DesignUIKit.FCellReusable).Type = FilmSectionHeader.self
         var title: String?
         
         init(title: String? = nil) {

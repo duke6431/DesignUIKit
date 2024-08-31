@@ -35,17 +35,17 @@ let package = Package(
             name: "DesignUIKit",
             targets: ["DesignUIKit"]
         ),
-//        .library(
-//            name: "DesignRxUIKit",
-//            targets: ["DesignRxUIKit"]
-//        ),
+        .library(
+            name: "DesignRxUIKit",
+            targets: ["DesignRxUIKit"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/nvzqz/FileKit.git", .upToNextMajor(from: "6.1.0")),
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
-//        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0"))
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -96,14 +96,14 @@ let package = Package(
                 .target(name: "DesignCore")
             ],
             path: "Tests/Core"
-        )
-//        .target(
-//            name: "DesignRxUIKit",
-//            dependencies: [
-//                .target(name: "DesignUIKit"),
-//                .product(name: "RxCocoa", package: "RxSwift")
-//            ],
-//            path: "Sources/RxUIKit"
-//        ),
+        ),
+        .target(
+            name: "DesignRxUIKit",
+            dependencies: [
+                .target(name: "DesignUIKit"),
+                .product(name: "RxCocoa", package: "RxSwift")
+            ],
+            path: "Sources/RxUIKit"
+        ),
     ]
 )

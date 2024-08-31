@@ -142,12 +142,13 @@ extension TestCollection {
                 $0.top.equalTo(imageView.snp.bottom).offset(12)
                 $0.leading.equalToSuperview().inset(12)
                 $0.trailing.lessThanOrEqualToSuperview().inset(12)
+                $0.bottom.equalToSuperview().inset(12)
             }
         }
         
         override func bind(_ model: CommonCollectionCellModel) {
             guard let model = model as? Model else { return }
-            title.text = model.title
+            title.text = model.title + "\n"
             contentView.backgroundColor = model.color
         }
     }
@@ -209,13 +210,12 @@ class CommonGalleryViewVC: UIViewController {
                 ]
             )
             .with(dimension: .init(
-                itemWHRatio: 0.81, groupWidthRatio: 0.57, groupSpacing: 16,
+                itemWHRatio: 0.81, autoHeight: true, groupWidthRatio: 0.57, groupSpacing: 16,
                 sectionInset: .init(top: 12, left: 24, bottom: 5, right: 24),
                 headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44))
             ))
             .with(layout: CommonCollection.Section.slidingLayout(section:)),
             CommonCollection.Section(
-                header: TestCollection.Header.Model(title: "Upcoming Events"),
                 cells: [
                     TestCollection.Cell.Model(title: "Study @ Cafe Landwer (FREE COFFEE!)"),
                     TestCollection.Cell.Model(),
@@ -226,11 +226,12 @@ class CommonGalleryViewVC: UIViewController {
                 ]
             )
             .with(dimension: .init(
-                itemWHRatio: 0.4, groupWidthRatio: 0.26, groupSpacing: 16, numberItemsPerGroup: 2,
+                itemWHRatio: 0.81, autoHeight: true,
+                groupAxis: .vertical, groupWidthRatio: 0.57, groupSpacing: 16, numberItemsPerGroup: 2,
                 sectionInset: .init(top: 12, left: 24, bottom: 5, right: 24),
-                headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)))
-            )
-            .with(layout: CommonCollection.Section.list(section:))
+                headerSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44))
+            ))
+            .with(layout: CommonCollection.Section.slidingLayout(section:))
         ])
     }
 }

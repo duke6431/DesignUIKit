@@ -20,8 +20,8 @@
 		3FB60F5C2B7E759A00E70586 /* KeyboardDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F5B2B7E759A00E70586 /* KeyboardDemo.swift */; };
 		3FB60F5E2B7E75CE00E70586 /* CommonTextFieldDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F5D2B7E75CE00E70586 /* CommonTextFieldDemo.swift */; };
 		3FB60F612B7E769600E70586 /* CommonGalleryDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F602B7E769600E70586 /* CommonGalleryDemo.swift */; };
-		3FB60F632B7E787C00E70586 /* DesignRxUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3FB60F622B7E787C00E70586 /* DesignRxUIKit */; };
 		3FB60F652B7E78BB00E70586 /* ComponentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB60F642B7E78BB00E70586 /* ComponentCell.swift */; };
+		6C0F35CF2C6CAC99007E20F4 /* DesignRxUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0F35CE2C6CAC99007E20F4 /* DesignRxUIKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +48,7 @@
 				3F3EB6DF2B7BCADE0070F706 /* DesignExts in Frameworks */,
 				3F3EB6E12B7BCADE0070F706 /* DesignUIKit in Frameworks */,
 				3F6272C72B6F5BD100C91BB9 /* DesignCore in Frameworks */,
-				3FB60F632B7E787C00E70586 /* DesignRxUIKit in Frameworks */,
+				6C0F35CF2C6CAC99007E20F4 /* DesignRxUIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +134,7 @@
 				3F6272C62B6F5BD100C91BB9 /* DesignCore */,
 				3F3EB6DE2B7BCADE0070F706 /* DesignExts */,
 				3F3EB6E02B7BCADE0070F706 /* DesignUIKit */,
-				3FB60F622B7E787C00E70586 /* DesignRxUIKit */,
+				6C0F35CE2C6CAC99007E20F4 /* DesignRxUIKit */,
 			);
 			productName = Example;
 			productReference = 3F6272AC2B6F585D00C91BB9 /* Example.app */;
@@ -435,7 +435,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignCore;
 		};
-		3FB60F622B7E787C00E70586 /* DesignRxUIKit */ = {
+		6C0F35CE2C6CAC99007E20F4 /* DesignRxUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignRxUIKit;
 		};
