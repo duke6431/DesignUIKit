@@ -24,6 +24,18 @@ public typealias BScrollView = UIScrollView
 public typealias BStackView = UIStackView
 /// Unification of ImageView
 public typealias BImageView = UIImageView
+
+public extension BView {
+    var owningViewController: UIViewController? {
+        if let nextResponder = next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = next as? UIView {
+            return nextResponder.owningViewController
+        } else {
+            return nil
+        }
+    }
+}
 #else
 import AppKit
 

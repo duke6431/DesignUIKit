@@ -61,6 +61,50 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
         }
     }
     
+    public convenience init(
+        style: BButton.ButtonType? = nil,
+        _ textPublisher: FBinder<String>,
+        action: @escaping (FButton?) -> Void
+    ) {
+        self.init(style: style)
+        self.bind(to: textPublisher) { button, title in
+#if canImport(UIKit)
+            button.setTitle(title, for: .normal)
+#else
+            button.title = title
+#endif
+        }
+        addAction(for: .touchUpInside, { [weak self] in action(self) })
+    }
+    
+    public convenience init(
+        style: BButton.ButtonType? = nil,
+        _ text: String = "",
+        action: @escaping (FButton?) -> Void
+    ) {
+        self.init(style: style)
+#if canImport(UIKit)
+            setTitle(text, for: .normal)
+#else
+            title = text
+#endif
+        addAction(for: .touchUpInside, { [weak self] in action(self) })
+    }
+
+    public convenience init(style: BButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping (FButton?) -> Void) {
+        self.init(style: style)
+        addAction(for: .touchUpInside, { [weak self] in action(self) })
+        label().forEach { label in
+            addSubview(label)
+            label.isUserInteractionEnabled = false
+            if label as? (any FComponent & UIView) == nil {
+                label.snp.remakeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            }
+        }
+    }
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
