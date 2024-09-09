@@ -10,7 +10,7 @@ import PackageDescription
 let package = Package(
     name: "ComponentSystem",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v13),
         .macOS(.v14)
     ],
     products: [
@@ -27,25 +27,25 @@ let package = Package(
             name: "DesignExternal",
             targets: ["DesignExternal"]
         ),
-        .library(
-            name: "DesignUI",
-            targets: ["DesignUI"]
-        ),
+//        .library(
+//            name: "DesignUI",
+//            targets: ["DesignUI"]
+//        ),
         .library(
             name: "DesignUIKit",
             targets: ["DesignUIKit"]
         ),
-        .library(
-            name: "DesignRxUIKit",
-            targets: ["DesignRxUIKit"]
-        ),
+//        .library(
+//            name: "DesignRxUIKit",
+//            targets: ["DesignRxUIKit"]
+//        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/nvzqz/FileKit.git", .upToNextMajor(from: "6.1.0")),
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0")),
+//        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0")),
         .package(url: "https://github.com/BastiaanJansen/toast-swift.git", .upToNextMajor(from: "2.1.0")),
     ],
     targets: [
@@ -65,14 +65,14 @@ let package = Package(
             ],
             path: "Sources/Exts"
         ),
-        .target(
-            name: "DesignUI",
-            dependencies: [
-                .target(name: "DesignCore"),
-                .target(name: "DesignExts")
-            ],
-            path: "Sources/SwiftUI"
-        ),
+//        .target(
+//            name: "DesignUI",
+//            dependencies: [
+//                .target(name: "DesignCore"),
+//                .target(name: "DesignExts")
+//            ],
+//            path: "Sources/SwiftUI"
+//        ),
         .target(
             name: "DesignExternal",
             dependencies: [
@@ -99,13 +99,13 @@ let package = Package(
             ],
             path: "Tests/Core"
         ),
-        .target(
-            name: "DesignRxUIKit",
-            dependencies: [
-                .target(name: "DesignUIKit"),
-                .product(name: "RxCocoa", package: "RxSwift")
-            ],
-            path: "Sources/RxUIKit"
-        ),
+//        .target(
+//            name: "DesignRxUIKit",
+//            dependencies: [
+//                .target(name: "DesignUIKit"),
+//                .product(name: "RxCocoa", package: "RxSwift")
+//            ],
+//            path: "Sources/RxUIKit"
+//        ),
     ]
 )
