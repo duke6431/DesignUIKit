@@ -27,6 +27,8 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func padding() -> Self
     @discardableResult func padding(_ padding: CGFloat) -> Self
     @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self
+    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self
     @discardableResult func offset(_ size: CGSize) -> Self
     @discardableResult func offset(width: CGFloat, height: CGFloat) -> Self
     @discardableResult func background(_ color: BColor) -> Self

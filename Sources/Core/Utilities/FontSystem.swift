@@ -65,7 +65,7 @@ public class FontSystem: ObservableObject {
 #endif
 }
 
-public class FontFamily {
+@objc public class FontFamily: NSObject {
     public var name: String
     
     public init(name: String) { self.name = name }
@@ -138,7 +138,7 @@ public extension FontFamily {
 }
 
 public extension FontFamily {
-    struct Style: Equatable, SelfCustomizable {
+    @objc class Style: NSObject, Chainable {
         public var size: CGFloat
         
 #if os(iOS) || os(tvOS)

@@ -45,6 +45,13 @@ public extension FConfigurable {
         return self
     }
     
+    @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self {
+        padding(SpacingSystem.shared.spacing(style))
+    }
+    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self {
+        padding(edges, SpacingSystem.shared.spacing(style))
+    }
+    
     @discardableResult func background(_ color: UIColor) -> Self {
         configuration?.with(\.backgroundColor, setTo: color)
         return self

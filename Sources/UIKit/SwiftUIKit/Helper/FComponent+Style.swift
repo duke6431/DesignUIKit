@@ -15,6 +15,12 @@ import Foundation
     @discardableResult func foreground(_ color: BColor) -> Self
 }
 
+public extension FStylable {
+    @discardableResult func font(of style: FontFamily.Style) -> Self {
+        font?(FontSystem.shared.font(with: style)) ?? self
+    }
+}
+
 public protocol FThemableForeground: Themable {
     var foregroundKey: ThemeKey? { get set }
     @discardableResult func foreground(key: ThemeKey) -> Self
