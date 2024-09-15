@@ -16,6 +16,7 @@ import SnapKit
 
 public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FContentConstraintable {
     public var customConfiguration: ((FButton) -> Void)?
+    var onHighlighted: ((FButton, Bool) -> Void)?
     
     public convenience init(
         style: BButton.ButtonType? = nil,
@@ -105,6 +106,12 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
         }
     }
     
+    public override var isHighlighted: Bool {
+        didSet {
+            onHighlighted?(self, isHighlighted)
+        }
+    }
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -123,6 +130,11 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
 
     @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         setTitleColor(color, for: .normal)
+        return self
+    }
+    
+    @discardableResult public func on(highlighted action: @escaping (FButton, Bool) -> Void) -> Self {
+        onHighlighted = action
         return self
     }
     
