@@ -52,9 +52,9 @@ public class FList: CommonTableView, FConfigurable, FComponent {
         configuration?.updateLayers(for: self)
     }
     
-    public override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
+    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let item = searchedSections[section].header as? FHeaderModel,
-              let header = dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
+              let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
         header.section = section
         header.bind(item)
         return header
