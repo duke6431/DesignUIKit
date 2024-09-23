@@ -143,7 +143,7 @@ public class FHeaderModel: NSObject, CommonHeaderModel {
     public var customConfiguration: ((CommonTableView.Header) -> Void)?
     public var model: FHeaderModeling
     
-    init(model: FHeaderModeling) {
+    public init(model: FHeaderModeling) {
         self.model = model
     }
 }
