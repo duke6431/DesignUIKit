@@ -47,6 +47,14 @@ public class FList: CommonTableView, FConfigurable, FComponent {
         configuration?.updateLayers(for: self)
     }
     
+    public override func headerView(forSection section: Int) -> UITableViewHeaderFooterView? {
+        guard let item = searchedSections[section].header as? FHeaderModel,
+              let header = dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
+        header.section = section
+        header.bind(item)
+        return header
+    }
+    
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FListModel,
               let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: item.model.view)) as? FListCell else {
@@ -95,17 +103,44 @@ public extension FCellModeling {
     func layoutConfiguration(container: BView, view: BView?) { }
 }
 
+public protocol FHeaderModeling {
+    var view: (FBodyComponent & FHeaderReusable).Type { get set }
+    func layoutConfiguration(container: BView, view: BView?)
+}
+
+public extension FHeaderModeling {
+    func layoutConfiguration(container: BView, view: BView?) { }
+}
+
 public protocol FCellReusable: AnyObject {
     static var empty: Self { get }
     func bind(_ value: FCellModeling)
 }
 
+public protocol FHeaderReusable: AnyObject {
+    static var empty: Self { get }
+    func bind(_ value: FHeaderModeling)
+}
+
 @objc public protocol FFullCustomConfiguration: AnyObject {
-    func customized(with cell: FListCell)
+    @objc optional func customized(header: FListHeader)
+    @objc optional func customized(cell: FListCell)
 }
 
 @objc public protocol FPartialCustomConfiguration: AnyObject {
-    func customized(with cell: FListCell)
+    @objc optional func customized(header: FListHeader)
+    @objc optional func customized(cell: FListCell)
+}
+
+public class FHeaderModel: NSObject, CommonHeaderModel {
+    public var identifier: String = UUID().uuidString
+    public static var headerKind: CommonTableView.Header.Type = FListHeader.self
+    public var customConfiguration: ((CommonTableView.Header) -> Void)?
+    public var model: FHeaderModeling
+    
+    init(model: FHeaderModeling) {
+        self.model = model
+    }
 }
 
 public class FListModel: NSObject, CommonCellModel {
@@ -142,7 +177,7 @@ public class FListCell: CommonTableView.Cell {
 
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         if let customizeContent = view as? FFullCustomConfiguration {
-            customizeContent.customized(with: self)
+            customizeContent.customized?(cell: self)
         } else {
             contentView.backgroundColor = .clear
             backgroundColor = .clear
@@ -153,9 +188,41 @@ public class FListCell: CommonTableView.Cell {
             }
             content = view
             if let content = view as? FPartialCustomConfiguration {
-                content.customized(with: self)
+                content.customized?(cell: self)
             }
         }
     }
 }
+
+public class FListHeader: CommonTableView.Header {
+    weak var content: (FBodyComponent & FHeaderReusable)?
+    
+    public override func bind(_ model: CommonHeaderModel) {
+        guard let model = model as? FHeaderModel else { return }
+        if content == nil {
+            install(view: model.model.view.empty)
+            model.model.layoutConfiguration(container: contentView, view: content)
+        }
+        content?.bind(model.model)
+    }
+    
+    open func install<T: FBodyComponent & FHeaderReusable>(view: T) {
+        if let customizeContent = view as? FFullCustomConfiguration {
+            customizeContent.customized?(header: self)
+        } else {
+            contentView.backgroundColor = .clear
+            backgroundColor = .clear
+            view.attachToParent(false)
+            contentView.addSubview(view)
+            view.snp.makeConstraints {
+                $0.directionalEdges.equalToSuperview()
+            }
+            content = view
+            if let content = view as? FPartialCustomConfiguration {
+                content.customized?(header: self)
+            }
+        }
+    }
+}
+
 #endif
