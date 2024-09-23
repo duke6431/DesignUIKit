@@ -52,6 +52,13 @@ public class FList: CommonTableView, FConfigurable, FComponent {
         configuration?.updateLayers(for: self)
     }
     
+    public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FCellMenuContaining else {
+            return nil
+        }
+        return item.menu
+    }
+    
     public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let item = searchedSections[section].header as? FHeaderModel,
               let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
@@ -106,6 +113,10 @@ public protocol FCellModeling {
 
 public extension FCellModeling {
     func layoutConfiguration(container: BView, view: BView?) { }
+}
+
+public protocol FCellMenuContaining {
+    var menu: UIContextMenuConfiguration? { get }
 }
 
 public protocol FHeaderModeling {
