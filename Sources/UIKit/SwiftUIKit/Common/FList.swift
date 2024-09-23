@@ -25,8 +25,13 @@ public class FList: CommonTableView, FConfigurable, FComponent {
     
     public var cancellables = Set<AnyCancellable>()
 
-    public init(prototypes: [(FCellReusable & UIView).Type], style: UITableView.Style = .plain) {
+    public init(
+        headerPrototypes: [(FHeaderReusable & UIView).Type]? = nil,
+        prototypes: [(FCellReusable & UIView).Type],
+        style: UITableView.Style = .plain
+    ) {
         super.init(map: [], headerMap: [], style: style)
+        headerPrototypes?.forEach { register(FListHeader.self, forHeaderFooterViewReuseIdentifier: String(describing: $0)) }
         prototypes.forEach { register(FListCell.self, forCellReuseIdentifier: String(describing: $0)) }
         loadConfiguration()
     }
