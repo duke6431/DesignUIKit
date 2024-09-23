@@ -14,7 +14,7 @@ public typealias BNavigationController = UINavigationController
 import AppKit
 
 public class BNavigationController: BViewController {
-    public private (set) var viewControllers: [BViewController] = []
+    public private(set) var viewControllers: [BViewController] = []
     
     open override func loadView() {
         view = NSView()

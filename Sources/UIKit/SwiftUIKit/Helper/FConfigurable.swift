@@ -34,6 +34,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func background(_ color: BColor) -> Self
     @discardableResult func shaped(_ shape: FShape) -> Self
     @discardableResult func shadow(_ shadow: CALayer.ShadowConfiguration) -> Self
+    @discardableResult func ignoreSafeArea(_ status: Bool) -> Self
     @discardableResult func attachToParent(_ status: Bool) -> Self
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: BView) -> Void) -> Self
@@ -54,6 +55,7 @@ public class FConfiguration: Chainable {
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: BView) -> Void)?
     public var layerConfiguration: ((UIView) -> Void)?
     
+    public var shouldIgnoreSafeArea: Bool = false
     public var shouldConstraintWithParent: Bool = true
     public weak var owner: BView?
     
@@ -68,10 +70,11 @@ public class FConfiguration: Chainable {
             }
         } else if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
-                $0.top.equalTo(superview.safeAreaLayoutGuide).offset(offset.height + (containerPadding?.top ?? 0))
-                $0.leading.equalTo(superview.safeAreaLayoutGuide).offset(offset.width + (containerPadding?.leading ?? 0))
-                $0.trailing.equalTo(superview.safeAreaLayoutGuide).offset(offset.width - (containerPadding?.trailing ?? 0))
-                $0.bottom.equalTo(superview.safeAreaLayoutGuide).offset(offset.height - (containerPadding?.bottom ?? 0))
+                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
+                $0.top.equalTo(target).offset(offset.height + (containerPadding?.top ?? 0))
+                $0.leading.equalTo(target).offset(offset.width + (containerPadding?.leading ?? 0))
+                $0.trailing.equalTo(target).offset(offset.width - (containerPadding?.trailing ?? 0))
+                $0.bottom.equalTo(target).offset(offset.height - (containerPadding?.bottom ?? 0))
             }
         }
         target.snp.makeConstraints {

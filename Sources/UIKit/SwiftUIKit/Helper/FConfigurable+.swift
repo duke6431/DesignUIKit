@@ -77,6 +77,11 @@ public extension FConfigurable {
         return self
     }
     
+    @discardableResult func ignoreSafeArea(_ status: Bool) -> Self {
+        configuration?.with(\.shouldIgnoreSafeArea, setTo: status)
+        return self
+    }
+    
     @discardableResult func attachToParent(_ status: Bool) -> Self {
         configuration?.with(\.shouldConstraintWithParent, setTo: status)
         return self
