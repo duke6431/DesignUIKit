@@ -100,6 +100,14 @@ public protocol FCellReusable: AnyObject {
     func bind(_ value: FCellModeling)
 }
 
+@objc public protocol FFullCustomConfiguration: AnyObject {
+    func customized(with cell: FListCell)
+}
+
+@objc public protocol FPartialCustomConfiguration: AnyObject {
+    func customized(with cell: FListCell)
+}
+
 public class FListModel: NSObject, CommonCellModel {
     public var identifier: String = UUID().uuidString
     public static var cellKind: CommonTableView.Cell.Type = FListCell.self
@@ -133,14 +141,21 @@ public class FListCell: CommonTableView.Cell {
     }
 
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
-        contentView.backgroundColor = .clear
-        backgroundColor = .clear
-        view.attachToParent(false)
-        contentView.addSubview(view)
-        view.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview()
+        if let customizeContent = view as? FFullCustomConfiguration {
+            customizeContent.customized(with: self)
+        } else {
+            contentView.backgroundColor = .clear
+            backgroundColor = .clear
+            view.attachToParent(false)
+            contentView.addSubview(view)
+            view.snp.makeConstraints {
+                $0.directionalEdges.equalToSuperview()
+            }
+            content = view
+            if let content = view as? FPartialCustomConfiguration {
+                content.customized(with: self)
+            }
         }
-        content = view
     }
 }
 #endif
