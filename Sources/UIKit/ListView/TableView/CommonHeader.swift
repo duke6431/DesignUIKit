@@ -5,13 +5,8 @@
 //  Created by Duc IT. Nguyen Minh on 21/05/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
-#if canImport(UIKit)
 @objc public protocol CommonHeaderModel: NSObjectProtocol {
     var identifier: String { get }
     static var headerKind: CommonTableView.Header.Type { get }
@@ -28,7 +23,7 @@ extension CommonTableView {
             super.init(reuseIdentifier: reuseIdentifier)
             configureViews()
         }
-        @available(iOS, unavailable)
+        @available(*, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
@@ -41,4 +36,3 @@ extension CommonTableView {
         }
     }
 }
-#endif

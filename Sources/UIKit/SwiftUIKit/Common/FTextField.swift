@@ -161,7 +161,6 @@ public final class FTextField: BaseTextField, FComponent, FStylable, FThemableFo
     }
 }
 
-#if canImport(UIKit)
 extension FTextField: UITextFieldDelegate {
     @objc func textFieldDidChange(_ textField: UITextField) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
@@ -175,24 +174,6 @@ extension FTextField: UITextFieldDelegate {
         return true
     }
 }
-#else
-extension FTextField {
-    public override func textDidChange(_ notification: Notification) {
-        UIView.animate(withDuration: 0.15) { [textLayer] in
-            textLayer.opacity = textField.text?.isEmpty ?? true ? 1.0 : 0.0
-        }
-        onChangeAction?(text)
-    }
-//    @objc func textFieldDidChange(_ textField: UITextField) {
-//        onChangeAction?(textField.text ?? "")
-//    }
-//    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        onSubmitAction?()
-//        textField.endEditing(true)
-//        return true
-//    }
-}
-#endif
 
 extension NSTextAlignment {
     var caMode: CATextLayerAlignmentMode {

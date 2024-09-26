@@ -5,7 +5,6 @@
 //  Created by Duc IT. Nguyen Minh on 14/06/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -104,4 +103,3 @@ extension PanModal {
         }
     }
 }
-#endif

@@ -5,11 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 16/02/2024.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import Combine
 import SnapKit
 import DesignCore

@@ -18,7 +18,7 @@ open class BaseViewController<ViewModel: BaseViewModel>: BViewController, FThema
         super.init(nibName: nil, bundle: nil)
     }
     
-    @available(iOS, unavailable)
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("Coder init not required")
     }

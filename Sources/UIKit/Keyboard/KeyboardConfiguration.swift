@@ -5,7 +5,6 @@
 //  Created by Duc IT. Nguyen Minh on 24/05/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
 import DesignExts
 
@@ -48,4 +47,3 @@ extension Keyboard {
         }
     }
 }
-#endif

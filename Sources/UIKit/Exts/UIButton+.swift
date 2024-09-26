@@ -5,20 +5,12 @@
 //  Created by Duc IT. Nguyen Minh on 31/05/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 public typealias BControl = UIControl
 public typealias BControlEvent = UIControl.Event
-#else
-import AppKit
 
-public typealias BControl = NSControl
-public typealias BControlEvent = NSEvent.EventTypeMask
-#endif
-import DesignCore
-
-#if canImport(UIKit)
 public extension BControl {
     class Failure: Error {
         var message: String?
@@ -143,4 +135,3 @@ extension BButton {
         self.addTarget(self, action: #selector(stopHold), for: [.touchUpInside, .touchUpOutside])
     }
 }
-#endif

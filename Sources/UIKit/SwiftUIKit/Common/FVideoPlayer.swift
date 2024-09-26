@@ -46,11 +46,7 @@ public extension FVideoPlayer {
         playerLayer.backgroundColor = BColor.black.cgColor
         self.playerLayer = playerLayer
         playerLayer.frame = bounds
-        #if canImport(UIKit)
         layer.addSublayer(playerLayer)
-        #else
-        layer?.addSublayer(playerLayer)
-        #endif
     }
     
     func stop() {

@@ -6,11 +6,7 @@
 //
 
 import DesignCore
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 @available(iOS 13.0, *)
 public extension CommonCollection {
@@ -32,7 +28,7 @@ public extension CommonCollection {
             configureViews()
         }
 
-        @available(iOS, unavailable)
+        @available(*, unavailable)
         required init?(coder: NSCoder) {
             fatalError("not implemented")
         }

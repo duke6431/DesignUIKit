@@ -7,7 +7,6 @@
 
 import Foundation
 import QuartzCore
-#if canImport(UIKit)
 import UIKit
 
 public extension CALayer {
@@ -107,4 +106,3 @@ private extension LayerPersistentHelper {
         layer.pause()
     }
 }
-#endif

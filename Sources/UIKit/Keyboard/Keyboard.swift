@@ -5,7 +5,6 @@
 //  Created by Duc IT. Nguyen Minh on 21/05/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -56,7 +55,7 @@ public class Keyboard: UIInputView {
         }
         configureViews()
     }
-    @available(iOS, unavailable)
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
@@ -98,4 +97,3 @@ extension Keyboard: KeyTappableDelegate {
         }
     }
 }
-#endif

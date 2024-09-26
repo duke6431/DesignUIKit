@@ -5,16 +5,12 @@
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import Combine
 import DesignCore
 import DesignExts
 import SnapKit
-#if canImport(UIKit)
+
 public class FList: CommonTableView, FConfigurable, FComponent {
     public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     public var customConfiguration: ((FList) -> Void)?
@@ -229,5 +225,3 @@ public class FListHeader: CommonTableView.Header {
         }
     }
 }
-
-#endif

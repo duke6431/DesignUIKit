@@ -5,11 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import DesignCore
 import Combine
 
@@ -21,11 +17,7 @@ open class BaseView: BView, FConfigurable, Combinable, FThemableBackground, FThe
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
@@ -65,19 +57,11 @@ open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackgr
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
+    @available(*, unavailable)
     public required init(coder: NSCoder) {
         super.init(coder: coder)
         loadConfiguration()
     }
-#else
-    @available(macOS, unavailable)
-    required public init?(coder: NSCoder) {
-        super.init(coder: coder)
-        loadConfiguration()
-    }
-#endif
     
     open override func addArrangedSubview(_ view: BView) {
         view.configuration?.shouldConstraintWithParent = false
@@ -114,11 +98,7 @@ open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBack
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
@@ -158,7 +138,6 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
         loadConfiguration()
     }
     
-#if canImport(UIKit)
     public override init(image: BImage?) {
         super.init(image: image)
         loadConfiguration()
@@ -168,19 +147,8 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
         super.init(image: image, highlightedImage: highlightedImage)
         loadConfiguration()
     }
-#else
-    public init(image: BImage? = nil) {
-        super.init(frame: .zero)
-        self.image = image
-        loadConfiguration()
-    }
-#endif
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
@@ -211,14 +179,7 @@ open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, 
     public var cancellables = Set<AnyCancellable>()
     
     public convenience init(style buttonType: BButton.ButtonType? = nil) {
-#if canImport(UIKit)
         self.init(type: buttonType ?? .system)
-#else
-        self.init(frame: .zero)
-        if let buttonType {
-            self.setButtonType(buttonType)
-        }
-#endif
         loadConfiguration()
     }
     
@@ -254,11 +215,7 @@ open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FT
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
@@ -268,11 +225,9 @@ open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FT
         configuration?.owner = self
     }
     
-#if canImport(UIKit)
     open override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: contentInsets))
     }
-#endif
     
     open override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
@@ -312,11 +267,7 @@ open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackgr
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
@@ -351,11 +302,7 @@ open class BaseTextView: BTextView, FConfigurable, Combinable, FThemableBackgrou
         loadConfiguration()
     }
     
-#if canImport(UIKit)
-    @available(iOS, unavailable)
-#else
-    @available(macOS, unavailable)
-#endif
+    @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }

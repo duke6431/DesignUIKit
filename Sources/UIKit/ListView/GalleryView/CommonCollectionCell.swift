@@ -6,11 +6,7 @@
 //
 
 import DesignCore
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 @objc public protocol CommonCollectionCellModel: NSObjectProtocol {
     var identifier: String { get }
@@ -23,7 +19,6 @@ import AppKit
 }
 
 extension CommonCollection {
-#if canImport(UIKit)
     open class Cell: UICollectionViewCell, Reusable {
         public var identifier: String = ""
         public var indexPath: IndexPath?
@@ -33,7 +28,7 @@ extension CommonCollection {
             configureViews()
         }
 
-        @available(iOS, unavailable)
+        @available(*, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
@@ -45,24 +40,4 @@ extension CommonCollection {
         open func configureViews() {
         }
     }
-#else
-    open class Cell: NSCollectionViewItem, Reusable {
-        public override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-            super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-            configureViews()
-        }
-        
-        @available(macOS, unavailable)
-        required public init(coder: NSCoder) {
-            fatalError()
-        }
-        
-        open func bind(_ model: CommonCollectionCellModel) {
-            fatalError("Must override this function")
-        }
-
-        open func configureViews() {
-        }
-    }
-#endif
 }

@@ -5,11 +5,7 @@
 //  Created by Duc Minh Nguyen on 3/27/24.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 public protocol ImageRepresenting {
     var image: BImage? { get }

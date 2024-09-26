@@ -4,11 +4,7 @@
 //  Created by Son le on 1/11/21.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 public extension BCollectionView {
     enum ReusableKind: String {
@@ -76,7 +72,6 @@ public extension BCollectionView {
         return header
     }
 }
-#if canImport(UIKit)
 public extension UITableView {
     /// Registers a nib or a UITableViewCell object containing a cell with the table view under a specified identifier.
     func register<T: UITableViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
@@ -119,7 +114,7 @@ public extension UITableView {
         return cell
     }
 }
-#endif
+
 public protocol Reusable {
     static var reuseIdentifier: String { get }
 }

@@ -6,11 +6,7 @@
 //
 
 import DesignCore
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 @objc public protocol CommonCollectionReusableModel: NSObjectProtocol {
     var identifier: String { get }
@@ -21,7 +17,6 @@ import AppKit
 }
 
 extension CommonCollection {
-#if canImport(UIKit)
     open class ReusableView: UICollectionReusableView, Reusable {
         public var identifier: String = ""
         public var section: Int?
@@ -31,7 +26,7 @@ extension CommonCollection {
             configureViews()
         }
 
-        @available(iOS, unavailable)
+        @available(*, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
@@ -43,26 +38,4 @@ extension CommonCollection {
         open func configureViews() {
         }
     }
-#else
-    open class ReusableView: NSView, NSCollectionViewSectionHeaderView, Reusable {
-        public var section: Int?
-
-        public override init(frame: CGRect) {
-            super.init(frame: frame)
-            configureViews()
-        }
-
-        @available(iOS, unavailable)
-        public required init?(coder: NSCoder) {
-            fatalError("Not implemented")
-        }
-
-        open func bind(_ model: CommonCollectionReusableModel) {
-            fatalError("Must override this function")
-        }
-
-        open func configureViews() {
-        }
-    }
-#endif
 }

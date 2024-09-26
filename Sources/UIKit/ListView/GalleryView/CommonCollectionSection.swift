@@ -5,20 +5,12 @@
 //  Created by Duc IT. Nguyen Minh on 13/03/2023.
 //
 
-#if canImport(UIKit)
 import UIKit
+import DesignCore
 
 public typealias BCollectionViewCell = UICollectionViewCell
 public typealias BCollectionView = UICollectionView
 public typealias BCollectionLayoutSectionOrthogonalScrollingBehavior = UICollectionLayoutSectionOrthogonalScrollingBehavior
-#else
-import AppKit
-
-public typealias BCollectionViewCell = NSCollectionViewItem
-public typealias BCollectionView = NSCollectionView
-public typealias BCollectionLayoutSectionOrthogonalScrollingBehavior = NSCollectionLayoutSectionOrthogonalScrollingBehavior
-#endif
-import DesignCore
 
 @available(iOS 13.0, *)
 extension CommonCollection {

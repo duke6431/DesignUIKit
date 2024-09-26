@@ -6,24 +6,23 @@
 //
 
 import DesignCore
-#if canImport(UIKit)
 import UIKit
 
 extension PanModal {
     public class ViewController: BViewController {
         var contentConfigure: ((BView, BViewController) -> Void)?
         var direction: OriginDirection
-
-        @available(iOS, unavailable)
+        
+        @available(*, unavailable)
         required init?(coder: NSCoder) {
             fatalError()
         }
-
+        
         public init(direction: OriginDirection = .bottom) {
             self.direction = direction
             super.init(nibName: nil, bundle: nil)
         }
-
+        
         // MARK: - Views
         public private(set) lazy var contentView: BView = {
             let view = BView()
@@ -34,18 +33,18 @@ extension PanModal {
             view.backgroundColor = .white
             return view
         }()
-
+        
         public override func viewDidLoad() {
             super.viewDidLoad()
             configurationUI()
         }
-
+        
         // MARK: - Functions
         private func configurationUI() {
             NSLayoutConstraint.activate {
                 contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
                 contentView.heightAnchor.constraint(equalToConstant: 500).with(\.priority, setTo: .defaultLow + 250)
-
+                
                 direction == .top
                 // swiftlint:disable:next void_function_in_ternary
                 ? contentView.topAnchor.constraint(equalTo: view.topAnchor)
@@ -73,7 +72,7 @@ extension BViewController {
         transitioningDelegate = _storedTransitioningDelegate
         modalPresentationStyle = .custom
     }
-
+    
     public func present(_ viewController: BViewController?, dimmingView: BView? = nil,
                         direction: PanModal.OriginDirection = .top, animated: Bool = true) {
         let panel = PanModal.ViewController(direction: direction)
@@ -94,11 +93,11 @@ extension BViewController {
         }
         present(panel, animated: animated)
     }
-
+    
     private struct AssociatedKeys {
         static var TransitioningDelegate: UInt8 = 0
     }
-
+    
     fileprivate var _storedTransitioningDelegate: UIViewControllerTransitioningDelegate? {
         get {
             return objc_getAssociatedObject(
@@ -123,4 +122,3 @@ extension BView: Chainable {
 }
 
 extension NSLayoutConstraint: Chainable { }
-#endif

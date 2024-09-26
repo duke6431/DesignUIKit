@@ -24,11 +24,7 @@ class CCATextLayer: CATextLayer {
         }
 
         ctx.saveGState()
-#if canImport(UIKit)
         ctx.translateBy(x: 0.0, y: yDiff)
-#else
-        ctx.translateBy(x: 0.0, y: -yDiff)
-#endif
         super.draw(in: ctx)
         ctx.restoreGState()
     }

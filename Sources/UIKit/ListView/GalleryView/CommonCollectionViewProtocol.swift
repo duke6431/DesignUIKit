@@ -6,11 +6,7 @@
 //
 
 import DesignCore
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 @objc public protocol CommonCollectionViewDelegate: AnyObject {
     @objc optional func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel)

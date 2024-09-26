@@ -5,11 +5,7 @@
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import DesignCore
 import DesignExts
 import SnapKit
@@ -98,40 +94,23 @@ public class FConfiguration: Chainable {
                 switch shape {
                 case .circle:
                     shadowCornerRadius = min(target.bounds.width, target.bounds.height) / 2
-#if canImport(UIKit)
                     target.layer.cornerRadius = shadowCornerRadius
-#else
-                    target.layer?.cornerRadius = min(target.bounds.width, target.bounds.height) / 2
-#endif
                 case .roundedRectangle(let cornerRadius, let corners):
                     shadowCornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
                     shadowCorners = corners
-#if canImport(UIKit)
                     target.layer.maskedCorners = corners.caMask
                     target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
-#else
-                    target.layer?.maskedCorners = corners.caMask
-                    target.layer?.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
-#endif
                 }
             }
         }
         if let shadow {
             BView.animate(withDuration: 0.2) {
                 let path = UIBezierPath(roundedRect: target.bounds, byRoundingCorners: shadowCorners, cornerRadii: .init(width: shadowCornerRadius, height: shadowCornerRadius))
-#if canImport(UIKit)
                 target.layer.add(
                     shadow: shadow.updated(
                         \.path, with: path.cgPath
                     )
                 )
-#else
-                target.layer?.add(
-                    shadow: shadow.updated(
-                        \.path, with: BBezierPath(rect: target.bounds).cgPath
-                    )
-                )
-#endif
             }
         }
         layerConfiguration?(target)

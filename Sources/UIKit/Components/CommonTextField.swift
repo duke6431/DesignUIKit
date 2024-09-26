@@ -4,7 +4,6 @@
 //
 //  Created by Duc IT. Nguyen Minh on 25/05/2022.
 //
-#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -188,4 +187,3 @@ extension CommonTextField: UITextFieldDelegate {
         delegate?.textFieldDidEndEditing?(textField, reason: reason)
     }
 }
-#endif

@@ -5,7 +5,6 @@
 //  Created by Duc IT. Nguyen Minh on 15/06/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
 import DesignCore
 
@@ -102,4 +101,3 @@ extension PanModal.InteractionController: UIGestureRecognizerDelegate {
         return true
     }
 }
-#endif

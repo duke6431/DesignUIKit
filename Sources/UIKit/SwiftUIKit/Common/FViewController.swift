@@ -63,7 +63,7 @@ public class FViewContainer: BViewController, Chainable {
         super.init(nibName: nil, bundle: .main)
     }
     
-    @available(iOS, unavailable)
+    @available(*, unavailable)
     public required init?(coder: NSCoder) { fatalError("Unimplemented") }
     
     public override func viewDidLoad() {

@@ -5,11 +5,7 @@
 //  Created by Duc IT. Nguyen Minh on 24/05/2022.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import DesignCore
 
 public extension CALayer {
@@ -24,11 +20,7 @@ public extension CALayer {
             self.radius = radius
             self.color = color
             if let targetRect {
-                #if canImport(UIKit)
                 self.path = UIBezierPath(rect: targetRect).cgPath
-                #else
-                self.path = NSBezierPath(rect: targetRect).cgPath
-                #endif
             }
         }
         

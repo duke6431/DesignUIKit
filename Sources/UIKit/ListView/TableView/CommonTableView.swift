@@ -5,14 +5,9 @@
 //  Created by Duc IT. Nguyen Minh on 23/07/2021.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import DesignCore
 
-#if canImport(UIKit)
 public class CommonTableView: UITableView {
     public weak var actionDelegate: CommonTableViewDelegate?
 
@@ -47,7 +42,7 @@ public class CommonTableView: UITableView {
         configureViews()
     }
 
-    @available(iOS, unavailable)
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
@@ -246,4 +241,3 @@ extension CommonTableView: UITableViewDataSourcePrefetching {
         }
     }
 }
-#endif

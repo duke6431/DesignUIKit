@@ -1,15 +1,11 @@
 //
 //  FButton.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
 
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 import Combine
 import DesignCore
 import SnapKit
@@ -25,11 +21,7 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
     ) {
         self.init(style: style)
         self.bind(to: textPublisher) { button, title in
-#if canImport(UIKit)
             button.setTitle(title, for: .normal)
-#else
-            button.title = title
-#endif
         }
         addAction(for: .touchUpInside, action)
     }
@@ -40,14 +32,10 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
         action: @escaping () -> Void
     ) {
         self.init(style: style)
-#if canImport(UIKit)
-            setTitle(text, for: .normal)
-#else
-            title = text
-#endif
+        setTitle(text, for: .normal)
         addAction(for: .touchUpInside, action)
     }
-
+    
     public convenience init(style: BButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
         self.init(style: style)
         addAction(for: .touchUpInside, action)
@@ -69,11 +57,7 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
     ) {
         self.init(style: style)
         self.bind(to: textPublisher) { button, title in
-#if canImport(UIKit)
             button.setTitle(title, for: .normal)
-#else
-            button.title = title
-#endif
         }
         addAction(for: .touchUpInside, { [weak self] in action(self) })
     }
@@ -84,14 +68,10 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
         action: @escaping (FButton?) -> Void
     ) {
         self.init(style: style)
-#if canImport(UIKit)
-            setTitle(text, for: .normal)
-#else
-            title = text
-#endif
+        setTitle(text, for: .normal)
         addAction(for: .touchUpInside, { [weak self] in action(self) })
     }
-
+    
     public convenience init(style: BButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
         addAction(for: .touchUpInside, { [weak self] in action(self) })
@@ -127,7 +107,7 @@ public class FButton: BaseButton, FComponent, FStylable, FThemableForeground, FC
         titleLabel?.with(\.font, setTo: font)
         return self
     }
-
+    
     @discardableResult public func foreground(_ color: BColor = .label) -> Self {
         setTitleColor(color, for: .normal)
         return self

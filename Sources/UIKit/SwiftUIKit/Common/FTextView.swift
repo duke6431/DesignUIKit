@@ -9,11 +9,7 @@ import Combine
 import DesignCore
 import SnapKit
 import QuartzCore
-#if canImport(UIKit)
 import UIKit
-#else
-import AppKit
-#endif
 
 open class FTextView: BaseTextView, FComponent, FStylable, FThemableForeground, FThemablePlaceholder {
     public var customConfiguration: ((FTextView) -> Void)?
