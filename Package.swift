@@ -11,7 +11,7 @@ let package = Package(
     name: "ComponentSystem",
     platforms: [
         .iOS(.v13),
-        .macOS(.v14)
+        .macCatalyst(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
