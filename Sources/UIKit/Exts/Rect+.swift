@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-extension BRectCorner {
+extension UIRectCorner {
     var caMask: CACornerMask {
         var masks: [CACornerMask] = []
         if self.contains(.topLeft) {
@@ -27,8 +27,8 @@ extension BRectCorner {
     }
 }
 
-extension BEdgeInsets: SelfCustomizable {
-    static func + (_ lhs: BEdgeInsets, _ rhs: CGFloat) -> BEdgeInsets {
+extension UIEdgeInsets: SelfCustomizable {
+    static func + (_ lhs: UIEdgeInsets, _ rhs: CGFloat) -> UIEdgeInsets {
         lhs.custom { insets in
             insets.top += rhs
             insets.left += rhs
@@ -37,7 +37,7 @@ extension BEdgeInsets: SelfCustomizable {
         }
     }
     
-    static func + (_ lhs: BEdgeInsets, _ rhs: BEdgeInsets) -> BEdgeInsets {
+    static func + (_ lhs: UIEdgeInsets, _ rhs: UIEdgeInsets) -> UIEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
             left: lhs.left + rhs.left,
@@ -46,12 +46,12 @@ extension BEdgeInsets: SelfCustomizable {
         )
     }
     
-    func add(_ edges: BRectEdge, _ rhs: CGFloat) -> BEdgeInsets {
+    func add(_ edges: UIRectEdge, _ rhs: CGFloat) -> UIEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
+            insets.bottom += edges.contains(.bottom) ? rhs : 0
             insets.left += edges.contains(.left) ? rhs : 0
             insets.right += edges.contains(.right) ? rhs : 0
-            insets.bottom += edges.contains(.bottom) ? rhs : 0
         }
     }
 }

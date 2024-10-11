@@ -5,10 +5,10 @@
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
 
-import Foundation
+import UIKit
 import DesignCore
 
-public extension FConfigurable where Self: BView {
+public extension FConfigurable where Self: UIView {
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - condition: The condition to evaluate.

@@ -1,0 +1,96 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/configuration-reference
+version: 2.1
+
+jobs:
+  target-list:
+    macos:
+      xcode: "16.0.0"
+    resource_class: macos.m1.medium.gen1
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: bin/swift-create-xcframework --list-products
+  tests:
+    macos:
+      xcode: "16.0.0"
+    resource_class: macos.m1.medium.gen1
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: xcodebuild -scheme DesignCore test -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
+  archive-w-dbg-symbols:
+    macos:
+      xcode: "16.0.0"
+    resource_class: macos.m1.medium.gen1
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: 
+          name: Determine version
+          command: echo "export GH_VERSION=$(git rev-parse --abbrev-ref HEAD | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')" >> $BASH_ENV
+      - run: cp $BASH_ENV bash.env
+      - run: bin/swift-create-xcframework --debug-symbols --stack-evolution --platform ios --platform maccatalyst --platform tvos --zip --zip-version $GH_VERSION --output artifacts/dbg
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - bash.env
+            - artifacts
+  archive-prod:
+    macos:
+      xcode: "16.0.0"
+    resource_class: macos.m1.medium.gen1
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: source bash.env
+      - run: bin/swift-create-xcframework --stack-evolution --platform ios --platform maccatalyst --platform tvos --zip --zip-version $GH_VERSION --output artifacts/prd
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - bash.env
+            - artifacts
+  publish-github-release:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: .
+      - run: source bash.env
+      - run: 
+          name: "Copying files into places"
+          command: |
+            git clone -b base/componentsystem git@github.com:duke6431/libraries.git libraries
+            git checkout -b release/componentsystem-${GH_VERSION}
+            mv artifacts/dbg libraries/dbg
+            rm -f LIB_CHECKSUM
+            echo ${GH_VERSION} > VERSION
+            chmod u+x summarize.sh
+            ./summarize.sh
+            mv libraries/dbg artifacts/dbg
+            rm -r libraries/dbg
+            git add .
+            git commit -m "Releasing ${GH_VERSION}"
+            git push origin release/componentsystem-${GH_VERSION}
+            export CI_COMMIT=$(git rev-parse HEAD)
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            go get github.com/tcnksm/ghr
+            ghr -t ${GH_PAT} -u ${GH_USERNAME} -r ${GH_REPO} -c ${CI_COMMIT} -n componentsystem-dbg-${GH_VERSION}-$(date "+%Y%m%d") -delete ${GH_VERSION} artifacts/dbg
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - archive-w-dbg-symbols:
+          filters:
+            branches:
+              only: /build\/.*/
+      - archive-prod:
+          filters:
+            branches:
+              only: /build\/prod.*/
+      - publish-github-release:
+          requires: [archive-w-dbg-symbols]

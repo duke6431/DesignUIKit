@@ -9,7 +9,7 @@ import Foundation
 import QuartzCore
 
 open class ACBaseEffect: Chainable {
-    weak var target: BView?
+    weak var target: UIView?
     public var delay: TimeInterval? = nil
     public var duration: TimeInterval = 0.25
     public var spring: ACSpringOption = .none()
@@ -24,7 +24,7 @@ open class ACBaseEffect: Chainable {
         self.timingFunction = timingFunction
     }
     
-    public func animation(for view: BView) -> CABasicAnimation {
+    public func animation(for view: UIView) -> CABasicAnimation {
         target = view
         let animation = CASpringAnimation()
         configure(animation, with: view)
@@ -36,7 +36,7 @@ open class ACBaseEffect: Chainable {
         return animation
     }
     
-    func configure(_ animation: CASpringAnimation, with view: BView) {
+    func configure(_ animation: CASpringAnimation, with view: UIView) {
         fatalError("Configuration must be overidden")
     }
     
@@ -52,7 +52,7 @@ public class ACOpacity: ACBaseEffect {
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         animation.keyPath = "opacity"
         animation.fromValue = view.layer.presentation()?.value(forKey: "opacity")
         animation.toValue = alpha
@@ -72,7 +72,7 @@ public class ACOffset: ACBaseEffect {
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         animation.keyPath = "position"
         guard let currentPosition = view.layer.presentation()?.value(forKey: "position") as? CGPoint else { return }
         animation.fromValue = view.layer.presentation()?.value(forKey: "position")
@@ -87,7 +87,7 @@ public class ACScale: ACBaseEffect {
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         animation.keyPath = "transform.scale"
         animation.fromValue = view.layer.presentation()?.value(forKey: "transform.scale")
         animation.toValue = multiplier
@@ -101,7 +101,7 @@ public class ACRotate: ACBaseEffect {
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         animation.keyPath = "transform.rotation.z"
         animation.fromValue = view.layer.presentation()?.value(forKey: "transform.rotation.z")
         animation.toValue = radians
@@ -115,7 +115,7 @@ public class ACCornerRadius: ACBaseEffect {
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         animation.keyPath = "cornerRadius"
         animation.toValue = radius
     }
@@ -127,13 +127,13 @@ public class ACCornerRadius: ACBaseEffect {
 
 public class ACCustom: ACBaseEffect {
     var configuration: (CABasicAnimation) -> Void
-    var updateProperties: ((BView) -> Void)?
+    var updateProperties: ((UIView) -> Void)?
     public init(_ configuration: @escaping (CABasicAnimation) -> Void, delay: TimeInterval? = nil, duration: TimeInterval = 0.25, spring: ACSpringOption = .none(), timingFunction: CAMediaTimingFunction? = nil) {
         self.configuration = configuration
         super.init(delay: delay, duration: duration, spring: spring, timingFunction: timingFunction)
     }
     
-    override func configure(_ animation: CASpringAnimation, with view: BView) {
+    override func configure(_ animation: CASpringAnimation, with view: UIView) {
         configuration(animation)
     }
     
@@ -171,7 +171,7 @@ public enum ACSpringOption {
 }
 
 public class AnimationChain: NSObject, Chainable {
-    fileprivate weak var target: BView?
+    fileprivate weak var target: UIView?
     public var effects: [ACBaseEffect]
     public var completion: (() -> Void)?
     public var sequential: AnimationChain?
@@ -185,7 +185,7 @@ public class AnimationChain: NSObject, Chainable {
     }
     
     public convenience init(
-        _ target: BView,
+        _ target: UIView,
         @FBuilder<ACBaseEffect> effects: () -> [ACBaseEffect]
     ) {
         self.init(effects: effects())
@@ -193,7 +193,7 @@ public class AnimationChain: NSObject, Chainable {
         self.target = target
     }
     
-    public func animation(using view: BView) -> CAAnimation {
+    public func animation(using view: UIView) -> CAAnimation {
         let group = CAAnimationGroup()
         group.delegate = self
         let animations = effects.map { $0.animation(for: view) }
@@ -210,7 +210,7 @@ public class AnimationChain: NSObject, Chainable {
     }
     
     @discardableResult
-    public func target(_ target: BView) -> Self {
+    public func target(_ target: UIView) -> Self {
         target.animationChain = self
         self.target = target
         return self
@@ -242,7 +242,7 @@ extension AnimationChain: CAAnimationDelegate {
     }
 }
 
-public extension BView {
+public extension UIView {
     static let animationChain = ObjectAssociation<AnimationChain>()
     
     var animationChain: AnimationChain? {

@@ -23,7 +23,8 @@ extension CommonTableView {
             super.init(reuseIdentifier: reuseIdentifier)
             configureViews()
         }
-        @available(*, unavailable)
+        @available(iOS, unavailable)
+        @available(tvOS, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }

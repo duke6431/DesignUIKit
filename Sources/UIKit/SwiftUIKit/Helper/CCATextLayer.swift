@@ -25,6 +25,7 @@ class CCATextLayer: CATextLayer {
 
         ctx.saveGState()
         ctx.translateBy(x: 0.0, y: yDiff)
+
         super.draw(in: ctx)
         ctx.restoreGState()
     }

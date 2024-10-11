@@ -28,7 +28,8 @@ public extension CommonCollection {
             configureViews()
         }
 
-        @available(*, unavailable)
+        @available(iOS, unavailable)
+        @available(tvOS, unavailable)
         required init?(coder: NSCoder) {
             fatalError("not implemented")
         }

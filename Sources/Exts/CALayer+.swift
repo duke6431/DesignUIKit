@@ -13,7 +13,7 @@ public extension CALayer {
     struct ShadowConfiguration: SelfCustomizable {
         public static let `none` = ShadowConfiguration(offSet: .zero, opacity: 0, radius: 0, color: .clear)
         public init(offSet: CGSize = .zero, opacity: Float = 0.3,
-                    radius: CGFloat = 6, color: BColor = .black,
+                    radius: CGFloat = 6, color: UIColor = .black,
                     targetRect: CGRect? = nil) {
             self.offSet = offSet
             self.opacity = opacity
@@ -27,7 +27,7 @@ public extension CALayer {
         public var offSet: CGSize = .zero
         public var opacity: Float = 0.2
         public var radius: CGFloat = 3
-        public var color: BColor = .black
+        public var color: UIColor = .black
         public var path: CGPath? = nil
     }
     
@@ -41,7 +41,7 @@ public extension CALayer {
     /// Base function to add shadow, returning current layer
     @discardableResult func addShadow(
         offSet: CGSize = .zero, opacity: Float = 0.2,
-        radius: CGFloat = 3, color: BColor = .black, path: CGPath? = nil
+        radius: CGFloat = 3, color: UIColor = .black, path: CGPath? = nil
     ) -> CALayer {
         if let path {
             shadowPath = path
@@ -61,7 +61,7 @@ public extension CALayer {
         shadowOffset = .zero
         shadowOpacity = 0
         shadowRadius = 0
-        shadowColor = BColor.clear.cgColor
+        shadowColor = UIColor.clear.cgColor
         masksToBounds = false
         return self
     }

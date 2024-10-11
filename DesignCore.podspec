@@ -22,11 +22,7 @@ Pod::Spec.new do |s|
   
   # Subspecs zone
   s.subspec 'Core' do |ss|
-      ss.source_files = 'Sources/Core/**/*.{swift}'
-  end
-  
-  s.subspec 'Logged' do |ss|
-    ss.dependency 'DesignCore/Core'
-    ss.dependency 'LoggerCenter'
+    ss.source_files = 'Sources/Core/**/*.{swift}'
+    ss.exclude_files = 'Sources/Core/Archived/**/*.{swift}'
   end
 end

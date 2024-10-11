@@ -7,19 +7,22 @@
 
 import UIKit
 import DesignCore
-import Combine
 
-open class BaseView: BView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
     }
     
     open func loadConfiguration() {
@@ -43,31 +46,35 @@ open class BaseView: BView, FConfigurable, Combinable, FThemableBackground, FThe
     }
 }
 
-open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
     }
     
-    public convenience init(arrangedSubviews views: [BView]) {
+    public convenience init(arrangedSubviews views: [UIView]) {
         self.init(frame: .zero)
         views.forEach(addArrangedSubview)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init(coder: NSCoder) {
         super.init(coder: coder)
         loadConfiguration()
     }
     
-    open override func addArrangedSubview(_ view: BView) {
+    open override func addArrangedSubview(_ view: UIView) {
         view.configuration?.shouldConstraintWithParent = false
         super.addArrangedSubview(view)
     }
     
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
+    }
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -90,24 +97,28 @@ open class BaseStackView: BStackView, FConfigurable, Combinable, FThemableBackgr
     }
 }
 
-open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
     
-    open override func addSubview(_ view: BView) {
+    open override func addSubview(_ view: UIView) {
         view.configuration?.shouldConstraintWithParent = false
         super.addSubview(view)
     }
     
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
+    }
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -130,29 +141,33 @@ open class BaseScrollView: BScrollView, FConfigurable, Combinable, FThemableBack
     }
 }
 
-open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
     }
     
-    public override init(image: BImage?) {
+    public override init(image: UIImage?) {
         super.init(image: image)
         loadConfiguration()
     }
     
-    public override init(image: BImage?, highlightedImage: BImage?) {
+    public override init(image: UIImage?, highlightedImage: UIImage?) {
         super.init(image: image, highlightedImage: highlightedImage)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
     }
     
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
+    }
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -175,14 +190,17 @@ open class BaseImageView: BImageView, FConfigurable, Combinable, FThemableBackgr
     }
 }
 
-open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
-    public convenience init(style buttonType: BButton.ButtonType? = nil) {
+open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow {
+    public convenience init(style buttonType: UIButton.ButtonType? = nil) {
         self.init(type: buttonType ?? .system)
         loadConfiguration()
     }
     
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
+    }
+    
     open func loadConfiguration() {
         configuration = .init()
         configuration?.owner = self
@@ -205,19 +223,23 @@ open class BaseButton: BButton, FConfigurable, Combinable, FThemableBackground, 
     }
 }
 
-open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    var contentInsets: BEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
-    
-    public var cancellables = Set<AnyCancellable>()
+open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow {
+    var contentInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
     }
     
     open func loadConfiguration() {
@@ -259,17 +281,21 @@ open class BaseLabel: BLabel, FConfigurable, Combinable, FThemableBackground, FT
     }
 }
 
-open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
     }
     
     open func loadConfiguration() {
@@ -294,17 +320,21 @@ open class BaseTextField: BTextField, FConfigurable, Combinable, FThemableBackgr
     }
 }
 
-open class BaseTextView: BTextView, FConfigurable, Combinable, FThemableBackground, FThemableShadow {
-    public var cancellables = Set<AnyCancellable>()
-    
+open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow {
     public init(frame: CGRect = .zero) {
         super.init(frame: frame, textContainer: nil)
         loadConfiguration()
     }
     
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        configuration?.willMove(toSuperview: newSuperview)
     }
     
     open func loadConfiguration() {

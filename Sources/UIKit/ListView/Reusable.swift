@@ -7,10 +7,14 @@
 import UIKit
 
 public extension BCollectionView {
+    /// An enum to notify which kind of reusable supplemetary is supported for CommonCollection
     enum ReusableKind: String {
+        /// Header for collection section
         case header
+        /// Footer for collection section
         case footer
         
+        /// Return rawValue of Swift
         public var rawValue: String {
             switch self {
             case .header:
@@ -21,7 +25,6 @@ public extension BCollectionView {
         }
     }
     
-    // swiftlint:disable:next line_length
     /// Registers a nib or a UICollectionViewCell object containing a cell with the collection view under a specified identifier.
     func register<T: BCollectionViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -33,7 +36,6 @@ public extension BCollectionView {
         }
     }
     
-    // swiftlint:disable:next line_length
     /// Registers a nib or a UICollectionReusableView object containing a header with the collection view under a specified identifier.
     func register<T: UICollectionReusableView>(
         _ aClass: T.Type,
@@ -65,13 +67,13 @@ public extension BCollectionView {
         indexPath: IndexPath
     ) -> T {
         let name = String(describing: aClass)
-        // swiftlint:disable:next line_length
         guard let header = dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: name, for: indexPath) as? T else {
             fatalError("`\(name)` is not registered")
         }
         return header
     }
 }
+
 public extension UITableView {
     /// Registers a nib or a UITableViewCell object containing a cell with the table view under a specified identifier.
     func register<T: UITableViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
@@ -93,7 +95,6 @@ public extension UITableView {
         return cell
     }
     
-    // swiftlint:disable:next line_length
     /// Registers a nib or a UITableViewHeaderFooterView object containing a header or footer with the table view under a specified identifier.
     func register<T: UITableViewHeaderFooterView>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -115,12 +116,11 @@ public extension UITableView {
     }
 }
 
+/// Protocol for auto detect reuseIdentifier
 public protocol Reusable {
     static var reuseIdentifier: String { get }
 }
 
 extension Reusable {
-    public static var reuseIdentifier: String {
-        return String(describing: Self.self)
-    }
+    public static var reuseIdentifier: String { .init(describing: Self.self) }
 }

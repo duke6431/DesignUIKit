@@ -9,19 +9,20 @@ import UIKit
 
 @objc public protocol CommonCellModel: NSObjectProtocol {
     var identifier: String { get }
-    static var cellKind: CommonTableView.Cell.Type { get }
+    static var cellKind: CommonTableView.TableCell.Type { get }
     var selectable: Bool { get }
-    // swiftlint:disable:next line_length
     /// This function should only be used as emergency option when something need to be custom once or twice or when something is really needed on production
-    var customConfiguration: ((CommonTableView.Cell) -> Void)? { get set }
+    var customConfiguration: ((CommonTableView.TableCell) -> Void)? { get set }
+#if os(iOS)
     var leadingActions: [UIContextualAction] { get set }
     var trailingActions: [UIContextualAction] { get set }
+#endif
     var realData: Any? { get }
-
+    
     @objc optional func isHighlighted(with keyword: String) -> Bool
 }
 extension CommonTableView {
-    @objc open class Cell: UITableViewCell, Reusable {
+    @objc open class TableCell: UITableViewCell, Reusable {
         public var identifier: String = ""
         public var indexPath: IndexPath?
         
@@ -30,7 +31,8 @@ extension CommonTableView {
             configureViews()
         }
         
-        @available(*, unavailable)
+        @available(iOS, unavailable)
+        @available(tvOS, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }

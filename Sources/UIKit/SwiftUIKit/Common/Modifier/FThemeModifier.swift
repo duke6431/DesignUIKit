@@ -1,0 +1,50 @@
+//
+//  File.swift
+//  ComponentSystem
+//
+//  Created by Duc Nguyen on 2/10/24.
+//
+
+import UIKit
+
+public struct FBackgroundModifier<View: FBodyComponent>: FModifier {
+    public var key: ThemeKey?
+    public var color: UIColor?
+    
+    public init(key: ThemeKey? = nil, color: UIColor? = nil) {
+        self.key = key
+        self.color = color
+    }
+    
+    public func body(_ content: View) -> View {
+        guard let modifiedContent = content as? (FBodyComponent & FThemableBackground) else { return content }
+        if let key {
+            return (modifiedContent.background(key: key) as? View) ?? content
+        } else if let color {
+            return content.background(color)
+        } else {
+            return content
+        }
+    }
+}
+
+public struct FForegroundModifier<View: FBodyComponent>: FModifier {
+    public var key: ThemeKey?
+    public var color: UIColor?
+
+    public init(key: ThemeKey? = nil, color: UIColor? = nil) {
+        self.key = key
+        self.color = color
+    }
+    
+    public func body(_ content: View) -> View {
+        guard let modifiedContent = content as? (FBodyComponent & FThemableForeground) else { return content }
+        if let key {
+            return (modifiedContent.foreground(key: key) as? View) ?? content
+        } else if let color {
+            return (modifiedContent.foreground(color) as? View) ?? content
+        } else {
+            return content
+        }
+    }
+}

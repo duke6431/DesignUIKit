@@ -8,14 +8,15 @@
 import UIKit
 
 public protocol ImageRepresenting {
-    var image: BImage? { get }
+    var image: UIImage? { get }
 }
 
 public enum ImageRepresenter: ImageRepresenting {
     case system(name: String)
     case asset(name: String, bundle: Bundle = .main)
     
-    public var image: BImage? {
+    public var image: UIImage? {
+        
         switch self {
         case .system(let name):
             return .init(systemName: name)

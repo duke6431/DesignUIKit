@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.10
 
 /**
  *  ComponentSystem
@@ -11,7 +11,8 @@ let package = Package(
     name: "ComponentSystem",
     platforms: [
         .iOS(.v13),
-        .macCatalyst(.v13)
+        .macCatalyst(.v16),
+        .tvOS(.v14)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -27,26 +28,25 @@ let package = Package(
             name: "DesignExternal",
             targets: ["DesignExternal"]
         ),
-//        .library(
-//            name: "DesignUI",
-//            targets: ["DesignUI"]
-//        ),
+        .library(
+            name: "DesignCombineUIKit",
+            targets: ["DesignCombineUIKit"]
+        ),
         .library(
             name: "DesignUIKit",
             targets: ["DesignUIKit"]
         ),
-//        .library(
-//            name: "DesignRxUIKit",
-//            targets: ["DesignRxUIKit"]
-//        ),
+        .library(
+            name: "DesignRxUIKit",
+            targets: ["DesignRxUIKit"]
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/nvzqz/FileKit.git", .upToNextMajor(from: "6.1.0")),
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
-//        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0")),
-        .package(url: "https://github.com/BastiaanJansen/toast-swift.git", .upToNextMajor(from: "2.1.0")),
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -54,31 +54,23 @@ let package = Package(
         .target(
             name: "DesignCore",
             path: "Sources/Core",
-            exclude: [
-                "Archived/"
-            ]
+            exclude: ["Archived/"]
         ),
         .target(
             name: "DesignExts",
             dependencies: [
                 .target(name: "DesignCore")
             ],
-            path: "Sources/Exts"
+            path: "Sources/Exts",
+            exclude: ["Archived/"]
         ),
-//        .target(
-//            name: "DesignUI",
-//            dependencies: [
-//                .target(name: "DesignCore"),
-//                .target(name: "DesignExts")
-//            ],
-//            path: "Sources/SwiftUI"
-//        ),
         .target(
             name: "DesignExternal",
             dependencies: [
                 "FileKit"
             ],
-            path: "Sources/ExternalPackages"
+            path: "Sources/ExternalPackages",
+            exclude: ["Archived/"]
         ),
         .target(
             name: "DesignUIKit",
@@ -87,25 +79,40 @@ let package = Package(
                 .target(name: "DesignExts"),
                 .target(name: "DesignExternal"),
                 "SnapKit",
-                "Nuke",
-                .product(name: "Toast", package: "toast-swift")
+                "Nuke"
             ],
-            path: "Sources/UIKit"
+            path: "Sources/UIKit",
+            exclude: ["Archived/"]
+        ),
+        .target(
+            name: "DesignCombineUIKit",
+            dependencies: [
+                .target(name: "DesignUIKit"),
+            ],
+            path: "Sources/UIKit+Combine",
+            exclude: ["Archived/"]
+        ),
+        .target(
+            name: "DesignRxUIKit",
+            dependencies: [
+                .target(name: "DesignUIKit"),
+                .product(name: "RxSwift", package: "RxSwift"),
+                .product(name: "RxCocoa", package: "RxSwift"),
+            ],
+            path: "Sources/UIKit+Rx",
+            exclude: ["Archived/"]
+        ),
+        .target(
+            name: "TestBase",
+            path: "Tests/TestBase"
         ),
         .testTarget(
             name: "DesignCoreTests",
             dependencies: [
-                .target(name: "DesignCore")
+                .target(name: "DesignCore"),
+                .target(name: "TestBase")
             ],
             path: "Tests/Core"
-        ),
-//        .target(
-//            name: "DesignRxUIKit",
-//            dependencies: [
-//                .target(name: "DesignUIKit"),
-//                .product(name: "RxCocoa", package: "RxSwift")
-//            ],
-//            path: "Sources/RxUIKit"
-//        ),
+        )
     ]
 )

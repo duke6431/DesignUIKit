@@ -5,10 +5,10 @@
 //  Created by Duc Minh Nguyen on 1/7/24.
 //
 
-import Foundation
+import UIKit
 import DesignCore
 
-public extension BColor {
+public extension UIColor {
     convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: .alphanumerics.inverted)
         var int = UInt64()

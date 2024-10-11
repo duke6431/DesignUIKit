@@ -6,11 +6,7 @@
 //
 
 import Foundation
-//#if canImport(UIKit)
 //import UIKit
-//#else
-//import AppKit
-//#endif
 //
 //protocol StepAnimatable {
 //    /// Start a sequence where you add each step in the `addSteps` closure. Use the provided `AnimationSequence` object
@@ -30,7 +26,6 @@ import Foundation
 //        /// - Parameter duration: Duration of the delay in seconds
 //        case delay(duration: TimeInterval)
 //        
-//#if canImport(UIKit)
 //        /// An animation step that results in a `UIView.animate()` call with all the necessary options
 //        /// - Parameter duration: Duration of the animation
 //        /// - Parameter options: Animation options, when `.repeats` make sure to set a limit or any subsequent next step might not be executed
@@ -41,13 +36,7 @@ import Foundation
 //            options: UIView.AnimationOptions = [],
 //            timingFunction: CAMediaTimingFunction? = nil,
 //            animations: () -> Void)
-//#else
-//        case animation(
-//            duration: TimeInterval,
-//            timingFunction: CAMediaTimingFunction? = nil,
-//            animations: () -> Void)
-//#endif
-//        
+//
 //        /// Step that contains group of animation steps, all of which should be performed simultaniously
 //        /// - Parameter animations: All the steps to animate at the same time
 //        case group(animations: [Self])
@@ -61,13 +50,8 @@ import Foundation
 //    /// Full duration for each step type, uses longest duration of animations in a group
 //    var duration: TimeInterval {
 //        switch self {
-//            #if canImport(UIKit)
 //        case .animation(let duration, _, _, _):
 //            return duration
-//            #else
-//        case .animation(let duration, _, _):
-//            return duration
-//            #endif
 //        case .delay(let delay):
 //            return delay
 //        case .group(let steps):
@@ -81,7 +65,6 @@ import Foundation
 //
 //extension AnimationSequence {
 //    
-//    #if canImport(UIKit)
 //    /// Adds an animation to the sequence with all the available options.
 //    ///
 //    /// Adding each steps can by done in a chain, as this method returns `Self`
@@ -103,28 +86,6 @@ import Foundation
 //        )
 //        return self
 //    }
-//    #else
-//    /// Adds an animation to the sequence with all the available options.
-//    ///
-//    /// Adding each steps can by done in a chain, as this method returns `Self`
-//    /// - Note: Adding a timing function will wrap the animation in a `CATransaction` commit
-//    /// - Parameters:
-//    ///   - duration: How long the animation should last
-//    ///   - options: Options to use for the animation
-//    ///   - timingFunction: `CAMediaTimingFunction` to use for animation
-//    ///   - animations: Closure in which values to animate should be changed
-//    /// - Returns: Returns self, enabling the use of chaining mulitple calls
-//    @discardableResult func add(
-//        duration: TimeInterval,
-//        timingFunction: CAMediaTimingFunction? = nil,
-//        animations: @escaping () -> Void
-//    ) -> Self {
-//        steps.append(
-//            .animation(duration: duration, timingFunction: timingFunction, animations: animations)
-//        )
-//        return self
-//    }
-//    #endif
 //    
 //    /// Adds a delay to the animation sequence
 //    ///
@@ -147,7 +108,6 @@ import Foundation
 //        
 //        private(set) var animations: [Step] = []
 //        
-//        #if canImport(UIKit)
 //        /// Adds an animation to the animation group with all the available options.
 //        ///
 //        /// Adding each animation can by done in a chain, as this method returns `Self`
@@ -169,28 +129,6 @@ import Foundation
 //            )
 //            return self
 //        }
-//        #else
-//        /// Adds an animation to the animation group with all the available options.
-//        ///
-//        /// Adding each animation can by done in a chain, as this method returns `Self`
-//        /// - Note: Adding a timing function will wrap the animation in a `CATransaction` commit
-//        /// - Parameters:
-//        ///   - duration: How long the animation should last
-//        ///   - options: Options to use for the animation
-//        ///   - timingFunction: `CAMediaTimingFunction` to use for animation
-//        ///   - animations: Closure in which values to animate should be changed
-//        /// - Returns: Returns self, enabling the use of chaining mulitple calls
-//        @discardableResult func animate(
-//            duration: TimeInterval,
-//            timingFunction: CAMediaTimingFunction? = nil,
-//            animations: @escaping () -> Void
-//        ) -> Self {
-//            self.animations.append(
-//                .animation(duration: duration, timingFunction: timingFunction, animations: animations)
-//            )
-//            return self
-//        }
-//        #endif
 //    }
 //    
 //    /// Adds a group of animations, all of which will be executed add once.
@@ -208,7 +146,6 @@ import Foundation
 //
 //// MARK: - Actual animation logic
 //fileprivate extension AnimationSequence.Step {
-//#if canImport(UIKit)
 //    /// Perform the animation for this step
 //    ///
 //    /// Wraps animation steps with a `timingFunction` in a `CATransaction` commit
@@ -260,60 +197,9 @@ import Foundation
 //            fatalError("Delay steps should not be animated")
 //        }
 //    }
-//#else
-//    /// Perform the animation for this step
-//    ///
-//    /// Wraps animation steps with a `timingFunction` in a `CATransaction` commit
-//    /// - Parameters:
-//    ///   - delay: No delay for animation
-//    ///   - completion: Closure to be executed when animation has finished
-//    func animate(
-//        withDelay delay: TimeInterval,
-//        completion: ((Bool) -> Void)?
-//    ) {
-//        switch self {
-//        case .animation(let duration, let timingFunction, let animations):
-//            let createAnimations: (((Bool) -> Void)?) -> Void = { completion in
-//                NSAnimationContext.runAnimationGroup { context in
-//                    context.duration = duration
-//                    animations() // Assuming animations are functions to perform
-//                } completionHandler: {
-//                    completion?(true)
-//                }
-//            }
-//            
-//            if let timingFunction = timingFunction {
-//                NSAnimationContext.beginGrouping()
-//                NSAnimationContext.current.duration = duration
-//                NSAnimationContext.current.timingFunction = timingFunction
-//                NSAnimationContext.current.completionHandler = { completion?(true) }
-//                
-//                createAnimations(nil)
-//                
-//                NSAnimationContext.endGrouping()
-//            } else {
-//                createAnimations(completion)
-//            }
-//        case .group(let steps):
-//            let sortedSteps = steps.sorted(by: { $0.duration < $1.duration })
-//            guard let longestStep = sortedSteps.last else {
-//                // No steps to animate, call completion
-//                completion?(true)
-//                return
-//            }
-//            sortedSteps.dropLast().forEach { step in
-//                step.animate(withDelay: delay, completion: nil)
-//            }
-//            // Animate the longest step with the completion
-//            longestStep.animate(withDelay: delay, completion: completion)
-//        case .delay(_):
-//            fatalError("Delay steps should not be animated")
-//        }
-//    }
-//#endif
 //}
 //
-//extension BView: StepAnimatable {
+//extension UIView: StepAnimatable {
 //    
 //    class func animateSteps(_ addSteps: (AnimationSequence) -> Void, completion: ((Bool) -> Void)? = nil) {
 //        let sequence = AnimationSequence()
@@ -327,7 +213,7 @@ import Foundation
 //    }
 //}
 //
-//fileprivate extension BView {
+//fileprivate extension UIView {
 //    
 //    /// Recursive method that calls itself with less remaining steps each time
 //    /// - Parameters:

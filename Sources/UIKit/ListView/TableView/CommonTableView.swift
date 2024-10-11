@@ -10,12 +10,13 @@ import DesignCore
 
 public class CommonTableView: UITableView {
     public weak var actionDelegate: CommonTableViewDelegate?
-
+#if os(iOS)
     public var refreshable: Bool = false {
         didSet {
             if refreshable { addSubview(customRefreshControl) } else { customRefreshControl.removeFromSuperview() }
         }
     }
+#endif
 
     let cellMapper: [CommonCellModel.Type]
     let headerMapper: [CommonHeaderModel.Type]
@@ -24,12 +25,13 @@ public class CommonTableView: UITableView {
     var sections: [CommonTableSection] = []
     var searchedSections: [CommonTableSection] = []
     var keyword = ""
-
+#if os(iOS)
     lazy var customRefreshControl: UIRefreshControl = {
         let view = UIRefreshControl()
         view.addTarget(self, action: #selector(startRefreshing), for: .valueChanged)
         return view
     }()
+#endif
 
     public init(
         map: [CommonCellModel.Type],
@@ -42,7 +44,8 @@ public class CommonTableView: UITableView {
         configureViews()
     }
 
-    @available(*, unavailable)
+    @available(iOS, unavailable)
+    @available(tvOS, unavailable)
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
@@ -56,7 +59,7 @@ public class CommonTableView: UITableView {
         backgroundColor = .clear
         tableFooterView = UIView()
         keyboardDismissMode = .onDrag
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15.0, tvOS 15.0, *) {
             sectionHeaderTopPadding = 0
         }
         rowHeight = UITableView.automaticDimension
@@ -71,14 +74,18 @@ public class CommonTableView: UITableView {
         actionDelegate?.refreshStarted?()
     }
 
+#if os(iOS)
     public func endRefreshing() {
         customRefreshControl.endRefreshing()
     }
+#endif
 
     public func reloadData(sections: [CommonTableSection]) {
         self.sections = sections
         search(with: keyword)
+#if os(iOS)
         endRefreshing()
+#endif
     }
 
     public func search(with keyword: String) {
@@ -127,7 +134,7 @@ public class CommonTableView: UITableView {
             if stop { break }
         }
         searchedSections[selectedItem.section].items.remove(at: selectedItem.row)
-        for cell in visibleCells as? [CommonTableView.Cell] ?? [] where cell.identifier == identifier {
+        for cell in visibleCells as? [CommonTableView.TableCell] ?? [] where cell.identifier == identifier {
             selectedItem = cell.indexPath ?? selectedItem
         }
         deleteRows(at: [selectedItem], with: .fade)
@@ -222,7 +229,7 @@ extension CommonTableView: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // swiftlint:disable:next line_length
+#if os(iOS)
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         .init(actions: searchedSections[indexPath.section].items[indexPath.row].leadingActions)
     }
@@ -231,6 +238,7 @@ extension CommonTableView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         .init(actions: searchedSections[indexPath.section].items[indexPath.row].trailingActions)
     }
+#endif
 }
 
 extension CommonTableView: UITableViewDataSourcePrefetching {

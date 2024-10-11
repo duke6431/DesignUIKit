@@ -20,21 +20,22 @@ extension CommonCollection {
     open class ReusableView: UICollectionReusableView, Reusable {
         public var identifier: String = ""
         public var section: Int?
-
+        
         public override init(frame: CGRect) {
             super.init(frame: frame)
             configureViews()
         }
-
-        @available(*, unavailable)
+        
+        @available(iOS, unavailable)
+        @available(tvOS, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
-
+        
         open func bind(_ model: CommonCollectionReusableModel) {
             fatalError("Must override this function")
         }
-
+        
         open func configureViews() {
         }
     }

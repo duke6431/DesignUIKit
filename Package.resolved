@@ -19,21 +19,21 @@
       }
     },
     {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "b06a8c8596e4c3e8e7788e08e720e3248563ce6a",
+        "version" : "6.7.1"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "revision" : "e74fe2a978d1216c3602b129447c7301573cc2d8",
         "version" : "5.7.0"
-      }
-    },
-    {
-      "identity" : "toast-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/BastiaanJansen/toast-swift",
-      "state" : {
-        "revision" : "9a40b722b6eeb9683d47e3584501e81525741291",
-        "version" : "2.1.2"
       }
     }
   ],

@@ -43,13 +43,13 @@ extension CommonCollection {
             var itemSpacing: CGFloat = 8
 
             // Group
-            var groupAxis: BAxis = .horizontal
+            var groupAxis: NSLayoutConstraint.Axis = .horizontal
             var groupWidthRatio: CGFloat = 0.95
             var groupSpacing: CGFloat = 8
             var numberOfItemsPerGroup: Int = 1
 
             // Section
-            var sectionInset: BEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
+            var sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
             // Header
             var headerSize: NSCollectionLayoutSize?
             // Footer
@@ -59,9 +59,9 @@ extension CommonCollection {
 
             public init(
                 itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
-                groupAxis: BAxis = .horizontal,
+                groupAxis: NSLayoutConstraint.Axis = .horizontal,
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
-                sectionInset: BEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
+                sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
                 pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
             ) {
