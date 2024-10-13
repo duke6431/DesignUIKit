@@ -43,6 +43,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/nvzqz/FileKit.git", .upToNextMajor(from: "6.1.0")),
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
@@ -53,6 +54,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "DesignCore",
+            dependencies: [
+                .product(name: "Logging", package: "swift-log")
+            ],
             path: "Sources/Core",
             exclude: ["Archived/"]
         ),
