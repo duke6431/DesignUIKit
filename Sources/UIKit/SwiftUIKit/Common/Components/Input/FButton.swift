@@ -12,6 +12,8 @@ import SnapKit
 public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable, FAssignable {
     public var customConfiguration: ((FButton) -> Void)?
     
+    var label: FBody?
+    
     public convenience init(
         style: UIButton.ButtonType? = nil,
         _ text: String = "",
@@ -25,16 +27,8 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
         self.init(style: style)
         addAction(for: .touchUpInside, action)
-        label().flatMap {
+        self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
-        }.forEach { label in
-            addSubview(label)
-            label.isUserInteractionEnabled = false
-            if label as? (any FComponent & UIView) == nil {
-                label.snp.remakeConstraints {
-                    $0.edges.equalToSuperview()
-                }
-            }
         }
     }
 
@@ -51,9 +45,13 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
         addAction(for: .touchUpInside, { [weak self] in action(self) })
-        label().flatMap {
+        self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
-        }.forEach { label in
+        }
+    }
+    
+    func updateLabel() {
+        label?.forEach { label in
             addSubview(label)
             label.isUserInteractionEnabled = false
             if label as? (any FComponent & UIView) == nil {
@@ -66,6 +64,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        updateLabel()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }

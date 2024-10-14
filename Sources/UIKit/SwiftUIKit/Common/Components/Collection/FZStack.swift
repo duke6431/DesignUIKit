@@ -9,7 +9,7 @@ import DesignCore
 
 public final class FZStack: BaseView, FComponent, FAssignable {
     public var customConfiguration: ((FZStack) -> Void)?
-    public var contentViews: [FBodyComponent]
+    public var contentViews: FBody
     
     public init(contentView: FBodyComponent? = nil) {
         if let contentView {

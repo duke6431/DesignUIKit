@@ -11,17 +11,19 @@ import DesignCore
 public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
     
+    var arrangedContents: FBody
+    
     public init(
         axis: NSLayoutConstraint.Axis,
         spacing: Double = 8,
         distribution: UIStackView.Distribution? = nil,
         @FViewBuilder arrangedContents: () -> FBody
     ) {
+        self.arrangedContents = arrangedContents()
         super.init(frame: .zero)
         self.axis = axis
         self.spacing = spacing
         self.distribution = distribution ?? .fill
-        addContents(arrangedContents())
     }
 
     public init(
@@ -30,11 +32,11 @@ public class FStack: BaseStackView, FComponent {
         distribution: UIStackView.Distribution? = nil,
         arrangedContents: FBody
     ) {
+        self.arrangedContents = arrangedContents
         super.init(frame: .zero)
         self.axis = axis
         self.spacing = spacing
         self.distribution = distribution ?? .fill
-        addContents(arrangedContents)
     }
     
     func addContents(_ body: FBody) {
@@ -48,6 +50,7 @@ public class FStack: BaseStackView, FComponent {
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        addContents(arrangedContents)
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
