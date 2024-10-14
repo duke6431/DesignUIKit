@@ -10,7 +10,7 @@ import Foundation
 public struct FSafeAreaModifier: FModifier {
     var isIgnore: Bool
     
-    init(_ isIgnore: Bool) {
+    public init(_ isIgnore: Bool) {
         self.isIgnore = isIgnore
     }
     
