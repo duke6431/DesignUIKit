@@ -63,10 +63,8 @@ public class FConfiguration: Chainable {
         modifiers = (newSuperview.configuration?.modifiers ?? []) + modifiers
     }
     
-    public func didMoveToSuperview(_ superview: UIView?, with target: UIView) {
-        if let superview = superview as? FBodyComponent {
-            modifiers = (superview.configuration?.modifiers ?? []) + modifiers
-        }
+    public func didMoveToSuperview(_ superview: UIView?, with target: FBodyComponent) {
+        modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
         if let centerOffset, let superview {
