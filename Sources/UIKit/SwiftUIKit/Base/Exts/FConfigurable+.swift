@@ -10,8 +10,13 @@ import DesignExts
 import DesignCore
 
 public extension FConfigurable {
-    @discardableResult func modified(with modifier: some FModifier) -> Self {
+    @discardableResult func modified(with modifier: FModifier) -> Self {
         configuration?.modifiers.append(modifier)
+        return self
+    }
+    
+    @discardableResult func clearModifiers() -> Self {
+        configuration?.modifiers = []
         return self
     }
     

@@ -7,15 +7,15 @@
 
 import UIKit
 
-public struct FFontModifier<View: FBodyComponent>: FModifier {
+public struct FFontModifier: FModifier {
     public var font: UIFont
 
     public init(font: UIFont) {
         self.font = font
     }
     
-    public func body(_ content: View) -> View {
+    public func body(_ content: any Content) -> any Content {
         guard let modifiedContent = content as? (FBodyComponent & FCalligraphiable) else { return content }
-        return (modifiedContent.font(font) as? View) ?? content
+        return modifiedContent.font(font)
     }
 }

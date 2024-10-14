@@ -7,9 +7,9 @@
 
 import Foundation
 
-public protocol FModifier<View> {
-    associatedtype View: FBodyComponent
+public protocol FModifier {
+    typealias Content = FBodyComponent
     
     @discardableResult
-    func body(_ content: View) -> View
+    func body(_ content: Self.Content) -> Self.Content
 }

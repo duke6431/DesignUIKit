@@ -34,11 +34,12 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: UIView) -> Void) -> Self
     @discardableResult func layer(_ layerConfiguration: @escaping (UIView) -> Void) -> Self
-    @discardableResult func modified(with modifier: some FModifier) -> Self
+    @discardableResult func modified(with modifier: FModifier) -> Self
+    @discardableResult func clearModifiers() -> Self
 }
 
 public class FConfiguration: Chainable {
-    var modifiers: [any FModifier] = []
+    var modifiers: [FModifier] = []
     
     public var width: CGFloat?
     public var height: CGFloat?

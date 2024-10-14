@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct FBackgroundModifier<View: FBodyComponent>: FModifier {
+public struct FBackgroundModifier: FModifier {
     public var key: ThemeKey?
     public var color: UIColor?
     
@@ -16,10 +16,10 @@ public struct FBackgroundModifier<View: FBodyComponent>: FModifier {
         self.color = color
     }
     
-    public func body(_ content: View) -> View {
+    public func body(_ content: Content) -> Content {
         guard let modifiedContent = content as? (FBodyComponent & FThemableBackground) else { return content }
         if let key {
-            return (modifiedContent.background(key: key) as? View) ?? content
+            return modifiedContent.background(key: key)
         } else if let color {
             return content.background(color)
         } else {
@@ -28,7 +28,7 @@ public struct FBackgroundModifier<View: FBodyComponent>: FModifier {
     }
 }
 
-public struct FForegroundModifier<View: FBodyComponent>: FModifier {
+public struct FForegroundModifier: FModifier {
     public var key: ThemeKey?
     public var color: UIColor?
 
@@ -37,12 +37,12 @@ public struct FForegroundModifier<View: FBodyComponent>: FModifier {
         self.color = color
     }
     
-    public func body(_ content: View) -> View {
+    public func body(_ content: Content) -> Content {
         guard let modifiedContent = content as? (FBodyComponent & FThemableForeground) else { return content }
         if let key {
-            return (modifiedContent.foreground(key: key) as? View) ?? content
+            return modifiedContent.foreground(key: key)
         } else if let color {
-            return (modifiedContent.foreground(color) as? View) ?? content
+            return modifiedContent.foreground(color)
         } else {
             return content
         }
