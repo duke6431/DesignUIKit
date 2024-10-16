@@ -11,7 +11,7 @@ let package = Package(
     name: "ComponentSystem",
     platforms: [
         .iOS(.v13),
-        .macCatalyst(.v16),
+        .macCatalyst(.v13),
         .tvOS(.v14)
     ],
     products: [
