@@ -10,6 +10,12 @@ import DesignCore
 import SnapKit
 
 public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable, FAssignable {
+#if os(tvOS)
+    public static let tapEvent: UIControl.Event = .primaryActionTriggered
+#else
+    public static let tapEvent: UIControl.Event = .touchUpInside
+#endif
+    
     public var customConfiguration: ((FButton) -> Void)?
     
     var label: FBody?
@@ -21,12 +27,12 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     ) {
         self.init(style: style)
         setTitle(text, for: .normal)
-        addAction(for: .touchUpInside, action)
+        addAction(for: Self.tapEvent, action)
     }
 
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
         self.init(style: style)
-        addAction(for: .touchUpInside, action)
+        addAction(for: Self.tapEvent, action)
         self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
@@ -39,12 +45,12 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     ) {
         self.init(style: style)
         setTitle(text, for: .normal)
-        addAction(for: .touchUpInside, { [weak self] in action(self) })
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
     }
 
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
-        addAction(for: .touchUpInside, { [weak self] in action(self) })
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
         self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }

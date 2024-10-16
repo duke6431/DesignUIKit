@@ -21,7 +21,7 @@ extension FButton {
         self.bind(to: textPublisher) { button, title in
             button.setTitle(title, for: .normal)
         }
-        addAction(for: .touchUpInside, action)
+        addAction(for: Self.tapEvent, action)
     }
     
     public convenience init(
@@ -33,6 +33,6 @@ extension FButton {
         self.bind(to: textPublisher) { button, title in
             button.setTitle(title, for: .normal)
         }
-        addAction(for: .touchUpInside, { [weak self] in action(self) })
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
     }
 }

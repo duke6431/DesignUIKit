@@ -15,7 +15,11 @@ public struct PreferenceItem<T> {
 
     public var wrappedValue: T {
         get {
-            let res = UserDefaults.standard.value(forKey: key) as? T ?? defaultValue
+            let udValue = UserDefaults.standard.value(forKey: key)
+            let res = udValue as? T ?? defaultValue
+            if udValue == nil {
+                UserDefaults.standard.set(defaultValue, forKey: key)
+            }
             return calculatedValue?(res) ?? res
         }
         set {
