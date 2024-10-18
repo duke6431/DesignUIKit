@@ -13,7 +13,7 @@ public protocol ThemeKey {
     var name: String { get }
 }
 
-public class Theme: Identifiable, Codable {
+public class Theme: Identifiable, Codable, Loggable {
     static let empty: Theme = .init(name: "Empty", styles: [])
     
     public static var defaultColor: String = "00000000"

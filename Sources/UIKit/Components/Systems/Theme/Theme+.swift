@@ -19,7 +19,7 @@ public extension Theme {
             do {
                 return try load(from: $0, name: $1)
             } catch {
-                print(error.localizedDescription)
+                logger.error(error.localizedDescription.logMsg)
                 return nil
             }
         }
@@ -30,7 +30,7 @@ public extension Theme {
             do {
                 return try load(from: $0.url, name: $1)
             } catch {
-                print(error.localizedDescription)
+                logger.error(error.localizedDescription.logMsg)
                 return nil
             }
         })

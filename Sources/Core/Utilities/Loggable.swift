@@ -13,9 +13,10 @@ public protocol Loggable {
 }
 
 public extension Loggable {
+    static var logger: Logger { Logger(label: String(reflecting: type(of: self))) }
     var logger: Logger { Logger(label: String(reflecting: type(of: self))) }
 }
 
 public extension String {
-    var log: Logger.Message { .init(stringLiteral: self) }
+    var logMsg: Logger.Message { .init(stringLiteral: self) }
 }
