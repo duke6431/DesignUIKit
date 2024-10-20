@@ -20,21 +20,13 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     
     var label: FBody?
     
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ text: String = "",
-        action: @escaping () -> Void
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, _ text: String = "", action: @escaping () -> Void) {
         self.init(style: style)
         setTitle(text, for: .normal)
         addAction(for: Self.tapEvent, action)
     }
 
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        @FViewBuilder label: () -> FBody,
-        action: (() -> Void)? = nil
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: (() -> Void)? = nil) {
         self.init(style: style)
         addAction(for: Self.tapEvent, action ?? { })
         self.label = label().flatMap {
@@ -42,11 +34,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         }
     }
 
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        label: FBody,
-        action: (() -> Void)? = nil
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: (() -> Void)? = nil) {
         self.init(style: style)
         addAction(for: Self.tapEvent, action ?? { })
         self.label = label.flatMap {
@@ -54,27 +42,23 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         }
     }
 
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ text: String = "",
-        action: @escaping (FButton?) -> Void
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, _ text: String = "", action: @escaping (FButton?) -> Void) {
         self.init(style: style)
         setTitle(text, for: .normal)
         addAction(for: Self.tapEvent, { [weak self] in action(self) })
     }
 
-    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: ((FButton?) -> Void)? = nil) {
+    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
-        addAction(for: Self.tapEvent, { [weak self] in action?(self) })
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
         self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
     }
     
-    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: ((FButton?) -> Void)? = nil) {
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
-        addAction(for: Self.tapEvent, { [weak self] in action?(self) })
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
         self.label = label.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }

@@ -15,7 +15,7 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
     
     @available(iOS 14.0, *)
     public convenience init(_ view: FBody, menu: UIMenu) {
-        self.init(customView: FZStack(contentViews: view).customized { $0.isUserInteractionEnabled = false })
+        self.init(customView: FButton(label: view).customized { $0.isUserInteractionEnabled = false })
         primaryAction = nil
         self.menu = menu
     }
