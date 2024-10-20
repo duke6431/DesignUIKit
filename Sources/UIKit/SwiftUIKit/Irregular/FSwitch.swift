@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import DesignCore
 
-public final class FSwitch: UIView, FComponent, FAssignable {
+public final class FSwitch: BaseView, FComponent, FAssignable {
     public var customConfiguration: ((FSwitch) -> Void)?
     
     public var isOn: Bool = false { didSet { set(on: isOn) } }
