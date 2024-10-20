@@ -14,7 +14,7 @@ public typealias FBodyComponent = UIView & FConfigurable
 public typealias FBody = [FBodyComponent]
 public typealias FViewBuilder = FBuilder<FBodyComponent>
 
-open class FView: BaseView, FComponent {
+open class FView: BaseView, FComponent, FAssignable {
     public var customConfiguration: ((FView) -> Void)?
     
     open override func didMoveToSuperview() {
