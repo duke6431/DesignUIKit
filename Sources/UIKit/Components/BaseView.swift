@@ -192,8 +192,17 @@ open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThem
 
 open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow {
     public convenience init(style buttonType: UIButton.ButtonType? = nil) {
-        self.init(type: buttonType ?? .system)
+        self.init(type: buttonType ?? .custom)
         loadConfiguration()
+    }
+    
+    private var currentAlpha: CGFloat = 1
+    
+    open override var isHighlighted: Bool {
+        didSet {
+            if !isHighlighted { currentAlpha = alpha }
+            alpha = isHighlighted ? currentAlpha * 0.35 : currentAlpha
+        }
     }
     
     open override func willMove(toSuperview newSuperview: UIView?) {
