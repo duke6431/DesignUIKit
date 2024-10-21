@@ -7,13 +7,16 @@
 
 import Foundation
 
-public protocol PreferenceKey {
-    var rawValue: String { get }
+public struct FPreferenceKey: ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
+    public var rawValue: String
+    
+    public init(stringLiteral value: StringLiteralType) { rawValue = value }
+    public init(stringInterpolation: DefaultStringInterpolation) { rawValue = stringInterpolation.description }
 }
 
 @propertyWrapper
 public struct PreferenceItem<T> {
-    let key: PreferenceKey
+    let key: FPreferenceKey
     let defaultValue: T
     let calculatedValue: ((T) -> (T))?
 
@@ -31,7 +34,7 @@ public struct PreferenceItem<T> {
         }
     }
 
-    public init(_ key: PreferenceKey, _ defaultValue: T, _ calculatedValue: ((T) -> (T))? = nil) {
+    public init(_ key: FPreferenceKey, _ defaultValue: T, _ calculatedValue: ((T) -> (T))? = nil) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue
@@ -40,7 +43,7 @@ public struct PreferenceItem<T> {
 
 @propertyWrapper
 public struct PreferenceData<T: Codable> {
-    let key: PreferenceKey
+    let key: FPreferenceKey
     let defaultValue: T
     let calculatedValue: ((T) -> (T))?
 
@@ -65,7 +68,7 @@ public struct PreferenceData<T: Codable> {
         }
     }
 
-    public init(_ key: PreferenceKey, _ defaultValue: T, calculatedValue: ((T) -> (T))? = nil) {
+    public init(_ key: FPreferenceKey, _ defaultValue: T, calculatedValue: ((T) -> (T))? = nil) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue
