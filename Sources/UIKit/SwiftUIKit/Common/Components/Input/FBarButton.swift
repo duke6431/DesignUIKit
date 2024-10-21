@@ -12,7 +12,7 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
     public convenience init(_ view: FBody, action: (() -> Void)? = nil) {
         self.init(
             customView: FButton(label: view, action: action)
-                .layoutPriority(.high.advanced(by: 200))
+                .layoutPriority(.high.advanced(by: 100))
                 .ratio(1)
         )
     }
@@ -21,7 +21,7 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
     public convenience init(_ view: FBody, menu: UIMenu) {
         self.init(
             customView: FZStack(contentViews: view)
-                .layoutPriority(.high.advanced(by: 200))
+                .layoutPriority(.high.advanced(by: 100))
                 .customized { $0.isUserInteractionEnabled = false }
                 .ratio(1)
         )
