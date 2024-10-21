@@ -8,6 +8,7 @@
 import UIKit
 import DesignExts
 import DesignCore
+import SnapKit
 
 public extension FConfigurable {
     @discardableResult func modified(with modifier: FModifier) -> Self {
@@ -113,6 +114,11 @@ public extension FConfigurable {
 
     @discardableResult func centerInParent(offset: CGSize) -> Self {
         configuration?.with(\.centerOffset, setTo: offset)
+        return self
+    }
+    
+    @discardableResult func layoutPriority(_ priority: ConstraintPriority) -> Self {
+        configuration?.layoutPriority = priority
         return self
     }
     
