@@ -53,7 +53,7 @@ public class FConfiguration: Chainable {
     public var ratio: CGFloat?
     public var opacity: CGFloat = 1
     public var centerOffset: CGSize?
-    public var layoutPriority: ConstraintPriority = .high.advanced(by: 100)
+    public var layoutPriority: ConstraintPriority = .required
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)?
     public var layerConfiguration: ((UIView) -> Void)?
     
