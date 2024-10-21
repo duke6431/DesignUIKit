@@ -196,12 +196,11 @@ open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableSh
         loadConfiguration()
     }
     
-    private var currentAlpha: CGFloat = 1
-    
     open override var isHighlighted: Bool {
         didSet {
-            if !isHighlighted { currentAlpha = alpha }
-            alpha = isHighlighted ? currentAlpha * 0.35 : currentAlpha
+            UIView.animate(withDuration: 0.1) { [weak self] in
+                self?.alpha = (self?.isHighlighted ?? false) ? 0.35 : 1
+            }
         }
     }
     
