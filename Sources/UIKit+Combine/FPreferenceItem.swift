@@ -30,13 +30,13 @@ public class FPreferenceItem<T>: Loggable {
         set { value = newValue }
     }
     
-    public init(_ key: FPreferenceKey, defaultValue: T) {
+    public init(_ key: FPreferenceKey, default value: T) {
         self.key = key
         if let value = UserDefaults.standard.object(forKey: key.rawValue) as? T {
             self.value = value
         } else {
-            UserDefaults.standard.set(defaultValue, forKey: key.rawValue)
-            self.value = defaultValue
+            UserDefaults.standard.set(value, forKey: key.rawValue)
+            self.value = value
         }
         defer { generateObserver() }
     }
