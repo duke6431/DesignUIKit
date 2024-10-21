@@ -11,9 +11,7 @@ import DesignCore
 public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
     public convenience init(_ view: FBody, action: (() -> Void)? = nil) {
         self.init(
-            customView: FButton(label: view, action: action)
-                .attachToParent(false)
-                .ratio(1)
+            customView: FButton(label: view, action: action).ratio(1)
         )
     }
     
@@ -23,7 +21,6 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
             customView: FZStack(contentViews: view)
                 .customized { $0.isUserInteractionEnabled = false }
                 .ratio(1)
-                .attachToParent(false)
         )
         primaryAction = nil
         self.menu = menu
