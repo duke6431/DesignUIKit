@@ -10,12 +10,21 @@ import DesignCore
 
 public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
     public convenience init(_ view: FBody, action: (() -> Void)? = nil) {
-        self.init(customView: FButton(label: view, action: action))
+        self.init(
+            customView: FButton(label: view, action: action)
+                .attachToParent(false)
+                .ratio(1)
+        )
     }
     
     @available(iOS 14.0, *)
     public convenience init(_ view: FBody, menu: UIMenu) {
-        self.init(customView: FZStack(contentViews: view).customized { $0.isUserInteractionEnabled = false })
+        self.init(
+            customView: FZStack(contentViews: view)
+                .customized { $0.isUserInteractionEnabled = false }
+                .ratio(1)
+                .attachToParent(false)
+        )
         primaryAction = nil
         self.menu = menu
     }
