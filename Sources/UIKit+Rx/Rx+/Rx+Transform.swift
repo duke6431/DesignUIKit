@@ -8,7 +8,7 @@
 import RxSwift
 import RxCocoa
 
-extension Observable {
+public extension Observable {
     func cast<T>(to type: T.Type) -> Observable<T> { compactMap { $0 as? T } }
     func void() -> Observable<Void> { map { _ in } }
     func compacted<T>() -> Observable<T> where Element == Optional<T> { compactMap { $0 } }
@@ -17,7 +17,7 @@ extension Observable {
     func invertFilter(_ predicate: @escaping (Element) throws -> Bool) -> Observable<Element> { filter { try !predicate($0) } }
 }
 
-extension Infallible {
+public extension Infallible {
     func cast<T>(to type: T.Type) -> Infallible<T> { compactMap { $0 as? T } }
     func void() -> Infallible<Void> { map { _ in } }
     func compacted<T>() -> Infallible<T> where Element == Optional<T> { compactMap { $0 } }
@@ -25,7 +25,7 @@ extension Infallible {
     func invertFilter(_ predicate: @escaping (Element) -> Bool) -> Infallible<Element> { filter { !predicate($0) } }
 }
 
-extension SharedSequence {
+public extension SharedSequence {
     func cast<T>(to type: T.Type) -> SharedSequence<SharingStrategy, T> { compactMap { $0 as? T } }
     func void() -> SharedSequence<SharingStrategy, Void> { map { _ in } }
     func compacted<T>() -> SharedSequence<SharingStrategy, T> where Element == Optional<T> { compactMap { $0 } }
