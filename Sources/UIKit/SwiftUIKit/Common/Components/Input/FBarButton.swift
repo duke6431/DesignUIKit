@@ -17,10 +17,10 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
         )
     }
     
-    @available(iOS 14.0, *)
+    @available(iOS 15.0, tvOS 17.0, *)
     public convenience init(_ view: FBody, menu: UIMenu) {
         self.init(
-            customView: FZStack(contentViews: view)
+            customView: FButton(label: view, menu: menu)
                 .layoutPriority(.high.advanced(by: 100))
                 .customized { $0.isUserInteractionEnabled = false }
                 .ratio(1)
@@ -33,7 +33,7 @@ public final class FBarButton: UIBarButtonItem, Chainable, FAssignable {
         self.init(customView: FButton(label: view, action: action))
     }
     
-    @available(iOS 14.0, *)
+    @available(iOS 15.0, tvOS 17.0, *)
     public convenience init(@FViewBuilder _ view: () -> FBody, menu: UIMenu) {
         self.init(view(), menu: menu)
     }

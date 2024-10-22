@@ -27,16 +27,12 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     }
 
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: (() -> Void)? = nil) {
-        self.init(style: style)
-        addAction(for: Self.tapEvent, action ?? { })
-        self.label = label().flatMap {
-            ($0 as? FForEach)?.content() ?? [$0]
-        }
+        self.init(style: style, label: label(), action: action)
     }
 
     public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: (() -> Void)? = nil) {
         self.init(style: style)
-        addAction(for: Self.tapEvent, action ?? { })
+        if let action { addAction(for: Self.tapEvent, action) }
         self.label = label.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
@@ -62,6 +58,14 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         self.label = label.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
+    }
+    
+    @available(iOS 15.0, tvOS 17.0, *)
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, menu: UIMenu) {
+        self.init(style: style, label: label)
+        self.showsMenuAsPrimaryAction = true
+        self.changesSelectionAsPrimaryAction = true
+        self.menu = menu
     }
     
     func updateLabel() {
