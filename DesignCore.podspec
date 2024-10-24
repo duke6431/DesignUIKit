@@ -24,5 +24,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     ss.source_files = 'Sources/Core/**/*.{swift}'
     ss.exclude_files = 'Sources/Core/Archived/**/*.{swift}'
+
+    ss.dependency("Logging")
   end
 end

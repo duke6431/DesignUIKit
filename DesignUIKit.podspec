@@ -29,6 +29,5 @@ Pod::Spec.new do |s|
     ss.dependency 'DesignExternal'
     ss.dependency 'Nuke'
     ss.dependency 'SnapKit'
-    ss.dependency 'ToastViewSwift'
   end
 end
