@@ -122,6 +122,11 @@ public extension FConfigurable {
         return self
     }
     
+    @discardableResult func shouldAnimateLayer(_ isEnabled: Bool) -> Self {
+        configuration?.shoudAnimateLayerChanges = isEnabled
+        return self
+    }
+    
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: UIView) -> Void) -> Self {
         configuration?.with(\.layoutConfiguration, setTo: layoutConfiguration)
         return self

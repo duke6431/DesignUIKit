@@ -34,6 +34,7 @@ public protocol FConfigurable: AnyObject, Chainable {
     @discardableResult func attachToParent(_ status: Bool) -> Self
     @discardableResult func opacity(_ opacity: CGFloat) -> Self
     @discardableResult func layout(_ layoutConfiguration: @escaping (_ make: ConstraintMaker, _ superview: UIView) -> Void) -> Self
+    @discardableResult func shouldAnimateLayer(_ isEnabled: Bool) -> Self
     @discardableResult func layer(_ layerConfiguration: @escaping (UIView) -> Void) -> Self
     @discardableResult func modified(with modifier: FModifier) -> Self
     @discardableResult func clearModifiers() -> Self
@@ -55,6 +56,7 @@ public class FConfiguration: Chainable {
     public var centerOffset: CGSize?
     public var layoutPriority: ConstraintPriority = .required
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)?
+    public var shoudAnimateLayerChanges: Bool = false
     public var layerConfiguration: ((UIView) -> Void)?
     
     public var shouldIgnoreSafeArea: Bool = false
@@ -103,7 +105,7 @@ public class FConfiguration: Chainable {
         var shadowCorners: UIRectCorner = .allCorners
         if let shape {
             target.clipsToBounds = true
-            UIView.animate(withDuration: 0.2) {
+            apply {
                 switch shape {
                 case .circle:
                     shadowCornerRadius = min(target.bounds.width, target.bounds.height) / 2
@@ -117,7 +119,7 @@ public class FConfiguration: Chainable {
             }
         }
         if let shadow {
-            UIView.animate(withDuration: 0.2) {
+            apply {
                 let path = UIBezierPath(roundedRect: target.bounds, byRoundingCorners: shadowCorners, cornerRadii: .init(width: shadowCornerRadius, height: shadowCornerRadius))
                 target.layer.add(
                     shadow: shadow.updated(
@@ -128,4 +130,19 @@ public class FConfiguration: Chainable {
         }
         layerConfiguration?(target)
     }
+    
+    fileprivate func apply(configuration: AnimationConfiguration = .default, to animation: @escaping () -> Void) {
+        if shoudAnimateLayerChanges {
+            UIView.animate(withDuration: configuration.duration, delay: configuration.delay, animations: animation)
+        } else {
+            animation()
+        }
+    }
+}
+
+fileprivate struct AnimationConfiguration {
+    static let `default`: Self = .init(duration: 0.25, delay: 0)
+    
+    let duration: TimeInterval
+    let delay: TimeInterval
 }
