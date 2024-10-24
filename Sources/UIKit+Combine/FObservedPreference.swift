@@ -11,7 +11,7 @@ import DesignCore
 import Logging
 
 @propertyWrapper
-public class FPreferenceItem<T>: Loggable {
+public class FObservedPreference<T>: Loggable {
     fileprivate var observer: FPrefObservation<T>?
     
     let key: FPreferenceKey
