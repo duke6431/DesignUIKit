@@ -61,6 +61,14 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     }
     
     @available(iOS 15.0, tvOS 17.0, *)
+    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, menu: UIMenu) {
+        self.init(style: style, label: label)
+        self.showsMenuAsPrimaryAction = true
+        self.changesSelectionAsPrimaryAction = true
+        self.menu = menu
+    }
+
+    @available(iOS 15.0, tvOS 17.0, *)
     public convenience init(style: UIButton.ButtonType? = nil, label: FBody, menu: UIMenu) {
         self.init(style: style, label: label)
         self.showsMenuAsPrimaryAction = true
