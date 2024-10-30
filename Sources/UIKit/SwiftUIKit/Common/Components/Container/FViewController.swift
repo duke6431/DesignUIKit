@@ -34,6 +34,13 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         customConfiguration?(self)
     }
     
+    public override func removeFromSuperview() {
+        contentViewController.willMove(toParent: nil)
+        contentViewController.view.removeFromSuperview()
+        contentViewController.removeFromParent()
+        super.removeFromSuperview()
+    }
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
