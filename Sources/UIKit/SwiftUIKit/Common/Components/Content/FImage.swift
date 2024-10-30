@@ -44,7 +44,7 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
         if let url = url {
             image = nil
             ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-                if case .success(let response) = result, response.urlResponse?.url == self?.url {
+                if case .success(let response) = result {
                     self?.image = response.image
                 }
             }
