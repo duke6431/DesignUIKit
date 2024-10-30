@@ -27,14 +27,15 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         configuration?.didMoveToSuperview(superview, with: self)
         guard let parentViewController else { return }
         contentViewController.willMove(toParent: parentViewController)
-        addSubview(contentViewController.view)
         parentViewController.addChild(contentViewController)
+        addSubview(contentViewController.view)
         contentViewController.didMove(toParent: parentViewController)
         contentViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         customConfiguration?(self)
     }
     
     public override func removeFromSuperview() {
+        parentViewController = nil
         contentViewController.willMove(toParent: nil)
         contentViewController.view.removeFromSuperview()
         contentViewController.removeFromParent()
