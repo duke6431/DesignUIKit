@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FForEach: FBodyComponent {
+public final class FForEach: FBodyComponent, Loggable {
     public var customConfiguration: ((FForEach) -> Void)?
     public var contentViews: [FBodyComponent]
     
@@ -41,8 +41,6 @@ public final class FForEach: FBodyComponent {
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }

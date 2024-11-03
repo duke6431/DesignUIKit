@@ -46,9 +46,7 @@ open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -103,9 +101,7 @@ open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThem
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -153,9 +149,7 @@ open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FTh
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -208,9 +202,7 @@ open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThem
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -313,9 +305,7 @@ open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShad
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -358,9 +348,7 @@ open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThem
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
@@ -403,8 +391,6 @@ open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemab
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }

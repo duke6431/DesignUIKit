@@ -10,7 +10,7 @@ import UIKit
 
 public protocol BaseCoordinating: Chainable {
     var navigationController: UINavigationController? { get }
-
+    
     func toScene() -> Self
 }
 
@@ -36,8 +36,6 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<V
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }

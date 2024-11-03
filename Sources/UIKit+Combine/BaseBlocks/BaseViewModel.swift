@@ -45,8 +45,6 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }

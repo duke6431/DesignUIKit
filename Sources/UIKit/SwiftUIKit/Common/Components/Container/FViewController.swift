@@ -13,7 +13,7 @@ import Foundation
 
 public final class FViewController<ViewController: UIViewController>: BaseView, FComponent, FAssignable {
     public var customConfiguration: ((FViewController) -> Void)?
-
+    
     public weak var parentViewController: UIViewController?
     public var contentViewController: ViewController
     
@@ -46,7 +46,7 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-
+    
     @discardableResult public func parent(_ viewController: UIViewController) -> Self {
         parentViewController = viewController
         return self
@@ -54,13 +54,11 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
     
     deinit {
         removeFromSuperview()
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
-public class FViewContainer: UIViewController, Chainable {
+public class FViewContainer: UIViewController, Chainable, Loggable {
     public var content: UIView
     
     var onLoad: ((FViewContainer) -> Void)?
@@ -98,9 +96,7 @@ public class FViewContainer: UIViewController, Chainable {
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 

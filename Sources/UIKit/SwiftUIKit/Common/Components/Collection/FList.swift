@@ -13,7 +13,7 @@ import SnapKit
 public final class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
     public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     public var customConfiguration: ((FList) -> Void)?
-
+    
     public var onSelect: ((FListModel) -> Void)?
     public var onMore: (() -> Void)?
     public weak var content: CommonTableView?
@@ -63,7 +63,7 @@ public final class FList: CommonTableView, FConfigurable, FComponent, FAssignabl
         cell.bind(item, highlight: keyword)
         return cell
     }
-
+    
     public func loadConfiguration() {
         configuration = .init()
     }
@@ -141,7 +141,7 @@ public class FHeaderModel: NSObject, CommonHeaderModel {
     }
 }
 
-public class FListModel: NSObject, CommonCellModel {
+public class FListModel: NSObject, CommonCellModel, Loggable {
     public var identifier: String = UUID().uuidString
     public static var cellKind: CommonTableView.TableCell.Type = FListCell.self
     public var selectable: Bool = true
@@ -163,13 +163,12 @@ public class FListModel: NSObject, CommonCellModel {
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitializing \(model)")
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
-public class FListCell: CommonTableView.TableCell {
+public class FListCell: CommonTableView.TableCell, Loggable {
     weak var content: (FBodyComponent & FCellReusable)?
     
     public override func bind(_ model: CommonCellModel, highlight text: String) {
@@ -180,7 +179,7 @@ public class FListCell: CommonTableView.TableCell {
         }
         content?.bind(model.model)
     }
-
+    
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         if let customizeContent = view as? FFullCustomConfiguration {
             customizeContent.customized?(cell: self)
@@ -200,9 +199,8 @@ public class FListCell: CommonTableView.TableCell {
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
+        if let content { logger.info("Deinitializing \(content)") }
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 

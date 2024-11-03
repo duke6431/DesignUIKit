@@ -49,9 +49,7 @@ open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThem
     }
     
     deinit {
-#if COMPONENT_SYSTEM_DBG
         logger.info("Deinitialized \(self)")
-#endif
     }
 }
 
