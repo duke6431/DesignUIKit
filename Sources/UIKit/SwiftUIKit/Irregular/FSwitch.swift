@@ -24,8 +24,9 @@ public final class FSwitch: BaseView, FComponent, FAssignable {
     private var onSwitch: ((Bool) -> Void)?
     
     private weak var statusImage: UIImageView?
-    private var thumUIViewTrailing: Constraint?
-    private lazy var thumUIView: UIView = {
+    private var thumbViewLeading: Constraint?
+    private var thumbViewTrailing: Constraint?
+    private lazy var thumbView: UIView = {
         let view = FZStack {
             if let thumbImage {
                 FImage(image: thumbImage).contentMode(.scaleAspectFill)
@@ -50,13 +51,13 @@ public final class FSwitch: BaseView, FComponent, FAssignable {
     }
     
     private func configureViews() {
-        addSubview(thumUIView)
-        thumUIView.snp.remakeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(2)
-            $0.leading.equalToSuperview().inset(2).priority(.medium)
-            thumUIViewTrailing = $0.trailing.equalToSuperview().inset(2).constraint
+        addSubview(thumbView)
+        thumbView.snp.remakeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(4)
+            thumbViewLeading = $0.leading.equalToSuperview().inset(4).constraint
+            thumbViewTrailing = $0.trailing.equalToSuperview().inset(4).constraint
         }
-        thumUIViewTrailing?.isActive = false
+        thumbViewTrailing?.isActive = false
     }
     
     public override func layoutSubviews() {
@@ -83,7 +84,8 @@ public final class FSwitch: BaseView, FComponent, FAssignable {
     }
     
     public func set(on: Bool, animated: Bool = true) {
-        thumUIViewTrailing?.isActive = isOn
+        thumbViewLeading?.isActive = !isOn
+        thumbViewTrailing?.isActive = isOn
         UIView.animate(withDuration: 0.2) {
             self.backgroundColor = self.isOn ? self.statusColorOn : self.statusColorOff
             self.statusImage?.image = self.isOn ? self.statusImageOn : self.statusImageOff
