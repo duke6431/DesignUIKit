@@ -51,6 +51,13 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         parentViewController = viewController
         return self
     }
+    
+    deinit {
+        removeFromSuperview()
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
 public class FViewContainer: UIViewController, Chainable {
@@ -88,6 +95,12 @@ public class FViewContainer: UIViewController, Chainable {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onDisappear?(self)
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

@@ -10,7 +10,7 @@ import UIKit
 
 @available(iOS 13.0, *)
 public extension CommonCollection {
-    class View: UICollectionView {
+    class View: UICollectionView, Loggable {
         public weak var commonDelegate: CommonCollectionViewDelegate?
 
         let itemMapper: [CommonCollectionCellModel.Type]
@@ -78,6 +78,12 @@ public extension CommonCollection {
                 return header
             }
             return dataSource
+        }
+        
+        deinit {
+#if COMPONENT_SYSTEM_DBG
+            logger.info("Deinitialized \(self)")
+#endif
         }
     }
 }

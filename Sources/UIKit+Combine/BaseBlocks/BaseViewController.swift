@@ -11,7 +11,7 @@ import DesignUIKit
 import Combine
 import UIKit
 
-open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThemableBackground {
+open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThemableBackground, Loggable {
     open var viewModel: ViewModel
     open var cancellables = Set<AnyCancellable>()
     
@@ -46,6 +46,12 @@ open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThem
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
         view.backgroundColor = theme.color(key: backgroundKey)
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

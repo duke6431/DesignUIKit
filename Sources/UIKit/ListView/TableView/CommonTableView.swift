@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public class CommonTableView: UITableView {
+public class CommonTableView: UITableView, Loggable {
     public weak var actionDelegate: CommonTableViewDelegate?
 #if os(iOS)
     public var refreshable: Bool = false {
@@ -142,6 +142,12 @@ public class CommonTableView: UITableView {
             searchedSections.remove(at: selectedItem.section)
             deleteSections(IndexSet(integer: selectedItem.section), with: .fade)
         }
+    }
+
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

@@ -63,10 +63,12 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     }
     
     @discardableResult public func foreground(_ color: UIColor) -> Self {
+        currentForegroundColor = color
         image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
         return self
     }
     
+    private var currentForegroundColor: UIColor?
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
@@ -76,8 +78,11 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
 }
 
 public extension FImage {
-    func reload(image: UIImage? = nil, url: URL?) {
+    func reload(image: UIImage? = nil, url: URL? = nil) {
         self.image = image
+        if let currentForegroundColor {
+            self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
+        }
         self.url = url ?? self.url
         if let url = url {
             ImagePipeline.shared.loadImage(with: url) { [weak self] result in

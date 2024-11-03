@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -44,9 +44,15 @@ open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -95,9 +101,15 @@ open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -139,9 +151,15 @@ open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FTh
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -188,9 +206,15 @@ open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public convenience init(style buttonType: UIButton.ButtonType? = nil) {
         self.init(type: buttonType ?? .custom)
         loadConfiguration()
@@ -231,7 +255,7 @@ open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableSh
     }
 }
 
-open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     var contentInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     
     public override init(frame: CGRect = .zero) {
@@ -287,9 +311,15 @@ open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShad
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -326,9 +356,15 @@ open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
-open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public init(frame: CGRect = .zero) {
         super.init(frame: frame, textContainer: nil)
         loadConfiguration()
@@ -364,5 +400,11 @@ open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemab
             setNeedsLayout()
             layoutIfNeeded()
         }
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }

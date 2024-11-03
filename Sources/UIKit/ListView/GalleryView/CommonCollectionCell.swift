@@ -19,7 +19,7 @@ import UIKit
 }
 
 extension CommonCollection {
-    open class CollectionCell: UICollectionViewCell, Reusable {
+    open class CollectionCell: UICollectionViewCell, Reusable, Loggable {
         public var identifier: String = ""
         public var indexPath: IndexPath?
         
@@ -39,6 +39,12 @@ extension CommonCollection {
         }
         
         open func configureViews() {
+        }
+        
+        deinit {
+#if COMPONENT_SYSTEM_DBG
+            logger.info("Deinitialized \(self)")
+#endif
         }
     }
 }

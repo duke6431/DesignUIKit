@@ -7,12 +7,13 @@
 
 import Combine
 import Foundation
+import DesignCore
 
 public protocol ViewModeling: AnyObject {
     var error: Error? { get set }
 }
 
-open class BaseViewModel: NSObject, ViewModeling {
+open class BaseViewModel: NSObject, ViewModeling, Loggable {
     @Published
     public var error: Error?
     open var cancellables = Set<AnyCancellable>()
@@ -41,5 +42,11 @@ open class BaseViewModel: NSObject, ViewModeling {
     
     open func discardAll() {
         fatalError("\(String(describing: self)) didn't implemented discardAll()")
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }

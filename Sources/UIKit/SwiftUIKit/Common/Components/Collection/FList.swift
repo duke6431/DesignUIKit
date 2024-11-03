@@ -161,6 +161,12 @@ public class FListModel: NSObject, CommonCellModel {
         self.model = model
         self.realData = realData
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }
 
 public class FListCell: CommonTableView.TableCell {
@@ -191,6 +197,12 @@ public class FListCell: CommonTableView.TableCell {
                 content.customized?(cell: self)
             }
         }
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

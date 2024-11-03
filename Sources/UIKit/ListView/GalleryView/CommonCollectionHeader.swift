@@ -17,7 +17,7 @@ import UIKit
 }
 
 extension CommonCollection {
-    open class ReusableView: UICollectionReusableView, Reusable {
+    open class ReusableView: UICollectionReusableView, Reusable, Loggable {
         public var identifier: String = ""
         public var section: Int?
         
@@ -37,6 +37,12 @@ extension CommonCollection {
         }
         
         open func configureViews() {
+        }
+        
+        deinit {
+#if COMPONENT_SYSTEM_DBG
+            logger.info("Deinitialized \(self)")
+#endif
         }
     }
 }

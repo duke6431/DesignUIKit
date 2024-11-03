@@ -39,4 +39,10 @@ public final class FForEach: FBodyComponent {
     public override func layoutSubviews() {
         fatalError("FForEach is not considered a view")
     }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
+    }
 }

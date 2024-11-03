@@ -15,7 +15,7 @@ public protocol BaseCoordinating: Chainable {
 }
 
 // TODO: Handle message `MessageHandlable`
-open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: BaseCoordinating {
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: BaseCoordinating, Loggable {
     open weak var navigationController: UINavigationController?
     
     public init(_ navigationController: UINavigationController? = nil) {
@@ -33,5 +33,11 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<V
         prepare(viewModel, scene)
         navigationController?.pushViewController(scene, animated: true)
         return self
+    }
+    
+    deinit {
+#if COMPONENT_SYSTEM_DBG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }
