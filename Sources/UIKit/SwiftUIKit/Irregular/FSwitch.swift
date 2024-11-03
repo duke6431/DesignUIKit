@@ -33,7 +33,7 @@ public final class FSwitch: BaseView, FComponent, FAssignable {
             }
         }.background(thumUIColor).shaped(.circle).customized {
             $0.configuration?.shouldConstraintWithParent = false
-        }.ratio(1).shadow(.init(opacity: 0.4, radius: 3))
+        }.shadow(.init(opacity: 0.4, radius: 3))
         return view
     }()
     
@@ -54,9 +54,11 @@ public final class FSwitch: BaseView, FComponent, FAssignable {
         addSubview(thumbView)
         thumbView.snp.remakeConstraints {
             $0.verticalEdges.equalToSuperview().inset(4)
+            $0.width.equalTo(thumbView.snp.height)
             thumbViewLeading = $0.leading.equalToSuperview().inset(4).constraint
             thumbViewTrailing = $0.trailing.equalToSuperview().inset(4).constraint
         }
+        thumbViewLeading?.isActive = true
         thumbViewTrailing?.isActive = false
     }
     
