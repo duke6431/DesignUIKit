@@ -11,13 +11,11 @@ import RxCocoa
 import DesignCore
 import DesignUIKit
 
-open class BaseViewController<ViewModel: ViewModeling>: UIViewController, FThemableBackground {
-    open var viewModel: ViewModel
+open class BaseViewController: UIViewController, FThemableBackground {
     open var disposeBag = DisposeBag()
     
-    public required init(with viewModel: ViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     @available(iOS, unavailable)
@@ -29,10 +27,37 @@ open class BaseViewController<ViewModel: ViewModeling>: UIViewController, FThema
     open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
-        viewModel.connect(input, with: output)
     }
     
     open func configureViews() { }
+    
+    public var backgroundKey: ThemeKey?
+    public func apply(theme: ThemeProvider) {
+        guard let backgroundKey else { return }
+        view.backgroundColor = theme.color(key: backgroundKey)
+    }
+}
+
+open class FScene<ViewModel: ViewModeling>: BaseViewController {
+    open var viewModel: ViewModel
+    public required init(with viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.connect(input, with: output)
+    }
+    
+    open override func configureViews() {
+        super.configureViews()
+        view.addSubview(body)
+    }
+    
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
+    }
     
     open var input: ViewModel.Input {
         fatalError("Input was not prepared")
@@ -42,20 +67,5 @@ open class BaseViewController<ViewModel: ViewModeling>: UIViewController, FThema
         fatalError("Output was not prepared")
     }
     
-    public var backgroundKey: ThemeKey?
-    public func apply(theme: ThemeProvider) {
-        guard let backgroundKey else { return }
-        view.backgroundColor = theme.color(key: backgroundKey)
-    }
-}
-
-open class FScene<ViewModel: ViewModeling>: BaseViewController<ViewModel> {
-    open override func configureViews() {
-        super.configureViews()
-        view.addSubview(body)
-    }
     
-    open var body: FBodyComponent {
-        fatalError("Variable body of \(String(describing: self)) must be overridden")
-    }
 }

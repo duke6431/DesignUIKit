@@ -15,7 +15,7 @@ public protocol BaseCoordinating: Chainable {
 }
 
 // TODO: Handle message `MessageHandlable`
-open class BaseCoordinator<ViewModel: BaseViewModel, Scene: BaseViewController<ViewModel>>: BaseCoordinating, Loggable {
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseCoordinating, Loggable {
     open weak var navigationController: UINavigationController?
     
     public init(_ navigationController: UINavigationController? = nil) {
