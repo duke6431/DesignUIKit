@@ -145,7 +145,9 @@ public class CommonTableView: UITableView, Loggable {
     }
     
     deinit {
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

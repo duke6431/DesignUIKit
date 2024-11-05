@@ -54,7 +54,9 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
     
     deinit {
         removeFromSuperview()
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 
@@ -96,7 +98,9 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     }
     
     deinit {
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

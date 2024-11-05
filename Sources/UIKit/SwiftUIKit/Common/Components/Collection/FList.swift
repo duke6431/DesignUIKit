@@ -164,7 +164,9 @@ public class FListModel: NSObject, CommonCellModel, Loggable {
     
     deinit {
         logger.info("Deinitializing \(model)")
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 
@@ -200,7 +202,9 @@ public class FListCell: CommonTableView.TableCell, Loggable {
     
     deinit {
         if let content { logger.info("Deinitializing \(content)") }
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

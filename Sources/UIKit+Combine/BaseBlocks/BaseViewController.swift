@@ -47,7 +47,9 @@ open class BaseViewController: UIViewController, FThemableBackground, Loggable {
     }
     
     deinit {
+#if CORE_DEBUG
         logger.info("Deinitialized \(self)")
+#endif
     }
 }
 

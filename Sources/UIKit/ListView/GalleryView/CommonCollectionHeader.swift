@@ -40,8 +40,8 @@ extension CommonCollection {
         }
         
         deinit {
-#if COMPONENT_SYSTEM_DBG
-            logger.info("Deinitialized \(self)")
+#if CORE_DEBUG
+        logger.info("Deinitialized \(self)")
 #endif
         }
     }
