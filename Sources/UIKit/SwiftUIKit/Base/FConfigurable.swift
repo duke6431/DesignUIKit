@@ -10,7 +10,7 @@ import DesignCore
 import DesignExts
 import SnapKit
 
-public protocol FConfigurable: AnyObject, Chainable {
+public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     var configuration: FConfiguration? { get }
 
     @discardableResult func frame(height: CGFloat) -> Self

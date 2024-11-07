@@ -11,7 +11,7 @@ import DesignCore
 import DesignExts
 import Foundation
 
-public final class FViewController<ViewController: UIViewController>: BaseView, FComponent, FAssignable {
+public final class FViewController<ViewController: UIViewController>: BaseView, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
     
     public weak var parentViewController: UIViewController?
