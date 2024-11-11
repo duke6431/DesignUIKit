@@ -19,13 +19,13 @@ public extension UIView {
 
 public protocol FAssignable {
     @discardableResult
-    func assign<View: FBodyComponent>(to target: inout View?) -> View
+    func assign<View: FBodyComponent>(to target: inout View?) -> Self
 }
 
 public extension FAssignable {
     @discardableResult
-    func assign<View: FBodyComponent>(to target: inout View?) -> View {
+    func assign<View: FBodyComponent>(to target: inout View?) -> Self {
         target = self as? View
-        return self as! View
+        return self
     }
 }

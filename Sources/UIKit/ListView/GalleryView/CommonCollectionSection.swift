@@ -95,8 +95,16 @@ extension CommonCollection.Section {
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
             heightDimension: section.dimension.autoHeight
-                ? .estimated(CGFloat(44 * section.dimension.numberOfItemsPerGroup) + CGFloat(section.dimension.numberOfItemsPerGroup) * section.dimension.itemSpacing)
-                : .fractionalWidth(section.dimension.groupWidthRatio / section.dimension.itemWHRatio / CGFloat(section.dimension.numberOfItemsPerGroup) * ceil(CGFloat(section.cells.count) / CGFloat(section.dimension.numberOfItemsPerGroup)))
+            ? .estimated(
+                CGFloat(44 * section.dimension.numberOfItemsPerGroup)
+                + CGFloat(section.dimension.numberOfItemsPerGroup)
+                * section.dimension.itemSpacing
+            )
+                : .fractionalWidth(
+                    section.dimension.groupWidthRatio
+                    / section.dimension.itemWHRatio
+                    / CGFloat(section.dimension.numberOfItemsPerGroup) *
+                    ceil(CGFloat(section.cells.count) / CGFloat(section.dimension.numberOfItemsPerGroup)))
         )
         var groupLayout: NSCollectionLayoutGroup
         switch section.dimension.groupAxis {

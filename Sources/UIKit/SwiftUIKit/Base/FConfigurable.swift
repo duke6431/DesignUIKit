@@ -76,12 +76,16 @@ public class FConfiguration: Chainable {
         target.alpha = opacity
         if let centerOffset, let superview {
             target.snp.makeConstraints {
-                $0.centerX.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.width).priority(layoutPriority)
-                $0.centerY.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.height).priority(layoutPriority)
+                $0.centerX.equalTo(superview.safeAreaLayoutGuide)
+                    .offset(centerOffset.width).priority(layoutPriority)
+                $0.centerY.equalTo(superview.safeAreaLayoutGuide)
+                    .offset(centerOffset.height).priority(layoutPriority)
             }
         } else if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
-                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
+                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea
+                    ? superview
+                    : superview.safeAreaLayoutGuide
                 $0.top.equalTo(target).offset(offset.height + (containerPadding?.top ?? 0)).priority(layoutPriority)
                 $0.leading.equalTo(target).offset(offset.width + (containerPadding?.leading ?? 0)).priority(layoutPriority)
                 $0.trailing.equalTo(target).offset(offset.width - (containerPadding?.trailing ?? 0)).priority(layoutPriority)
@@ -111,16 +115,35 @@ public class FConfiguration: Chainable {
                     shadowCornerRadius = min(target.bounds.width, target.bounds.height) / 2
                     target.layer.cornerRadius = shadowCornerRadius
                 case .roundedRectangle(let cornerRadius, let corners):
-                    shadowCornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    shadowCornerRadius = min(
+                        cornerRadius,
+                        min(
+                            target.bounds.width,
+                            target.bounds.height
+                        ) / 2
+                    )
                     shadowCorners = corners
                     target.layer.maskedCorners = corners.caMask
-                    target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    target.layer.cornerRadius = min(
+                        cornerRadius,
+                        min(
+                            target.bounds.width,
+                            target.bounds.height
+                        ) / 2
+                    )
                 }
             }
         }
         if let shadow {
             apply {
-                let path = UIBezierPath(roundedRect: target.bounds, byRoundingCorners: shadowCorners, cornerRadii: .init(width: shadowCornerRadius, height: shadowCornerRadius))
+                let path = UIBezierPath(
+                    roundedRect: target.bounds,
+                    byRoundingCorners: shadowCorners,
+                    cornerRadii: .init(
+                        width: shadowCornerRadius,
+                        height: shadowCornerRadius
+                    )
+                )
                 target.layer.add(
                     shadow: shadow.updated(
                         \.path, with: path.cgPath
@@ -131,9 +154,16 @@ public class FConfiguration: Chainable {
         layerConfiguration?(target)
     }
 
-    fileprivate func apply(configuration: AnimationConfiguration = .default, to animation: @escaping () -> Void) {
+    fileprivate func apply(
+        configuration: AnimationConfiguration = .default,
+        to animation: @escaping () -> Void
+    ) {
         if shoudAnimateLayerChanges {
-            UIView.animate(withDuration: configuration.duration, delay: configuration.delay, animations: animation)
+            UIView.animate(
+                withDuration: configuration.duration,
+                delay: configuration.delay,
+                animations: animation
+            )
         } else {
             animation()
         }

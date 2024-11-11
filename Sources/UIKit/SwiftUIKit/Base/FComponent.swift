@@ -47,7 +47,7 @@ public protocol FContentAvailable: FContentConstraintable {
 
 public extension FContentAvailable where Self: BaseLabel {
     @discardableResult func insets(_ insets: UIEdgeInsets) -> Self {
-        contentInsets = contentInsets + insets
+        contentInsets += insets
         return self
     }
 

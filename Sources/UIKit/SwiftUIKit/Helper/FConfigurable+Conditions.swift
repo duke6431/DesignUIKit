@@ -14,7 +14,10 @@ public extension FConfigurable where Self: UIView {
     ///   - condition: The condition to evaluate.
     ///   - transform: The transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
-    @discardableResult func `if`<Content: FBodyComponent>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content) -> FBodyComponent {
+    @discardableResult func `if`<Content: FBodyComponent>(
+        _ condition: @autoclosure () -> Bool,
+        transform: (Self) -> Content
+    ) -> FBodyComponent {
         if condition() {
             transform(self)
         } else {
@@ -28,7 +31,11 @@ public extension FConfigurable where Self: UIView {
     ///   - transform: The transform to apply to the source `View`.
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
-    @discardableResult func `if`<Content: FBodyComponent, OtherContent: FBodyComponent>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> OtherContent)) -> FBodyComponent {
+    @discardableResult func `if`<Content: FBodyComponent, OtherContent: FBodyComponent>(
+        _ condition: @autoclosure () -> Bool,
+        transform: (Self) -> Content,
+        else othertransform: ((Self) -> OtherContent)
+    ) -> FBodyComponent {
         if condition() {
             transform(self)
         } else {
@@ -42,7 +49,10 @@ public extension FConfigurable where Self: UIView {
     ///   - transform: The transform to apply to the source `View`.
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the optional value.
-    @discardableResult func `if`<T, Content: FBodyComponent>(_ optional: T?, transform: (Self, T) -> Content) -> FBodyComponent {
+    @discardableResult func `if`<T, Content: FBodyComponent>(
+        _ optional: T?,
+        transform: (Self, T) -> Content
+    ) -> FBodyComponent {
         if let optional {
             transform(self, optional)
         } else {
@@ -56,7 +66,10 @@ public extension FConfigurable where Self: UIView {
     ///   - transform: The transform to apply to the source `View`.
     ///   - else: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the optional value.
-    @discardableResult func `if`<T, Content: FBodyComponent, OtherContent: FBodyComponent>(_ optional: T?, transform: (Self, T) -> Content, else othertransform: ((Self) -> OtherContent)) -> FBodyComponent {
+    @discardableResult func `if`<T, Content: FBodyComponent, OtherContent: FBodyComponent>(
+        _ optional: T?,
+        transform: (Self, T) -> Content,
+        else othertransform: ((Self) -> OtherContent)) -> FBodyComponent {
         if let optional {
             transform(self, optional)
         } else {
@@ -70,7 +83,11 @@ public extension FConfigurable where Self: UIView {
     ///   - cases: The transform to apply to the source `View`.
     ///   - defalt: The other transform to apply to the source `View`.
     /// - Returns: Either the original `View` or the modified `View` according to the condition.
-    @discardableResult func `switch`<T: Hashable, Content: FBodyComponent>(_ condition: @autoclosure () -> T, cases: [T: (Self) -> FBodyComponent], default transform: ((Self) -> Content)? = nil) -> FBodyComponent {
+    @discardableResult func `switch`<T: Hashable, Content: FBodyComponent>(
+        _ condition: @autoclosure () -> T,
+        cases: [T: (Self) -> FBodyComponent],
+        default transform: ((Self) -> Content)? = nil
+    ) -> FBodyComponent {
         if let action = cases[condition()] {
             action(self)
         } else if let transform {
@@ -84,7 +101,9 @@ public extension FConfigurable where Self: UIView {
     /// - Parameters:
     ///    - transform: The transformation to apply to the source `View`
     /// - Returns: View changed with transform
-    @discardableResult func wrapped<Content: FBodyComponent>(transform: (Self) -> Content) -> FBodyComponent {
+    @discardableResult func wrapped<Content: FBodyComponent>(
+        transform: (Self) -> Content
+    ) -> FBodyComponent {
         transform(self)
     }
 }

@@ -28,7 +28,10 @@ public class Theme: Identifiable, Codable, Loggable {
     }
 
     public func save(as filename: String) throws {
-        try FileKit.write(self, to: Path.userDocuments + String(filename.replacingOccurrences(of: " ", with: "-") + ".json"))
+        try FileKit.write(
+            self,
+            to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json"
+        )
     }
 
     public func set(color: UIColor, for key: ThemeKey, style: Theme.Style) throws {
