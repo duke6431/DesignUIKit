@@ -25,17 +25,14 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     
     @objc dynamic open func bind() { }
     
-    @MainActor
     public func load<T: Codable>(target: inout T?, value: T) {
         target = value
     }
     
-    @MainActor
     public func load<T: Codable>(target: inout T, value: T) {
         target = value
     }
     
-    @MainActor
     public func handle(_ error: Error) {
         self.error = error
     }
