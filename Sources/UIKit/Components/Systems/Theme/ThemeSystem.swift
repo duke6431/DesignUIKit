@@ -25,19 +25,19 @@ public protocol ThemeProvider {
 public class ThemeSystem: ThemeProvider {
     public static var shared: ThemeSystem = .init()
     public static var defaultTheme: Theme = .empty
-    
+
     public private(set) var current: Theme
     private var observers: NSHashTable<AnyObject> = NSHashTable.weakObjects()
 
     public init(current: Theme? = nil) {
         self.current = current ?? Self.defaultTheme
     }
-    
+
     public func use(_ theme: Theme) {
         self.current = theme
         notifyObservers()
     }
-    
+
     public func onTraitCollectionChange() {
         DispatchQueue.main.async {
             self.observers.allObjects
@@ -45,18 +45,18 @@ public class ThemeSystem: ThemeProvider {
                 .forEach(self.notify)
         }
     }
-    
+
     public func register<Observer: Themable>(observer: Observer) {
         if !observers.contains(observer) {
             observers.add(observer)
         }
         notify(observer)
     }
-    
+
     func unregister<Observer: Theme>(_ observer: Observer) {
         observers.remove(observer)
     }
-    
+
     private func notifyObservers() {
         DispatchQueue.main.async {
             self.observers.allObjects
@@ -64,26 +64,26 @@ public class ThemeSystem: ThemeProvider {
                 .forEach(self.notify)
         }
     }
-    
+
     func notify(_ observer: Themable) {
         observer.apply(theme: self)
         if let observer = observer as? CGThemable {
             notifyCG(observer)
         }
     }
-    
+
     func notifyCG(_ observer: CGThemable) {
         observer.applyCG(theme: self)
     }
-    
+
     public func color(key: ThemeKey) -> UIColor {
         current.color(key: key)
     }
-    
+
     public func themes(in bundle: Bundle = .main, subdirectory: String?) throws -> [Theme] {
         try Theme.scan(bundle: bundle, subdirectory: subdirectory)
     }
-    
+
     public func themes(in directory: Path) throws -> [Theme] {
         try Theme.scan(directory)
     }

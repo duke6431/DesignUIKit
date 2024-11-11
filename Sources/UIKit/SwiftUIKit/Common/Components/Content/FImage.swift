@@ -11,9 +11,9 @@ import DesignCore
 
 public final class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
-    
+
     public var customConfiguration: ((FImage) -> Void)?
-    
+
     public init(
         image: UIImage? = nil, url: URL? = nil
     ) {
@@ -31,13 +31,13 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
         }
         self.init(image: image)
     }
-    
+
     public convenience init(
         named: String, in bundle: Bundle = .main
     ) {
         self.init(image: .init(named: named, in: bundle, with: nil))
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -51,23 +51,23 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
         }
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-    
+
     @discardableResult public func contentMode(_ contentMode: UIView.ContentMode) -> Self {
         self.contentMode = contentMode
         return self
     }
-    
+
     @discardableResult public func foreground(_ color: UIColor) -> Self {
         currentForegroundColor = color
         image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
         return self
     }
-    
+
     private var currentForegroundColor: UIColor?
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 12/02/2024.
 //
@@ -36,7 +36,7 @@ extension UIEdgeInsets: SelfCustomizable {
             insets.bottom += rhs
         }
     }
-    
+
     static func + (_ lhs: UIEdgeInsets, _ rhs: UIEdgeInsets) -> UIEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
@@ -45,7 +45,7 @@ extension UIEdgeInsets: SelfCustomizable {
             right: lhs.right + rhs.right
         )
     }
-    
+
     func add(_ edges: UIRectEdge, _ rhs: CGFloat) -> UIEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
@@ -65,7 +65,7 @@ extension NSDirectionalEdgeInsets: SelfCustomizable {
             insets.bottom += rhs
         }
     }
-    
+
     static func + (_ lhs: NSDirectionalEdgeInsets, _ rhs: NSDirectionalEdgeInsets) -> NSDirectionalEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
@@ -74,7 +74,7 @@ extension NSDirectionalEdgeInsets: SelfCustomizable {
             trailing: lhs.trailing + rhs.trailing
         )
     }
-    
+
     func add(_ edges: NSDirectionalRectEdge, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0

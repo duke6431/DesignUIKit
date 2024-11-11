@@ -1,6 +1,6 @@
 //
 //  FButton.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
@@ -10,16 +10,16 @@ import DesignCore
 import SnapKit
 
 public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable {
-#if os(tvOS) || targetEnvironment(macCatalyst)
+    #if os(tvOS) || targetEnvironment(macCatalyst)
     public static let tapEvent: UIControl.Event = .primaryActionTriggered
-#else
+    #else
     public static let tapEvent: UIControl.Event = .touchUpInside
-#endif
-    
+    #endif
+
     public var customConfiguration: ((FButton) -> Void)?
-    
+
     var label: FBody?
-    
+
     public convenience init(style: UIButton.ButtonType? = nil, _ text: String = "", action: @escaping () -> Void) {
         self.init(style: style)
         setTitle(text, for: .normal)
@@ -51,7 +51,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
             ($0 as? FForEach)?.content() ?? [$0]
         }
     }
-    
+
     public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: @escaping (FButton?) -> Void) {
         self.init(style: style)
         addAction(for: Self.tapEvent, { [weak self] in action(self) })
@@ -59,7 +59,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
             ($0 as? FForEach)?.content() ?? [$0]
         }
     }
-    
+
     @available(iOS 15.0, tvOS 17.0, *)
     public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, menu: UIMenu) {
         self.init(style: style, label: label)
@@ -75,7 +75,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         self.changesSelectionAsPrimaryAction = true
         self.menu = menu
     }
-    
+
     func updateLabel() {
         label?.forEach { label in
             addSubview(label)
@@ -87,14 +87,14 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
             }
         }
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         updateLabel()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -109,7 +109,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         setTitleColor(color, for: .normal)
         return self
     }
-    
+
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)

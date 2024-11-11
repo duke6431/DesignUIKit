@@ -15,7 +15,7 @@ public protocol BaseNavigating: Chainable {
 
 open class BaseNavigator: BaseNavigating {
     open weak var navigationController: UINavigationController?
-    
+
     public init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }

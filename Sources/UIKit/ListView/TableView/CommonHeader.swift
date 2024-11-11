@@ -28,11 +28,11 @@ extension CommonTableView {
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
-        
+
         open func bind(_ model: CommonHeaderModel) {
             fatalError("Must override this function")
         }
-        
+
         open func configureViews() {
         }
     }

@@ -15,7 +15,7 @@ public extension Chainable where Self: AnyObject {
         self[keyPath: property] = value
         return self
     }
-    
+
     @discardableResult
     func customized(_ configuration: (Self) -> Void) -> Self {
         configuration(self)

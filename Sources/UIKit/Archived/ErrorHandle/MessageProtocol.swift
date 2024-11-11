@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
@@ -15,7 +15,7 @@ import ToastViewSwift
 
 public enum MPresentationStyle {
     case toast(dir: Toast.Direction)
-    
+
     case sheet(dir: PanModal.OriginDirection)
 
     /// System UIAlertViewController/Customable
@@ -23,7 +23,7 @@ public enum MPresentationStyle {
     ///
     case present
     case push
-    
+
     case custom(_ presenter: MHandlerStyle)
 }
 
@@ -35,7 +35,7 @@ public protocol MPresentable {
     var attributedMessageDescription: NSAttributedString? { get }
 
     var actions: [MAction] { get }
-    
+
     var presentationStyle: MPresentationStyle { get }
 }
 
@@ -47,13 +47,13 @@ public extension MPresentable {
     var attributedMessageDescription: NSAttributedString? { nil }
 
     var actions: [MAction] { [.ok] }
-    
+
     var presentationStyle: MPresentationStyle { .center }
 }
 
 public protocol MHandlable {
     var viewController: UIViewController? { get }
-    
+
     // TODO: 5 alert style: pop up, toast, drop down, bottom sheet, fullscreen
     // low: toast: just for show
     // medium: bottom sheet: show error and recoveries options

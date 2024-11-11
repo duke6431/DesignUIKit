@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
@@ -10,22 +10,22 @@ import UIKit
 
 public protocol BaseCoordinating: Chainable {
     var navigationController: UINavigationController? { get }
-    
+
     func toScene() -> Self
 }
 
 // TODO: Handle message `MessageHandlable`
 open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseCoordinating, Loggable {
     open weak var navigationController: UINavigationController?
-    
+
     public init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }
-    
+
     open func prepare(_ viewModel: ViewModel, _ scene: Scene) {
         // Override to prepare scene if needed
     }
-    
+
     @discardableResult
     open func toScene() -> Self {
         let viewModel = ViewModel()
@@ -34,10 +34,10 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: 
         navigationController?.pushViewController(scene, animated: true)
         return self
     }
-    
+
     deinit {
-#if CORE_DEBUG
+        #if CORE_DEBUG
         logger.info("Deinitialized \(self)")
-#endif
+        #endif
     }
 }

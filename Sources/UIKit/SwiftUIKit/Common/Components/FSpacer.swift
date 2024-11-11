@@ -1,6 +1,6 @@
 //
 //  FSpacer.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 12/02/2024.
 //
@@ -20,7 +20,7 @@ public final class FSpacer: BaseView, FComponent {
         }
     }
     public var customConfiguration: ((FSpacer) -> Void)?
-    
+
     fileprivate weak var blurView: UIVisualEffectView?
 
     public init(width: CGFloat? = nil, height: CGFloat? = nil) {
@@ -35,12 +35,12 @@ public final class FSpacer: BaseView, FComponent {
         generateBlurIfNeeded(with: blurStyle)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-    
+
     public func generateBlurIfNeeded(with blurStyle: UIBlurEffect.Style?) {
         if blurView != nil { return }
         guard let blurStyle else { return }
@@ -51,7 +51,7 @@ public final class FSpacer: BaseView, FComponent {
         }
         self.blurView = blurEffectView
     }
-    
+
     @discardableResult
     public func blurred(_ style: UIBlurEffect.Style) -> Self {
         blurStyle = style

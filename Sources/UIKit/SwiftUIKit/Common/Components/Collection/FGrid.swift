@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 17/02/2024.
 //
@@ -27,13 +27,13 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         }
         loadConfiguration()
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -72,7 +72,7 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         }
         return dataSource
     }
-    
+
     public func loadConfiguration() {
         configuration = .init()
     }
@@ -84,7 +84,7 @@ public extension FGrid {
         guard let data = data as? FGridModel else { return }
         onSelect?(data)
     }
-    
+
     @discardableResult func onSelect(_ action: @escaping (FGridModel) -> Void) -> Self {
         onSelect = action
         return self
@@ -96,7 +96,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
     public static var headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
     public var customConfiguration: ((CommonCollection.ReusableView) -> Void)?
     public var model: FCellModeling
-    
+
     public init(model: FCellModeling) {
         self.model = model
     }
@@ -104,7 +104,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
 
 public class FGridHeader: CommonCollection.ReusableView {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
         if content == nil {
@@ -113,7 +113,7 @@ public class FGridHeader: CommonCollection.ReusableView {
         }
         content?.bind(model.model)
     }
-    
+
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         backgroundColor = .clear
         addSubview(view)
@@ -128,7 +128,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
     public var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
     public var realData: Any?
     public var model: FCellModeling
-    
+
     public init(
         model: FCellModeling,
         realData: Any? = nil
@@ -140,7 +140,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
 
 public class FGridCell: CommonCollection.CollectionCell {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCollectionCellModel) {
         guard let model = model as? FGridModel else { return }
         if content == nil {
@@ -149,7 +149,7 @@ public class FGridCell: CommonCollection.CollectionCell {
         }
         content?.bind(model.model)
     }
-    
+
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear

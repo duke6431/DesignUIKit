@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 8/31/24.
 //
@@ -17,9 +17,9 @@ import ToastViewSwift
 // TODO: Handle Toast Messages
 public struct MToastHandler: MHandlerStyle, SelfCustomizable {
     public static var instance: MToastHandler { .init() }
-    
+
     public var direction: Toast.Direction = .top
-    
+
     public func handle(using viewComtroller: UIViewController, with message: MPresentable) {
         guard let title = message.title ?? message.messageDescription else { return }
         let titleAvailable = message.title != nil
@@ -33,10 +33,10 @@ public struct MToastHandler: MHandlerStyle, SelfCustomizable {
 
 public struct MSheetHandler: MHandlerStyle, SelfCustomizable {
     public static var instance: MSheetHandler { .init() }
-    
+
     var content: ((MPresentable) -> FBodyComponent)?
     var direction: PanModal.OriginDirection = .bottom
-    
+
     public func handle(using viewController: UIViewController, with message: MPresentable) {
         guard let content else { return }
         viewController.present(
@@ -48,7 +48,7 @@ public struct MSheetHandler: MHandlerStyle, SelfCustomizable {
 
 public struct MAlertHandler: MHandlerStyle {
     public static var instance: MAlertHandler { .init() }
-    
+
     public func handle(using viewController: UIViewController, with message: MPresentable) {
         let alertController = UIAlertController(
             title: message.title,
@@ -66,7 +66,7 @@ public struct MAlertHandler: MHandlerStyle {
 
 public struct MPresentHander: MHandlerStyle {
     public static var instance: MPresentHander { .init() }
-    
+
     public func handle(using viewController: UIViewController, with message: MPresentable) {
         viewController.present(UIViewController(), animated: true)
     }
@@ -74,7 +74,7 @@ public struct MPresentHander: MHandlerStyle {
 
 public struct MPushHandler: MHandlerStyle {
     public static var instance: MPushHandler { .init() }
-    
+
     public func handle(using viewController: UIViewController, with message: MPresentable) {
         guard let navigationController = viewController as? BNavigationController else { return }
         navigationController.pushViewController(UIViewController(), animated: true)

@@ -15,7 +15,7 @@ public final class FVideoPlayer: BaseView, FComponent {
 
     fileprivate weak var player: AVPlayer?
     fileprivate weak var playerLayer: AVPlayerLayer?
-    
+
     public init(with player: AVPlayer) {
         super.init(frame: .zero)
         self.player = player
@@ -26,7 +26,7 @@ public final class FVideoPlayer: BaseView, FComponent {
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -34,7 +34,7 @@ public final class FVideoPlayer: BaseView, FComponent {
         playerLayer?.setNeedsLayout()
         playerLayer?.layoutIfNeeded()
     }
-    
+
     deinit { stop() }
 }
 
@@ -46,7 +46,7 @@ public extension FVideoPlayer {
         playerLayer.frame = bounds
         layer.addSublayer(playerLayer)
     }
-    
+
     func stop() {
         player?.pause()
         playerLayer?.removeFromSuperlayer()

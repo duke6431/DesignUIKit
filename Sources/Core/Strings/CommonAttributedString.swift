@@ -14,19 +14,19 @@ public class CommonAttributedString: Chainable {
     public init(_ string: String = "") {
         self.string = string
     }
-    
+
     /// Build metadata into NSAttributedString
     /// - Returns: Swift attributed string
     public func build() -> NSAttributedString {
         NSMutableAttributedString(string: string, attributes: attributes)
     }
-    
+
     /// Existed key-value will be replaced
     public func merged(_ attributes: [NSAttributedString.Key: Any]) -> Self {
         self.attributes.merge(attributes) { _, second in second }
         return self
     }
-    
+
     /// build function to create NSAttributedString
     /// - Parameter strings: builder into list of common attributed string
     /// - Returns: a sumarized attributed string
@@ -35,17 +35,17 @@ public class CommonAttributedString: Chainable {
             partialResult.append(prototype.build())
         }
     }
-    
+
     /// Apply foreground color (text color) to string
     public func foreground(_ color: UIColor) -> Self {
         merged([.foregroundColor: color])
     }
-    
+
     /// Apply background color to occupied space of the string
     public func background(_ color: UIColor) -> Self {
         merged([.backgroundColor: color])
     }
-    
+
     /// Apply specific font to the string
     public func font(_ font: UIFont) -> Self {
         merged([.font: font])

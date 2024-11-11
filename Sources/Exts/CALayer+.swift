@@ -23,21 +23,21 @@ public extension CALayer {
                 self.path = UIBezierPath(rect: targetRect).cgPath
             }
         }
-        
+
         public var offSet: CGSize = .zero
         public var opacity: Float = 0.2
         public var radius: CGFloat = 3
         public var color: UIColor = .black
-        public var path: CGPath? = nil
+        public var path: CGPath?
     }
-    
+
     /// Add shadow to view with a configuration
     /// - Parameter config: Shadow configuration. Can use `.none` for no shadow
     /// - Returns: Current layer
     @discardableResult func add(shadow config: ShadowConfiguration) -> CALayer {
         addShadow(offSet: config.offSet, opacity: config.opacity, radius: config.radius, color: config.color, path: config.path)
     }
-    
+
     /// Base function to add shadow, returning current layer
     @discardableResult func addShadow(
         offSet: CGSize = .zero, opacity: Float = 0.2,
@@ -53,7 +53,7 @@ public extension CALayer {
         masksToBounds = false
         return self
     }
-    
+
     /// Base function to remove shadow from view
     @discardableResult
     func removeShadow() -> CALayer {

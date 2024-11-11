@@ -14,7 +14,7 @@ public extension UIControl {
         class Action: Failure {
             static let notFound: Action = .init()
         }
-        
+
         func with(message: String) {
             self.message = message
         }
@@ -23,18 +23,18 @@ public extension UIControl {
 
 public extension UIControl {
     private static let actionIDs = ObjectAssociation<StructWrapper<[(UIControl.Event, String)]>>()
-    
+
     var actionIDs: [(UIControl.Event, String)] {
         get { Self.actionIDs[self]?() ?? [] }
         set { Self.actionIDs[self] = .init(value: newValue) }
     }
-    
+
     /// Add action with out caring about selector and version compatible
     /// - Parameters:
     ///   - controlEvent: Control event for action to be triggered
     ///   - closure: Things happen
     @discardableResult
-    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping() -> Void) -> String {
+    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping () -> Void) -> String {
         var identifier: String
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }
@@ -49,7 +49,7 @@ public extension UIControl {
         actionIDs.append((controlEvent, identifier))
         return identifier
     }
-    
+
     func removeAction(for controlEvent: UIControl.Event, identifier: String? = nil) throws {
         guard let identifier = identifier else {
             try actionIDs.forEach(removeAction(for:identifier:))

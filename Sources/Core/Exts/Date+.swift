@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 1/7/24.
 //
@@ -25,7 +25,7 @@ public extension String {
         formatter.dateFormat = format
         return formatter.date(from: self)
     }
-    
+
     /// Reformat current date string to new date format
     func reformatted(from format: String, to target: String) -> String? {
         let formatter = DateFormatter()

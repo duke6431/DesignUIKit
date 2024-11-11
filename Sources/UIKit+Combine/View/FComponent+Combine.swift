@@ -18,7 +18,7 @@ public protocol Combinable: AnyObject {
 
 extension UIView: Combinable {
     static let cancellables = ObjectAssociation<StructWrapper<Set<AnyCancellable>>>()
-    
+
     public var cancellables: Set<AnyCancellable> {
         get {
             if let cancellables = Self.cancellables[self]?.value {

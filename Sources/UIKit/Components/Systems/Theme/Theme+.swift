@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 4/17/24.
 //
@@ -24,7 +24,7 @@ public extension Theme {
             }
         }
     }
-    
+
     static func scan(_ directory: Path) throws -> [Theme] {
         directory.compactMap({ elem in (elem, elem.fileName) }).compactMap({
             do {
@@ -35,7 +35,7 @@ public extension Theme {
             }
         })
     }
-    
+
     static func load(from bundle: Bundle, subdirectory: String? = nil, name: String) throws -> Theme {
         guard let path = bundle.urls(forResourcesWithExtension: "json", subdirectory: subdirectory)?.first(where: {
             $0.lastPathComponent.contains(name)
@@ -44,7 +44,7 @@ public extension Theme {
         }
         return try load(from: path, name: name)
     }
-    
+
     static func load(from path: URL, name: String) throws -> Theme {
         do {
             return try JSONDecoder().decode(Theme.self, from: try Data(contentsOf: path))

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 4/17/24.
 //
@@ -11,7 +11,7 @@ public enum ThemeError: Error {
     case empty(_ subdirectory: String?)
     case notFound(_ name: String)
     case decodeFailed(_ name: String, error: Error)
-    
+
     case missingPalette(_ name: String)
     case noSuchKey(_ name: String)
 }

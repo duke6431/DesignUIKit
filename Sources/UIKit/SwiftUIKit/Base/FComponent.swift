@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 11/02/2024.
 //
@@ -32,7 +32,7 @@ public extension FContentConstraintable where Self: UIView {
         setContentHuggingPriority(priority, for: axis)
         return self
     }
-    
+
     @discardableResult func compressionResistancePriority(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         setContentCompressionResistancePriority(priority, for: axis)
         return self
@@ -50,11 +50,11 @@ public extension FContentAvailable where Self: BaseLabel {
         contentInsets = contentInsets + insets
         return self
     }
-    
+
     @discardableResult func insets(_ insets: CGFloat) -> Self {
         self.insets(.all, insets)
     }
-    
+
     @discardableResult func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
         contentInsets = contentInsets.add(edges, insets)
         return self

@@ -10,9 +10,9 @@ import DesignCore
 
 public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
-    
+
     var arrangedContents: FBody
-    
+
     public init(
         axis: NSLayoutConstraint.Axis,
         spacing: Double = 8,
@@ -38,7 +38,7 @@ public class FStack: BaseStackView, FComponent {
         self.spacing = spacing
         self.distribution = distribution ?? .fill
     }
-    
+
     func addContents(_ body: FBody) {
         body.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
@@ -47,14 +47,14 @@ public class FStack: BaseStackView, FComponent {
             addArrangedSubview($0)
         }
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         addContents(arrangedContents)
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)

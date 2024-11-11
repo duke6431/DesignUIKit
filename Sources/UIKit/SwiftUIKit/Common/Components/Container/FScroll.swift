@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 12/02/2024.
 //
@@ -25,7 +25,7 @@ public final class FScroll: BaseScrollView, FComponent {
         }
         super.init(frame: .zero)
     }
-    
+
     public init(
         axis: NSLayoutConstraint.Axis,
         @FViewBuilder contentViews: () -> FBody
@@ -34,7 +34,7 @@ public final class FScroll: BaseScrollView, FComponent {
         self.contentViews = contentViews()
         super.init(frame: .zero)
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         switch axis {
@@ -95,7 +95,7 @@ public final class FScroll: BaseScrollView, FComponent {
         }
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 3/25/24.
 //
@@ -9,7 +9,7 @@ import Foundation
 
 public struct FPreferenceKey: ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
     public var rawValue: String
-    
+
     public init(stringLiteral value: StringLiteralType) { rawValue = value }
     public init(stringInterpolation: DefaultStringInterpolation) { rawValue = stringInterpolation.description }
 }

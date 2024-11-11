@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 4/5/24.
 //
@@ -72,7 +72,7 @@ extension FThemableShadow {
         ThemeSystem.shared.register(observer: self)
         return self
     }
-    
+
     @discardableResult
     public func shadow(_ shadow: CALayer.ShadowConfiguration, key: ThemeKey) -> Self {
         self.shadow(shadow).shadow(key: key)

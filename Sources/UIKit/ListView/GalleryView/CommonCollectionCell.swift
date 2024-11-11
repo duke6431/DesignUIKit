@@ -22,29 +22,29 @@ extension CommonCollection {
     open class CollectionCell: UICollectionViewCell, Reusable, Loggable {
         public var identifier: String = ""
         public var indexPath: IndexPath?
-        
+
         public override init(frame: CGRect) {
             super.init(frame: frame)
             configureViews()
         }
-        
+
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         public required init?(coder: NSCoder) {
             fatalError("Not implemented")
         }
-        
+
         open func bind(_ model: CommonCollectionCellModel) {
             fatalError("Must override this function")
         }
-        
+
         open func configureViews() {
         }
-        
+
         deinit {
-#if CORE_DEBUG
+            #if CORE_DEBUG
             logger.info("Deinitialized \(self)")
-#endif
+            #endif
         }
     }
 }

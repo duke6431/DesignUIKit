@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 4/17/24.
 //
@@ -14,15 +14,15 @@ public extension Theme {
         case light
         case dark
     }
-    
+
     struct Palette: Codable, Hashable {
         var style: Style
         var colors: [String: String]
-        
+
         public func hash(into hasher: inout Hasher) {
             hasher.combine(style)
         }
-        
+
         subscript(_ key: String) -> String? {
             get {
                 colors[key]

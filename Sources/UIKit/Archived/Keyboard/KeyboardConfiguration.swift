@@ -13,27 +13,27 @@ extension Keyboard {
         public static var outerSpacing: UIEdgeInsets = .init(top: 12, left: 12, bottom: 12 + 20, right: 12)
         public static var spacing: CGFloat = 6
         public static var keyboardBackground: UIColor = {
-#if os(tvOS)
+            #if os(tvOS)
             return UIColor(hexString: "DFDFDF")
-#else
+            #else
             if #available(iOS 13.0, *) {
                 return .secondarySystemBackground
             } else {
                 return UIColor(hexString: "DFDFDF")
             }
-#endif
+            #endif
         }()
         public struct Key {
             public static var background: UIColor = {
-#if os(tvOS)
+                #if os(tvOS)
                 return .white
-#else
+                #else
                 if #available(iOS 13.0, *) {
                     return .systemBackground
                 } else {
                     return .white
                 }
-#endif
+                #endif
             }()
             public static var foreground: UIColor = {
                 if #available(iOS 13.0, *) {

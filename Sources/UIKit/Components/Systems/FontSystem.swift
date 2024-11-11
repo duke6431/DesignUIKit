@@ -15,7 +15,7 @@ public protocol Calligraphiable: AnyObject {
 public class FontSystem {
     public static var shared: FontSystem = .init()
     public static var defaultFont: FontFamily = .System()
-    
+
     public var current: FontFamily
     public var multiplier: CGFloat = 1
 
@@ -25,23 +25,23 @@ public class FontSystem {
         self.current = current ?? Self.defaultFont
         notifyObservers()
     }
-    
+
     public func use(_ font: FontFamily) {
         current = font
         notifyObservers()
     }
-    
+
     public func register<Observer: Calligraphiable>(observer: Observer) {
         if !observers.contains(observer) {
             observers.add(observer)
         }
         notify(observer)
     }
-    
+
     func unregister<Observer: Calligraphiable>(_ observer: Observer) {
         observers.remove(observer)
     }
-    
+
     private func notifyObservers() {
         DispatchQueue.main.async {
             self.observers.allObjects
@@ -49,7 +49,7 @@ public class FontSystem {
                 .forEach(self.notify(_:))
         }
     }
-    
+
     func notify(_ observer: Calligraphiable) {
         observer.font = current.font(
             with: .init(
@@ -58,7 +58,7 @@ public class FontSystem {
             )
         )
     }
-    
+
     public func font(with style: FontFamily.Style) -> UIFont {
         current.font(with: style, multiplier: multiplier)
     }
@@ -66,9 +66,9 @@ public class FontSystem {
 
 @objc open class FontFamily: NSObject {
     public var name: String
-    
+
     public init(name: String) { self.name = name }
-    
+
     open func font(with style: Style, multiplier: CGFloat = 1) -> UIFont {
         var font: UIFont?
         switch style.weight {
@@ -101,7 +101,7 @@ public class FontSystem {
 public extension FontFamily {
     class System: FontFamily {
         public static let shared: System = .init()
-        
+
         init() { super.init(name: "system") }
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
@@ -113,7 +113,7 @@ extension FontFamily {
     open class Style: NSObject, Chainable {
         public var size: CGFloat
         public var weight: UIFont.Weight
-        
+
         public init(size: CGFloat, weight: UIFont.Weight) {
             self.size = size
             self.weight = weight
@@ -127,9 +127,9 @@ fileprivate extension UIFont {
         let weight = UIFont.Weight(rawValue: weightNumber)
         return weight
     }
-    
+
     private var traits: [UIFontDescriptor.TraitKey: Any] {
         return fontDescriptor.object(forKey: .traits) as? [UIFontDescriptor.TraitKey: Any]
-        ?? [:]
+            ?? [:]
     }
 }

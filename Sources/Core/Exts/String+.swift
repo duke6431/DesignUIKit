@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 1/7/24.
 //
@@ -12,7 +12,7 @@ public extension String {
     func ranges(of string: String) -> [NSRange] {
         var indices = [Int]()
         var searchStartIndex = self.startIndex
-        
+
         while searchStartIndex < self.endIndex,
               let range = self.range(of: string,
                                      range: searchStartIndex..<self.endIndex),
@@ -21,7 +21,7 @@ public extension String {
             indices.append(index)
             searchStartIndex = range.upperBound
         }
-        
+
         return indices.map { NSRange(location: $0, length: string.count) }
     }
 

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 3/27/24.
 //
@@ -14,9 +14,9 @@ public protocol ImageRepresenting {
 public enum ImageRepresenter: ImageRepresenting {
     case system(name: String)
     case asset(name: String, bundle: Bundle = .main)
-    
+
     public var image: UIImage? {
-        
+
         switch self {
         case .system(let name):
             return .init(systemName: name)

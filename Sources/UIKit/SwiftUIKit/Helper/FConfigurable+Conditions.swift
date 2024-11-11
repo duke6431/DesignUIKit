@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 2/20/24.
 //
@@ -21,7 +21,7 @@ public extension FConfigurable where Self: UIView {
             self
         }
     }
-    
+
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - condition: The condition to evaluate.
@@ -35,7 +35,7 @@ public extension FConfigurable where Self: UIView {
             othertransform(self)
         }
     }
-    
+
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - optional: Optional value as a condition.
@@ -49,7 +49,7 @@ public extension FConfigurable where Self: UIView {
             self
         }
     }
-    
+
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - optional: Optional value as a condition.
@@ -63,7 +63,7 @@ public extension FConfigurable where Self: UIView {
             othertransform(self)
         }
     }
-    
+
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - optional: Optional value as a condition.
@@ -79,7 +79,7 @@ public extension FConfigurable where Self: UIView {
             self
         }
     }
-    
+
     /// Applies the given transformation to view. Perfect to apply if else marco or platform available condition
     /// - Parameters:
     ///    - transform: The transformation to apply to the source `View`

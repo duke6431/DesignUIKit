@@ -50,51 +50,51 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         self.customPlaceholder = placeholder
         preconditions()
     }
-    
+
     public init(_ attributedText: NSAttributedString) {
         super.init(frame: .zero)
         self.attributedText = attributedText
         preconditions()
     }
-    
+
     public func preconditions() {
         textLayer.string = customPlaceholder
         preparePlaceholder()
         setNeedsLayout()
     }
-    
+
     func preparePlaceholder() {
         // textLayer properties
         textLayer.contentsScale = UIScreen.main.scale
         textLayer.alignmentMode = .left
         textLayer.isWrapped = true
         textLayer.foregroundColor = placeholderColor.cgColor
-        
+
         if let font = self.font {
             textLayer.fontSize = font.pointSize
         } else {
             textLayer.fontSize = 17.0
         }
-        
+
         // insert the textLayer
         layer.insertSublayer(textLayer, at: 0)
-        
+
         // set delegate to self
         delegate = self
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
         addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
-    
+
     public override func removeFromSuperview() {
         super.removeFromSuperview()
         removeTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         textLayer.frame = textRect(forBounds: bounds)
@@ -105,7 +105,7 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         self.customPlaceholder = placeholder ?? ""
         return self
     }
-    
+
     @discardableResult public func textAlignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
         return self
@@ -120,22 +120,22 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         self.textColor = color
         return self
     }
-    
+
     @discardableResult public func placeholder(_ color: UIColor = .secondaryLabel) -> Self {
         self.placeholderColor = color
         return self
     }
-    
+
     @discardableResult public func onChange(_ onChange: ((String) -> Void)? = nil) -> Self {
         self.onChangeAction = onChange
         return self
     }
-    
+
     @discardableResult public func onSubmit(_ onSubmit: (() -> Void)? = nil) -> Self {
         self.onSubmitAction = onSubmit
         return self
     }
-    
+
     public var foregroundKey: ThemeKey?
     public var placeholderKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {

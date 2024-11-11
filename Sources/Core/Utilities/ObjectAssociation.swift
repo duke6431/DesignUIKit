@@ -12,12 +12,12 @@ import ObjectiveC
  Create associated property for class using extensions
  ```
  extension SomeType {
-     private static let association = ObjectAssociation<NSObject>()
+ private static let association = ObjectAssociation<NSObject>()
 
-     var simulatedProperty: NSObject? {
-         get { return Self.association[self] }
-         set { Self.association[self] = newValue }
-     }
+ var simulatedProperty: NSObject? {
+ get { return Self.association[self] }
+ set { Self.association[self] = newValue }
+ }
  }
  ```
  */
@@ -39,28 +39,28 @@ public final class ObjectAssociation<T: AnyObject> {
 
 @objc public class ClosureSleeve: NSObject {
     public let closure: () -> Void
-    
-    public init(_ closure: @escaping() -> Void) { self.closure = closure }
-    
+
+    public init(_ closure: @escaping () -> Void) { self.closure = closure }
+
     @objc public func invoke() { closure() }
-    
+
     public func callAsFunction() { invoke() }
 }
 
 public class GenericClosureSleeve<T>: NSObject {
     public let closure: (T) -> Void
-    
+
     public init(_ closure: @escaping (T) -> Void) { self.closure = closure }
-    
+
     public func invoke(_ value: T) { closure(value) }
-    
+
     public func callAsFunction(_ value: T) { invoke(value) }
 }
 
 public class StructWrapper<T>: NSObject {
     public var value: T
-    
+
     public init(value: T) { self.value = value }
-    
+
     public func callAsFunction() -> T { value }
 }

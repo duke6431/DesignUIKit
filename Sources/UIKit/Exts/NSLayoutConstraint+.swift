@@ -12,17 +12,17 @@ extension NSLayoutConstraint {
     public static func activate(@FBuilder<NSLayoutConstraint> _ constraints: () -> [NSLayoutConstraint]) {
         activate(constraints())
     }
-    
+
     /**
      Change constraint multiplier
-     
+
      - parameter multiplier: CGFloat
      - returns: NSLayoutConstraint
      */
     func with(multiplier: CGFloat) -> NSLayoutConstraint {
         guard let firstItem = firstItem else { return self }
         NSLayoutConstraint.deactivate([self])
-        
+
         let newConstraint = NSLayoutConstraint(
             item: firstItem,
             attribute: firstAttribute,
@@ -32,11 +32,11 @@ extension NSLayoutConstraint {
             multiplier: multiplier,
             constant: constant
         )
-        
+
         newConstraint.priority = priority
         newConstraint.shouldBeArchived = shouldBeArchived
         newConstraint.identifier = identifier
-        
+
         NSLayoutConstraint.activate([newConstraint])
         return newConstraint
     }

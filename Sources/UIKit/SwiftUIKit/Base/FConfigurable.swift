@@ -43,7 +43,7 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
 public class FConfiguration: Chainable {
     var modifiers: [FModifier] = []
     var clearModifiers: Bool = false
-    
+
     public var width: CGFloat?
     public var height: CGFloat?
     public var offset: CGSize = .zero
@@ -58,7 +58,7 @@ public class FConfiguration: Chainable {
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)?
     public var shoudAnimateLayerChanges: Bool = false
     public var layerConfiguration: ((UIView) -> Void)?
-    
+
     public var shouldIgnoreSafeArea: Bool = false
     public var shouldConstraintWithParent: Bool = true
     public weak var owner: UIView?
@@ -69,7 +69,7 @@ public class FConfiguration: Chainable {
             modifiers = (newSuperview.configuration?.modifiers ?? []) + modifiers
         }
     }
-    
+
     public func didMoveToSuperview(_ superview: UIView?, with target: FBodyComponent) {
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
@@ -99,7 +99,7 @@ public class FConfiguration: Chainable {
             }
         }
     }
-    
+
     public func updateLayers(for target: UIView) {
         var shadowCornerRadius: CGFloat = 0
         var shadowCorners: UIRectCorner = .allCorners
@@ -130,7 +130,7 @@ public class FConfiguration: Chainable {
         }
         layerConfiguration?(target)
     }
-    
+
     fileprivate func apply(configuration: AnimationConfiguration = .default, to animation: @escaping () -> Void) {
         if shoudAnimateLayerChanges {
             UIView.animate(withDuration: configuration.duration, delay: configuration.delay, animations: animation)
@@ -140,9 +140,9 @@ public class FConfiguration: Chainable {
     }
 }
 
-fileprivate struct AnimationConfiguration {
+private struct AnimationConfiguration {
     static let `default`: Self = .init(duration: 0.25, delay: 0)
-    
+
     let duration: TimeInterval
     let delay: TimeInterval
 }

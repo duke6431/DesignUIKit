@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 2/23/24.
 //
@@ -13,15 +13,15 @@ import Foundation
 
 public final class FViewController<ViewController: UIViewController>: BaseView, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
-    
+
     public weak var parentViewController: UIViewController?
     public var contentViewController: ViewController
-    
+
     public init(_ contentViewController: ViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -33,7 +33,7 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         contentViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         customConfiguration?(self)
     }
-    
+
     public override func removeFromSuperview() {
         parentViewController = nil
         contentViewController.willMove(toParent: nil)
@@ -41,66 +41,66 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         contentViewController.removeFromParent()
         super.removeFromSuperview()
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-    
+
     @discardableResult public func parent(_ viewController: UIViewController) -> Self {
         parentViewController = viewController
         return self
     }
-    
+
     deinit {
         removeFromSuperview()
-#if CORE_DEBUG
+        #if CORE_DEBUG
         logger.info("Deinitialized \(self)")
-#endif
+        #endif
     }
 }
 
 public class FViewContainer: UIViewController, Chainable, Loggable {
     public var content: UIView
-    
+
     var onLoad: ((FViewContainer) -> Void)?
     var onAppear: ((FViewContainer) -> Void)?
     var onDisappear: ((FViewContainer) -> Void)?
-    
+
     public convenience init(@FViewBuilder _ content: () -> FBody) {
         self.init(content())
     }
-    
+
     public init(_ content: FBody) {
         self.content = FZStack(contentViews: content)
         super.init(nibName: nil, bundle: .main)
     }
-    
+
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     public required init?(coder: NSCoder) { fatalError("Unimplemented") }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(content)
         content.snp.makeConstraints { $0.edges.equalToSuperview() }
         onLoad?(self)
     }
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         onAppear?(self)
     }
-    
+
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onDisappear?(self)
     }
-    
+
     deinit {
-#if CORE_DEBUG
+        #if CORE_DEBUG
         logger.info("Deinitialized \(self)")
-#endif
+        #endif
     }
 }
 
@@ -109,12 +109,12 @@ public extension FViewContainer {
         onLoad = action
         return self
     }
-    
+
     func onAppear(_ action: @escaping (FViewContainer) -> Void) -> Self {
         onAppear = action
         return self
     }
-    
+
     func onDisappear(_ action: @escaping (FViewContainer) -> Void) -> Self {
         onDisappear = action
         return self

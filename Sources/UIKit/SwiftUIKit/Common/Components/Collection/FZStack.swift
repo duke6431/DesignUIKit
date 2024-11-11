@@ -10,7 +10,7 @@ import DesignCore
 public final class FZStack: BaseView, FComponent {
     public var customConfiguration: ((FZStack) -> Void)?
     public var contentViews: FBody
-    
+
     public init(contentView: FBodyComponent? = nil) {
         if let contentView {
             self.contentViews = [contentView]
@@ -19,16 +19,16 @@ public final class FZStack: BaseView, FComponent {
         }
         super.init(frame: .zero)
     }
-    
+
     public convenience init(@FViewBuilder _ builder: () -> FBody) {
         self.init(contentViews: builder())
     }
-    
+
     public init(contentViews: FBody) {
         self.contentViews = contentViews
         super.init(frame: .zero)
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -37,7 +37,7 @@ public final class FZStack: BaseView, FComponent {
         }.forEach(addSubview)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)

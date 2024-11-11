@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 1/7/24.
 //
@@ -13,7 +13,7 @@ public extension CharacterSet {
         // A Unicode scalar is any Unicode code point in the range U+0000 to U+D7FF inclusive or U+E000 to U+10FFFF inclusive.
         codePoints.compactMap { UnicodeScalar($0) }.map { Character($0) }
     }
-    
+
     /// Convert character in CharacterSet to code point (HEX)
     var codePoints: [Int] {
         var result: [Int] = []

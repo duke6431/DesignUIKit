@@ -10,12 +10,12 @@ import UIKit
 public struct FBackgroundModifier: FModifier {
     public var key: ThemeKey?
     public var color: UIColor?
-    
+
     public init(key: ThemeKey? = nil, color: UIColor? = nil) {
         self.key = key
         self.color = color
     }
-    
+
     public func body(_ content: Content) -> Content {
         guard let modifiedContent = content as? (FBodyComponent & FThemableBackground) else { return content }
         if let key {
@@ -36,7 +36,7 @@ public struct FForegroundModifier: FModifier {
         self.key = key
         self.color = color
     }
-    
+
     public func body(_ content: Content) -> Content {
         guard let modifiedContent = content as? (FBodyComponent & FThemableForeground) else { return content }
         if let key {

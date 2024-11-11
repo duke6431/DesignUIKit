@@ -13,7 +13,7 @@ public extension BCollectionView {
         case header
         /// Footer for collection section
         case footer
-        
+
         /// Return rawValue of Swift
         public var rawValue: String {
             switch self {
@@ -24,7 +24,7 @@ public extension BCollectionView {
             }
         }
     }
-    
+
     /// Registers a nib or a UICollectionViewCell object containing a cell with the collection view under a specified identifier.
     func register<T: BCollectionViewCell>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -35,7 +35,7 @@ public extension BCollectionView {
             register(aClass, forCellWithReuseIdentifier: name)
         }
     }
-    
+
     /// Registers a nib or a UICollectionReusableView object containing a header with the collection view under a specified identifier.
     func register<T: UICollectionReusableView>(
         _ aClass: T.Type,
@@ -50,7 +50,7 @@ public extension BCollectionView {
             register(aClass, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable collection-view cell object located by its identifier.
     func dequeue<T: BCollectionViewCell>(_ aClass: T.Type, indexPath: IndexPath) -> T {
         let name = String(describing: aClass)
@@ -59,7 +59,7 @@ public extension BCollectionView {
         }
         return cell
     }
-    
+
     /// Returns a reusable header view located by its identifier.
     func dequeue<T: UICollectionReusableView>(
         _ aClass: T.Type,
@@ -85,7 +85,7 @@ public extension UITableView {
             register(aClass, forCellReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable table-view cell object located by its identifier.
     func dequeue<T: UITableViewCell>(_ aClass: T.Type) -> T {
         let name = String(describing: aClass)
@@ -94,7 +94,7 @@ public extension UITableView {
         }
         return cell
     }
-    
+
     /// Registers a nib or a UITableViewHeaderFooterView object containing a header or footer with the table view under a specified identifier.
     func register<T: UITableViewHeaderFooterView>(_ aClass: T.Type, bundle: Bundle? = .main) {
         let name = String(describing: aClass)
@@ -105,7 +105,7 @@ public extension UITableView {
             register(aClass, forHeaderFooterViewReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable header or footer view located by its identifier.
     func dequeue<T: UITableViewHeaderFooterView>(_ aClass: T.Type) -> T {
         let name = String(describing: aClass)

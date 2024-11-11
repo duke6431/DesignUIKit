@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc Minh Nguyen on 4/23/24.
 //
@@ -21,11 +21,11 @@ public class MAction: FView {
     var title: String?
     var attributedTitle: NSAttributedString?
     var customView: FBodyComponent?
-    
+
     var style: MActionStyle = .default
-    
+
     var action: (() -> Void)?
-    
+
     public override var body: FBodyComponent {
         FButton {
             if let customView {
@@ -41,7 +41,7 @@ public class MAction: FView {
             self?.action?()
         }
     }
-    
+
     @FViewBuilder var content: FBody {
         if let icon {
             FImage(image: icon)
