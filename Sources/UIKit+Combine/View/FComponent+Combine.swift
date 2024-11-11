@@ -39,7 +39,7 @@ public extension FComponent where Self: UIView, Self: Combinable {
         error: ((Failure) -> Void)? = nil,
         complete: (() -> Void)? = nil
     ) -> Self {
-        publisher.sink { completion in
+        publisher.receive(on: DispatchQueue.main).sink { completion in
             switch completion {
             case .failure(let failure):
                 error?(failure)

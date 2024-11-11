@@ -33,7 +33,6 @@ open class FView: BaseView, FComponent {
         addSubview(body)
     }
 
-    @MainActor
     open var body: FBodyComponent {
         fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
