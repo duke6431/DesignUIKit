@@ -9,13 +9,13 @@ import DesignCore
 import RxCocoa
 import UIKit
 
-public protocol BaseNavigating: Chainable {
+public protocol BaseCoordinating: Chainable {
     var navigationController: UINavigationController? { get }
 
     func toScene() -> Self
 }
 
-open class BaseNavigator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseNavigating, Loggable {
+open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseCoordinating, Loggable {
     open weak var navigationController: UINavigationController?
     
     public init(_ navigationController: UINavigationController? = nil) {
