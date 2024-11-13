@@ -8,6 +8,7 @@
 import Foundation
 import DesignUIKit
 import RxCocoa
+import RxSwift
 
 extension FTextField {
     public convenience init(
@@ -18,5 +19,17 @@ extension FTextField {
         self.customPlaceholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
         preconditions()
+    }
+    
+    func sendText(to subject: PublishSubject<String?>) -> Self {
+        rx.text.bind(onNext: subject.onNext(_:)).disposed(by: disposeBag)
+        return self
+    }
+    
+    func sendReturn(to subject: PublishSubject<String?>) -> Self {
+        rx.controlEvent(.editingDidEndOnExit).map { [weak self] in
+            self?.text
+        }.bind(onNext: subject.onNext(_:)).disposed(by: disposeBag)
+        return self
     }
 }

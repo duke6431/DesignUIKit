@@ -10,14 +10,18 @@ import DesignCore
 import RxSwift
 import RxCocoa
 
-public protocol ViewModeling<Input, Output> {
-    associatedtype Input
-    associatedtype Output
-    func connect(_ input: Input, with output: Output)
+public protocol ViewModeling {
+    func register<T>(to path: ReferenceWritableKeyPath<Self, PublishSubject<T>>, with subject: PublishSubject<T>)
+}
+
+public extension ViewModeling where Self: BaseViewModel {
+    func register<T>(to path: ReferenceWritableKeyPath<Self, PublishSubject<T>>, with subject: Observable<T>) {
+        subject.subscribe(onNext: self[keyPath: path].onNext(_:)).disposed(by: disposeBag)
+    }
 }
 
 open class BaseViewModel {
     open var disposeBag = DisposeBag()
-
-    public init() { }
+    
+    public required init() { }
 }

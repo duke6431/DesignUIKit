@@ -45,11 +45,6 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.connect(input, with: output)
-    }
-
     open override func configureViews() {
         super.configureViews()
         view.addSubview(body)
@@ -58,13 +53,4 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
     open var body: FBodyComponent {
         fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
-
-    open var input: ViewModel.Input {
-        fatalError("Input was not prepared")
-    }
-
-    open var output: ViewModel.Output {
-        fatalError("Output was not prepared")
-    }
-
 }

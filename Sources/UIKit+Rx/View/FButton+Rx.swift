@@ -10,6 +10,7 @@ import DesignCore
 import DesignUIKit
 import UIKit
 import RxCocoa
+import RxSwift
 
 extension FButton {
     public convenience init(
@@ -19,7 +20,6 @@ extension FButton {
     ) {
         self.init(style: style)
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
-        addAction(for: Self.tapEvent, action)
     }
 
     public convenience init(
@@ -29,6 +29,10 @@ extension FButton {
     ) {
         self.init(style: style)
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
-        addAction(for: Self.tapEvent, { [weak self] in action(self) })
+    }
+
+    func sendTap(to subject: PublishSubject<Void>) -> Self {
+        rx.tap.bind(onNext: subject.onNext).disposed(by: disposeBag)
+        return self
     }
 }

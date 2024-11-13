@@ -8,6 +8,7 @@
 import Foundation
 import DesignUIKit
 import RxCocoa
+import RxSwift
 
 extension FTextView {
     public convenience init(
@@ -18,5 +19,10 @@ extension FTextView {
         self.placeholder = placeholder
         self.bind(to: textPublisher) { field, text in field.text = text }
         preconditions()
+    }
+    
+    func sendText(to subject: PublishSubject<String?>) -> Self {
+        rx.text.bind(onNext: subject.onNext(_:)).disposed(by: disposeBag)
+        return self
     }
 }
