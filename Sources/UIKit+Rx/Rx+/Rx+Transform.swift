@@ -25,6 +25,10 @@ public extension Infallible {
     func invertFilter(_ predicate: @escaping (Element) -> Bool) -> Infallible<Element> { filter { !predicate($0) } }
 }
 
+public extension ObservableConvertibleType {
+    func completeDriver() -> Driver<Element> { asDriver(onErrorDriveWith: .empty()) }
+}
+
 public extension SharedSequence {
     func cast<T>(to type: T.Type) -> SharedSequence<SharingStrategy, T> { compactMap { $0 as? T } }
     func void() -> SharedSequence<SharingStrategy, Void> { map { _ in } }
