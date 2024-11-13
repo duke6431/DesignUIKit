@@ -10,9 +10,7 @@ import DesignCore
 import RxSwift
 import RxCocoa
 
-public protocol ViewModeling {
-    func register<T>(to path: ReferenceWritableKeyPath<Self, PublishSubject<T>>, with subject: PublishSubject<T>)
-}
+public protocol ViewModeling { }
 
 public extension ViewModeling where Self: BaseViewModel {
     func register<T>(to path: ReferenceWritableKeyPath<Self, PublishSubject<T>>, with subject: Observable<T>) {
@@ -20,8 +18,8 @@ public extension ViewModeling where Self: BaseViewModel {
     }
 }
 
-open class BaseViewModel {
+open class BaseViewModel: ViewModeling {
     open var disposeBag = DisposeBag()
     
-    public required init() { }
+    public init() { }
 }
