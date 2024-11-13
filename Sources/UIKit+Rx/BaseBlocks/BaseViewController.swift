@@ -27,9 +27,12 @@ open class BaseViewController: UIViewController, FThemableBackground {
     open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
+        bindViewModel()
     }
 
     open func configureViews() { }
+    
+    open func bindViewModel() { }
 
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
