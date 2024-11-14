@@ -15,7 +15,7 @@ public protocol ViewModeling {
 }
 
 public extension ViewModeling where Self: BaseViewModel {
-    func register<T>(to path: ReferenceWritableKeyPath<Self, PublishSubject<T>>, with subject: Observable<T>) {
+    func register<T>(to path: KeyPath<Self, PublishSubject<T>>, with subject: Observable<T>) {
         subject.subscribe(onNext: self[keyPath: path].onNext(_:)).store(in: &cancellables)
     }
 }
