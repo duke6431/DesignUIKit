@@ -21,7 +21,7 @@ public extension ViewModeling where Self: BaseViewModel {
 }
 
 open class BaseViewModel: ViewModeling {
-    var cancellables: [Disposable] = []
+    public var cancellables: [Disposable] = []
     
     public init() { }
     
