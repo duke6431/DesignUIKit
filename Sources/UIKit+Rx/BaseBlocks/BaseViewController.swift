@@ -48,6 +48,11 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.connect(with: disposeBag)
+    }
+    
     open override func configureViews() {
         super.configureViews()
         view.addSubview(body)
