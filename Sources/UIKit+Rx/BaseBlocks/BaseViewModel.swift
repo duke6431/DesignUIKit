@@ -23,7 +23,7 @@ public extension ViewModeling where Self: BaseViewModel {
 open class BaseViewModel: ViewModeling {
     public var cancellables: [Disposable] = []
     
-    public init() { }
+    public required init() { }
     
     open func connect(with disposeBag: DisposeBag) {
         cancellables.forEach(disposeBag.insert(_:))
