@@ -27,7 +27,7 @@ open class BaseViewModel: ViewModeling {
         bind()
     }
     
-    func bind() { }
+    open func bind() { }
     
     open func connect(with disposeBag: DisposeBag) {
         cancellables.forEach(disposeBag.insert(_:))
