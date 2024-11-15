@@ -11,11 +11,11 @@ import DesignUIKit
 import DesignCore
 import RxCocoa
 
-public protocol Combinable: AnyObject {
+public protocol Reactivable: AnyObject {
     var disposeBag: DisposeBag { get set }
 }
 
-extension UIView: Combinable {
+extension UIView: Reactivable {
     static let disposeBag = ObjectAssociation<DisposeBag>()
 
     public var disposeBag: DisposeBag {
@@ -29,7 +29,7 @@ extension UIView: Combinable {
     }
 }
 
-public extension FComponent where Self: UIView, Self: Combinable {
+public extension FComponent where Self: UIView, Self: Reactivable {
     @discardableResult func bind<Subject>(
         to publisher: Driver<Subject>,
         next: @escaping (Self, Subject) -> Void,

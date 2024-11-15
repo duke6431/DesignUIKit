@@ -9,8 +9,8 @@ import Foundation
 import DesignUIKit
 import RxCocoa
 
-extension FLabel {
-    public convenience init(
+public extension FLabel {
+    convenience init(
         _ textPublisher: Driver<String>
     ) {
         self.init("")

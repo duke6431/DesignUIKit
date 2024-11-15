@@ -10,8 +10,8 @@ import DesignUIKit
 import RxCocoa
 import RxSwift
 
-extension FTextField {
-    public convenience init(
+public extension FTextField {
+    convenience init(
         _ placeholder: String,
         _ textPublisher: Driver<String>
     ) {

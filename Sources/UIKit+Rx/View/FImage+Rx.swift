@@ -10,8 +10,8 @@ import DesignCore
 import DesignUIKit
 import RxCocoa
 
-extension FImage {
-    public convenience init(
+public extension FImage {
+    convenience init(
         _ systemImagePublisher: Driver<String>
     ) {
         self.init()
@@ -21,7 +21,7 @@ extension FImage {
         }
     }
 
-    public convenience init(
+    convenience init(
         _ imagePublisher: Driver<UIImage>
     ) {
         self.init()

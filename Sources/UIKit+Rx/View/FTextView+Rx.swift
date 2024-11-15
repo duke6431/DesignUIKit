@@ -10,8 +10,8 @@ import DesignUIKit
 import RxCocoa
 import RxSwift
 
-extension FTextView {
-    public convenience init(
+public extension FTextView {
+    convenience init(
         _ placeholder: String,
         _ textPublisher: Driver<String>
     ) {

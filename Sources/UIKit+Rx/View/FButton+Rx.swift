@@ -12,8 +12,8 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-extension FButton {
-    public convenience init(
+public extension FButton {
+    convenience init(
         style: UIButton.ButtonType? = nil,
         _ textPublisher: Driver<String>,
         action: @escaping () -> Void
@@ -22,7 +22,7 @@ extension FButton {
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
     }
 
-    public convenience init(
+    convenience init(
         style: UIButton.ButtonType? = nil,
         _ textPublisher: Driver<String>,
         action: @escaping (FButton?) -> Void
