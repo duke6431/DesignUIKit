@@ -11,7 +11,7 @@ import UIKit
 public protocol BaseCoordinating: Chainable {
     var navigationController: UINavigationController? { get }
     
-    func toScene() -> Self
+    @MainActor func toScene() -> Self
 }
 
 // TODO: Handle message `MessageHandlable`
@@ -27,7 +27,7 @@ open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: 
     }
     
     @discardableResult
-    open func toScene() -> Self {
+    @MainActor open func toScene() -> Self {
         let viewModel = ViewModel()
         let scene = Scene(with: viewModel)
         prepare(viewModel, scene)

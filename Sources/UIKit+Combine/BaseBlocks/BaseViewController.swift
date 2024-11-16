@@ -30,6 +30,7 @@ open class BaseViewController: UIViewController, FThemableBackground, Loggable {
         bindViewModel()
     }
     
+    @MainActor
     open func configureViews() {
         
     }
