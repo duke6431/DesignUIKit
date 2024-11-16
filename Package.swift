@@ -100,8 +100,8 @@ let package = Package(
             name: "DesignRxUIKit",
             dependencies: [
                 .target(name: "DesignUIKit"),
-                .product(name: "RxSwift", package: "RxSwift"),
-                .product(name: "RxCocoa", package: "RxSwift")
+                .product(name: "RxSwift-Dynamic", package: "RxSwift"),
+                .product(name: "RxCocoa-Dynamic", package: "RxSwift")
             ],
             path: "Sources/UIKit+Rx",
             exclude: ["Archived/"]
