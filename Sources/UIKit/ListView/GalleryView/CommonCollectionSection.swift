@@ -150,7 +150,7 @@ extension CommonCollection.Section {
     }
     
     public static func customLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
-        guard let layout = section.layout else {
+        guard let layout = section.dimension.customLayout else {
             return slidingLayout(section: section)
         }
         return layout(section)
