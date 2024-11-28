@@ -47,7 +47,7 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.connect(input, with: output)
+        viewModel.connect(input, with: output, disposeBag: disposeBag)
     }
     
     open override func configureViews() {

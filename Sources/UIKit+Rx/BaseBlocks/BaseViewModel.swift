@@ -13,11 +13,9 @@ import RxCocoa
 public protocol ViewModeling<Input, Output> {
     associatedtype Input
     associatedtype Output
-    func connect(_ input: Input, with output: Output)
+    func connect(_ input: Input, with output: Output, disposeBag: DisposeBag)
 }
 
 open class BaseViewModel {
-    open var disposeBag = DisposeBag()
-
     public init() { }
 }
