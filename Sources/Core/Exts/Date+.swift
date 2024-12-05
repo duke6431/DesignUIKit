@@ -9,11 +9,11 @@ import Foundation
 
 public extension Date {
     /// Free style date formatter
-    func formatted(using format: String) -> String {
-        let formatter = DateFormatter()
+    func formatted(using format: String, _ customized: ((DateFormatter) -> DateFormatter)? = nil) -> String {
+        var formatter = DateFormatter()
         formatter.locale = .autoupdatingCurrent
         formatter.dateFormat = format
-        return formatter.string(from: self)
+        return (customized?(formatter) ?? formatter).string(from: self)
     }
 }
 
