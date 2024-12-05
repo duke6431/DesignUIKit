@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class FContainer<View: UIView>: FView {
+public class FContainer<View: UIView>: FView {
     var content: View
 
     public init(content: View) {

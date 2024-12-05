@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FForEach: FBodyComponent, Loggable {
+public class FForEach: FBodyComponent, Loggable {
     public var customConfiguration: ((FForEach) -> Void)?
     public var contentViews: [FBodyComponent]
 

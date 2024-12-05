@@ -22,9 +22,10 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     @discardableResult func ratio(_ ratio: CGFloat) -> Self
     @discardableResult func padding() -> Self
     @discardableResult func padding(_ padding: CGFloat) -> Self
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, _ padding: CGFloat) -> Self
     @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self
+    @discardableResult func ignore(edges: FDirectionalRectEdge) -> Self
     @discardableResult func offset(_ size: CGSize) -> Self
     @discardableResult func offset(width: CGFloat, height: CGFloat) -> Self
     @discardableResult func background(_ color: UIColor) -> Self
@@ -40,6 +41,33 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     @discardableResult func clearModifiers() -> Self
 }
 
+public struct FDirectionalRectEdge: OptionSet, Hashable, @unchecked Sendable, ExpressibleByIntegerLiteral {
+    public var rawValue: Int
+    
+    public init(rawValue: Int) { self.rawValue = rawValue }
+    public init(integerLiteral value: Int) { self.rawValue = value }
+    
+    public static let top: FDirectionalRectEdge = .init(rawValue: 1 << 0)
+    public static let bottom: FDirectionalRectEdge = .init(rawValue: 1 << 1)
+    public static let leading: FDirectionalRectEdge = .init(rawValue: 1 << 2)
+    public static let trailing: FDirectionalRectEdge = .init(rawValue: 1 << 3)
+    
+    public static let all: FDirectionalRectEdge = [.top, .bottom, .leading, .trailing]
+    public static let vertical: FDirectionalRectEdge = [.top, .bottom]
+    public static let horizontal: FDirectionalRectEdge = [.leading, .trailing]
+}
+
+extension FDirectionalRectEdge {
+    var rawEdges: [FDirectionalRectEdge] {
+        var edges: [FDirectionalRectEdge] = []
+        if contains(.top) { edges.append(.top) }
+        if contains(.bottom) { edges.append(.bottom) }
+        if contains(.leading) { edges.append(.leading) }
+        if contains(.trailing) { edges.append(.trailing) }
+        return edges
+    }
+}
+
 public class FConfiguration: Chainable {
     var modifiers: [FModifier] = []
     var clearModifiers: Bool = false
@@ -50,7 +78,9 @@ public class FConfiguration: Chainable {
     public var shadow: CALayer.ShadowConfiguration?
     public var shape: FShape?
     public var backgroundColor: UIColor = .clear
-    public var containerPadding: NSDirectionalEdgeInsets?
+    public var containerPadding: [FDirectionalRectEdge: CGFloat] = .init(
+        uniqueKeysWithValues: FDirectionalRectEdge.all.rawEdges.map { ($0, 0) }
+    )
     public var ratio: CGFloat?
     public var opacity: CGFloat = 1
     public var centerOffset: CGSize?
@@ -63,6 +93,14 @@ public class FConfiguration: Chainable {
     public var shouldConstraintWithParent: Bool = true
     public weak var owner: UIView?
 
+    func update(_ padding: CGFloat, for edge: FDirectionalRectEdge) {
+        var finalPadding: CGFloat = padding
+        if let currentPadding = containerPadding[edge] {
+            finalPadding += currentPadding
+        }
+        containerPadding[edge] = finalPadding
+    }
+    
     func willMove(toSuperview newSuperview: UIView?) {
         guard let newSuperview = newSuperview as? FBodyComponent else { return }
         if !clearModifiers {
@@ -83,13 +121,19 @@ public class FConfiguration: Chainable {
             }
         } else if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
-                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea
-                    ? superview
-                    : superview.safeAreaLayoutGuide
-                $0.top.equalTo(target).offset(offset.height + (containerPadding?.top ?? 0)).priority(layoutPriority)
-                $0.leading.equalTo(target).offset(offset.width + (containerPadding?.leading ?? 0)).priority(layoutPriority)
-                $0.trailing.equalTo(target).offset(offset.width - (containerPadding?.trailing ?? 0)).priority(layoutPriority)
-                $0.bottom.equalTo(target).offset(offset.height - (containerPadding?.bottom ?? 0)).priority(layoutPriority)
+                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
+                if let padding = containerPadding[.top] {
+                    $0.top.equalTo(target).offset(offset.height + padding).priority(layoutPriority)
+                }
+                if let padding = containerPadding[.leading] {
+                    $0.leading.equalTo(target).offset(offset.width + padding).priority(layoutPriority)
+                }
+                if let padding = containerPadding[.trailing] {
+                    $0.trailing.equalTo(target).offset(offset.width - padding).priority(layoutPriority)
+                }
+                if let padding = containerPadding[.bottom] {
+                    $0.bottom.equalTo(target).offset(offset.height - padding).priority(layoutPriority)
+                }
             }
         }
         target.snp.makeConstraints {
@@ -98,9 +142,7 @@ public class FConfiguration: Chainable {
             if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio).priority(layoutPriority) }
         }
         if let layoutConfiguration, let superview {
-            target.snp.makeConstraints {
-                layoutConfiguration($0, superview)
-            }
+            target.snp.makeConstraints { layoutConfiguration($0, superview) }
         }
     }
 

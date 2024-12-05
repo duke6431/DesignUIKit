@@ -17,7 +17,7 @@ public protocol BaseCoordinating: Chainable {
 
 open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseCoordinating, Loggable {
     open weak var navigationController: UINavigationController?
-    
+
     public init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }

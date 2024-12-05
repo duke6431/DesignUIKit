@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FVStack: FStack {
+public class FVStack: FStack {
     public init(
         spacing: Double = 8,
         distribution: UIStackView.Distribution? = nil,

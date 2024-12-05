@@ -54,14 +54,6 @@ public class FObservedPreference<T>: Loggable {
     }
 }
 
-class Test {
-    @FObservedPreference("Test", default: 0) var foo: Int
-    
-    func test() {
-        $foo.asObservable().subscribe(onNext: { print($0) })
-    }
-}
-
 private final class FPrefObservation<T>: NSObject, Chainable, Loggable {
     let key: FPreferenceKey
     private var onChange: (T?, T?) -> Void

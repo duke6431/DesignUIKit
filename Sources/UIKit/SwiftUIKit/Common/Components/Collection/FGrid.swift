@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import DesignExts
 
-public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
+public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
     public var customConfiguration: ((FGrid) -> Void)?
     public var onSelect: ((FGridModel) -> Void)?
     public weak var content: CommonCollection.View?

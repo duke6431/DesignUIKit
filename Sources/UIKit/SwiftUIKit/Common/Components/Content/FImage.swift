@@ -9,7 +9,7 @@ import UIKit
 import Nuke
 import DesignCore
 
-public final class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable {
+public class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
 
     public var customConfiguration: ((FImage) -> Void)?

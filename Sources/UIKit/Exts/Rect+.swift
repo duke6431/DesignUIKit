@@ -93,7 +93,7 @@ extension NSDirectionalEdgeInsets: SelfCustomizable {
         )
     }
 
-    func add(_ edges: NSDirectionalRectEdge, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
+    func add(_ edges: FDirectionalRectEdge, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
             insets.leading += edges.contains(.leading) ? rhs : 0

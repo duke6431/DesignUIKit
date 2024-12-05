@@ -10,7 +10,7 @@ import AVFoundation
 import DesignCore
 import DesignExts
 
-public final class FVideoPlayer: BaseView, FComponent {
+public class FVideoPlayer: BaseView, FComponent {
     public var customConfiguration: ((FVideoPlayer) -> Void)?
 
     fileprivate weak var player: AVPlayer?

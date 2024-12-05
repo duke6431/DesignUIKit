@@ -38,7 +38,12 @@ public extension FConfigurable {
     }
 
     @discardableResult func padding(_ insets: NSDirectionalEdgeInsets) -> Self {
-        configuration?.containerPadding = (configuration?.containerPadding ?? .zero) + insets
+        [
+            (insets.top, .top),
+            (insets.leading, .leading),
+            (insets.bottom, .bottom),
+            (insets.trailing, .trailing)
+        ].forEach(configuration?.update ?? { _, _ in })
         return self
     }
 
@@ -46,16 +51,22 @@ public extension FConfigurable {
         self.padding(.all, padding)
     }
 
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self {
-        configuration?.containerPadding = (configuration?.containerPadding ?? .zero).add(edges, padding)
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, _ padding: CGFloat) -> Self {
+        edges.rawEdges.map { (padding, $0) }.forEach(configuration?.update ?? { _, _ in })
         return self
     }
 
     @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self {
         padding(SpacingSystem.shared.spacing(style))
     }
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self {
+
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self {
         padding(edges, SpacingSystem.shared.spacing(style))
+    }
+    
+    @discardableResult func ignore(edges: FDirectionalRectEdge) -> Self {
+        edges.rawEdges.forEach { configuration?.containerPadding.removeValue(forKey: $0) }
+        return self
     }
 
     @discardableResult func background(_ color: UIColor) -> Self {

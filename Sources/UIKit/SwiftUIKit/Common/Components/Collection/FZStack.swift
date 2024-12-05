@@ -7,7 +7,7 @@
 
 import DesignCore
 
-public final class FZStack: BaseView, FComponent {
+public class FZStack: BaseView, FComponent {
     public var customConfiguration: ((FZStack) -> Void)?
     public var contentViews: FBody
 

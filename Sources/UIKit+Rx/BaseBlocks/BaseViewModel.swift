@@ -23,9 +23,7 @@ public extension ViewModeling where Self: BaseViewModel {
 open class BaseViewModel: ViewModeling {
     public var cancellables: [Disposable] = []
     
-    public required init() {
-        bind()
-    }
+    public required init() { bind() }
     
     open func bind() { }
     

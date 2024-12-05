@@ -9,7 +9,7 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable {
+public class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable {
     #if os(tvOS) || targetEnvironment(macCatalyst)
     public static let tapEvent: UIControl.Event = .primaryActionTriggered
     #else

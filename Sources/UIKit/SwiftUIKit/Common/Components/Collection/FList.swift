@@ -10,7 +10,7 @@ import DesignCore
 import DesignExts
 import SnapKit
 
-public final class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
+public class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
     public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     public var customConfiguration: ((FList) -> Void)?
 

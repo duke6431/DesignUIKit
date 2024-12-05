@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FScroll: BaseScrollView, FComponent {
+public class FScroll: BaseScrollView, FComponent {
     public var axis: NSLayoutConstraint.Axis
     public var contentViews: [FBodyComponent] = []
     public var customConfiguration: ((FScroll) -> Void)?
@@ -58,18 +58,18 @@ public final class FScroll: BaseScrollView, FComponent {
                 case .horizontal:
                     view.topAnchor.constraint(equalTo: topAnchor)
                     view.bottomAnchor.constraint(equalTo: bottomAnchor)
-                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding?.leading ?? 0)
+                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding[.leading] ?? 0)
                     view.centerYAnchor.constraint(equalTo: centerYAnchor)
                 case .vertical:
-                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding?.top ?? 0)
+                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding[.top] ?? 0)
                     view.leadingAnchor.constraint(equalTo: leadingAnchor)
                     view.trailingAnchor.constraint(equalTo: trailingAnchor)
                     view.centerXAnchor.constraint(equalTo: centerXAnchor)
                 @unknown default:
-                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding?.top ?? 0)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding?.bottom ?? 0))
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding?.leading ?? 0)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding?.trailing ?? 0))
+                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding[.top] ?? 0)
+                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding[.bottom] ?? 0))
+                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding[.leading] ?? 0)
+                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding[.trailing] ?? 0))
                 }
             }
             switch axis {
@@ -83,13 +83,9 @@ public final class FScroll: BaseScrollView, FComponent {
         }
         switch axis {
         case .horizontal:
-            NSLayoutConstraint.activate {
-                leading.constraint(equalTo: trailingAnchor)
-            }
+            NSLayoutConstraint.activate { leading.constraint(equalTo: trailingAnchor) }
         case .vertical:
-            NSLayoutConstraint.activate {
-                top.constraint(equalTo: bottomAnchor)
-            }
+            NSLayoutConstraint.activate { top.constraint(equalTo: bottomAnchor) }
         @unknown default:
             break
         }
