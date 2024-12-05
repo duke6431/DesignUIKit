@@ -19,6 +19,7 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     @discardableResult func layoutPriority(_ priority: ConstraintPriority) -> Self
     @discardableResult func centerInParent() -> Self
     @discardableResult func centerInParent(offset: CGSize) -> Self
+    @discardableResult func center(axis: FAxis) -> Self
     @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self
     @discardableResult func ratio(_ ratio: CGFloat) -> Self
     @discardableResult func padding() -> Self

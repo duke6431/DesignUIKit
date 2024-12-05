@@ -119,6 +119,10 @@ public extension FConfigurable {
         return self
     }
 
+    @discardableResult func center(axis: FAxis) -> Self {
+        center(axis: axis, offset: 0)
+    }
+    
     @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self {
         axis.rawAxes.forEach { configuration?.centerOffset[$0] = (configuration?.centerOffset[$0] ?? 0) + offset }
         return self
