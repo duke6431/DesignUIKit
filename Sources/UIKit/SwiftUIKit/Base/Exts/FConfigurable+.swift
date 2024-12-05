@@ -119,12 +119,18 @@ public extension FConfigurable {
         return self
     }
 
+    @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self {
+        axis.rawAxes.forEach { configuration?.centerOffset[$0] = (configuration?.centerOffset[$0] ?? 0) + offset }
+        return self
+    }
+    
     @discardableResult func centerInParent() -> Self {
         centerInParent(offset: .zero)
     }
 
     @discardableResult func centerInParent(offset: CGSize) -> Self {
-        configuration?.with(\.centerOffset, setTo: offset)
+        configuration?.centerOffset[.vertical] = (configuration?.centerOffset[.vertical] ?? 0) + offset.width
+        configuration?.centerOffset[.horizontal] = (configuration?.centerOffset[.horizontal] ?? 0) + offset.height
         return self
     }
 

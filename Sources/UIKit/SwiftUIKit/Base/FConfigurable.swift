@@ -19,6 +19,7 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     @discardableResult func layoutPriority(_ priority: ConstraintPriority) -> Self
     @discardableResult func centerInParent() -> Self
     @discardableResult func centerInParent(offset: CGSize) -> Self
+    @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self
     @discardableResult func ratio(_ ratio: CGFloat) -> Self
     @discardableResult func padding() -> Self
     @discardableResult func padding(_ padding: CGFloat) -> Self
@@ -41,33 +42,6 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     @discardableResult func clearModifiers() -> Self
 }
 
-public struct FDirectionalRectEdge: OptionSet, Hashable, @unchecked Sendable, ExpressibleByIntegerLiteral {
-    public var rawValue: Int
-    
-    public init(rawValue: Int) { self.rawValue = rawValue }
-    public init(integerLiteral value: Int) { self.rawValue = value }
-    
-    public static let top: FDirectionalRectEdge = .init(rawValue: 1 << 0)
-    public static let bottom: FDirectionalRectEdge = .init(rawValue: 1 << 1)
-    public static let leading: FDirectionalRectEdge = .init(rawValue: 1 << 2)
-    public static let trailing: FDirectionalRectEdge = .init(rawValue: 1 << 3)
-    
-    public static let all: FDirectionalRectEdge = [.top, .bottom, .leading, .trailing]
-    public static let vertical: FDirectionalRectEdge = [.top, .bottom]
-    public static let horizontal: FDirectionalRectEdge = [.leading, .trailing]
-}
-
-extension FDirectionalRectEdge {
-    var rawEdges: [FDirectionalRectEdge] {
-        var edges: [FDirectionalRectEdge] = []
-        if contains(.top) { edges.append(.top) }
-        if contains(.bottom) { edges.append(.bottom) }
-        if contains(.leading) { edges.append(.leading) }
-        if contains(.trailing) { edges.append(.trailing) }
-        return edges
-    }
-}
-
 public class FConfiguration: Chainable {
     var modifiers: [FModifier] = []
     var clearModifiers: Bool = false
@@ -83,7 +57,7 @@ public class FConfiguration: Chainable {
     )
     public var ratio: CGFloat?
     public var opacity: CGFloat = 1
-    public var centerOffset: CGSize?
+    public var centerOffset: [FAxis: CGFloat] = [:]
     public var layoutPriority: ConstraintPriority = .required
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)?
     public var shoudAnimateLayerChanges: Bool = false
@@ -112,12 +86,16 @@ public class FConfiguration: Chainable {
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if let centerOffset, let superview {
+        if !centerOffset.isEmpty, let superview {
             target.snp.makeConstraints {
-                $0.centerX.equalTo(superview.safeAreaLayoutGuide)
-                    .offset(centerOffset.width).priority(layoutPriority)
-                $0.centerY.equalTo(superview.safeAreaLayoutGuide)
-                    .offset(centerOffset.height).priority(layoutPriority)
+                if let centerOffset = centerOffset[.vertical] {
+                    $0.centerX.equalTo(superview.safeAreaLayoutGuide)
+                        .offset(centerOffset).priority(layoutPriority)
+                }
+                if let centerOffset = centerOffset[.horizontal] {
+                    $0.centerY.equalTo(superview.safeAreaLayoutGuide)
+                        .offset(centerOffset).priority(layoutPriority)
+                }
             }
         } else if shouldConstraintWithParent, let superview {
             target.snp.remakeConstraints {
