@@ -8,7 +8,6 @@
 import UIKit
 import DesignExts
 import DesignCore
-import SnapKit
 
 public extension FConfigurable {
     @discardableResult func modified(with modifier: FModifier) -> Self {

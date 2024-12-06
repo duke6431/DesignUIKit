@@ -61,7 +61,7 @@ public class FViewController<ViewController: UIViewController>: BaseView, FCompo
 }
 
 public class FViewContainer: UIViewController, Chainable, Loggable {
-    public var content: UIView
+    public var content: FBody
 
     var onLoad: ((FViewContainer) -> Void)?
     var onAppear: ((FViewContainer) -> Void)?
@@ -72,7 +72,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     }
 
     public init(_ content: FBody) {
-        self.content = FZStack(contentViews: content)
+        self.content = content
         super.init(nibName: nil, bundle: .main)
     }
 
@@ -82,8 +82,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(content)
-        content.snp.makeConstraints { $0.edges.equalToSuperview() }
+        content.forEach(view.addSubview)
         onLoad?(self)
     }
 
