@@ -24,6 +24,8 @@ public class FScroll: BaseScrollView, FComponent {
             self.contentViews = []
         }
         super.init(frame: .zero)
+        self.showsHorizontalScrollIndicator = false
+        self.showsVerticalScrollIndicator = false
     }
 
     public init(
@@ -33,6 +35,8 @@ public class FScroll: BaseScrollView, FComponent {
         self.axis = axis
         self.contentViews = contentViews()
         super.init(frame: .zero)
+        self.showsHorizontalScrollIndicator = false
+        self.showsVerticalScrollIndicator = false
     }
 
     public override func didMoveToSuperview() {
@@ -95,5 +99,21 @@ public class FScroll: BaseScrollView, FComponent {
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
+    }
+}
+
+extension FScroll {
+    func showIndicator(for axis: FAxis, _ status: Bool) -> Self {
+        axis.rawAxes.forEach {
+            switch $0 {
+            case .horizontal:
+                showsHorizontalScrollIndicator = true
+            case .vertical:
+                showsVerticalScrollIndicator = true
+            default:
+                break
+            }
+        }
+        return self
     }
 }
