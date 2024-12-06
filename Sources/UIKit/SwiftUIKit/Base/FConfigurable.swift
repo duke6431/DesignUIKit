@@ -87,31 +87,30 @@ public class FConfiguration: Chainable {
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if !centerOffset.isEmpty, let superview {
-            target.snp.makeConstraints {
+        if shouldConstraintWithParent, let superview {
+            target.snp.remakeConstraints {
+                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
                 if let centerOffset = centerOffset[.vertical] {
                     $0.centerX.equalTo(superview.safeAreaLayoutGuide)
                         .offset(centerOffset).priority(layoutPriority)
+                } else {
+                    if let padding = containerPadding[.leading] {
+                        $0.leading.equalTo(target).offset(offset.width + padding).priority(layoutPriority)
+                    }
+                    if let padding = containerPadding[.trailing] {
+                        $0.trailing.equalTo(target).offset(offset.width - padding).priority(layoutPriority)
+                    }
                 }
                 if let centerOffset = centerOffset[.horizontal] {
                     $0.centerY.equalTo(superview.safeAreaLayoutGuide)
                         .offset(centerOffset).priority(layoutPriority)
-                }
-            }
-        } else if shouldConstraintWithParent, let superview {
-            target.snp.remakeConstraints {
-                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
-                if let padding = containerPadding[.top] {
-                    $0.top.equalTo(target).offset(offset.height + padding).priority(layoutPriority)
-                }
-                if let padding = containerPadding[.leading] {
-                    $0.leading.equalTo(target).offset(offset.width + padding).priority(layoutPriority)
-                }
-                if let padding = containerPadding[.trailing] {
-                    $0.trailing.equalTo(target).offset(offset.width - padding).priority(layoutPriority)
-                }
-                if let padding = containerPadding[.bottom] {
-                    $0.bottom.equalTo(target).offset(offset.height - padding).priority(layoutPriority)
+                } else {
+                    if let padding = containerPadding[.top] {
+                        $0.top.equalTo(target).offset(offset.height + padding).priority(layoutPriority)
+                    }
+                    if let padding = containerPadding[.bottom] {
+                        $0.bottom.equalTo(target).offset(offset.height - padding).priority(layoutPriority)
+                    }
                 }
             }
         }
