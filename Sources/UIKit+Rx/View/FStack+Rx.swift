@@ -8,11 +8,11 @@
 import DesignUIKit
 
 public extension FStack {
-    func bind<Content>(to dataPublisher: Driver<Content>, content renderer: @escaping (Content) -> FBodyComponent?) -> Self {
-        dataPublisher.compactMap(renderer).drive(onNext: { [weak self] in
+    func bind<Content>(to dataPublisher: Driver<[Content]>, content renderer: @escaping (Content) -> FBodyComponent?) -> Self {
+        dataPublisher.map { $0.compactMap(renderer) }.drive(onNext: { [weak self] in
             guard let self else { return }
             arrangedSubviews.forEach { $0.removeFromSuperview() }
-            addArrangedSubview($0)
+            $0.forEach(addArrangedSubview(_:))
         }).disposed(by: disposeBag)
         return self
     }
