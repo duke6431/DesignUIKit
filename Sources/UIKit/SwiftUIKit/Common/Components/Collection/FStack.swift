@@ -11,7 +11,7 @@ import DesignCore
 public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
 
-    var arrangedContents: FBody
+    public var arrangedContents: FBody
 
     public init(
         axis: NSLayoutConstraint.Axis,
