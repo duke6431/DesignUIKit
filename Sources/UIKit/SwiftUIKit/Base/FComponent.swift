@@ -12,6 +12,14 @@ import DesignExts
 public protocol FComponent: AnyObject, Chainable {
     var configuration: FConfiguration? { get }
     var customConfiguration: ((Self) -> Void)? { get set }
+    func reload()
+}
+
+extension FComponent where Self: UIView {
+    public func reload() {
+        subviews.forEach { $0.removeFromSuperview() }
+        didMoveToSuperview()
+    }
 }
 
 public extension FComponent {

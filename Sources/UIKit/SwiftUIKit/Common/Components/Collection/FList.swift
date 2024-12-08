@@ -67,6 +67,9 @@ public class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
     public func loadConfiguration() {
         configuration = .init()
     }
+    
+    @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
+    public func reload() { }
 }
 
 public extension FList {

@@ -76,6 +76,9 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignabl
     public func loadConfiguration() {
         configuration = .init()
     }
+    
+    @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
+    public func reload() { }
 }
 
 public extension FGrid {
