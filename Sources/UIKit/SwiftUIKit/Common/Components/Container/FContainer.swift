@@ -8,7 +8,7 @@
 import UIKit
 
 public final class FContainer<View: UIView>: FView {
-    var content: View
+    public private(set) var content: View
     
     public init(content: View) {
         self.content = content
