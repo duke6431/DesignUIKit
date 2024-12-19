@@ -71,8 +71,8 @@ public extension CommonAttributedString {
     /// - Returns: attribute applied string
     func add(attributes: [NSAttributedString.Key: Any], to target: String) -> [CommonAttributedString] {
         string.components(separatedBy: target)
-            .map { .init($0).with(\.attributes, setTo: self.attributes) }
-            .insert(separator: .init(target).with(\.attributes, setTo: attributes))
+            .map { .init($0).merged(self.attributes) }
+            .insert(separator: .init(target).merged(self.attributes).merged(attributes))
     }
 }
 
