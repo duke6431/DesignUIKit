@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 16/02/2024.
 //
@@ -42,8 +42,7 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     }
     
     deinit {
-#if CORE_DEBUG
-        logger.info("Deinitialized \(self)")
-#endif
+        logger.trace("Deinitialized \(self)")
     }
 }
+

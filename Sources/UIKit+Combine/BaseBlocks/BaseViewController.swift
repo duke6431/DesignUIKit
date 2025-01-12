@@ -47,9 +47,7 @@ open class BaseViewController: UIViewController, FThemableBackground, Loggable {
     }
     
     deinit {
-#if CORE_DEBUG
-        logger.info("Deinitialized \(self)")
-#endif
+        logger.trace("Deinitialized \(self)")
     }
 }
 
@@ -60,7 +58,7 @@ open class FScene<ViewModel: BaseViewModel>: BaseViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     open override func configureViews() {
         super.configureViews()
         view.addSubview(body)

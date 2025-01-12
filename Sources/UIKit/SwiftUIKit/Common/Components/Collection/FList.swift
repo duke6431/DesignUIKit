@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duc IT. Nguyen Minh on 15/02/2024.
 //
@@ -163,10 +163,8 @@ public class FListModel: NSObject, CommonCellModel, Loggable {
     }
     
     deinit {
-        logger.info("Deinitializing \(model)")
-#if CORE_DEBUG
-        logger.info("Deinitialized \(self)")
-#endif
+        logger.trace("Deinitializing \(model)")
+        logger.trace("Deinitialized \(self)")
     }
 }
 
@@ -201,10 +199,8 @@ public class FListCell: CommonTableView.TableCell, Loggable {
     }
     
     deinit {
-        if let content { logger.info("Deinitializing \(content)") }
-#if CORE_DEBUG
-        logger.info("Deinitialized \(self)")
-#endif
+        if let content { logger.trace("Deinitializing \(content)") }
+        logger.trace("Deinitialized \(self)")
     }
 }
 

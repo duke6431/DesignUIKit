@@ -43,7 +43,7 @@ extension CommonCollection {
         
         deinit {
 #if CORE_DEBUG
-            logger.info("Deinitialized \(self)")
+            logger.trace("Deinitialized \(self)")
 #endif
         }
     }
