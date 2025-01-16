@@ -88,23 +88,21 @@ public final class FSwitch: BaseView, FComponent {
     public func set(on: Bool, animated: Bool = true) {
         thumbViewLeading?.isActive = !isOn
         thumbViewTrailing?.isActive = isOn
-        UIView.animate(withDuration: 0.2) {
-            self.backgroundColor = self.isOn ? self.statusColorOn : self.statusColorOff
-            self.statusImage?.image = self.isOn ? self.statusImageOn : self.statusImageOff
-            self.layoutIfNeeded()
+        UIView.animate(withDuration: 0.2) { [self] in
+            backgroundColor = isOn ? statusColorOn : statusColorOff
+            statusImage?.image = isOn ? statusImageOn : statusImageOff
+            layoutIfNeeded()
         }
+        onSwitch?(isOn)
     }
     
     @objc private func onTap() { isOn.toggle() }
     
     @objc private func onSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
-        case .left:
-            isOn = false
-        case .right:
-            isOn = true
-        default:
-            break
+        case .left: isOn = false
+        case .right: isOn = true
+        default: break
         }
     }
 

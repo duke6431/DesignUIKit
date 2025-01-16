@@ -19,4 +19,8 @@ public extension Array {
     func insert(separator: Element) -> [Element] {
         (0 ..< 2 * count - 1).map { $0 % 2 == 0 ? self[$0/2] : separator }
     }
+    
+    @inlinable func invertFilter(_ isIncluded: (Element) throws -> Bool) rethrows -> [Element] {
+        try filter { try !isIncluded($0) }
+    }
 }

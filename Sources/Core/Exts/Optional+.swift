@@ -12,3 +12,9 @@ extension Optional {
         self as? NewType
     }
 }
+
+extension Optional where Wrapped: Collection {
+    var isEmpty: Bool {
+        self?.isEmpty ?? true
+    }
+}
