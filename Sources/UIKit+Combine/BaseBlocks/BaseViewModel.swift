@@ -34,6 +34,7 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     }
     
     public func handle(_ error: Error) {
+        logger.error("Error found: \(error)")
         self.error = error
     }
     
