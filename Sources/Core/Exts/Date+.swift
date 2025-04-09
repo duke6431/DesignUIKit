@@ -10,7 +10,7 @@ import Foundation
 public extension Date {
     /// Free style date formatter
     func formatted(using format: String, _ customized: ((DateFormatter) -> DateFormatter)? = nil) -> String {
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         formatter.locale = .autoupdatingCurrent
         formatter.dateFormat = format
         return (customized?(formatter) ?? formatter).string(from: self)
