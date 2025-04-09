@@ -55,17 +55,17 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
         view.addSubview(body)
     }
     
-    func bindViewModel() {
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
+    }
+    
+    open func bindViewModel() {
         disposeBag.insert(handle(viewModel.transform(input)))
     }
     
     @FBuilder<Disposable>
-    func handle(_ output: ViewModel.Output) -> [Disposable] {
+    open func handle(_ output: ViewModel.Output) -> [Disposable] {
         fatalError("\(String(describing: ViewModel.self))'s output was not handled")
-    }
-    
-    open var body: FBodyComponent {
-        fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
     
     open var input: ViewModel.Input {
