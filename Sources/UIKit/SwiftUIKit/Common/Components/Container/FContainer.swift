@@ -7,9 +7,9 @@
 
 import UIKit
 
-public class FContainer<View: UIView>: FView {
-    var content: View
-
+public final class FContainer<View: UIView>: FView {
+    public private(set) var content: View
+    
     public init(content: View) {
         self.content = content
         super.init(frame: .zero)

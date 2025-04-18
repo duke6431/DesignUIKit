@@ -26,7 +26,9 @@ public extension String {
     }
 
     /// Trimming leading and trailing whitespaces and new line
-    var stripped: String {
-        trimmingCharacters(in: .whitespacesAndNewlines)
+    var stripped: String { trimmingCharacters(in: .whitespacesAndNewlines) }
+    
+    var capitalizedFirst: String {
+        prefix(1).uppercased() + dropFirst()
     }
 }

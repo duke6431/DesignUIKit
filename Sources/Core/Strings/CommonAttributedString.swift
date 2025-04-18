@@ -7,6 +7,32 @@
 
 import UIKit
 
+public protocol AttributedStringBuildable {
+    var built: NSMutableAttributedString { get }
+}
+
+public extension NSAttributedString {
+    static func build(@FBuilder<AttributedStringBuildable> _ strings: () -> [AttributedStringBuildable]) -> NSAttributedString {
+        strings().reduce(NSMutableAttributedString()) { $0.appended(with: $1.built) }
+    }
+}
+
+extension CommonAttributedString: AttributedStringBuildable {
+    /// Build metadata into NSAttributedString
+    /// - Returns: Swift attributed string
+    public var built: NSMutableAttributedString {
+        NSMutableAttributedString(string: string, attributes: attributes)
+    }
+}
+
+extension Array: AttributedStringBuildable where Element == CommonAttributedString {
+    public var built: NSMutableAttributedString {
+        reduce(.init()) {
+            $0.appended(with: $1.built)
+        }
+    }
+}
+
 public class CommonAttributedString: Chainable {
     public var attributes: [NSAttributedString.Key: Any] = [:]
     public var string: String
@@ -52,11 +78,16 @@ public class CommonAttributedString: Chainable {
     }
 }
 
-public extension NSAttributedString {
-    static func build(@FBuilder<CommonAttributedString> _ strings: () -> [CommonAttributedString]) -> NSAttributedString {
-        strings().reduce(into: NSMutableAttributedString()) { partialResult, prototype in
-            partialResult.append(prototype.build())
-        }
+public extension CommonAttributedString {
+    /// Add attributes to string
+    /// - Parameters:
+    ///   - attributes: attribute dictionary for string
+    ///   - target: content of the attributed string
+    /// - Returns: attribute applied string
+    func add(attributes: [NSAttributedString.Key: Any], to target: String) -> [CommonAttributedString] {
+        string.components(separatedBy: target)
+            .map { .init($0).merged(self.attributes) }
+            .insert(separator: .init(target).merged(self.attributes).merged(attributes))
     }
 }
 
@@ -73,5 +104,12 @@ public extension NSAttributedString {
             attributedText.addAttributes(attributes, range: $0)
         }
         return attributedText
+    }
+}
+
+extension NSMutableAttributedString {
+    func appended(with string: NSAttributedString) -> Self {
+        append(string)
+        return self
     }
 }

@@ -56,6 +56,8 @@ extension CommonCollection {
             var footerSize: NSCollectionLayoutSize?
 
             var pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
+            
+            var customLayout: ((CommonCollection.Section) -> NSCollectionLayoutSection)?
 
             public init(
                 itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
@@ -76,6 +78,10 @@ extension CommonCollection {
                 self.headerSize = headerSize
                 self.footerSize = footerSize
                 self.pagingBehaviour = pagingBehaviour
+            }
+            
+            public init(customLayout: @escaping ((CommonCollection.Section) -> NSCollectionLayoutSection)) {
+                self.customLayout = customLayout
             }
         }
     }
@@ -149,5 +155,12 @@ extension CommonCollection.Section {
             }
         }
         return sectionLayout
+    }
+    
+    public static func customLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
+        guard let layout = section.dimension.customLayout else {
+            return slidingLayout(section: section)
+        }
+        return layout(section)
     }
 }

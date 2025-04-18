@@ -8,13 +8,19 @@
 import Foundation
 import Logging
 
+extension Logger: SelfCustomizable { }
+
 public protocol Loggable {
     var logger: Logger { get }
 }
 
 public extension Loggable {
-    static var logger: Logger { Logger(label: String(reflecting: type(of: self))) }
-    var logger: Logger { Logger(label: String(reflecting: type(of: self))) }
+    static var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
+    var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
+}
+
+public extension Logger.Level {
+    static var `default`: Self = .info
 }
 
 public extension String {

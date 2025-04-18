@@ -24,16 +24,17 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     }
 
     @objc dynamic open func bind() { }
-
+    
     public func load<T: Codable>(target: inout T?, value: T) {
         target = value
     }
-
+    
     public func load<T: Codable>(target: inout T, value: T) {
         target = value
     }
-
+    
     public func handle(_ error: Error) {
+        logger.error("Error found: \(error)")
         self.error = error
     }
 
@@ -42,8 +43,7 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
     }
 
     deinit {
-        #if CORE_DEBUG
-        logger.info("Deinitialized \(self)")
-        #endif
+        logger.trace("Deinitialized \(self)")
     }
 }
+

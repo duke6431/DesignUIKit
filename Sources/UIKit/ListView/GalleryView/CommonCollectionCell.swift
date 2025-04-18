@@ -42,9 +42,7 @@ extension CommonCollection {
         }
 
         deinit {
-            #if CORE_DEBUG
-            logger.info("Deinitialized \(self)")
-            #endif
+            logger.trace("Deinitialized \(self)")
         }
     }
 }

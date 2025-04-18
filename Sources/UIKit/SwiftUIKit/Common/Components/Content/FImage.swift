@@ -41,6 +41,7 @@ public class FImage: BaseImageView, FThemableForeground, FComponent, FContentCon
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
+        reload(image: image, url: url)
         if let url = url {
             image = nil
             ImagePipeline.shared.loadImage(with: url) { [weak self] result in
@@ -84,11 +85,10 @@ public extension FImage {
             self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
         }
         self.url = url ?? self.url
-        if let url = url {
-            ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-                if case .success(let response) = result {
-                    self?.image = response.image
-                }
+        guard let url else { return }
+        ImagePipeline.shared.loadImage(with: url) { [weak self] result in
+            if case .success(let response) = result, self?.url == response.request.url {
+                self?.image = response.image
             }
         }
     }

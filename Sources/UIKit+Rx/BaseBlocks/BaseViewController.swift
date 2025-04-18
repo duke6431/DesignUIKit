@@ -50,7 +50,7 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.connect(with: disposeBag)
+        bindViewModel()
     }
     
     open override func configureViews() {
@@ -61,4 +61,21 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
     open var body: FBodyComponent {
         fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
+    
+    open func bindViewModel() {
+        disposeBag.insert(handle(viewModel.transform(input)))
+    }
+    
+    @FBuilder<Disposable>
+    open func handle(_ output: ViewModel.Output) -> [Disposable] {
+        fatalError("\(String(describing: ViewModel.self))'s output was not handled")
+    }
+    
+    open var input: ViewModel.Input {
+        fatalError("\(String(describing: ViewModel.self))'s input was not prepared")
+    }
+}
+
+extension Never: Disposable {
+    public func dispose() { }
 }
