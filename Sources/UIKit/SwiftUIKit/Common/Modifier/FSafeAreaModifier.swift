@@ -14,7 +14,7 @@ public struct FSafeAreaModifier: FModifier {
         self.isIgnore = isIgnore
     }
 
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         content.ignoreSafeArea(isIgnore)
     }
 }

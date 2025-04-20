@@ -14,7 +14,7 @@ public struct FFontModifier: FModifier {
         self.font = font
     }
 
-    public func body(_ content: any Content) -> any Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FCalligraphiable) else { return content }
         return modifiedContent.font(font)
     }

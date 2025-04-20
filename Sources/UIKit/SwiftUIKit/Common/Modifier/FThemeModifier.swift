@@ -16,7 +16,7 @@ public struct FBackgroundModifier: FModifier {
         self.color = color
     }
 
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FThemableBackground) else { return content }
         if let key {
             return modifiedContent.background(key: key)
@@ -37,7 +37,7 @@ public struct FForegroundModifier: FModifier {
         self.color = color
     }
 
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FThemableForeground) else { return content }
         if let key {
             return modifiedContent.foreground(key: key)

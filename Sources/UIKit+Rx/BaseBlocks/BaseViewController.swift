@@ -62,7 +62,7 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
         fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
     
-    open func bindViewModel() {
+    open override func bindViewModel() {
         disposeBag.insert(handle(viewModel.transform(input)))
     }
     

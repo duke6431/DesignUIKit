@@ -14,5 +14,5 @@ public protocol ViewModeling<Input, Output> {
 }
 
 open class BaseViewModel {
-    public init() { }
+    public required init() { }
 }
