@@ -13,6 +13,9 @@ public protocol ViewModeling<Input, Output> {
     func transform(_ input: Input) -> Output
 }
 
-open class BaseViewModel {
-    public required init() { }
+open class BaseViewModel<Coordinator: BaseCoordinating> {
+    let coordinator: Coordinator
+    public required init(with coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
 }
