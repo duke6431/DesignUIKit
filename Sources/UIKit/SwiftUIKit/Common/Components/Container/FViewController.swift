@@ -70,7 +70,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     }
     
     public init(_ content: FBody) {
-        self.content = FZStack(contentViews: content)
+        self.content = FZStack(contentViews: content).ignoreSafeArea(true)
         super.init(nibName: nil, bundle: .main)
     }
     
@@ -81,7 +81,6 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(content)
-        content.snp.makeConstraints { $0.edges.equalToSuperview() }
         onLoad?(self)
     }
     
