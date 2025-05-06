@@ -15,9 +15,9 @@ public extension FImage {
         _ systemImagePublisher: Driver<String>
     ) {
         self.init()
-        self.bind(to: systemImagePublisher) { [weak self] imageView, name in
-            imageView.image = .init(systemName: name)
-            if let foregroundKey = self?.foregroundKey { imageView.foreground(key: foregroundKey) }
+        self.bind(to: systemImagePublisher) {
+            $0.image = .init(systemName: $1)
+            $0.rebindImageColor()
         }
     }
 
@@ -25,9 +25,16 @@ public extension FImage {
         _ imagePublisher: Driver<UIImage>
     ) {
         self.init()
-        self.bind(to: imagePublisher) { [weak self] imageView, image in
-            imageView.image = image
-            if let foregroundKey = self?.foregroundKey { imageView.foreground(key: foregroundKey) }
+        self.bind(to: imagePublisher) {
+            $0.image = $1
+            $0.rebindImageColor()
         }
+    }
+    
+    private func rebindImageColor() {
+        if let currentForegroundColor {
+            image = image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
+        }
+        if let foregroundKey { foreground(key: foregroundKey) }
     }
 }

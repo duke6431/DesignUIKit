@@ -69,7 +69,7 @@ public class FImage: BaseImageView, FThemableForeground, FComponent, FContentCon
         return self
     }
 
-    private var currentForegroundColor: UIColor?
+    public private(set) var currentForegroundColor: UIColor?
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)

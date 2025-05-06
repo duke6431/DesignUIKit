@@ -84,10 +84,11 @@ public class FConfiguration: Chainable {
     }
 
     public func didMoveToSuperview(_ superview: UIView?, with target: FBodyComponent) {
+        guard let superview else { return }
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if shouldConstraintWithParent, let superview {
+        if shouldConstraintWithParent {
             target.snp.remakeConstraints {
                 let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
                 if let centerOffset = centerOffset[.vertical] {
@@ -119,7 +120,7 @@ public class FConfiguration: Chainable {
             if let height, height > 0 { $0.height.equalTo(height).priority(layoutPriority) }
             if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio).priority(layoutPriority) }
         }
-        if let layoutConfiguration, let superview {
+        if let layoutConfiguration {
             target.snp.makeConstraints { layoutConfiguration($0, superview) }
         }
     }

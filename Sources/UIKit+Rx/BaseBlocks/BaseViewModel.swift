@@ -13,9 +13,9 @@ public protocol ViewModeling<Input, Output> {
     func transform(_ input: Input) -> Output
 }
 
-open class BaseViewModel<Coordinator: BaseCoordinating> {
-    let coordinator: Coordinator
-    public required init(with coordinator: Coordinator) {
-        self.coordinator = coordinator
+open class BaseViewModel<Navigator: BaseNavigating> {
+    let navigator: Navigator
+    public required init(with navigator: Navigator) {
+        self.navigator = navigator
     }
 }
