@@ -70,7 +70,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     }
 
     public init(_ content: FBody) {
-        self.content = content
+        self.content = FZStack(contentViews: content).ignoreSafeArea(true)
         super.init(nibName: nil, bundle: .main)
     }
 
@@ -80,7 +80,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        content.forEach(view.addSubview)
+        view.addSubview(content)
         onLoad?(self)
     }
 

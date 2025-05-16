@@ -90,8 +90,8 @@ public class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForegro
 
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        updateLabel()
         configuration?.didMoveToSuperview(superview, with: self)
+        updateLabel()
         customConfiguration?(self)
     }
 

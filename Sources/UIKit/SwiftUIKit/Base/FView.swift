@@ -19,8 +19,8 @@ open class FView: BaseView, FComponent {
 
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        configureViews()
         configuration?.didMoveToSuperview(superview, with: self)
+        configureViews()
         customConfiguration?(self)
     }
 

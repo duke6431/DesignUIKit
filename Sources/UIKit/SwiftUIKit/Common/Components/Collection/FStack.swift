@@ -50,8 +50,8 @@ public class FStack: BaseStackView, FComponent {
 
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        addContents(arrangedContents)
         configuration?.didMoveToSuperview(superview, with: self)
+        addContents(arrangedContents)
         customConfiguration?(self)
     }
 

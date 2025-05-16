@@ -10,9 +10,7 @@ import PackageDescription
 let package = Package(
     name: "ComponentSystem",
     platforms: [
-        .iOS(.v13),
-        .macCatalyst(.v13),
-        .tvOS(.v14)
+        .iOS(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -58,7 +56,8 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log")
             ],
             path: "Sources/Core",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "DesignExts",
@@ -66,7 +65,8 @@ let package = Package(
                 .target(name: "DesignCore")
             ],
             path: "Sources/Exts",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "DesignExternal",
@@ -74,7 +74,8 @@ let package = Package(
                 "FileKit"
             ],
             path: "Sources/ExternalPackages",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "DesignUIKit",
@@ -86,7 +87,8 @@ let package = Package(
                 "Nuke"
             ],
             path: "Sources/UIKit",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "DesignCombineUIKit",
@@ -94,7 +96,8 @@ let package = Package(
                 .target(name: "DesignUIKit")
             ],
             path: "Sources/UIKit+Combine",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "DesignRxUIKit",
@@ -104,7 +107,8 @@ let package = Package(
                 .product(name: "RxCocoa", package: "RxSwift")
             ],
             path: "Sources/UIKit+Rx",
-            exclude: ["Archived/"]
+            exclude: ["Archived/"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "TestBase",
