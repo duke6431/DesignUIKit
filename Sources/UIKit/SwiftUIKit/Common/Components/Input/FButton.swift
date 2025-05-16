@@ -9,8 +9,8 @@ import UIKit
 import DesignCore
 import SnapKit
 
-public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable, FAssignable {
-#if os(tvOS)
+public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable {
+#if os(tvOS) || targetEnvironment(macCatalyst)
     public static let tapEvent: UIControl.Event = .primaryActionTriggered
 #else
     public static let tapEvent: UIControl.Event = .touchUpInside
@@ -20,29 +20,25 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     
     var label: FBody?
     
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ text: String = "",
-        action: @escaping () -> Void
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, _ text: String = "", action: @escaping () -> Void) {
         self.init(style: style)
         setTitle(text, for: .normal)
         addAction(for: Self.tapEvent, action)
     }
 
-    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: @escaping () -> Void) {
+    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, action: (() -> Void)? = nil) {
+        self.init(style: style, label: label(), action: action)
+    }
+
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: (() -> Void)? = nil) {
         self.init(style: style)
-        addAction(for: Self.tapEvent, action)
-        self.label = label().flatMap {
+        if let action { addAction(for: Self.tapEvent, action) }
+        self.label = label.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
     }
 
-    public convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ text: String = "",
-        action: @escaping (FButton?) -> Void
-    ) {
+    public convenience init(style: UIButton.ButtonType? = nil, _ text: String = "", action: @escaping (FButton?) -> Void) {
         self.init(style: style)
         setTitle(text, for: .normal)
         addAction(for: Self.tapEvent, { [weak self] in action(self) })
@@ -54,6 +50,30 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
         self.label = label().flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }
+    }
+    
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, action: @escaping (FButton?) -> Void) {
+        self.init(style: style)
+        addAction(for: Self.tapEvent, { [weak self] in action(self) })
+        self.label = label.flatMap {
+            ($0 as? FForEach)?.content() ?? [$0]
+        }
+    }
+    
+    @available(iOS 15.0, tvOS 17.0, *)
+    public convenience init(style: UIButton.ButtonType? = nil, @FViewBuilder label: () -> FBody, menu: UIMenu) {
+        self.init(style: style, label: label)
+        self.showsMenuAsPrimaryAction = true
+        self.changesSelectionAsPrimaryAction = true
+        self.menu = menu
+    }
+
+    @available(iOS 15.0, tvOS 17.0, *)
+    public convenience init(style: UIButton.ButtonType? = nil, label: FBody, menu: UIMenu) {
+        self.init(style: style, label: label)
+        self.showsMenuAsPrimaryAction = true
+        self.changesSelectionAsPrimaryAction = true
+        self.menu = menu
     }
     
     func updateLabel() {
@@ -70,8 +90,8 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        updateLabel()
         configuration?.didMoveToSuperview(superview, with: self)
+        updateLabel()
         customConfiguration?(self)
     }
     

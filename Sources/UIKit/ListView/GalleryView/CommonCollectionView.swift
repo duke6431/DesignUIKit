@@ -10,24 +10,24 @@ import UIKit
 
 @available(iOS 13.0, *)
 public extension CommonCollection {
-    class View: UICollectionView {
+    class View: UICollectionView, Loggable {
         public weak var commonDelegate: CommonCollectionViewDelegate?
-
+        
         let itemMapper: [CommonCollectionCellModel.Type]
         var itemCache: CommonCollectionCellModel.Type?
         let sectionMapper: [CommonCollectionReusableModel.Type]?
         var sectionCache: CommonCollectionReusableModel.Type?
-
+        
         var sections: [Section] = []
         var currentDataSource: UICollectionViewDataSource?
-
+        
         public init(itemMapper: [CommonCollectionCellModel.Type], sectionMapper: [CommonCollectionReusableModel.Type]) {
             self.itemMapper = itemMapper
             self.sectionMapper = sectionMapper
             super.init(frame: .zero, collectionViewLayout: UICollectionViewLayout())
             configureViews()
         }
-
+        
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         required init?(coder: NSCoder) {
@@ -79,6 +79,12 @@ public extension CommonCollection {
             }
             return dataSource
         }
+        
+        deinit {
+#if CORE_DEBUG
+            logger.trace("Deinitialized \(self)")
+#endif
+        }
     }
 }
 
@@ -93,7 +99,7 @@ extension CommonCollection.View {
         itemMapper.forEach { register($0.cellKind) }
         sectionMapper?.forEach { register($0.headerKind) }
     }
-
+    
     public func reloadData(sections: [CommonCollection.Section]) {
         self.sections = sections
         setCollectionViewLayout(generateLayout(), animated: false)
@@ -101,7 +107,7 @@ extension CommonCollection.View {
         self.currentDataSource = dataSource
         dataSource.apply(generateSnapshot(), animatingDifferences: true)
     }
-
+    
     func generateLayout() -> UICollectionViewLayout {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -109,7 +115,7 @@ extension CommonCollection.View {
             return section.layout?(section)
         }
     }
-
+    
     func generateSnapshot() -> NSDiffableDataSourceSnapshot<CommonCollection.Section, String> {
         var snapshot = NSDiffableDataSourceSnapshot<CommonCollection.Section, String>()
         snapshot.appendSections(sections)
@@ -118,7 +124,7 @@ extension CommonCollection.View {
         }
         return snapshot
     }
-
+    
     @objc func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel) {
         commonDelegate?.didSelectCell?(at: indexPath, with: data)
     }

@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -44,9 +44,13 @@ open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -95,9 +99,13 @@ open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -139,9 +147,13 @@ open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FTh
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: .zero)
         loadConfiguration()
@@ -188,12 +200,24 @@ open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public convenience init(style buttonType: UIButton.ButtonType? = nil) {
-        self.init(type: buttonType ?? .system)
+        self.init(type: buttonType ?? .custom)
         loadConfiguration()
+    }
+    
+    open override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withDuration: 0.1) { [weak self] in
+                self?.alpha = (self?.isHighlighted ?? false) ? 0.35 : 1
+            }
+        }
     }
     
     open override func willMove(toSuperview newSuperview: UIView?) {
@@ -223,7 +247,7 @@ open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableSh
     }
 }
 
-open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     var contentInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     
     public override init(frame: CGRect = .zero) {
@@ -279,9 +303,13 @@ open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShad
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         loadConfiguration()
@@ -318,9 +346,13 @@ open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThem
             layoutIfNeeded()
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow {
+open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     public init(frame: CGRect = .zero) {
         super.init(frame: frame, textContainer: nil)
         loadConfiguration()
@@ -356,5 +388,9 @@ open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemab
             setNeedsLayout()
             layoutIfNeeded()
         }
+    }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
     }
 }

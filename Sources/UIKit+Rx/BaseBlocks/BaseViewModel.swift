@@ -6,18 +6,13 @@
 //
 
 import Foundation
-import DesignCore
-import RxSwift
-import RxCocoa
 
 public protocol ViewModeling<Input, Output> {
     associatedtype Input
     associatedtype Output
-    func connect(_ input: Input, with output: Output)
+    func transform(_ input: Input) -> Output
 }
 
 open class BaseViewModel {
-    open var disposeBag = DisposeBag()
-
     public init() { }
 }

@@ -11,13 +11,11 @@ import DesignUIKit
 import Combine
 import UIKit
 
-open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThemableBackground {
-    open var viewModel: ViewModel
+open class BaseViewController: UIViewController, FThemableBackground, Loggable {
     open var cancellables = Set<AnyCancellable>()
     
-    public required init(with viewModel: ViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     @available(iOS, unavailable)
@@ -47,9 +45,20 @@ open class BaseViewController<ViewModel: BaseViewModel>: UIViewController, FThem
         guard let backgroundKey else { return }
         view.backgroundColor = theme.color(key: backgroundKey)
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-open class FScene<ViewModel: BaseViewModel>: BaseViewController<ViewModel> {
+open class FScene<ViewModel: BaseViewModel>: BaseViewController {
+    open var viewModel: ViewModel
+    
+    public required init(with viewModel: ViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     open override func configureViews() {
         super.configureViews()
         view.addSubview(body)

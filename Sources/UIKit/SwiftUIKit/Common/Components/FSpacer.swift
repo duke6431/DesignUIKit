@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class FSpacer: BaseView, FComponent, FAssignable {
+public final class FSpacer: BaseView, FComponent {
     public var blurStyle: UIBlurEffect.Style? {
         didSet {
             if let blurStyle {

@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FForEach: FBodyComponent {
+public final class FForEach: FBodyComponent, Loggable {
     public var customConfiguration: ((FForEach) -> Void)?
     public var contentViews: [FBodyComponent]
     
@@ -38,5 +38,9 @@ public final class FForEach: FBodyComponent {
     
     public override func layoutSubviews() {
         fatalError("FForEach is not considered a view")
+    }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
     }
 }

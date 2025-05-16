@@ -11,9 +11,9 @@ import DesignCore
 import DesignExts
 import Foundation
 
-public final class FViewController<ViewController: UIViewController>: BaseView, FComponent, FAssignable {
+public final class FViewController<ViewController: UIViewController>: BaseView, FComponent {
     public var customConfiguration: ((FViewController) -> Void)?
-
+    
     public weak var parentViewController: UIViewController?
     public var contentViewController: ViewController
     
@@ -27,25 +27,38 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         configuration?.didMoveToSuperview(superview, with: self)
         guard let parentViewController else { return }
         contentViewController.willMove(toParent: parentViewController)
-        addSubview(contentViewController.view)
         parentViewController.addChild(contentViewController)
+        addSubview(contentViewController.view)
         contentViewController.didMove(toParent: parentViewController)
         contentViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         customConfiguration?(self)
+    }
+    
+    public override func removeFromSuperview() {
+        parentViewController = nil
+        contentViewController.willMove(toParent: nil)
+        contentViewController.view.removeFromSuperview()
+        contentViewController.removeFromParent()
+        super.removeFromSuperview()
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-
+    
     @discardableResult public func parent(_ viewController: UIViewController) -> Self {
         parentViewController = viewController
         return self
     }
+    
+    deinit {
+        removeFromSuperview()
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
-public class FViewContainer: UIViewController, Chainable {
+public class FViewContainer: UIViewController, Chainable, Loggable {
     public var content: UIView
     
     var onLoad: ((FViewContainer) -> Void)?
@@ -57,7 +70,7 @@ public class FViewContainer: UIViewController, Chainable {
     }
     
     public init(_ content: FBody) {
-        self.content = FZStack(contentViews: content)
+        self.content = FZStack(contentViews: content).ignoreSafeArea(true)
         super.init(nibName: nil, bundle: .main)
     }
     
@@ -68,7 +81,6 @@ public class FViewContainer: UIViewController, Chainable {
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(content)
-        content.snp.makeConstraints { $0.edges.equalToSuperview() }
         onLoad?(self)
     }
     
@@ -80,6 +92,10 @@ public class FViewContainer: UIViewController, Chainable {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onDisappear?(self)
+    }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
     }
 }
 

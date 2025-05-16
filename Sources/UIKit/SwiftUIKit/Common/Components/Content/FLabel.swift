@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableForeground, FContentAvailable, FAssignable {
+public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableForeground, FContentAvailable {
     public var customConfiguration: ((FLabel) -> Void)?
     
     public init(

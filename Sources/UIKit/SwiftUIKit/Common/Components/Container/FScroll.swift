@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FScroll: BaseScrollView, FComponent, FAssignable {
+public final class FScroll: BaseScrollView, FComponent {
     public var axis: NSLayoutConstraint.Axis
     public var contentViews: [FBodyComponent] = []
     public var customConfiguration: ((FScroll) -> Void)?

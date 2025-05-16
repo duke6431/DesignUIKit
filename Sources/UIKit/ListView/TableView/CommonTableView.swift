@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public class CommonTableView: UITableView {
+public class CommonTableView: UITableView, Loggable {
     public weak var actionDelegate: CommonTableViewDelegate?
 #if os(iOS)
     public var refreshable: Bool = false {
@@ -17,7 +17,7 @@ public class CommonTableView: UITableView {
         }
     }
 #endif
-
+    
     let cellMapper: [CommonCellModel.Type]
     let headerMapper: [CommonHeaderModel.Type]
     var cellCache: CommonCellModel.Type?
@@ -32,7 +32,7 @@ public class CommonTableView: UITableView {
         return view
     }()
 #endif
-
+    
     public init(
         map: [CommonCellModel.Type],
         headerMap: [CommonHeaderModel.Type] = [],
@@ -43,13 +43,13 @@ public class CommonTableView: UITableView {
         super.init(frame: .zero, style: style)
         configureViews()
     }
-
+    
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
-
+    
     func configureViews() {
         translatesAutoresizingMaskIntoConstraints = false
         register(UITableViewCell.self)
@@ -69,17 +69,17 @@ public class CommonTableView: UITableView {
         cellMapper.forEach { register($0.cellKind) }
         headerMapper.forEach { register($0.headerKind) }
     }
-
+    
     @objc public func startRefreshing() {
         actionDelegate?.refreshStarted?()
     }
-
+    
 #if os(iOS)
     public func endRefreshing() {
         customRefreshControl.endRefreshing()
     }
 #endif
-
+    
     public func reloadData(sections: [CommonTableSection]) {
         self.sections = sections
         search(with: keyword)
@@ -87,7 +87,7 @@ public class CommonTableView: UITableView {
         endRefreshing()
 #endif
     }
-
+    
     public func search(with keyword: String) {
         self.keyword = keyword
         guard !keyword.isEmpty else {
@@ -105,13 +105,13 @@ public class CommonTableView: UITableView {
         }.filter { $0.items.count > 0 }
         reloadData()
     }
-
+    
     public func scrollToRow(at indexPath: IndexPath, at position: UITableView.ScrollPosition = .top) {
         if numberOfRows(inSection: indexPath.section) > indexPath.row {
             scrollToRow(at: indexPath, at: position, animated: true)
         }
     }
-
+    
     public func deleteItem(with identifier: String) {
         var selectedItem = IndexPath(row: 0, section: 0)
         for (index, section) in sections.enumerated() {
@@ -143,18 +143,22 @@ public class CommonTableView: UITableView {
             deleteSections(IndexSet(integer: selectedItem.section), with: .fade)
         }
     }
+    
+    deinit {
+        logger.trace("Deinitialized \(self)")
+    }
 }
 
 extension CommonTableView: UITableViewDataSource {
     public func numberOfSections(in tableView: UITableView) -> Int {
         searchedSections.count
     }
-
+    
     public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         guard searchedSections[section].header != nil else { return 0 }
         return UITableView.automaticDimension
     }
-
+    
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerData = searchedSections[section].header else {
             return nil
@@ -176,11 +180,11 @@ extension CommonTableView: UITableViewDataSource {
         headerData.customConfiguration?(header)
         return header
     }
-
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchedSections[section].items.count
     }
-
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = searchedSections[indexPath.section].items[indexPath.row]
         if let cachedMap = cellCache, item.isKind(of: cachedMap) {
@@ -202,7 +206,7 @@ extension CommonTableView: UITableViewDataSource {
         cell.bind(item, highlight: keyword)
         return cell
     }
-
+    
     @objc public func didSelectCell(at indexPath: IndexPath, with model: CommonCellModel) {
         actionDelegate?.didSelectCell?(at: indexPath, with: model)
     }
@@ -217,23 +221,23 @@ extension CommonTableView: UITableViewDelegate {
         guard searchedSections[section].header != nil else { return CGFloat(Float.leastNonzeroMagnitude) }
         return UITableView.automaticDimension
     }
-
+    
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
-
+    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if searchedSections[indexPath.section].items[indexPath.row].selectable {
             didSelectCell(at: indexPath, with: searchedSections[indexPath.section].items[indexPath.row])
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
 #if os(iOS)
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         .init(actions: searchedSections[indexPath.section].items[indexPath.row].leadingActions)
     }
-
+    
     // swiftlint:disable:next line_length
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         .init(actions: searchedSections[indexPath.section].items[indexPath.row].trailingActions)

@@ -8,7 +8,7 @@
 import UIKit
 import DesignCore
 
-public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThemableForeground, FThemablePlaceholder, FAssignable {
+public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThemableForeground, FThemablePlaceholder {
     public var customConfiguration: ((FTextField) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?

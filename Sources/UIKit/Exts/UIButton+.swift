@@ -8,10 +8,7 @@
 import UIKit
 import DesignCore
 
-public typealias BControl = UIControl
-public typealias BControlEvent = UIControl.Event
-
-public extension BControl {
+public extension UIControl {
     class Failure: Error {
         var message: String?
         class Action: Failure {
@@ -24,10 +21,10 @@ public extension BControl {
     }
 }
 
-public extension BControl {
-    private static let actionIDs = ObjectAssociation<StructWrapper<[(BControlEvent, String)]>>()
+public extension UIControl {
+    private static let actionIDs = ObjectAssociation<StructWrapper<[(UIControl.Event, String)]>>()
     
-    var actionIDs: [(BControlEvent, String)] {
+    var actionIDs: [(UIControl.Event, String)] {
         get { Self.actionIDs[self]?() ?? [] }
         set { Self.actionIDs[self] = .init(value: newValue) }
     }
@@ -37,7 +34,7 @@ public extension BControl {
     ///   - controlEvent: Control event for action to be triggered
     ///   - closure: Things happen
     @discardableResult
-    func addAction(for controlEvent: BControlEvent, _ closure: @escaping() -> Void) -> String {
+    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping() -> Void) -> String {
         var identifier: String
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }
@@ -53,7 +50,7 @@ public extension BControl {
         return identifier
     }
     
-    func removeAction(for controlEvent: BControlEvent, identifier: String? = nil) throws {
+    func removeAction(for controlEvent: UIControl.Event, identifier: String? = nil) throws {
         guard let identifier = identifier else {
             try actionIDs.forEach(removeAction(for:identifier:))
             return
@@ -70,7 +67,7 @@ public extension BControl {
     }
 }
 
-extension BControl.Failure.Action: LocalizedError {
+extension UIControl.Failure.Action: LocalizedError {
     public var errorDescription: String? {
         message ?? String(describing: self)
     }

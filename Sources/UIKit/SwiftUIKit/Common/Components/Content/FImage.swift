@@ -9,7 +9,7 @@ import UIKit
 import Nuke
 import DesignCore
 
-public final class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable, FAssignable {
+public final class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable {
     public var url: URL?
     
     public var customConfiguration: ((FImage) -> Void)?
@@ -41,10 +41,11 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
+        reload(image: image, url: url)
         if let url = url {
             image = nil
             ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-                if case .success(let response) = result, response.urlResponse?.url == self?.url {
+                if case .success(let response) = result {
                     self?.image = response.image
                 }
             }
@@ -63,10 +64,12 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     }
     
     @discardableResult public func foreground(_ color: UIColor) -> Self {
+        currentForegroundColor = color
         image = image?.withTintColor(color, renderingMode: .alwaysOriginal)
         return self
     }
     
+    private var currentForegroundColor: UIColor?
     public var foregroundKey: ThemeKey?
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
@@ -76,14 +79,16 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
 }
 
 public extension FImage {
-    func reload(image: UIImage? = nil, url: URL?) {
+    func reload(image: UIImage? = nil, url: URL? = nil) {
         self.image = image
+        if let currentForegroundColor {
+            self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
+        }
         self.url = url ?? self.url
-        if let url = url {
-            ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-                if case .success(let response) = result {
-                    self?.image = response.image
-                }
+        guard let url else { return }
+        ImagePipeline.shared.loadImage(with: url) { [weak self] result in
+            if case .success(let response) = result, self?.url == response.request.url {
+                self?.image = response.image
             }
         }
     }

@@ -9,19 +9,10 @@ import UIKit
 import SnapKit
 import DesignCore
 
-public final class FSwitch: UIView, FComponent, FAssignable {
+public final class FSwitch: BaseView, FComponent {
     public var customConfiguration: ((FSwitch) -> Void)?
-
-    public enum Style {
-        case sliding
-        case checkbox
-    }
     
-    public var isOn: Bool = false {
-        didSet {
-            set(on: isOn)
-        }
-    }
+    public var isOn: Bool = false { didSet { set(on: isOn) } }
     
     public var thumbImage: UIImage?
     public var thumUIColor: UIColor = .white
@@ -33,22 +24,16 @@ public final class FSwitch: UIView, FComponent, FAssignable {
     private var onSwitch: ((Bool) -> Void)?
     
     private weak var statusImage: UIImageView?
-    private var thumUIViewTrailing: Constraint?
-    private lazy var thumUIView: UIView = {
+    private var thumbViewLeading: Constraint?
+    private var thumbViewTrailing: Constraint?
+    private lazy var thumbView: UIView = {
         let view = FZStack {
             if let thumbImage {
                 FImage(image: thumbImage).contentMode(.scaleAspectFill)
             }
-        }
-            .background(thumUIColor)
-            .shaped(.circle)
-            .shadow(.init(opacity: 0.4, radius: 3))
-            .customized {
-                $0.configuration?.shouldConstraintWithParent = false
-            }
-        view.snp.remakeConstraints {
-            $0.width.equalTo(view.snp.height)
-        }
+        }.background(thumUIColor).shaped(.circle).customized {
+            $0.configuration?.shouldConstraintWithParent = false
+        }.shadow(.init(opacity: 0.4, radius: 3))
         return view
     }()
     
@@ -61,20 +46,20 @@ public final class FSwitch: UIView, FComponent, FAssignable {
         addGestureRecognizer(tapGesture)
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(onSwipe))
         addGestureRecognizer(swipeGesture)
-        snp.remakeConstraints {
-            $0.width.equalTo(snp.height).multipliedBy(1.8)
-        }
+        snp.remakeConstraints { $0.width.equalTo(snp.height).multipliedBy(1.8) }
         configureViews()
     }
     
-    public func configureViews() {
-        addSubview(thumUIView)
-        thumUIView.snp.remakeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(2)
-            $0.leading.equalToSuperview().inset(2).priority(.medium)
-            thumUIViewTrailing = $0.trailing.equalToSuperview().inset(2).constraint
+    private func configureViews() {
+        addSubview(thumbView)
+        thumbView.snp.remakeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(4)
+            $0.width.equalTo(thumbView.snp.height)
+            thumbViewLeading = $0.leading.equalToSuperview().inset(4).constraint
+            thumbViewTrailing = $0.trailing.equalToSuperview().inset(4).constraint
         }
-        thumUIViewTrailing?.isActive = false
+        thumbViewLeading?.isActive = true
+        thumbViewTrailing?.isActive = false
     }
     
     public override func layoutSubviews() {
@@ -82,7 +67,7 @@ public final class FSwitch: UIView, FComponent, FAssignable {
         updateLayers()
     }
     
-    func updateLayers() {
+    private func updateLayers() {
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
     
@@ -101,51 +86,48 @@ public final class FSwitch: UIView, FComponent, FAssignable {
     }
     
     public func set(on: Bool, animated: Bool = true) {
-        thumUIViewTrailing?.isActive = isOn
-        UIView.animate(withDuration: 0.2) {
-            self.backgroundColor = self.isOn ? self.statusColorOn : self.statusColorOff
-            self.statusImage?.image = self.isOn ? self.statusImageOn : self.statusImageOff
-            self.layoutIfNeeded()
+        thumbViewLeading?.isActive = !isOn
+        thumbViewTrailing?.isActive = isOn
+        UIView.animate(withDuration: 0.2) { [self] in
+            backgroundColor = isOn ? statusColorOn : statusColorOff
+            statusImage?.image = isOn ? statusImageOn : statusImageOff
+            layoutIfNeeded()
         }
+        onSwitch?(isOn)
     }
     
-    @objc public func onTap() {
-        isOn.toggle()
-    }
+    @objc private func onTap() { isOn.toggle() }
     
-    @objc public func onSwipe(_ gesture: UISwipeGestureRecognizer) {
+    @objc private func onSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
-        case .left:
-            isOn = false
-        case .right:
-            isOn = true
-        default:
-            break
+        case .left: isOn = false
+        case .right: isOn = true
+        default: break
         }
     }
 
-    @discardableResult func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
+    @discardableResult public func onSwitch(_ onSwitch: @escaping (Bool) -> Void) -> Self {
         self.onSwitch = onSwitch
         return self
     }
     
-    @discardableResult func thumb(_ color: UIColor) -> Self {
+    @discardableResult public func thumb(_ color: UIColor) -> Self {
         self.thumUIColor = color
         return self
     }
     
-    @discardableResult func thumb(_ image: UIImage) -> Self {
+    @discardableResult public func thumb(_ image: UIImage) -> Self {
         self.thumbImage = image
         return self
     }
     
-    @discardableResult func background(on: UIColor = .white, off: UIColor = .systemGreen) -> Self {
+    @discardableResult public func background(on: UIColor = .white, off: UIColor = .systemGreen) -> Self {
         self.statusColorOff = off
         self.statusColorOn = on
         return self
     }
     
-    @discardableResult func background(on: UIImage, off: UIImage) -> Self {
+    @discardableResult public func background(on: UIImage, off: UIImage) -> Self {
         self.statusImageOff = off
         self.statusImageOn = on
         return self

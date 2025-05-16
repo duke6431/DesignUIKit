@@ -9,7 +9,7 @@ import DesignCore
 import QuartzCore
 import UIKit
 
-public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThemableForeground, FThemablePlaceholder, FAssignable {
+public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThemableForeground, FThemablePlaceholder {
     public var customConfiguration: ((FTextView) -> Void)?
     fileprivate var onSubmitAction: (() -> Void)?
     fileprivate var onChangeAction: ((String) -> Void)?

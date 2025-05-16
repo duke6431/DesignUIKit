@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.homepage = "https://github.com"
 
   s.authors = { 'Duc Nguyen' => 'ducnguyen6431@outlook.com' }
-  s.source = { :git => 'https://github.com', :tag => s.version }
+  s.source = { :git => 'https://bitbucket.org/dn6431/componentsystem.git', :tag => s.version }
   s.summary = 'Are you tired of repeative actions? This framework might be your solution!'
 
   s.ios.deployment_target = '13.0'
@@ -29,6 +29,5 @@ Pod::Spec.new do |s|
     ss.dependency 'DesignExternal'
     ss.dependency 'Nuke'
     ss.dependency 'SnapKit'
-    ss.dependency 'ToastViewSwift'
   end
 end
