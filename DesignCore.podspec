@@ -8,23 +8,24 @@
 
 Pod::Spec.new do |s|
   s.name = "DesignCore"
-  s.version = '0.0.1'
-  s.homepage = "https://github.com"
+  s.version = '1.0.0'
+  s.homepage = "https://github.com/duke6431/DesignUIKit"
 
   s.authors = { 'Duc Nguyen' => 'ducnguyen6431@outlook.com' }
-  s.source = { :git => 'https://bitbucket.org/dn6431/componentsystem.git', :tag => s.version }
+  s.source = { :git => 'https://github.com/duke6431/DesignUIKit.git', :tag => s.version }
   s.summary = 'Are you tired of repeative actions? This framework might be your solution!'
 
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.0'
   s.license = { :type => 'MIT' }
   s.default_subspec = 'Core'
-  
+  s.resource_bundles = {
+    'DesignCore_Privacy' => ['Sources/DesignCore/PrivacyInfo.xcprivacy'],
+  }
   # Subspecs zone
   s.subspec 'Core' do |ss|
     ss.source_files = 'Sources/Core/**/*.{swift}'
     ss.exclude_files = 'Sources/Core/Archived/**/*.{swift}'
-
     ss.dependency("Logging")
   end
 end
