@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Prepare Simulator 
+      run: xcrun simctl create "iPhone 16" "com.apple.CoreSimulator.SimDeviceType.iPhone-16" "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
     - name: Build
-      run: xcodebuild -showdestinations -scheme ComponentSystem-Package
-    # - name: Run tests
-    #   run: swift test -v
+      run: xcodebuild -scheme ComponentSystem-Package -destination 'platform=iOS Simulator,OS=18.2,device=iPhone 16'
