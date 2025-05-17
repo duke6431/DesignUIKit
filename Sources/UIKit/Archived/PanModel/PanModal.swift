@@ -2,7 +2,7 @@
 //  PanModal.swift
 //  DesignComponents
 //
-//  Created by Duc IT. Nguyen Minh on 09/01/2023.
+//  Created by Duke Nguyen on 09/01/2023.
 //
 
 import Foundation

@@ -1,8 +1,8 @@
 //
 //  PanelTransitioningDelegate.swift
-//  Duc Nguyen
+//  Duke Nguyen
 //
-//  Created by Duc IT. Nguyen Minh on 15/06/2022.
+//  Created by Duke Nguyen on 15/06/2022.
 //
 
 import UIKit

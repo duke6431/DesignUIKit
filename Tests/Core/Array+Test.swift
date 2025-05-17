@@ -2,7 +2,7 @@
 //  Array+Test.swift
 //
 //
-//  Created by Duc Minh Nguyen on 4/8/24.
+//  Created by Duke Nguyen on 4/8/24.
 //
 
 import XCTest

@@ -2,7 +2,7 @@
 //  File.swift
 //
 //
-//  Created by Duc IT. Nguyen Minh on 18/01/2024.
+//  Created by Duke Nguyen on 18/01/2024.
 //
 
 import SwiftUI

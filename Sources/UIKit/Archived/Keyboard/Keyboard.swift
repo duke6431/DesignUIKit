@@ -2,14 +2,13 @@
 //  Keyboard.swift
 //  Components
 //
-//  Created by Duc IT. Nguyen Minh on 21/05/2022.
+//  Created by Duke Nguyen on 21/05/2022.
 //
 
 import UIKit
 import DesignCore
 
 public class Keyboard: UIInputView {
-    @available(iOS 13.0, *)
     public static var numberPadWithReturn: Keyboard {
         Keyboard(stack: KeyStack {
             KeyStack {

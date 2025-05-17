@@ -2,7 +2,7 @@
 //  Combine+.swift
 //  componentsystem
 //
-//  Created by Duc Minh Nguyen on 4/2/24.
+//  Created by Duke Nguyen on 4/2/24.
 //
 
 import Foundation

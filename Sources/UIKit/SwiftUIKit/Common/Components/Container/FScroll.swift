@@ -1,18 +1,30 @@
 //
-//  File.swift
+//  FScroll.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/02/12.
 //
-//  Created by Duc IT. Nguyen Minh on 12/02/2024.
+//  A customizable scroll view component that supports vertical or horizontal layout
+//  of body components using fluent composition.
 //
 
 import UIKit
 import DesignCore
 
-public class FScroll: BaseScrollView, FComponent {
+/// A customizable scroll view component that supports arranging `FBodyComponent` views
+/// either vertically or horizontally using declarative initialization and composition.
+public final class FScroll: BaseScrollView, FComponent {
+    /// The scroll direction of the content (horizontal or vertical).
     public var axis: NSLayoutConstraint.Axis
+    /// The views to be arranged inside the scroll view.
     public var contentViews: [FBodyComponent] = []
+    /// Optional closure for applying additional configuration to the scroll view.
     public var customConfiguration: ((FScroll) -> Void)?
-
+    
+    /// Initializes a scroll view with a single optional body component.
+    /// - Parameters:
+    ///   - axis: The scroll direction.
+    ///   - contentView: A single content view to display.
     public init(
         axis: NSLayoutConstraint.Axis,
         contentView: FBodyComponent? = nil
@@ -24,10 +36,12 @@ public class FScroll: BaseScrollView, FComponent {
             self.contentViews = []
         }
         super.init(frame: .zero)
-        self.showsHorizontalScrollIndicator = false
-        self.showsVerticalScrollIndicator = false
     }
-
+    
+    /// Initializes a scroll view with multiple body components using a builder.
+    /// - Parameters:
+    ///   - axis: The scroll direction.
+    ///   - contentViews: A view builder closure that returns the scrollable content.
     public init(
         axis: NSLayoutConstraint.Axis,
         @FViewBuilder contentViews: () -> FBody
@@ -35,10 +49,8 @@ public class FScroll: BaseScrollView, FComponent {
         self.axis = axis
         self.contentViews = contentViews()
         super.init(frame: .zero)
-        self.showsHorizontalScrollIndicator = false
-        self.showsVerticalScrollIndicator = false
     }
-
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         switch axis {
@@ -62,18 +74,18 @@ public class FScroll: BaseScrollView, FComponent {
                 case .horizontal:
                     view.topAnchor.constraint(equalTo: topAnchor)
                     view.bottomAnchor.constraint(equalTo: bottomAnchor)
-                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding[.leading] ?? 0)
+                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding?.leading ?? 0)
                     view.centerYAnchor.constraint(equalTo: centerYAnchor)
                 case .vertical:
-                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding[.top] ?? 0)
+                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding?.top ?? 0)
                     view.leadingAnchor.constraint(equalTo: leadingAnchor)
                     view.trailingAnchor.constraint(equalTo: trailingAnchor)
                     view.centerXAnchor.constraint(equalTo: centerXAnchor)
                 @unknown default:
-                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding[.top] ?? 0)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding[.bottom] ?? 0))
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding[.leading] ?? 0)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding[.trailing] ?? 0))
+                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding?.top ?? 0)
+                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding?.bottom ?? 0))
+                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding?.leading ?? 0)
+                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding?.trailing ?? 0))
                 }
             }
             switch axis {
@@ -87,33 +99,21 @@ public class FScroll: BaseScrollView, FComponent {
         }
         switch axis {
         case .horizontal:
-            NSLayoutConstraint.activate { leading.constraint(equalTo: trailingAnchor) }
+            NSLayoutConstraint.activate {
+                leading.constraint(equalTo: trailingAnchor)
+            }
         case .vertical:
-            NSLayoutConstraint.activate { top.constraint(equalTo: bottomAnchor) }
+            NSLayoutConstraint.activate {
+                top.constraint(equalTo: bottomAnchor)
+            }
         @unknown default:
             break
         }
         customConfiguration?(self)
     }
-
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
-    }
-}
-
-extension FScroll {
-    func showIndicator(for axis: FAxis, _ status: Bool) -> Self {
-        axis.rawAxes.forEach {
-            switch $0 {
-            case .horizontal:
-                showsHorizontalScrollIndicator = true
-            case .vertical:
-                showsVerticalScrollIndicator = true
-            default:
-                break
-            }
-        }
-        return self
     }
 }
