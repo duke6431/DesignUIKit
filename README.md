@@ -1,10 +1,6 @@
-# DesignUIKit • DesignCore • DesignExts • DesignRxUIKit
+# DesignUIKit
 
 A collection of modular Swift frameworks for building elegant, reactive, and customizable UIKit-based applications using declarative patterns and extensible components.
-
-# DesignUIKit • DesignCore • DesignExts • DesignRxUIKit
-
-A modular set of frameworks designed for building powerful, reusable, and composable UI components for iOS applications using UIKit, RxSwift, and Swift paradigms.
 
 ---
 
