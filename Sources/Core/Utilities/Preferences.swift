@@ -1,6 +1,11 @@
 //
 //  Preferences.swift
-//  Provides property wrappers for managing user preferences using UserDefaults with support for Codable types and value transformations.
+//  DesignCore
+//
+//  Created by Duke Nguyen on 2024/01/07.
+//
+//  Provides property wrappers for managing user preferences using `UserDefaults`,
+//  with support for Codable types, default values, and runtime transformations.
 //
 
 import Foundation

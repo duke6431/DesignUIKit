@@ -1,11 +1,11 @@
 //
 //  CommonCollectionViewProtocol.swift
-//  DesignComponents
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 13/03/2023.
+//  Created by Duke Nguyen on 2023/03/13.
 //
-//  This file defines the CommonCollectionViewDelegate protocol for handling collection view cell selection,
-//  and the CommonCollection class as a placeholder for common collection-related functionality.
+//  This file defines the `CommonCollectionViewDelegate` protocol for handling collection view cell selection,
+//  and the `CommonCollection` class as a placeholder for shared collection-related functionality.
 //
 
 import DesignCore

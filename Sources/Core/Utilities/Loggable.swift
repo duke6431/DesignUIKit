@@ -1,8 +1,11 @@
 //
 //  Loggable.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 13/10/24.
+//  Created by Duke Nguyen on 2024/10/13.
+//
+//  Defines the `Loggable` protocol and logging extensions that provide
+//  default logger instances and string-based log message conversion.
 //
 
 import Foundation

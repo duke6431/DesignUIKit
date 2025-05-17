@@ -1,8 +1,11 @@
 //
 //  BaseView.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/02/15.
 //
-//  Created by Duc IT. Nguyen Minh on 15/02/2024.
+//  A configurable and themable `UIView` subclass that integrates with
+//  background and shadow theming systems and supports lifecycle-aware configuration.
 //
 
 import UIKit

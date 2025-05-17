@@ -1,12 +1,12 @@
 //
 //  ThemeSystem.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/01/08.
 //
 //  A centralized system for managing app themes, allowing dynamic theme switching,
 //  observer registration for theme changes, and providing theme colors.
 //  Supports UIKit trait collection changes and custom theme implementations.
-//
-//  Created by Duc IT. Nguyen Minh on 08/01/2024.
 //
 
 import DesignCore

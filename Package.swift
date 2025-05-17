@@ -2,7 +2,7 @@
 
 /**
  *  ComponentSystem
- *  Copyright (c) Duc Nguyen 2022
+ *  Copyright (c) Duke Nguyen 2022
  *  Licensed under the MIT license. See LICENSE file.
  */
 import PackageDescription

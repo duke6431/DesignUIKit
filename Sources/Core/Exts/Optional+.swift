@@ -1,10 +1,10 @@
 //
 //  Optional+.swift
-//  ComponentSystem
+//  DesignCore
 //
-//  Created by Duc Nguyen on 11/10/24.
+//  Created by Duke Nguyen on 2024/11/10.
 //
-//  Extensions on Optional to simplify casting and collection emptiness checks.
+//  Extensions on `Optional` to simplify type casting and collection emptiness checks.
 //
 
 import Foundation

@@ -1,11 +1,12 @@
 //
 //  CommonCell.swift
-//  Components
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 21/05/2022.
+//  Created by Duke Nguyen on 2022/05/21.
 //
-//  This file defines the CommonCellModel protocol and the CommonTableView.TableCell class,
+//  This file defines the `CommonCellModel` protocol and the `CommonTableView.TableCell` class,
 //  which provide a standardized way to configure and display table view cells within the app's UI components.
+//
 
 import UIKit
 

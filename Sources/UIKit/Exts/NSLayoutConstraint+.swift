@@ -1,17 +1,11 @@
 //
 //  NSLayoutConstraint+.swift
-//  Components
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 25/05/2022.
+//  Created by Duke Nguyen on 2022/05/25.
 //
-//
-//  NSLayoutConstraint+.swift
-//  Components
-//
-//  Created by Duc IT. Nguyen Minh on 25/05/2022.
-//
-//
-//  Extension utilities for NSLayoutConstraint, including builder-style activation and multiplier modification.
+//  Extension utilities for `NSLayoutConstraint`, including builder-style activation
+//  and support for creating a modified constraint with a new multiplier.
 //
 
 import UIKit

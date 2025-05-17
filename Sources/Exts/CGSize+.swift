@@ -1,8 +1,11 @@
 //
 //  CGSize+.swift
-//  
+//  DesignExts
 //
-//  Created by Duc IT. Nguyen Minh on 28/01/2024.
+//  Created by Duke Nguyen on 2024/01/28.
+//
+//  Adds arithmetic operator extensions to `CGSize`, including
+//  addition with optional sizes and division by scalar values.
 //
 
 import Foundation

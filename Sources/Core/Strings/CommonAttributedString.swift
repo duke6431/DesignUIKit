@@ -1,17 +1,12 @@
 //
 //  CommonAttributedString.swift
-//  Core
+//  DesignCore
 //
-//  Created by Duc IT. Nguyen Minh on 13/06/2022.
+//  Created by Duke Nguyen on 2022/06/13.
 //
-//  This file provides utilities and protocols to build and manipulate
-//  attributed strings with a fluent and chainable interface.
+//  Provides utilities and protocols to build and manipulate attributed strings
+//  with a fluent and chainable interface.
 //
-//  - `AttributedStringBuildable` protocol allows types to expose a built
-//    NSMutableAttributedString representation.
-//  - `CommonAttributedString` class supports chaining attribute modifications.
-//  - Extensions to `NSAttributedString` and `NSMutableAttributedString`
-//    simplify composing and modifying attributed strings.
 
 import UIKit
 

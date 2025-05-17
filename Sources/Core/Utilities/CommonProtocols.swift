@@ -1,14 +1,13 @@
 //
 //  CommonProtocols.swift
-//  
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 5/17/22.
+//  Created by Duke Nguyen on 2022/05/17.
 //
-//  This file defines the FBuilder result builder, which provides a declarative way to construct
+//  This file defines the `FBuilder` result builder, which provides a declarative way to construct
 //  collections of nodes. It supports combining multiple nodes, optional nodes, conditional branches,
 //  and arrays of nodes into a single flat array of nodes.
 //
-//  Author: Duc Minh Nguyen
 
 import Foundation
 

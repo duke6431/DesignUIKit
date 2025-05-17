@@ -1,8 +1,11 @@
 //
-//  File.swift
-//  
+//  CharacterSet+.swift
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
+//
+//  Adds computed properties for extracting characters and code points
+//  from `CharacterSet`, and a string extension for removing characters.
 //
 
 import Foundation

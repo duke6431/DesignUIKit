@@ -1,11 +1,12 @@
 
 //
 //  BaseTextField.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
 //
-//  BaseTextField is a configurable and themable UITextField subclass designed for use in customizable UI component systems.
+//  A configurable and themable UITextField subclass designed for use in customizable
+//  UI component systems, supporting background and shadow theming.
 //
 
 import UIKit

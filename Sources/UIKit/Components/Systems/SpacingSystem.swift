@@ -1,10 +1,11 @@
 //
 //  SpacingSystem.swift
+//  DesignUIKit
+//
+//  Created by Duke Nguyen on 2024/01/10.
 //
 //  A centralized system for managing consistent spacing values throughout the application.
 //  Provides a scalable spacing solution with support for multiplier adjustments.
-//
-//  Created by Duc IT. Nguyen Minh on 10/01/2024.
 //
 
 import Foundation

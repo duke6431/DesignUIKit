@@ -1,19 +1,12 @@
 //
 //  CommonCollectionHeader.swift
-//  DesignComponents
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 13/03/2023.
+//  Created by Duke Nguyen on 2023/03/13.
 //
-//
-//  CommonCollectionHeader.swift
-//  DesignComponents
-//
-//  This file defines protocols and classes for reusable collection view headers and footers
-//  in the DesignUIKit module. It provides a protocol for models describing reusable views
-//  and a base class for reusable collection view supplementary views with configuration,
+//  This file defines protocols and base classes for reusable collection view headers and footers.
+//  It includes a model protocol and a base `UICollectionReusableView` subclass with configuration,
 //  logging, and binding capabilities.
-//
-//  Created by Duc IT. Nguyen Minh on 13/03/2023.
 //
 
 import DesignCore

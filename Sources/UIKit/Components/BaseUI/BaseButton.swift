@@ -1,8 +1,11 @@
 //
 //  BaseButton.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
+//
+//  A customizable UIButton subclass that supports theming, background styling,
+//  and lifecycle-aware configuration via `FConfigurable` and `FThemable*` protocols.
 //
 
 import UIKit

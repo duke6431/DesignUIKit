@@ -1,10 +1,12 @@
 //
-//  File.swift
-//  
+//  Array+.swift
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
 //
-
+//  Adds safe subscripting, separator interleaving, and inverse filtering
+//  utilities to `Array` via extension.
+//
 import Foundation
 
 public extension Array {

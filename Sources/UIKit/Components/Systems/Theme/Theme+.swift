@@ -1,12 +1,11 @@
 //
 //  Theme+.swift
+//  DesignUIKit
 //
-//  Created by Duc Minh Nguyen on 4/17/24.
+//  Created by Duke Nguyen on 2024/04/17.
 //
-//  Extension for the Theme type providing methods to scan and load theme JSON files from bundles and directories,
-//  as well as a UIUserInterfaceStyle extension to map interface styles to Theme styles.
-//
-//  Created by Duc Minh Nguyen on 4/17/24.
+//  Extension for the `Theme` type providing methods to scan and load theme JSON files
+//  from bundles and directories, and a mapping from `UIUserInterfaceStyle` to `Theme.Style`.
 //
 
 import Foundation

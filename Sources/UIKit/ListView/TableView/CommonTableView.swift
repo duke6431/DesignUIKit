@@ -1,8 +1,8 @@
 //
 //  CommonTableView.swift
-//  Components
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 23/07/2021.
+//  Created by Duke Nguyen on 2021/07/23.
 //
 //  CommonTableView is a reusable and customizable UITableView subclass designed to handle complex table view
 //  configurations with support for multiple cell and header types, refresh control, searching, and loading more data.

@@ -1,11 +1,11 @@
 //
 //  Date+.swift
-//  DesignUIKit
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
 //
-//  This file adds convenient formatting and parsing utilities
-//  to `Date` and `String` types using date format strings.
+//  Adds convenient date formatting, parsing, and reformatting utilities
+//  to `Date` and `String` types using customizable date format strings.
 //
 
 import Foundation

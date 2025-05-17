@@ -2,11 +2,11 @@
 //  UIButton+.swift
 //  DesignUIKit
 //
+//  Created by Duke Nguyen on 2022/05/31.
+//
 //  Extensions and utilities for UIControl and UIButton to support closure-based actions
 //  with compatibility across iOS versions. Includes error handling and action management
 //  using associated objects.
-//
-//  Created by Duc IT. Nguyen Minh on 31/05/2022.
 //
 
 import UIKit

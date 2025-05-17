@@ -2,12 +2,10 @@
 //  Theme+Error.swift
 //  DesignUIKit
 //
-//  Created by Duc Minh Nguyen on 4/17/24.
+//  Created by Duke Nguyen on 2024/04/17.
 //
 //  Defines the `ThemeError` enumeration representing errors related to theme handling,
 //  including cases for missing themes, decoding failures, and missing color palettes.
-//
-//  Created by Duc Minh Nguyen on 4/17/24.
 //
 
 import Foundation

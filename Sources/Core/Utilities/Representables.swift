@@ -1,8 +1,11 @@
 //
 //  Representables.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/03/27.
 //
-//  Created by Duc Minh Nguyen on 3/27/24.
+//  Defines protocols and enums for providing image representations,
+//  including system and asset-based image sources.
 //
 
 import UIKit

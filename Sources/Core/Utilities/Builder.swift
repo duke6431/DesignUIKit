@@ -2,7 +2,10 @@
 //  Builder.swift
 //  DesignCore
 //
-//  Created by Duc IT. Nguyen Minh on 07/01/2023.
+//  Created by Duke Nguyen on 2023/01/07.
+//
+//  Provides protocols and extensions for building chainable APIs,
+//  supporting both reference and value types with fluent configuration.
 //
 
 import Foundation

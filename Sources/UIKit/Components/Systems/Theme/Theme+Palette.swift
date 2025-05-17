@@ -1,11 +1,12 @@
 //
 //  Theme+Palette.swift
+//  DesignUIKit
+//
+//  Created by Duke Nguyen on 2024/04/17.
 //
 //  This file defines the `Theme.Style` enum representing the theme styles (light and dark),
 //  and the `Theme.Palette` struct which holds color palettes associated with a particular style.
 //  It also provides an extension on `Set` to conveniently access a palette by its style.
-//
-//  Created by Duc Minh Nguyen on 4/17/24.
 //
 
 import Foundation

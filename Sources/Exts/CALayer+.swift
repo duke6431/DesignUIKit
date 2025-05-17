@@ -1,12 +1,12 @@
 //
 //  CALayer+.swift
-//  Design
+//  DesignExts
 //
-//  Created by Duc IT. Nguyen Minh on 24/05/2022.
+//  Created by Duke Nguyen on 2022/05/24.
 //
-//  This file provides an extension to CALayer that simplifies the configuration and management of shadows.
-//  It includes a ShadowConfiguration struct for encapsulating shadow parameters and convenience methods
-//  to add or remove shadows from a CALayer instance.
+//  Provides an extension to `CALayer` for simplified shadow configuration,
+//  including a configurable `ShadowConfiguration` struct and methods to
+//  add or remove shadows.
 //
 
 import UIKit

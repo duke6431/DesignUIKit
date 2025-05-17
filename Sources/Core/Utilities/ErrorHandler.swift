@@ -2,10 +2,10 @@
 //  ErrorHandler.swift
 //  DesignUIKit
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
 //
-//  This file defines error handling utilities including the ErrorOption struct
-//  representing actionable options for errors and the SelfHandlableError protocol
+//  This file defines error handling utilities including the `ErrorOption` struct
+//  representing actionable options for errors and the `SelfHandlableError` protocol
 //  describing errors with titles, messages, options, and additional metadata.
 //
 

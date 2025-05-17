@@ -1,12 +1,12 @@
 //
 //  Condition+.swift
-//  DesignUIKit
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 9/1/24.
+//  Created by Duke Nguyen on 2024/09/01.
 //
-//  This file defines the `Conditionable` protocol and its default implementations,
-//  allowing conditional transformations using fluent chaining syntax.
-//  It is especially useful in declarative UI builders such as SwiftUI.
+//  Defines the `Conditionable` protocol and its fluent extensions for conditional transformation,
+//  commonly used in declarative UI composition to enable cleaner branching logic.
+//
 
 import Foundation
 

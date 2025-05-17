@@ -1,12 +1,11 @@
 //
 //  CommonTableViewProtocol.swift
-//  Components
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 21/05/2022.
+//  Created by Duke Nguyen on 2022/05/21.
 //
-//  This file defines the CommonTableViewDelegate protocol and the CommonTableSection class,
-//  which are used to manage and configure common table view behaviors and data structures
-//  within the Components module.
+//  This file defines the `CommonTableViewDelegate` protocol for handling table view events,
+//  and the `CommonTableSection` class for representing grouped cell and header data.
 //
 
 import UIKit

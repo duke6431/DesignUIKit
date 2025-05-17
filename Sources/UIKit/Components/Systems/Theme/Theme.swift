@@ -1,11 +1,11 @@
-
 //
 //  Theme.swift
 //  DesignUIKit
 //
-//  Defines the Theme system for managing color palettes and styles within the UI framework.
+//  Created by Duke Nguyen on 2024/04/17.
 //
-//  Created by Duc Minh Nguyen on 4/17/24.
+//  Defines the `Theme` system for managing color palettes and visual styles,
+//  including color lookup, dynamic color support, saving, and cloning.
 //
 
 import UIKit

@@ -1,15 +1,12 @@
-
 //
 //  BaseLabel.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
-//
-//  BaseLabel
+//  Created by Duke Nguyen on 2025/05/16.
 //
 //  A customizable UILabel subclass that supports content insets and dynamic theming.
-//  This class is designed to be used as a base for labels that require additional
-//  layout flexibility or visual customization via themes.
+//  Designed to be used as a base for labels requiring additional layout flexibility
+//  or visual customization through theme integration.
 //
 
 import UIKit

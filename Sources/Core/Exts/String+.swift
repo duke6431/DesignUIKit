@@ -1,10 +1,11 @@
 //
 //  String+.swift
-//  DesignUIKit
+//  DesignCore
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
 //
-//  Extensions on String to provide substring range searching and trimming utilities.
+//  Extensions on `String` to provide substring range searching,
+//  whitespace trimming, and first-letter capitalization utilities.
 //
 
 import Foundation

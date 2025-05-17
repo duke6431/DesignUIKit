@@ -1,11 +1,11 @@
 //
 //  Rect+.swift
-//  Extensions for UI Edge Insets and Rect Corners
+//  DesignUIKit
+//
+//  Created by Duke Nguyen on 2024/02/12.
 //
 //  Provides convenience methods and operator overloads for manipulating
-//  UIRectCorner, UIEdgeInsets, and NSDirectionalEdgeInsets.
-//
-//  Created by Duc IT. Nguyen Minh on 12/02/2024.
+//  `UIRectCorner`, `UIEdgeInsets`, and `NSDirectionalEdgeInsets`.
 //
 
 import UIKit

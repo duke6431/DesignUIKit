@@ -1,14 +1,12 @@
 
 //
 //  BaseScrollView.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
 //
-//  BaseScrollView
-//  --------------
-//  A configurable and themable UIScrollView subclass designed for use in the DesignUIKit component system.
-//  Provides hooks for configuration, background theming, and shadow theming.
+//  A configurable and themable UIScrollView subclass designed for use in DesignUIKit.
+//  Provides runtime configuration, dynamic background and shadow theming, and logging.
 //
 
 import UIKit

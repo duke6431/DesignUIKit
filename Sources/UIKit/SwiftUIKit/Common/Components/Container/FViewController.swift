@@ -1,8 +1,11 @@
 //
-//  File.swift
-//  
+//  FViewController.swift
+//  DesignUIKit
 //
-//  Created by Duc Minh Nguyen on 2/23/24.
+//  Created by Duke Nguyen on 2024/02/23.
+//
+//  A component for embedding a child UIViewController inside a UIView,
+//  and a hosting container controller that can wrap any `FView` structure.
 //
 
 import UIKit
@@ -11,12 +14,19 @@ import DesignCore
 import DesignExts
 import Foundation
 
+/// A wrapper component that embeds a view controller's view into a parent view hierarchy,
+/// handling view controller containment and layout.
 public final class FViewController<ViewController: UIViewController>: BaseView, FComponent {
+    /// Optional closure for applying additional runtime configuration.
     public var customConfiguration: ((FViewController) -> Void)?
     
+    /// The parent view controller that will host the embedded child view controller.
     public weak var parentViewController: UIViewController?
+    /// The embedded content view controller to display inside this view.
     public var contentViewController: ViewController
     
+    /// Initializes the component with a content view controller.
+    /// - Parameter contentViewController: The child view controller to embed.
     public init(_ contentViewController: ViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
@@ -47,6 +57,9 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
         configuration?.updateLayers(for: self)
     }
     
+    /// Assigns the parent view controller to host the content controller.
+    /// - Parameter viewController: The parent view controller.
+    /// - Returns: Self for fluent chaining.
     @discardableResult public func parent(_ viewController: UIViewController) -> Self {
         parentViewController = viewController
         return self
@@ -58,17 +71,24 @@ public final class FViewController<ViewController: UIViewController>: BaseView, 
     }
 }
 
+/// A hosting view controller that wraps and displays a stack of body components as a single view.
 public class FViewContainer: UIViewController, Chainable, Loggable {
+    /// The root view constructed from FBody content.
     public var content: UIView
     
+    /// Closure triggered when the corresponding lifecycle event occurs.
     var onLoad: ((FViewContainer) -> Void)?
+    /// Closure triggered when the corresponding lifecycle event occurs.
     var onAppear: ((FViewContainer) -> Void)?
+    /// Closure triggered when the corresponding lifecycle event occurs.
     var onDisappear: ((FViewContainer) -> Void)?
     
     public convenience init(@FViewBuilder _ content: () -> FBody) {
         self.init(content())
     }
     
+    /// Initializes the container with a built body view.
+    /// - Parameter content: The FBody component to display.
     public init(_ content: FBody) {
         self.content = FZStack(contentViews: content).ignoreSafeArea(true)
         super.init(nibName: nil, bundle: .main)
@@ -100,16 +120,25 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
 }
 
 public extension FViewContainer {
+    /// Sets a closure to be invoked on the corresponding lifecycle event.
+    /// - Parameter action: The closure to execute.
+    /// - Returns: Self for chaining.
     func onLoad(_ action: @escaping (FViewContainer) -> Void) -> Self {
         onLoad = action
         return self
     }
     
+    /// Sets a closure to be invoked on the corresponding lifecycle event.
+    /// - Parameter action: The closure to execute.
+    /// - Returns: Self for chaining.
     func onAppear(_ action: @escaping (FViewContainer) -> Void) -> Self {
         onAppear = action
         return self
     }
     
+    /// Sets a closure to be invoked on the corresponding lifecycle event.
+    /// - Parameter action: The closure to execute.
+    /// - Returns: Self for chaining.
     func onDisappear(_ action: @escaping (FViewContainer) -> Void) -> Self {
         onDisappear = action
         return self

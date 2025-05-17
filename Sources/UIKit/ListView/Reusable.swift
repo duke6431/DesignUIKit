@@ -1,8 +1,11 @@
 //
 //  Reusable.swift
+//  DesignUIKit
+//
+//  Created by Duke Nguyen on 2022/06/01.
 //
 //  This file provides extensions and protocols to simplify registering and dequeuing reusable cells and supplementary views
-//  for UICollectionView (specifically BCollectionView) and UITableView. It includes support for nib-based and class-based registration,
+//  for UICollectionView and UITableView. It includes support for nib-based and class-based registration,
 //  as well as automatic reuseIdentifier generation via the Reusable protocol.
 //
 

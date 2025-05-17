@@ -1,12 +1,11 @@
-
 //
 //  FontSystem.swift
 //  DesignUIKit
 //
-//  Provides a customizable font management system for UIKit interfaces, supporting
-//  font family switching, observer notification, and font style abstraction.
+//  Created by Duke Nguyen on 2024/01/08.
 //
-//  Created by Duc IT. Nguyen Minh on 08/01/2024.
+//  Provides a customizable font management system for UIKit interfaces,
+//  supporting font family switching, observer notification, and font style abstraction.
 //
 
 import UIKit

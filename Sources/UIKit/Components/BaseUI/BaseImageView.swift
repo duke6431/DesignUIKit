@@ -1,13 +1,11 @@
 //
 //  BaseImageView.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
 //
-//  BaseImageView
-//  Copyright © 2024 Duc Nguyen. All rights reserved.
-//
-//  A configurable and themable UIImageView subclass for use in DesignUIKit.
+//  A configurable and themable `UIImageView` subclass that supports runtime
+//  styling and dynamic theme-driven background and shadow updates.
 //
 
 import UIKit

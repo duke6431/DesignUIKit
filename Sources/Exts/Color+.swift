@@ -1,14 +1,25 @@
 //
 //  Color+.swift
-//  DesignCore
+//  DesignExts
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Created by Duke Nguyen on 2024/01/07.
+//
+//  Adds convenience initializers and computed properties to `UIColor`
+//  for working with hexadecimal string representations.
 //
 
 import UIKit
 import DesignCore
 
 public extension UIColor {
+    /// Creates a `UIColor` instance from a hexadecimal string.
+    ///
+    /// - Parameter code: A hexadecimal string in 3, 6, or 8 character format (e.g., "FFF", "FFFFFF", "AARRGGBB").
+    /// - Returns: A `UIColor` parsed from the provided hex string.
+    class func hex(_ code: String) -> UIColor {
+        .init(hexString: code)
+    }
+    
     /// Initializes a UIColor object based on a hexadecimal color string.
     ///
     /// The hex string can be in one of the following formats:

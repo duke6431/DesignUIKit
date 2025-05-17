@@ -2,7 +2,7 @@
 //  File.swift
 //  ComponentSystem
 //
-//  Created by Duc Nguyen on 20/10/24.
+//  Created by Duke Nguyen on 20/10/24.
 //
 
 import Foundation

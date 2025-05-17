@@ -1,8 +1,8 @@
 //
 //  UIView+.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 25/9/24.
+//  Created by Duke Nguyen on 2024/09/25.
 //
 //  This file extends UIView to conform to the `Chainable` protocol,
 //  enabling fluent-style property configuration and method chaining.

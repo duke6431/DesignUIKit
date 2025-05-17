@@ -1,13 +1,11 @@
 //
 //  CommonCollectionCell.swift
-//  DesignComponents
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 13/03/2023.
+//  Created by Duke Nguyen on 2023/03/13.
 //
-//  This file defines the CommonCollectionCellModel protocol and the CommonCollection.CollectionCell class,
-//  which are used as part of the common collection view cell infrastructure. 
-//  The protocol specifies the requirements for cell models, including identifiers, cell kinds, and customization closures.
-//  The CollectionCell class provides a base UICollectionViewCell implementation with reusable and logging capabilities.
+//  This file defines the `CommonCollectionCellModel` protocol and the `CommonCollection.CollectionCell` base class,
+//  used as the foundational components for common collection view cell registration and configuration.
 //
 
 import DesignCore

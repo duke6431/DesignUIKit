@@ -1,13 +1,12 @@
 
 //
 //  BaseTextView.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
 //
-//  BaseTextView is a configurable and themable UITextView subclass.
-//  It provides configuration management, theming support for background and shadow,
-//  and integrates with a logging system for lifecycle events.
+//  A configurable and themable UITextView subclass that supports dynamic background and shadow styling,
+//  and integrates with a logging system for lifecycle tracking.
 //
 
 import UIKit

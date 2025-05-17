@@ -1,10 +1,10 @@
 //
 //  CommonHeader.swift
-//  Components
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 21/05/2022.
+//  Created by Duke Nguyen on 2022/05/21.
 //
-//  This file defines the CommonHeaderModel protocol and the CommonTableView.Header class,
+//  This file defines the `CommonHeaderModel` protocol and the `CommonTableView.Header` class,
 //  which are used to manage and configure table view header views in a reusable and customizable manner.
 //
 

@@ -1,8 +1,11 @@
 //
 //  BaseStackView.swift
-//  ComponentSystem
+//  DesignUIKit
 //
-//  Created by Duc Nguyen on 16/5/25.
+//  Created by Duke Nguyen on 2025/05/16.
+//
+//  A configurable and themable UIStackView subclass that supports custom background and shadow styling,
+//  as well as view lifecycle hooks for layout and theme-driven appearance updates.
 //
 
 import UIKit

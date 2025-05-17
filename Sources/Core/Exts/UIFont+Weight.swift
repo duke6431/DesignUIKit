@@ -1,10 +1,11 @@
 //
 //  UIFont+Weight.swift
-//  ComponentSystem
+//  DesignCore
 //
-//  Created by Duc Nguyen on 1/10/24.
+//  Created by Duke Nguyen on 2024/01/10.
 //
-//  Extension for UIFont.Weight to provide string representations of font weight names.
+//  Extension for `UIFont.Weight` that provides string representations
+//  of various font weight values.
 //
 
 import UIKit
