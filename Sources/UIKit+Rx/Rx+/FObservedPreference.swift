@@ -2,48 +2,44 @@
 //  File.swift
 //  ComponentSystem
 //
-//  Created by Duke Nguyen on 20/10/24.
+//  Created by Duc Nguyen on 15/11/24.
 //
 
 import Foundation
-import Combine
 import DesignCore
-import Logging
+import RxCocoa
+import RxSwift
 
 @propertyWrapper
 public class FObservedPreference<T>: Loggable {
     fileprivate var observer: FPrefObservation<T>?
     
     let key: FPreferenceKey
-    @Published private var value: T {
-        didSet { UserDefaults.standard.set(value, forKey: key.rawValue) }
-    }
-
-    public var projectedValue: Published<T>.Publisher {
-        get { $value }
-        @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
-        set { $value = newValue }
+    private var relay: BehaviorRelay<T> {
+        didSet { UserDefaults.standard.set(relay.value, forKey: key.rawValue) }
     }
     
+    public var projectedValue: BehaviorRelay<T> { relay }
+    
     public var wrappedValue: T {
-        get { value }
-        set { value = newValue }
+        get { relay.value }
+        set { relay.accept(newValue) }
     }
     
     public init(_ key: FPreferenceKey, default value: T) {
         self.key = key
         if let value = UserDefaults.standard.object(forKey: key.rawValue) as? T {
-            self.value = value
+            self.relay = .init(value: value)
         } else {
             UserDefaults.standard.set(value, forKey: key.rawValue)
-            self.value = value
+            self.relay = .init(value: value)
         }
         defer { generateObserver() }
     }
     
     public init(_ key: FPreferenceKey, initialValue: T) {
         self.key = key
-        self.value = initialValue
+        self.relay = .init(value: initialValue)
         defer { generateObserver() }
     }
     
@@ -53,16 +49,12 @@ public class FObservedPreference<T>: Loggable {
                 self?.logger.error("Unable to obtain new value for type \(T.self).")
                 return
             }
-            self?.value = new
-        }).customized({
-#if DEBUG
-            $0.with(\.logger, setTo: logger)
-#endif
+            self?.relay.accept(new)
         })
     }
 }
 
-fileprivate final class FPrefObservation<T>: NSObject, Chainable {
+private final class FPrefObservation<T>: NSObject, Chainable, Loggable {
     let key: FPreferenceKey
     private var onChange: (T?, T?) -> Void
     
@@ -84,13 +76,10 @@ fileprivate final class FPrefObservation<T>: NSObject, Chainable {
         onChange(change[.oldKey] as? T, change[.newKey] as? T)
     }
     
-#if DEBUG
-    var logger: Logger?
-#endif
     deinit {
         UserDefaults.standard.removeObserver(self, forKeyPath: key.rawValue, context: nil)
 #if DEBUG
-        logger?.info("Deinitialized")
+        logger.info("Deinitialized")
 #endif
     }
 }

@@ -11,7 +11,7 @@ public extension SpacingSystem.Multiplier {
     static var allCases: [Self] {
         [.extraSmall, .small, .regular, .large, .extraLarge]
     }
-    
+
     fileprivate(set) static var extraSmall = SpacingSystem.Multiplier(0.4)
     fileprivate(set) static var small = SpacingSystem.Multiplier(0.7)
     fileprivate(set) static var regular = SpacingSystem.Multiplier(1)

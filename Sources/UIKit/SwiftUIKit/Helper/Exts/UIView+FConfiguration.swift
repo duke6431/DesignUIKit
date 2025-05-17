@@ -28,7 +28,7 @@ public extension UIView {
 /// Useful for capturing views for later manipulation within a declarative context.
 public protocol FAssignable {
     @discardableResult
-    func assign<View: FBodyComponent>(to target: inout View?) -> View
+    func assign<View: FBodyComponent>(to target: inout View?) -> Self
 }
 
 public extension FAssignable {
@@ -36,8 +36,8 @@ public extension FAssignable {
     /// - Parameter target: The target reference to assign to.
     /// - Returns: The instance itself cast as the target type.
     @discardableResult
-    func assign<View: FBodyComponent>(to target: inout View?) -> View {
+    func assign<View: FBodyComponent>(to target: inout View?) -> Self {
         target = self as? View
-        return self as! View
+        return self
     }
 }

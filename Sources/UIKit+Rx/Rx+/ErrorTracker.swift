@@ -18,6 +18,9 @@ public final class ErrorTracker: SharedSequenceConvertibleType {
     public typealias SharingStrategy = DriverSharingStrategy
     /// The internal subject that relays tracked errors to observers.
     private let _subject = PublishSubject<Error>()
+    public var forceErrorSubject : PublishSubject<Error> { _subject }
+    
+    public init() { }
     
     /// Tracks errors emitted from an `ObservableConvertibleType`.
     /// - Parameter source: The observable to monitor.

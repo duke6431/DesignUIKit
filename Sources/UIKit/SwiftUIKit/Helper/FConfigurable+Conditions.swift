@@ -35,7 +35,7 @@ public extension FConfigurable where Self: UIView {
         if condition() {
             transform(self)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     
@@ -62,7 +62,7 @@ public extension FConfigurable where Self: UIView {
         if let optional {
             transform(self, optional)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     

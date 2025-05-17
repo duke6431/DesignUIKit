@@ -21,7 +21,7 @@ public protocol BaseNavigating: Chainable {
 
 /// A default implementation of `BaseNavigating` that holds a weak reference
 /// to a `UINavigationController` for navigation coordination.
-open class BaseNavigator: BaseNavigating {
+open class BaseNavigator: Loggable {
     /// The `UINavigationController` instance used to perform navigation.
     /// Held as a weak reference to avoid retain cycles.
     open weak var navigationController: UINavigationController?
@@ -30,5 +30,11 @@ open class BaseNavigator: BaseNavigating {
     /// - Parameter navigationController: The navigation controller to use.
     public init(_ navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
+    }
+
+    deinit {
+#if CORE_DEBUG
+        logger.info("Deinitialized \(self)")
+#endif
     }
 }

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duke Nguyen on 4/23/24.
 //
@@ -11,9 +11,9 @@ import UIKit
 
 public class MHandler: MHandlable, Chainable {
     public static var instance: MHandler { .init() }
-    
+
     public weak var viewController: UIViewController?
-    
+
     public func handle(_ message: MPresentable) {
         guard let viewController else { return }
         var handler: MHandlerStyle

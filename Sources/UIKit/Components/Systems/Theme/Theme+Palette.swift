@@ -34,7 +34,7 @@ public extension Theme {
         
         /// A dictionary mapping color names to their string representations.
         var colors: [String: String]
-        
+
         public func hash(into hasher: inout Hasher) {
             hasher.combine(style)
         }
