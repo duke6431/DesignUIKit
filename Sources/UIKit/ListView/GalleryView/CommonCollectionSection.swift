@@ -8,11 +8,6 @@
 import UIKit
 import DesignCore
 
-public typealias BCollectionViewCell = UICollectionViewCell
-public typealias BCollectionView = UICollectionView
-public typealias BCollectionLayoutSectionOrthogonalScrollingBehavior = UICollectionLayoutSectionOrthogonalScrollingBehavior
-
-@available(iOS 13.0, *)
 extension CommonCollection {
     public final class Section: NSObject, @unchecked Sendable {
         public var header: CommonCollectionReusableModel?
@@ -55,7 +50,7 @@ extension CommonCollection {
             // Footer
             var footerSize: NSCollectionLayoutSize?
 
-            var pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
+            var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
             
             var customLayout: ((CommonCollection.Section) -> NSCollectionLayoutSection)?
 
@@ -65,7 +60,7 @@ extension CommonCollection {
                 groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
                 sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
-                pagingBehaviour: BCollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
+                pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
             ) {
                 self.itemWHRatio = itemWHRatio
                 self.itemSpacing = itemSpacing
@@ -87,7 +82,6 @@ extension CommonCollection {
     }
 }
 
-@available(iOS 13.0, *)
 extension CommonCollection.Section {
     public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
         let itemLayout = NSCollectionLayoutItem(
@@ -131,14 +125,14 @@ extension CommonCollection.Section {
             if let headerSize = section.dimension.headerSize {
                 reusableSizes.append(
                     .init(layoutSize: headerSize,
-                          elementKind: BCollectionView.ReusableKind.header.rawValue,
+                          elementKind: UICollectionView.ReusableKind.header.rawValue,
                           alignment: .topLeading)
                 )
             }
             if let footerSize = section.dimension.footerSize {
                 reusableSizes.append(
                     .init(layoutSize: footerSize,
-                          elementKind: BCollectionView.ReusableKind.footer.rawValue,
+                          elementKind: UICollectionView.ReusableKind.footer.rawValue,
                           alignment: .bottomLeading)
                 )
             }

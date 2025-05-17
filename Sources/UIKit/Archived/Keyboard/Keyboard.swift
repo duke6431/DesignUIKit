@@ -9,7 +9,6 @@ import UIKit
 import DesignCore
 
 public class Keyboard: UIInputView {
-    @available(iOS 13.0, *)
     public static var numberPadWithReturn: Keyboard {
         Keyboard(stack: KeyStack {
             KeyStack {

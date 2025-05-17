@@ -1,6 +1,6 @@
 //
-//  File.swift
-//
+//  Color+.swift
+//  DesignCore
 //
 //  Created by Duc Minh Nguyen on 1/7/24.
 //
@@ -9,6 +9,16 @@ import UIKit
 import DesignCore
 
 public extension UIColor {
+    /// Initializes a UIColor object based on a hexadecimal color string.
+    ///
+    /// The hex string can be in one of the following formats:
+    /// - RGB (3 characters, e.g. "FFF")
+    /// - RRGGBB (6 characters, e.g. "FFFFFF")
+    /// - AARRGGBB (8 characters, e.g. "FFFFFFFF")
+    ///
+    /// The alpha component is optional and defaults to 255 (fully opaque) if not provided.
+    ///
+    /// - Parameter hexString: The hexadecimal string representing the color.
     convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: .alphanumerics.inverted)
         var int = UInt64()
@@ -36,6 +46,10 @@ public extension UIColor {
         )
     }
     
+    /// A hexadecimal string representation of the color.
+    ///
+    /// The string is formatted as `#RRGGBB` representing the red, green, and blue components.
+    /// Alpha component is not included in this string.
     var hexString: String {
         .init(
             format: "#%02lX%02lX%02lX",
