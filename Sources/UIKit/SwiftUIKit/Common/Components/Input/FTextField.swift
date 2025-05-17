@@ -1,25 +1,37 @@
 //
-//  File.swift
+//  FTextField.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/02/11.
 //
-//  Created by Duc IT. Nguyen Minh on 11/02/2024.
+//  A customizable and theme-aware text field that supports placeholder styling,
+//  text change and submit callbacks, and fluent interface modifiers.
 //
 
 import UIKit
 import DesignCore
 
+/// A customizable and theme-aware text field that supports styled placeholders,
+/// text change and submit callbacks, and theme integration.
 public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThemableForeground, FThemablePlaceholder {
+    /// A closure to perform additional custom configuration.
     public var customConfiguration: ((FTextField) -> Void)?
+    
+    /// A closure triggered when the return key is pressed.
     fileprivate var onSubmitAction: (() -> Void)?
+    
+    /// A closure triggered when the text changes.
     fileprivate var onChangeAction: ((String) -> Void)?
-
-    private let textLayer = CCATextLayer()
+    
+    /// The underlying placeholder text shown using a CATextLayer.
     public var customPlaceholder: String = "" {
         didSet {
             textLayer.string = customPlaceholder
             setNeedsLayout()
         }
     }
+    
+    /// The color used for the placeholder text.
     public var placeholderColor: UIColor = .lightGray {
         didSet {
             textLayer.foregroundColor = placeholderColor.cgColor
@@ -40,7 +52,13 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
             textLayer.alignmentMode = textAlignment.caMode
         }
     }
-
+    
+    private let textLayer = CCATextLayer()
+    
+    /// Initializes the text field with a placeholder and initial text.
+    /// - Parameters:
+    ///   - placeholder: The placeholder string.
+    ///   - text: The initial text.
     public init(
         _ placeholder: String,
         _ text: String
@@ -51,18 +69,22 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         preconditions()
     }
     
+    /// Initializes the text field with attributed text.
+    /// - Parameter attributedText: The attributed string to display.
     public init(_ attributedText: NSAttributedString) {
         super.init(frame: .zero)
         self.attributedText = attributedText
         preconditions()
     }
     
+    /// Sets up the placeholder layer and layout on initialization.
     public func preconditions() {
         textLayer.string = customPlaceholder
         preparePlaceholder()
         setNeedsLayout()
     }
     
+    /// Configures the placeholder CATextLayer and inserts it into the layer hierarchy.
     func preparePlaceholder() {
         // textLayer properties
         textLayer.contentsScale = UIScreen.main.scale
@@ -83,6 +105,7 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         delegate = self
     }
     
+    /// Handles additional setup when added to a superview.
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -90,47 +113,56 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
+    /// Cleans up target-actions when removed from the superview.
     public override func removeFromSuperview() {
         super.removeFromSuperview()
         removeTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
+    /// Lays out subviews and updates the placeholder layer frame.
     public override func layoutSubviews() {
         super.layoutSubviews()
         textLayer.frame = textRect(forBounds: bounds)
         configuration?.updateLayers(for: self)
     }
-
+    
+    /// Sets the placeholder text.
     @discardableResult public func placeholder(_ placeholder: String?) -> Self {
         self.customPlaceholder = placeholder ?? ""
         return self
     }
     
+    /// Sets the text alignment.
     @discardableResult public func textAlignment(_ alignment: NSTextAlignment) -> Self {
         self.textAlignment = alignment
         return self
     }
-
+    
+    /// Sets the font.
     @discardableResult public func font(_ font: UIFont) -> Self {
         self.font = font
         return self
     }
-
+    
+    /// Sets the text color.
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
         self.textColor = color
         return self
     }
     
+    /// Sets the placeholder color.
     @discardableResult public func placeholder(_ color: UIColor = .secondaryLabel) -> Self {
         self.placeholderColor = color
         return self
     }
     
+    /// Registers a closure to call when the text changes.
     @discardableResult public func onChange(_ onChange: ((String) -> Void)? = nil) -> Self {
         self.onChangeAction = onChange
         return self
     }
     
+    /// Registers a closure to call when the return key is pressed.
     @discardableResult public func onSubmit(_ onSubmit: (() -> Void)? = nil) -> Self {
         self.onSubmitAction = onSubmit
         return self
@@ -138,6 +170,8 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
     
     public var foregroundKey: ThemeKey?
     public var placeholderKey: ThemeKey?
+    
+    /// Applies theme-based colors for text and placeholder using the assigned keys.
     public override func apply(theme: ThemeProvider) {
         super.apply(theme: theme)
         if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
@@ -145,6 +179,7 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
     }
 }
 
+/// Handles UITextFieldDelegate methods for return key and text change monitoring.
 extension FTextField: UITextFieldDelegate {
     @objc func textFieldDidChange(_ textField: UITextField) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
@@ -159,6 +194,7 @@ extension FTextField: UITextFieldDelegate {
     }
 }
 
+/// Converts a `NSTextAlignment` to the corresponding `CATextLayerAlignmentMode`.
 extension NSTextAlignment {
     var caMode: CATextLayerAlignmentMode {
         switch self {

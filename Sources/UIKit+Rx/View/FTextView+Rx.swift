@@ -1,8 +1,10 @@
 //
-//  File.swift
-//  ComponentSystem
+//  FTextView+Rx.swift
+//  DesignRxUIKit
 //
-//  Created by Duc Nguyen on 26/9/24.
+//  Created by Duke Nguyen on 2024/09/26.
+//
+//  Adds RxSwift support for `FTextView` with reactive binding and text event forwarding.
 //
 
 import Foundation
@@ -11,6 +13,10 @@ import RxCocoa
 import RxSwift
 
 public extension FTextView {
+    /// Initializes an `FTextView` with a placeholder and binds its text to a reactive `Driver`.
+    /// - Parameters:
+    ///   - placeholder: The placeholder text to display.
+    ///   - textPublisher: A `Driver<String>` providing the text to bind to the field.
     convenience init(
         _ placeholder: String,
         _ textPublisher: Driver<String>
@@ -21,6 +27,9 @@ public extension FTextView {
         preconditions()
     }
     
+    /// Sends updated text from the text view to a `PublishSubject`.
+    /// - Parameter subject: The subject to emit text changes to.
+    /// - Returns: Self for fluent chaining.
     func sendText(to subject: PublishSubject<String?>) -> Self {
         rx.text.bind(onNext: subject.onNext(_:)).disposed(by: disposeBag)
         return self

@@ -1,18 +1,30 @@
 //
-//  File.swift
-//  
+//  FScroll.swift
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 12/02/2024.
+//  Created by Duke Nguyen on 2024/02/12.
+//
+//  A customizable scroll view component that supports vertical or horizontal layout
+//  of body components using fluent composition.
 //
 
 import UIKit
 import DesignCore
 
+/// A customizable scroll view component that supports arranging `FBodyComponent` views
+/// either vertically or horizontally using declarative initialization and composition.
 public final class FScroll: BaseScrollView, FComponent {
+    /// The scroll direction of the content (horizontal or vertical).
     public var axis: NSLayoutConstraint.Axis
+    /// The views to be arranged inside the scroll view.
     public var contentViews: [FBodyComponent] = []
+    /// Optional closure for applying additional configuration to the scroll view.
     public var customConfiguration: ((FScroll) -> Void)?
-
+    
+    /// Initializes a scroll view with a single optional body component.
+    /// - Parameters:
+    ///   - axis: The scroll direction.
+    ///   - contentView: A single content view to display.
     public init(
         axis: NSLayoutConstraint.Axis,
         contentView: FBodyComponent? = nil
@@ -26,6 +38,10 @@ public final class FScroll: BaseScrollView, FComponent {
         super.init(frame: .zero)
     }
     
+    /// Initializes a scroll view with multiple body components using a builder.
+    /// - Parameters:
+    ///   - axis: The scroll direction.
+    ///   - contentViews: A view builder closure that returns the scrollable content.
     public init(
         axis: NSLayoutConstraint.Axis,
         @FViewBuilder contentViews: () -> FBody

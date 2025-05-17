@@ -1,14 +1,21 @@
 //
-//  File.swift
-//  
+//  Rect+.swift
+//  DesignUIKit
 //
-//  Created by Duc IT. Nguyen Minh on 12/02/2024.
+//  Created by Duke Nguyen on 2024/02/12.
+//
+//  Provides convenience methods and operator overloads for manipulating
+//  `UIRectCorner`, `UIEdgeInsets`, and `NSDirectionalEdgeInsets`.
 //
 
 import UIKit
 import DesignCore
 
 extension UIRectCorner {
+    /// Returns the corresponding `CACornerMask` for the `UIRectCorner`.
+    ///
+    /// This computed property converts the `UIRectCorner` options to the equivalent
+    /// `CACornerMask` values used for layer corner masking.
     var caMask: CACornerMask {
         var masks: [CACornerMask] = []
         if self.contains(.topLeft) {
@@ -28,6 +35,12 @@ extension UIRectCorner {
 }
 
 extension UIEdgeInsets: SelfCustomizable {
+    /// Adds a scalar value to all edges of the `UIEdgeInsets`.
+    ///
+    /// - Parameters:
+    ///   - lhs: The original `UIEdgeInsets`.
+    ///   - rhs: The scalar `CGFloat` value to add to each edge.
+    /// - Returns: A new `UIEdgeInsets` with each edge increased by `rhs`.
     static func + (_ lhs: UIEdgeInsets, _ rhs: CGFloat) -> UIEdgeInsets {
         lhs.custom { insets in
             insets.top += rhs
@@ -37,6 +50,12 @@ extension UIEdgeInsets: SelfCustomizable {
         }
     }
     
+    /// Adds the values of two `UIEdgeInsets` instances edge-wise.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first `UIEdgeInsets`.
+    ///   - rhs: The second `UIEdgeInsets`.
+    /// - Returns: A new `UIEdgeInsets` where each edge is the sum of the corresponding edges.
     static func + (_ lhs: UIEdgeInsets, _ rhs: UIEdgeInsets) -> UIEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
@@ -46,6 +65,12 @@ extension UIEdgeInsets: SelfCustomizable {
         )
     }
     
+    /// Adds a scalar value to specific edges of the `UIEdgeInsets`.
+    ///
+    /// - Parameters:
+    ///   - edges: The edges to which the scalar value should be added.
+    ///   - rhs: The scalar `CGFloat` value to add.
+    /// - Returns: A new `UIEdgeInsets` with the specified edges increased by `rhs`.
     func add(_ edges: UIRectEdge, _ rhs: CGFloat) -> UIEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
@@ -57,6 +82,12 @@ extension UIEdgeInsets: SelfCustomizable {
 }
 
 extension NSDirectionalEdgeInsets: SelfCustomizable {
+    /// Adds a scalar value to all edges of the `NSDirectionalEdgeInsets`.
+    ///
+    /// - Parameters:
+    ///   - lhs: The original `NSDirectionalEdgeInsets`.
+    ///   - rhs: The scalar `CGFloat` value to add to each edge.
+    /// - Returns: A new `NSDirectionalEdgeInsets` with each edge increased by `rhs`.
     static func + (_ lhs: NSDirectionalEdgeInsets, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
         lhs.custom { insets in
             insets.top += rhs
@@ -66,6 +97,12 @@ extension NSDirectionalEdgeInsets: SelfCustomizable {
         }
     }
     
+    /// Adds the values of two `NSDirectionalEdgeInsets` instances edge-wise.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first `NSDirectionalEdgeInsets`.
+    ///   - rhs: The second `NSDirectionalEdgeInsets`.
+    /// - Returns: A new `NSDirectionalEdgeInsets` where each edge is the sum of the corresponding edges.
     static func + (_ lhs: NSDirectionalEdgeInsets, _ rhs: NSDirectionalEdgeInsets) -> NSDirectionalEdgeInsets {
         .init(
             top: lhs.top + rhs.top,
@@ -75,6 +112,12 @@ extension NSDirectionalEdgeInsets: SelfCustomizable {
         )
     }
     
+    /// Adds a scalar value to specific edges of the `NSDirectionalEdgeInsets`.
+    ///
+    /// - Parameters:
+    ///   - edges: The directional edges to which the scalar value should be added.
+    ///   - rhs: The scalar `CGFloat` value to add.
+    /// - Returns: A new `NSDirectionalEdgeInsets` with the specified edges increased by `rhs`.
     func add(_ edges: NSDirectionalRectEdge, _ rhs: CGFloat) -> NSDirectionalEdgeInsets {
         return custom { insets in
             insets.top += edges.contains(.top) ? rhs : 0
