@@ -2,7 +2,7 @@
 //  File.swift
 //
 //
-//  Created by Duc IT. Nguyen Minh on 17/02/2024.
+//  Created by Duke Nguyen on 17/02/2024.
 //
 
 import Foundation

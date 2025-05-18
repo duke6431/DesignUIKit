@@ -1,19 +1,32 @@
 //
-//  File.swift
+//  FGrid.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/02/17.
 //
-//  Created by Duc IT. Nguyen Minh on 17/02/2024.
+//  A reusable grid view component built on top of `CommonCollection.View`.
+//  Supports cell and header registration, theming, selection handling,
+//  and model-driven layout using `FBodyComponent`-based wrappers.
 //
 
 import UIKit
 import DesignCore
 import DesignExts
 
-public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
+/// A reusable and configurable grid view that supports cell and header binding
+/// through reusable FBody components. Allows selection and custom configuration.
+public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
+    /// Closure for applying custom configuration after the grid is added to a superview.
     public var customConfiguration: ((FGrid) -> Void)?
+    /// Callback triggered when a grid cell is selected.
     public var onSelect: ((FGridModel) -> Void)?
+    /// The underlying `CommonCollection.View` instance.
     public weak var content: CommonCollection.View?
-
+    
+    /// Initializes the grid with provided reusable cell and optional header prototypes.
+    /// - Parameters:
+    ///   - prototypes: Cell types to register.
+    ///   - headerPrototypes: Optional header types to register.
     public init(
         prototypes: [(FCellReusable & UIView).Type],
         headerPrototypes: [(FCellReusable & UIView).Type]? = nil
@@ -38,7 +51,7 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignabl
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-
+    
     override func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
         // swiftlint:disable:next line_length
         let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(
@@ -72,7 +85,8 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignabl
         }
         return dataSource
     }
-
+    
+    /// Loads the default configuration for the grid.
     public func loadConfiguration() {
         configuration = .init()
     }
@@ -82,18 +96,26 @@ public class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignabl
 }
 
 public extension FGrid {
+    /// Handles cell selection and invokes the onSelect callback.
+    /// - Parameters:
+    ///   - indexPath: The index path of the selected cell.
+    ///   - data: The associated cell model.
     override func didSelectCell(at indexPath: IndexPath, with data: CommonCollectionCellModel) {
         super.didSelectCell(at: indexPath, with: data)
         guard let data = data as? FGridModel else { return }
         onSelect?(data)
     }
-
+    
+    /// Sets the selection callback for grid cells.
+    /// - Parameter action: A closure receiving the selected `FGridModel`.
+    /// - Returns: Self for chaining.
     @discardableResult func onSelect(_ action: @escaping (FGridModel) -> Void) -> Self {
         onSelect = action
         return self
     }
 }
 
+/// A model representing a reusable grid header view using an `FCellModeling`.
 public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
     public var identifier: String = UUID().uuidString
     public static var headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
@@ -105,6 +127,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
     }
 }
 
+/// A reusable view used as a header in the `FGrid`. Wraps an FBody header component.
 public class FGridHeader: CommonCollection.ReusableView {
     weak var content: (FBodyComponent & FCellReusable)?
 
@@ -116,7 +139,9 @@ public class FGridHeader: CommonCollection.ReusableView {
         }
         content?.bind(model.model)
     }
-
+    
+    /// Installs the provided view into the header and retains a reference to it.
+    /// - Parameter view: The FBody header component.
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         backgroundColor = .clear
         addSubview(view)
@@ -124,6 +149,7 @@ public class FGridHeader: CommonCollection.ReusableView {
     }
 }
 
+/// A model representing a reusable grid cell backed by an `FCellModeling` component.
 public class FGridModel: NSObject, CommonCollectionCellModel {
     public var identifier: String = UUID().uuidString
     public static var cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
@@ -141,6 +167,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
     }
 }
 
+/// A concrete grid cell that binds to an `FGridModel` and hosts an FBody view.
 public class FGridCell: CommonCollection.CollectionCell {
     weak var content: (FBodyComponent & FCellReusable)?
 
@@ -152,7 +179,9 @@ public class FGridCell: CommonCollection.CollectionCell {
         }
         content?.bind(model.model)
     }
-
+    
+    /// Installs and constrains the provided view into the cell's content view.
+    /// - Parameter view: The FBody cell component.
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         contentView.backgroundColor = .clear
         backgroundColor = .clear

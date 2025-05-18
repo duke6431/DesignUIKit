@@ -1,16 +1,25 @@
 //
-//  FView.swift
+//  FZStack.swift
+//  DesignUIKit
 //
+//  Created by Duke Nguyen on 2024/02/11.
 //
-//  Created by Duc IT. Nguyen Minh on 11/02/2024.
+//  A flexible vertical stack component that composes multiple body components into a single layout.
+//  Supports configuration via fluent APIs and optional content flattening.
 //
 
 import DesignCore
 
-public class FZStack: BaseView, FComponent {
+/// A flexible vertical stack component that wraps and lays out multiple body components.
+/// Automatically flattens `FForEach` containers for simpler layout.
+public final class FZStack: BaseView, FComponent {
+    /// Optional closure for applying additional runtime customization after setup.
     public var customConfiguration: ((FZStack) -> Void)?
+    /// The list of body components to be displayed in the stack.
     public var contentViews: FBody
-
+    
+    /// Initializes a stack with an optional single body component.
+    /// - Parameter contentView: A single content component to display.
     public init(contentView: FBodyComponent? = nil) {
         if let contentView {
             self.contentViews = [contentView]
@@ -19,11 +28,15 @@ public class FZStack: BaseView, FComponent {
         }
         super.init(frame: .zero)
     }
-
+    
+    /// Initializes a stack using a view builder that returns body components.
+    /// - Parameter builder: A closure that returns an array of body components.
     public convenience init(@FViewBuilder _ builder: () -> FBody) {
         self.init(contentViews: builder())
     }
-
+    
+    /// Initializes a stack with a list of body components.
+    /// - Parameter contentViews: An array of body components to compose into the stack.
     public init(contentViews: FBody) {
         self.contentViews = contentViews
         super.init(frame: .zero)

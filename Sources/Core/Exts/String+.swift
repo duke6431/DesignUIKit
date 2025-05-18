@@ -1,14 +1,20 @@
 //
-//  File.swift
+//  String+.swift
+//  DesignCore
 //
+//  Created by Duke Nguyen on 2024/01/07.
 //
-//  Created by Duc Minh Nguyen on 1/7/24.
+//  Extensions on `String` to provide substring range searching,
+//  whitespace trimming, and first-letter capitalization utilities.
 //
 
 import Foundation
 
 public extension String {
-    /// Search for ranges of substring from a self
+    /// Returns an array of `NSRange` instances representing all occurrences of the given substring.
+    ///
+    /// - Parameter string: The substring to search for.
+    /// - Returns: An array of ranges where the substring is found within the string.
     func ranges(of string: String) -> [NSRange] {
         var indices = [Int]()
         var searchStartIndex = self.startIndex
@@ -24,10 +30,11 @@ public extension String {
 
         return indices.map { NSRange(location: $0, length: string.count) }
     }
-
-    /// Trimming leading and trailing whitespaces and new line
+    
+    /// Returns a new string by trimming leading and trailing whitespaces and newlines.
     var stripped: String { trimmingCharacters(in: .whitespacesAndNewlines) }
     
+    /// Returns a new string with the first character capitalized.
     var capitalizedFirst: String {
         prefix(1).uppercased() + dropFirst()
     }

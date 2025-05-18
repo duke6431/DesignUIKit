@@ -2,7 +2,7 @@
 //  CommonTextField.swift
 //  Components
 //
-//  Created by Duc IT. Nguyen Minh on 25/05/2022.
+//  Created by Duke Nguyen on 25/05/2022.
 //
 import UIKit
 import DesignCore

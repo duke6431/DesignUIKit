@@ -1,31 +1,40 @@
 //
 //  CommonAttributedString.swift
-//  Core
+//  DesignCore
 //
-//  Created by Duc IT. Nguyen Minh on 13/06/2022.
+//  Created by Duke Nguyen on 2022/06/13.
+//
+//  Provides utilities and protocols to build and manipulate attributed strings
+//  with a fluent and chainable interface.
 //
 
 import UIKit
 
+/// Protocol that requires a built NSMutableAttributedString representation.
 public protocol AttributedStringBuildable {
+    /// The constructed NSMutableAttributedString
     var built: NSMutableAttributedString { get }
 }
 
 public extension NSAttributedString {
+    /// Builds an NSAttributedString from a list of `AttributedStringBuildable` components.
+    ///
+    /// - Parameter strings: A result builder producing an array of `AttributedStringBuildable`.
+    /// - Returns: A combined NSAttributedString by appending each component's built attributed string.
     static func build(@FBuilder<AttributedStringBuildable> _ strings: () -> [AttributedStringBuildable]) -> NSAttributedString {
         strings().reduce(NSMutableAttributedString()) { $0.appended(with: $1.built) }
     }
 }
 
 extension CommonAttributedString: AttributedStringBuildable {
-    /// Build metadata into NSAttributedString
-    /// - Returns: Swift attributed string
+    /// Returns an NSMutableAttributedString with the string and its attributes.
     public var built: NSMutableAttributedString {
         NSMutableAttributedString(string: string, attributes: attributes)
     }
 }
 
 extension Array: AttributedStringBuildable where Element == CommonAttributedString {
+    /// Combines an array of `CommonAttributedString` into one NSMutableAttributedString.
     public var built: NSMutableAttributedString {
         reduce(.init()) {
             $0.appended(with: $1.built)
@@ -33,10 +42,16 @@ extension Array: AttributedStringBuildable where Element == CommonAttributedStri
     }
 }
 
+/// A chainable attributed string wrapper to build and modify attributed strings.
 public class CommonAttributedString: Chainable {
+    /// The dictionary of NSAttributedString attributes applied to the string.
     public var attributes: [NSAttributedString.Key: Any] = [:]
+    
+    /// The underlying string value.
     public var string: String
-
+    
+    /// Initializes with an optional string.
+    /// - Parameter string: The base string.
     public init(_ string: String = "") {
         self.string = string
     }
@@ -47,7 +62,9 @@ public class CommonAttributedString: Chainable {
         NSMutableAttributedString(string: string, attributes: attributes)
     }
 
-    /// Existed key-value will be replaced
+    /// Merges new attributes into the existing ones, replacing duplicates.
+    /// - Parameter attributes: Attributes to merge.
+    /// - Returns: Self for chaining.
     public func merged(_ attributes: [NSAttributedString.Key: Any]) -> Self {
         self.attributes.merge(attributes) { _, second in second }
         return self
@@ -62,28 +79,34 @@ public class CommonAttributedString: Chainable {
         }
     }
 
-    /// Apply foreground color (text color) to string
+    /// Applies a foreground (text) color attribute.
+    /// - Parameter color: UIColor to apply.
+    /// - Returns: Self for chaining.
     public func foreground(_ color: UIColor) -> Self {
         merged([.foregroundColor: color])
     }
 
-    /// Apply background color to occupied space of the string
+    /// Applies a background color attribute.
+    /// - Parameter color: UIColor to apply.
+    /// - Returns: Self for chaining.
     public func background(_ color: UIColor) -> Self {
         merged([.backgroundColor: color])
     }
 
-    /// Apply specific font to the string
-    public func font(_ font: UIFont) -> Self {
+    /// Applies a font attribute.
+    /// - Parameter font: UIFont to apply.
+    /// - Returns: Self for chaining.public func font(_ font: UIFont) -> Self {
         merged([.font: font])
     }
 }
 
 public extension CommonAttributedString {
-    /// Add attributes to string
+    /// Adds attributes to all occurrences of a target substring.
+    ///
     /// - Parameters:
-    ///   - attributes: attribute dictionary for string
-    ///   - target: content of the attributed string
-    /// - Returns: attribute applied string
+    ///   - attributes: Attributes to add.
+    ///   - target: The substring to apply attributes to.
+    /// - Returns: An array of `CommonAttributedString` with attributes applied to target substrings.
     func add(attributes: [NSAttributedString.Key: Any], to target: String) -> [CommonAttributedString] {
         string.components(separatedBy: target)
             .map { .init($0).merged(self.attributes) }
@@ -92,11 +115,12 @@ public extension CommonAttributedString {
 }
 
 public extension NSAttributedString {
-    /// Add attributes to string
+    /// Adds attributes to all occurrences of a target substring in the attributed string.
+    ///
     /// - Parameters:
-    ///   - attributes: attribute dictionary for string
-    ///   - target: content of the attributed string
-    /// - Returns: attribute applied string
+    ///   - attributes: Attributes to add.
+    ///   - target: The substring to apply attributes to.
+    /// - Returns: A new NSAttributedString with attributes applied to the target substrings.
     func add(_ attributes: [NSAttributedString.Key: Any], to target: String) -> NSAttributedString {
         let ranges = string.ranges(of: target)
         let attributedText = NSMutableAttributedString(attributedString: self)
@@ -108,6 +132,9 @@ public extension NSAttributedString {
 }
 
 extension NSMutableAttributedString {
+    /// Appends another NSAttributedString and returns self for chaining.
+    /// - Parameter string: The NSAttributedString to append.
+    /// - Returns: Self after appending.
     func appended(with string: NSAttributedString) -> Self {
         append(string)
         return self

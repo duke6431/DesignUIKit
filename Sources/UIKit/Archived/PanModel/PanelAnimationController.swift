@@ -1,8 +1,8 @@
 //
 //  PanelAnimationController.swift
-//  Duc Nguyen
+//  Duke Nguyen
 //
-//  Created by Duc IT. Nguyen Minh on 14/06/2022.
+//  Created by Duke Nguyen on 14/06/2022.
 //
 
 import UIKit

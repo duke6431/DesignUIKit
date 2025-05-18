@@ -2,7 +2,7 @@
 //  File.swift
 //
 //
-//  Created by Duc Minh Nguyen on 8/31/24.
+//  Created by Duke Nguyen on 8/31/24.
 //
 
 import Foundation
@@ -76,7 +76,7 @@ public struct MPushHandler: MHandlerStyle {
     public static var instance: MPushHandler { .init() }
 
     public func handle(using viewController: UIViewController, with message: MPresentable) {
-        guard let navigationController = viewController as? BNavigationController else { return }
+        guard let navigationController = viewController as? UINavigationController else { return }
         navigationController.pushViewController(UIViewController(), animated: true)
     }
 }
