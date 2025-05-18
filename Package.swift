@@ -8,7 +8,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "ComponentSystem",
+    name: "DesignUIKit",
     platforms: [
         .iOS(.v13)
     ],
