@@ -16,18 +16,18 @@ import Foundation
 
 /// A wrapper component that embeds a view controller's view into a parent view hierarchy,
 /// handling view controller containment and layout.
-public final class FViewController<ViewController: UIViewController>: BaseView, FComponent {
+public final class FViewController: BaseView, FComponent {
     /// Optional closure for applying additional runtime configuration.
     public var customConfiguration: ((FViewController) -> Void)?
     
     /// The parent view controller that will host the embedded child view controller.
     public weak var parentViewController: UIViewController?
     /// The embedded content view controller to display inside this view.
-    public var contentViewController: ViewController
+    public var contentViewController: UIViewController
     
     /// Initializes the component with a content view controller.
     /// - Parameter contentViewController: The child view controller to embed.
-    public init(_ contentViewController: ViewController) {
+    public init(_ contentViewController: UIViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
     }
