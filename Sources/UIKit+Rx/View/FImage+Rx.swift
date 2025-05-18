@@ -38,6 +38,9 @@ public extension FImage {
         }
     }
     
+    /// Re-applies the current foreground color to the image.
+    /// If a `currentForegroundColor` is set, it re-tints the image accordingly.
+    /// If a `foregroundKey` is set, the foreground theme is reapplied.
     private func rebindImageColor() {
         if let currentForegroundColor {
             image = image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)

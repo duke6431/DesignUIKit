@@ -1,6 +1,6 @@
 //
 //  Loggable.swift
-//  DesignUIKit
+//  DesignCore
 //
 //  Created by Duke Nguyen on 2024/10/13.
 //

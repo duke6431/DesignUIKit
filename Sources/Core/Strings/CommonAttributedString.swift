@@ -95,7 +95,8 @@ public class CommonAttributedString: Chainable {
 
     /// Applies a font attribute.
     /// - Parameter font: UIFont to apply.
-    /// - Returns: Self for chaining.public func font(_ font: UIFont) -> Self {
+    /// - Returns: Self for chaining.
+    public func font(_ font: UIFont) -> Self {
         merged([.font: font])
     }
 }

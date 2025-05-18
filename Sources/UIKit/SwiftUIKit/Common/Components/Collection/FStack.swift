@@ -18,7 +18,7 @@ public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
     
     /// The list of components to be arranged in the stack view.
-    var arrangedContents: FBody
+    public var arrangedContents: FBody
     
     /// Initializes a stack view with a view builder closure to generate arranged content.
     /// - Parameters:

@@ -1,6 +1,6 @@
 //
 //  Representables.swift
-//  DesignUIKit
+//  DesignCore
 //
 //  Created by Duke Nguyen on 2024/03/27.
 //
