@@ -19,35 +19,20 @@ public extension FButton {
     /// - Parameters:
     ///   - style: The button style type (optional).
     ///   - textPublisher: A `Driver` emitting button titles.
-    ///   - action: A closure to execute on tap.
     convenience init(
         style: UIButton.ButtonType? = nil,
-        _ textPublisher: Driver<String>,
-        action: @escaping () -> Void
+        _ textPublisher: Driver<String>
     ) {
         self.init(style: style)
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
     }
-    
-    /// Initializes an `FButton` with a reactive title and access to the button instance in the action.
-    /// - Parameters:
-    ///   - style: The button style type (optional).
-    ///   - textPublisher: A `Driver` emitting button titles.
-    ///   - action: A closure receiving the `FButton` instance on tap.
-    convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ textPublisher: Driver<String>,
-        action: @escaping (FButton?) -> Void
-    ) {
-        self.init(style: style)
-        textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
-    }
-    
+
     /// Binds the button's tap event to a `PublishSubject`.
     /// - Parameter subject: The subject to forward tap events to.
     /// - Returns: Self for fluent chaining.
-    func sendTap(to subject: PublishSubject<Void>) -> Self {
-        rx.tap.bind(onNext: subject.onNext).disposed(by: disposeBag)
+    @discardableResult
+    func onTap(trigger publisher: PublishSubject<Void>) -> Self {
+        rx.tap.bind(onNext: publisher.onNext).disposed(by: disposeBag)
         return self
     }
 }

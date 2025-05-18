@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duke Nguyen on 22/01/2024.
 //
@@ -15,15 +15,15 @@ public protocol UserDefaultKey {
 public struct UserDefault<Value: Codable> {
     let key: String
     var container: UserDefaults = .standard
-    
+
     public init(key: UserDefaultKey) {
         self.key = key.rawValue
     }
-    
+
     public init(key: String) {
         self.key = key
     }
-    
+
     public var wrappedValue: Value? {
         get {
             guard let data = container.object(forKey: key) as? Data else { return nil }

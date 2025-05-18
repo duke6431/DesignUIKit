@@ -56,7 +56,7 @@ public extension UIControl {
     ///   - closure: The closure to execute when the event is triggered.
     /// - Returns: A unique identifier for the added action.
     @discardableResult
-    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping() -> Void) -> String {
+    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping () -> Void) -> String {
         var identifier: String
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }

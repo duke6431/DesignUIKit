@@ -55,7 +55,13 @@ public class CommonAttributedString: Chainable {
     public init(_ string: String = "") {
         self.string = string
     }
-    
+
+    /// Build metadata into NSAttributedString
+    /// - Returns: Swift attributed string
+    public func build() -> NSAttributedString {
+        NSMutableAttributedString(string: string, attributes: attributes)
+    }
+
     /// Merges new attributes into the existing ones, replacing duplicates.
     /// - Parameter attributes: Attributes to merge.
     /// - Returns: Self for chaining.
@@ -63,21 +69,30 @@ public class CommonAttributedString: Chainable {
         self.attributes.merge(attributes) { _, second in second }
         return self
     }
-    
+
+    /// build function to create NSAttributedString
+    /// - Parameter strings: builder into list of common attributed string
+    /// - Returns: a sumarized attributed string
+    public static func build(@FBuilder<CommonAttributedString> _ strings: () -> [CommonAttributedString]) -> NSAttributedString {
+        strings().reduce(into: NSMutableAttributedString()) { partialResult, prototype in
+            partialResult.append(prototype.build())
+        }
+    }
+
     /// Applies a foreground (text) color attribute.
     /// - Parameter color: UIColor to apply.
     /// - Returns: Self for chaining.
     public func foreground(_ color: UIColor) -> Self {
         merged([.foregroundColor: color])
     }
-    
+
     /// Applies a background color attribute.
     /// - Parameter color: UIColor to apply.
     /// - Returns: Self for chaining.
     public func background(_ color: UIColor) -> Self {
         merged([.backgroundColor: color])
     }
-    
+
     /// Applies a font attribute.
     /// - Parameter font: UIFont to apply.
     /// - Returns: Self for chaining.

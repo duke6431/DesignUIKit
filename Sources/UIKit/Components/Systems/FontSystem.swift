@@ -100,7 +100,7 @@ public class FontSystem {
 @objc open class FontFamily: NSObject {
     /// The base name of the font family.
     public var name: String
-    
+
     public init(name: String) { self.name = name }
     
     /// Returns a `UIFont` for the given style and multiplier.
@@ -139,7 +139,7 @@ public class FontSystem {
 public extension FontFamily {
     class System: FontFamily {
         public static let shared: System = .init()
-        
+
         init() { super.init(name: "system") }
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
@@ -155,7 +155,7 @@ extension FontFamily {
         public var size: CGFloat
         /// The weight of the font.
         public var weight: UIFont.Weight
-        
+
         public init(size: CGFloat, weight: UIFont.Weight) {
             self.size = size
             self.weight = weight
@@ -171,9 +171,9 @@ fileprivate extension UIFont {
         let weight = UIFont.Weight(rawValue: weightNumber)
         return weight
     }
-    
+
     private var traits: [UIFontDescriptor.TraitKey: Any] {
         return fontDescriptor.object(forKey: .traits) as? [UIFontDescriptor.TraitKey: Any]
-        ?? [:]
+            ?? [:]
     }
 }

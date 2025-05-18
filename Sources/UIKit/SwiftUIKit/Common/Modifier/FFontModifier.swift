@@ -24,7 +24,7 @@ public struct FFontModifier: FModifier {
     /// Applies the font to the content if it conforms to `FCalligraphiable`.
     /// - Parameter content: The content component to modify.
     /// - Returns: The modified content with the applied font, or the original content if not applicable.
-    public func body(_ content: any Content) -> any Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FCalligraphiable) else { return content }
         return modifiedContent.font(font)
     }

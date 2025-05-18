@@ -26,24 +26,24 @@ public class Keyboard: UIInputView {
             }.axis(.vertical)
         })
     }
-    
+
     public struct Multiplier {
         public var width: Double = 1
         public var height: Double = 1
-        
+
         public init(width: Double = 1, height: Double = 1) {
             self.width = width
             self.height = height
         }
-        
+
         func current(_ axis: NSLayoutConstraint.Axis) -> Double {
             axis == .horizontal ? width : height
         }
     }
-    
+
     var stack: KeyRenderable
     weak var textField: UITextField?
-    
+
     public init(stack: KeyRenderable) {
         self.stack = stack
         super.init(frame: .zero, inputViewStyle: .keyboard)
@@ -59,12 +59,12 @@ public class Keyboard: UIInputView {
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
-    
+
     public func attach(to textField: UITextField?) {
         self.textField = textField
         textField?.inputView = self
     }
-    
+
     func configureViews() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = Default.keyboardBackground

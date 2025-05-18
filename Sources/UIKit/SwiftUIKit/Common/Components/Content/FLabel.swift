@@ -30,13 +30,13 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
         super.init(frame: .zero)
         self.attributedText = attributedText
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)

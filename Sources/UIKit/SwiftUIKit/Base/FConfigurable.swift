@@ -47,14 +47,30 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     /// - Returns: Self for chaining.
     @discardableResult func centerInParent() -> Self
     
-    /// Centers the component in its parent view with an offset.
-    /// - Parameter offset: The offset to apply.
-    /// - Returns: Self for chaining.
+    /// Centers the component in its parent view with a given offset.
+    ///
+    /// - Parameter offset: The horizontal and vertical offset to apply when centering.
+    /// - Returns: Self for method chaining.
     @discardableResult func centerInParent(offset: CGSize) -> Self
     
-    /// Sets the aspect ratio (width/height) of the component.
-    /// - Parameter ratio: The ratio value.
-    /// - Returns: Self for chaining.
+    /// Centers the component along the specified axis in its parent view.
+    ///
+    /// - Parameter axis: The axis (horizontal or vertical) along which to center the component.
+    /// - Returns: Self for method chaining.
+    @discardableResult func center(axis: FAxis) -> Self
+    
+    /// Centers the component along a specific axis with an optional offset.
+    ///
+    /// - Parameters:
+    ///   - axis: The axis to center on.
+    ///   - offset: The amount of offset to apply from the center.
+    /// - Returns: Self for method chaining.
+    @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self
+    
+    /// Sets the width-to-height ratio for the component's layout constraints.
+    ///
+    /// - Parameter ratio: The ratio to apply (e.g., 1.0 for square).
+    /// - Returns: Self for method chaining.
     @discardableResult func ratio(_ ratio: CGFloat) -> Self
     
     /// Applies default padding to the component.
@@ -65,29 +81,38 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     /// - Parameter padding: The padding value.
     /// - Returns: Self for chaining.
     @discardableResult func padding(_ padding: CGFloat) -> Self
-    
-    /// Applies padding to specified edges.
+    /// Applies padding to specific directional edges of the component.
+    ///
     /// - Parameters:
-    ///   - edges: The edges to apply padding to.
-    ///   - padding: The padding value.
-    /// - Returns: Self for chaining.
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self
+    ///   - edges: The edges to apply the padding to.
+    ///   - padding: The padding value to apply.
+    /// - Returns: Self for method chaining.
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, _ padding: CGFloat) -> Self
     
-    /// Applies padding using a predefined spacing style.
+    /// Applies uniform padding to all edges using a predefined spacing style.
+    ///
     /// - Parameter style: The spacing style to apply.
-    /// - Returns: Self for chaining.
+    /// - Returns: Self for method chaining.
     @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self
     
-    /// Applies padding to specified edges using a predefined spacing style.
+    /// Applies padding to specific directional edges using a predefined spacing style.
+    ///
     /// - Parameters:
-    ///   - edges: The edges to apply padding to.
+    ///   - edges: The edges to apply the padding to.
     ///   - style: The spacing style to apply.
-    /// - Returns: Self for chaining.
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self
+    /// - Returns: Self for method chaining.
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self
     
-    /// Sets the offset for the component's position.
-    /// - Parameter size: The offset size.
-    /// - Returns: Self for chaining.
+    /// Ignores layout constraints on specific directional edges of the component.
+    ///
+    /// - Parameter edges: The edges to ignore.
+    /// - Returns: Self for method chaining.
+    @discardableResult func ignore(edges: FDirectionalRectEdge) -> Self
+    
+    /// Applies a horizontal and vertical offset to the component's position.
+    ///
+    /// - Parameter size: The offset to apply as a `CGSize`.
+    /// - Returns: Self for method chaining.
     @discardableResult func offset(_ size: CGSize) -> Self
     
     /// Sets the offset for the component's position with width and height values.
@@ -173,28 +198,30 @@ public class FConfiguration: Chainable {
     /// The shadow configuration to apply.
     public var shadow: CALayer.ShadowConfiguration?
     
-    /// The shape style to apply.
+    /// The shape style to apply to the component, such as circle or rounded rectangle.
     public var shape: FShape?
     
-    /// The background color of the component.
+    /// The background color to apply to the component.
     public var backgroundColor: UIColor = .clear
     
-    /// The padding insets to apply to the container.
-    public var containerPadding: NSDirectionalEdgeInsets?
+    /// The directional padding to apply around the component inside its container.
+    public var containerPadding: [FDirectionalRectEdge: CGFloat] = .init(
+        uniqueKeysWithValues: FDirectionalRectEdge.all.rawEdges.map { ($0, 0) }
+    )
     
-    /// The aspect ratio (width/height) constraint.
+    /// The width-to-height ratio constraint to apply, if any.
     public var ratio: CGFloat?
     
-    /// The opacity of the component.
+    /// The opacity of the component, ranging from 0.0 (transparent) to 1.0 (opaque).
     public var opacity: CGFloat = 1
     
-    /// The offset to apply when centering in the parent view.
-    public var centerOffset: CGSize?
+    /// Centering offset adjustments for horizontal and vertical axes.
+    public var centerOffset: [FAxis: CGFloat] = [:]
     
-    /// The priority of layout constraints.
+    /// The layout constraint priority for applying sizing and positioning rules.
     public var layoutPriority: ConstraintPriority = .required
     
-    /// Custom layout configuration closure.
+    /// A closure for applying custom layout constraints using SnapKit.
     public var layoutConfiguration: ((_ make: ConstraintMaker, _ superview: UIView) -> Void)?
     
     /// Flag indicating whether to animate layer changes.
@@ -212,6 +239,22 @@ public class FConfiguration: Chainable {
     /// Weak reference to the owning view.
     public weak var owner: UIView?
     
+    /// Increments the existing padding value for a specific directional edge.
+    ///
+    /// If a value already exists for the given edge, the new padding is added on top of it.
+    /// Otherwise, it sets the padding to the provided value.
+    ///
+    /// - Parameters:
+    ///   - padding: The padding amount to add or set.
+    ///   - edge: The directional edge to apply the padding to.
+    func update(_ padding: CGFloat, for edge: FDirectionalRectEdge) {
+        var finalPadding: CGFloat = padding
+        if let currentPadding = containerPadding[edge] {
+            finalPadding += currentPadding
+        }
+        containerPadding[edge] = finalPadding
+    }
+    
     /// Called before the component moves to a new superview.
     /// - Parameter newSuperview: The new superview the component will move to.
     func willMove(toSuperview newSuperview: UIView?) {
@@ -226,21 +269,35 @@ public class FConfiguration: Chainable {
     ///   - superview: The superview the component moved to.
     ///   - target: The target component being configured.
     public func didMoveToSuperview(_ superview: UIView?, with target: FBodyComponent) {
+        guard let superview else { return }
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if let centerOffset, let superview {
-            target.snp.makeConstraints {
-                $0.centerX.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.width).priority(layoutPriority)
-                $0.centerY.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.height).priority(layoutPriority)
-            }
-        } else if shouldConstraintWithParent, let superview {
+        if shouldConstraintWithParent {
             target.snp.remakeConstraints {
                 let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
-                $0.top.equalTo(target).offset(offset.height + (containerPadding?.top ?? 0)).priority(layoutPriority)
-                $0.leading.equalTo(target).offset(offset.width + (containerPadding?.leading ?? 0)).priority(layoutPriority)
-                $0.trailing.equalTo(target).offset(offset.width - (containerPadding?.trailing ?? 0)).priority(layoutPriority)
-                $0.bottom.equalTo(target).offset(offset.height - (containerPadding?.bottom ?? 0)).priority(layoutPriority)
+                if let centerOffset = centerOffset[.vertical] {
+                    $0.centerX.equalTo(superview.safeAreaLayoutGuide)
+                        .offset(centerOffset).priority(layoutPriority)
+                } else {
+                    if let padding = containerPadding[.leading] {
+                        $0.leading.equalTo(target).offset(offset.width + padding).priority(layoutPriority)
+                    }
+                    if let padding = containerPadding[.trailing] {
+                        $0.trailing.equalTo(target).offset(offset.width - padding).priority(layoutPriority)
+                    }
+                }
+                if let centerOffset = centerOffset[.horizontal] {
+                    $0.centerY.equalTo(superview.safeAreaLayoutGuide)
+                        .offset(centerOffset).priority(layoutPriority)
+                } else {
+                    if let padding = containerPadding[.top] {
+                        $0.top.equalTo(target).offset(offset.height + padding).priority(layoutPriority)
+                    }
+                    if let padding = containerPadding[.bottom] {
+                        $0.bottom.equalTo(target).offset(offset.height - padding).priority(layoutPriority)
+                    }
+                }
             }
         }
         target.snp.makeConstraints {
@@ -248,10 +305,8 @@ public class FConfiguration: Chainable {
             if let height, height > 0 { $0.height.equalTo(height).priority(layoutPriority) }
             if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio).priority(layoutPriority) }
         }
-        if let layoutConfiguration, let superview {
-            target.snp.makeConstraints {
-                layoutConfiguration($0, superview)
-            }
+        if let layoutConfiguration {
+            target.snp.makeConstraints { layoutConfiguration($0, superview) }
         }
     }
     
@@ -268,16 +323,35 @@ public class FConfiguration: Chainable {
                     shadowCornerRadius = min(target.bounds.width, target.bounds.height) / 2
                     target.layer.cornerRadius = shadowCornerRadius
                 case .roundedRectangle(let cornerRadius, let corners):
-                    shadowCornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    shadowCornerRadius = min(
+                        cornerRadius,
+                        min(
+                            target.bounds.width,
+                            target.bounds.height
+                        ) / 2
+                    )
                     shadowCorners = corners
                     target.layer.maskedCorners = corners.caMask
-                    target.layer.cornerRadius = min(cornerRadius, min(target.bounds.width, target.bounds.height) / 2)
+                    target.layer.cornerRadius = min(
+                        cornerRadius,
+                        min(
+                            target.bounds.width,
+                            target.bounds.height
+                        ) / 2
+                    )
                 }
             }
         }
         if let shadow {
             apply {
-                let path = UIBezierPath(roundedRect: target.bounds, byRoundingCorners: shadowCorners, cornerRadii: .init(width: shadowCornerRadius, height: shadowCornerRadius))
+                let path = UIBezierPath(
+                    roundedRect: target.bounds,
+                    byRoundingCorners: shadowCorners,
+                    cornerRadii: .init(
+                        width: shadowCornerRadius,
+                        height: shadowCornerRadius
+                    )
+                )
                 target.layer.add(
                     shadow: shadow.updated(
                         \.path, with: path.cgPath
@@ -288,13 +362,20 @@ public class FConfiguration: Chainable {
         layerConfiguration?(target)
     }
     
-    /// Applies the given animation configuration to an animation block.
+    /// Applies the given animation configuration when executing the provided animation block.
+    /// If `shoudAnimateLayerChanges` is enabled, the animation block will run inside a `UIView.animate` call.
+    /// Otherwise, it runs immediately without animation.
+    ///
     /// - Parameters:
-    ///   - configuration: The animation configuration to apply. Defaults to `.default`.
+    ///   - configuration: The animation timing configuration to use. Defaults to `.default`.
     ///   - animation: The animation block to execute.
     fileprivate func apply(configuration: AnimationConfiguration = .default, to animation: @escaping () -> Void) {
         if shoudAnimateLayerChanges {
-            UIView.animate(withDuration: configuration.duration, delay: configuration.delay, animations: animation)
+            UIView.animate(
+                withDuration: configuration.duration,
+                delay: configuration.delay,
+                animations: animation
+            )
         } else {
             animation()
         }

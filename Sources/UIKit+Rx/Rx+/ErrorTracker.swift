@@ -18,6 +18,16 @@ public final class ErrorTracker: SharedSequenceConvertibleType {
     public typealias SharingStrategy = DriverSharingStrategy
     /// The internal subject that relays tracked errors to observers.
     private let _subject = PublishSubject<Error>()
+    /// Provides direct access to the internal error subject for manual error emission.
+    ///
+    /// - Warning: Use with caution. This exposes the internal tracking mechanism and
+    ///   should only be used in testing or specialized scenarios where injecting errors
+    ///   directly is required.
+    ///
+    /// - Returns: A `PublishSubject` of `Error` that can be used to manually emit errors.
+    public var forceErrorSubject : PublishSubject<Error> { _subject }
+    
+    public init() { }
     
     /// Tracks errors emitted from an `ObservableConvertibleType`.
     /// - Parameter source: The observable to monitor.

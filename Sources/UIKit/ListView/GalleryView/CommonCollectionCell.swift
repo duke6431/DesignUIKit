@@ -78,9 +78,7 @@ extension CommonCollection {
         /// Deinitializer for the collection cell.
         /// Logs a trace message when the cell is deinitialized if CORE_DEBUG is enabled.
         deinit {
-#if CORE_DEBUG
             logger.trace("Deinitialized \(self)")
-#endif
         }
     }
 }

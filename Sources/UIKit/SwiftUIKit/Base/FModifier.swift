@@ -13,13 +13,10 @@ import Foundation
 /// A protocol that defines a modifier for transforming a UI component's body.
 /// Typically used to apply additional configuration or appearance logic to `FBodyComponent`s.
 public protocol FModifier {
-    /// The type of content this modifier operates on, usually an `FBodyComponent`.
-    typealias Content = FBodyComponent
-    
-    /// Applies the modifier’s logic to the given content component.
+    /// Applies a transformation to the given `FBodyComponent`.
     ///
-    /// - Parameter content: The content component to modify.
-    /// - Returns: The modified content component.
+    /// - Parameter content: The original body component to be modified.
+    /// - Returns: A new `FBodyComponent` after applying the transformation.
     @discardableResult
-    func body(_ content: Self.Content) -> Self.Content
+    func body(_ content: FBodyComponent) -> FBodyComponent
 }

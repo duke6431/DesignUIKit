@@ -61,7 +61,7 @@ extension CommonTableView {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             configureViews()
         }
-        
+
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         /// Initialization from a coder is not supported.

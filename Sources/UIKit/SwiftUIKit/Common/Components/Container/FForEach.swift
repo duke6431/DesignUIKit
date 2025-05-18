@@ -41,16 +41,16 @@ public final class FForEach: FBodyComponent, Loggable {
             (($0 as? FForEach)?.content() ?? [$0])
         }
     }
-    
+
     @available(iOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
-    
+
     public override func didMoveToSuperview() {
         fatalError("FForEach is not considered a view")
     }
-    
+
     public override func layoutSubviews() {
         fatalError("FForEach is not considered a view")
     }

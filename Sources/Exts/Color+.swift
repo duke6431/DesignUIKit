@@ -38,7 +38,7 @@ public extension UIColor {
         let red: UInt64
         let green: UInt64
         let blue: UInt64
-        
+
         switch hex.count {
         case 3:
             (alpha, red, green, blue) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)

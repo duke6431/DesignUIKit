@@ -43,7 +43,7 @@ public final class FList: CommonTableView, FConfigurable, FComponent, FAssignabl
         prototypes.forEach { register(FListCell.self, forCellReuseIdentifier: String(describing: $0)) }
         loadConfiguration()
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -54,12 +54,12 @@ public final class FList: CommonTableView, FConfigurable, FComponent, FAssignabl
         }
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
     }
-    
+
     public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let item = searchedSections[section].header as? FHeaderModel,
               let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
@@ -67,7 +67,7 @@ public final class FList: CommonTableView, FConfigurable, FComponent, FAssignabl
         header.bind(item)
         return header
     }
-    
+
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FListModel,
               let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: item.model.view)) as? FListCell else {
@@ -83,6 +83,9 @@ public final class FList: CommonTableView, FConfigurable, FComponent, FAssignabl
     public func loadConfiguration() {
         configuration = .init()
     }
+    
+    @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
+    public func reload() { }
 }
 
 public extension FList {
@@ -166,7 +169,7 @@ public class FHeaderModel: NSObject, CommonHeaderModel {
     public static var headerKind: CommonTableView.Header.Type = FListHeader.self
     public var customConfiguration: ((CommonTableView.Header) -> Void)?
     public var model: FHeaderModeling
-    
+
     public init(model: FHeaderModeling) {
         self.model = model
     }
@@ -178,14 +181,14 @@ public class FListModel: NSObject, CommonCellModel, Loggable {
     public static var cellKind: CommonTableView.TableCell.Type = FListCell.self
     public var selectable: Bool = true
     public var customConfiguration: ((CommonTableView.TableCell) -> Void)?
-#if os(iOS)
+    #if os(iOS)
     public var leadingActions: [UIContextualAction] = []
     public var trailingActions: [UIContextualAction] = []
-#endif
+    #endif
     public var padding: UIEdgeInsets = .zero
     public var model: FCellModeling
     public var realData: Any?
-    
+
     public init(
         model: FCellModeling,
         realData: Any? = nil
@@ -193,7 +196,7 @@ public class FListModel: NSObject, CommonCellModel, Loggable {
         self.model = model
         self.realData = realData
     }
-    
+
     deinit {
         logger.trace("Deinitializing \(model)")
         logger.trace("Deinitialized \(self)")
@@ -203,7 +206,7 @@ public class FListModel: NSObject, CommonCellModel, Loggable {
 /// A concrete table view cell that hosts an `FBodyComponent` cell view.
 public class FListCell: CommonTableView.TableCell, Loggable {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCellModel, highlight text: String) {
         guard let model = model as? FListModel else { return }
         if content == nil {
@@ -212,7 +215,7 @@ public class FListCell: CommonTableView.TableCell, Loggable {
         }
         content?.bind(model.model)
     }
-    
+
     open func install<T: FBodyComponent & FCellReusable>(view: T) {
         if let customizeContent = view as? FFullCustomConfiguration {
             customizeContent.customized?(cell: self)
@@ -230,7 +233,7 @@ public class FListCell: CommonTableView.TableCell, Loggable {
             }
         }
     }
-    
+
     deinit {
         if let content { logger.trace("Deinitializing \(content)") }
         logger.trace("Deinitialized \(self)")
@@ -240,7 +243,7 @@ public class FListCell: CommonTableView.TableCell, Loggable {
 /// A concrete table view header that hosts an `FBodyComponent` header view.
 public class FListHeader: CommonTableView.Header {
     weak var content: (FBodyComponent & FHeaderReusable)?
-    
+
     public override func bind(_ model: CommonHeaderModel) {
         guard let model = model as? FHeaderModel else { return }
         if content == nil {
@@ -249,7 +252,7 @@ public class FListHeader: CommonTableView.Header {
         }
         content?.bind(model.model)
     }
-    
+
     open func install<T: FBodyComponent & FHeaderReusable>(view: T) {
         if let customizeContent = view as? FFullCustomConfiguration {
             customizeContent.customized?(header: self)

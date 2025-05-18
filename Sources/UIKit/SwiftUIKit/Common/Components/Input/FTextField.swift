@@ -91,16 +91,16 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         textLayer.alignmentMode = .left
         textLayer.isWrapped = true
         textLayer.foregroundColor = placeholderColor.cgColor
-        
+
         if let font = self.font {
             textLayer.fontSize = font.pointSize
         } else {
             textLayer.fontSize = 17.0
         }
-        
+
         // insert the textLayer
         layer.insertSublayer(textLayer, at: 0)
-        
+
         // set delegate to self
         delegate = self
     }
@@ -167,7 +167,7 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         self.onSubmitAction = onSubmit
         return self
     }
-    
+
     public var foregroundKey: ThemeKey?
     public var placeholderKey: ThemeKey?
     

@@ -18,7 +18,7 @@ public class FStack: BaseStackView, FComponent {
     public var customConfiguration: ((FStack) -> Void)?
     
     /// The list of components to be arranged in the stack view.
-    var arrangedContents: FBody
+    public var arrangedContents: FBody
     
     /// Initializes a stack view with a view builder closure to generate arranged content.
     /// - Parameters:
@@ -68,14 +68,14 @@ public class FStack: BaseStackView, FComponent {
             addArrangedSubview($0)
         }
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         addContents(arrangedContents)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)

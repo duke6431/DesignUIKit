@@ -88,7 +88,7 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     }
     
     /// Holds the currently applied foreground color, used for re-tinting.
-    private var currentForegroundColor: UIColor?
+    public private(set) var currentForegroundColor: UIColor?
     public var foregroundKey: ThemeKey?
     /// Applies the theme-based foreground tint using a registered theme key.
     public override func apply(theme: ThemeProvider) {

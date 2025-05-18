@@ -1,6 +1,6 @@
 //
 //  ErrorHandler.swift
-//  DesignUIKit
+//  DesignCore
 //
 //  Created by Duke Nguyen on 2024/01/07.
 //

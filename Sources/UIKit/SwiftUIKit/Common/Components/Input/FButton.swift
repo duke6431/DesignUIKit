@@ -20,7 +20,7 @@ public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableF
     /// Platform-specific primary tap event (`.touchUpInside` or `.primaryActionTriggered`).
 #if os(tvOS) || targetEnvironment(macCatalyst)
     public static let tapEvent: UIControl.Event = .primaryActionTriggered
-#else
+    #else
     public static let tapEvent: UIControl.Event = .touchUpInside
 #endif
     

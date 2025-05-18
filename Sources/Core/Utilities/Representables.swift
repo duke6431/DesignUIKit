@@ -1,6 +1,6 @@
 //
 //  Representables.swift
-//  DesignUIKit
+//  DesignCore
 //
 //  Created by Duke Nguyen on 2024/03/27.
 //
@@ -31,7 +31,7 @@ public enum ImageRepresenter: ImageRepresenting {
     /// For `.system`, returns the system image with the given name.
     /// For `.asset`, returns the image asset from the specified bundle.
     public var image: UIImage? {
-        
+
         switch self {
         case .system(let name):
             return .init(systemName: name)

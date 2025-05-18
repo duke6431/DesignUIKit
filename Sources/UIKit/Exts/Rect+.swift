@@ -35,6 +35,15 @@ extension UIRectCorner {
 }
 
 extension UIEdgeInsets: SelfCustomizable {
+    static func += (_ lhs: inout UIEdgeInsets, _ rhs: CGFloat) {
+        lhs.custom { insets in
+            insets.top += rhs
+            insets.left += rhs
+            insets.right += rhs
+            insets.bottom += rhs
+        }
+    }
+
     /// Adds a scalar value to all edges of the `UIEdgeInsets`.
     ///
     /// - Parameters:
@@ -49,6 +58,16 @@ extension UIEdgeInsets: SelfCustomizable {
             insets.bottom += rhs
         }
     }
+
+    static func += (_ lhs: inout UIEdgeInsets, _ rhs: UIEdgeInsets) {
+        lhs.custom {
+            $0.top += rhs.top
+            $0.left += rhs.left
+            $0.bottom += rhs.bottom
+            $0.right += rhs.right
+        }
+    }
+
     
     /// Adds the values of two `UIEdgeInsets` instances edge-wise.
     ///

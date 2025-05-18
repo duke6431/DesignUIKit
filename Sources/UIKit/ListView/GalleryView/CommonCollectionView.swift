@@ -107,9 +107,7 @@ public extension CommonCollection {
         
         /// Cleans up resources when the collection view is deinitialized.
         deinit {
-#if CORE_DEBUG
             logger.trace("Deinitialized \(self)")
-#endif
         }
     }
 }

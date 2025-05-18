@@ -21,7 +21,7 @@ public extension UICollectionView {
         case header
         /// Footer for collection section
         case footer
-        
+
         /// Return rawValue of Swift
         public var rawValue: String {
             switch self {
@@ -32,7 +32,7 @@ public extension UICollectionView {
             }
         }
     }
-    
+
     /// Registers a nib or a UICollectionViewCell object containing a cell with the collection view under a specified identifier.
     ///
     /// - Parameters:
@@ -67,7 +67,7 @@ public extension UICollectionView {
             register(aClass, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable collection-view cell object located by its identifier.
     ///
     /// - Parameters:
@@ -117,7 +117,7 @@ public extension UITableView {
             register(aClass, forCellReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable table-view cell object located by its identifier.
     ///
     /// - Parameter aClass: The UITableViewCell subclass to dequeue.
@@ -129,7 +129,7 @@ public extension UITableView {
         }
         return cell
     }
-    
+
     /// Registers a nib or a UITableViewHeaderFooterView object containing a header or footer with the table view under a specified identifier.
     ///
     /// - Parameters:
@@ -144,7 +144,7 @@ public extension UITableView {
             register(aClass, forHeaderFooterViewReuseIdentifier: name)
         }
     }
-    
+
     /// Returns a reusable header or footer view located by its identifier.
     ///
     /// - Parameter aClass: The UITableViewHeaderFooterView subclass to dequeue.

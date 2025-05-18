@@ -51,7 +51,10 @@ public class Theme: Identifiable, Codable, Loggable {
     /// - Parameter filename: The filename to use (spaces replaced with dashes, `.json` appended).
     /// - Throws: An error if writing to disk fails.
     public func save(as filename: String) throws {
-        try FileKit.write(self, to: Path.userDocuments + String(filename.replacingOccurrences(of: " ", with: "-") + ".json"))
+        try FileKit.write(
+            self,
+            to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json"
+        )
     }
     
     /// Sets a color value for a given key and style in the theme.

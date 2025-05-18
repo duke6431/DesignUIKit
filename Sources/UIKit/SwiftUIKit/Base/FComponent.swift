@@ -21,6 +21,14 @@ public protocol FComponent: AnyObject, Chainable {
     
     /// A closure for applying custom configuration to the component.
     var customConfiguration: ((Self) -> Void)? { get set }
+    func reload()
+}
+
+extension FComponent where Self: UIView {
+    public func reload() {
+        subviews.forEach { $0.removeFromSuperview() }
+        didMoveToSuperview()
+    }
 }
 
 public extension FComponent {
@@ -89,31 +97,45 @@ public protocol FContentAvailable: FContentConstraintable {
     @discardableResult func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self
 }
 
+/// Provides `insets` configuration methods for `BaseLabel` to apply content padding.
 public extension FContentAvailable where Self: BaseLabel {
+    /// Adds the given edge insets to the current content insets.
+    /// - Parameter insets: The `UIEdgeInsets` to add.
+    /// - Returns: Self for method chaining.
     @discardableResult func insets(_ insets: UIEdgeInsets) -> Self {
-        contentInsets = contentInsets + insets
+        contentInsets += insets
         return self
     }
     
+    /// Applies uniform insets on all edges of the label.
+    /// - Parameter insets: The inset value for all sides.
+    /// - Returns: Self for method chaining.
     @discardableResult func insets(_ insets: CGFloat) -> Self {
         self.insets(.all, insets)
     }
     
+    /// Applies insets to specific edges of the label.
+    /// - Parameters:
+    ///   - edges: The edges to apply the inset to.
+    ///   - insets: The inset value to apply.
+    /// - Returns: Self for method chaining.
     @discardableResult func insets(_ edges: UIRectEdge, _ insets: CGFloat) -> Self {
         contentInsets = contentInsets.add(edges, insets)
         return self
     }
 }
 
-/// An enumeration representing the shape of a UI component.
+/// An enumeration that defines the visual shape of a UI component.
+/// Used to apply predefined corner styles such as circular or rounded rectangle.
 public enum FShape {
-    /// A circular shape.
+    /// A shape that applies a circular mask to the component.
+    /// Typically used when the component’s width and height are equal.
     case circle
     
-    /// A rounded rectangle shape with specified corner radius and corners.
+    /// A shape that applies a rounded rectangle mask to the component.
     ///
     /// - Parameters:
-    ///   - cornerRadius: The radius for rounding the corners.
-    ///   - corners: The corners to round (default is all corners).
+    ///   - cornerRadius: The radius to apply to the specified corners.
+    ///   - corners: The corners to round. Defaults to all corners.
     case roundedRectangle(cornerRadius: CGFloat, corners: UIRectCorner = .allCorners)
 }

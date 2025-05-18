@@ -40,13 +40,13 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         }
         loadConfiguration()
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -90,6 +90,9 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
     public func loadConfiguration() {
         configuration = .init()
     }
+    
+    @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
+    public func reload() { }
 }
 
 public extension FGrid {
@@ -118,7 +121,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
     public static var headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
     public var customConfiguration: ((CommonCollection.ReusableView) -> Void)?
     public var model: FCellModeling
-    
+
     public init(model: FCellModeling) {
         self.model = model
     }
@@ -127,7 +130,7 @@ public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
 /// A reusable view used as a header in the `FGrid`. Wraps an FBody header component.
 public class FGridHeader: CommonCollection.ReusableView {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
         if content == nil {
@@ -154,7 +157,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
     public var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
     public var realData: Any?
     public var model: FCellModeling
-    
+
     public init(
         model: FCellModeling,
         realData: Any? = nil
@@ -167,7 +170,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
 /// A concrete grid cell that binds to an `FGridModel` and hosts an FBody view.
 public class FGridCell: CommonCollection.CollectionCell {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCollectionCellModel) {
         guard let model = model as? FGridModel else { return }
         if content == nil {
