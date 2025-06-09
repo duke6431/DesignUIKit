@@ -27,7 +27,7 @@ public protocol ViewModeling<Input, Output> {
 /// A base class for view models that provides a shared initializer.
 /// Subclass this to implement view model-specific logic and bindings.
 open class BaseViewModel<Navigator: BaseNavigating> {
-    let navigator: Navigator
+    public let navigator: Navigator
     public required init(with navigator: Navigator) {
         self.navigator = navigator
     }
