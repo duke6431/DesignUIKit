@@ -18,7 +18,7 @@ import UIKit
 ///
 /// Conforming types should implement the `apply(theme:)` method to update their appearance
 /// based on the provided theme.
-public protocol Themable: AnyObject {
+@MainActor public protocol Themable: AnyObject {
     /// Applies the given theme to the conforming object.
     /// - Parameter theme: The theme provider supplying theme information.
     func apply(theme: ThemeProvider)
@@ -37,7 +37,7 @@ public protocol CGThemable: Themable {
 /// A protocol that provides theme-related data, such as colors.
 ///
 /// Types conforming to this protocol supply theme assets based on keys.
-public protocol ThemeProvider {
+@MainActor public protocol ThemeProvider {
     /// Returns a color associated with the given theme key.
     /// - Parameter key: The key identifying the color in the theme.
     /// - Returns: A `UIColor` corresponding to the key.
@@ -49,13 +49,13 @@ public protocol ThemeProvider {
 ///
 /// Observers conforming to `Themable` or `CGThemable` can register to receive theme updates.
 /// Supports dynamic theme switching and handles UIKit trait collection changes.
-public class ThemeSystem: ThemeProvider {
+@MainActor final class ThemeSystem: ThemeProvider {
     
     /// The shared singleton instance of `ThemeSystem`.
-    public static var shared: ThemeSystem = .init()
+    public static let shared: ThemeSystem = .init()
     
     /// The default theme used when no current theme is set.
-    public static var defaultTheme: Theme = .empty
+    public static let defaultTheme: Theme = .empty
     
     /// The currently active theme.
     public private(set) var current: Theme
@@ -79,11 +79,9 @@ public class ThemeSystem: ThemeProvider {
     /// Handles UIKit trait collection changes by notifying all `CGThemable` observers
     /// to update their Core Graphics related theme properties.
     public func onTraitCollectionChange() {
-        DispatchQueue.main.async {
-            self.observers.allObjects
-                .compactMap({ $0 as? CGThemable })
-                .forEach(self.notify)
-        }
+        try? observers.allObjects
+            .compactMap({ $0 as? CGThemable })
+            .forEach(self.notify)
     }
     
     /// Registers an observer to receive theme updates.
@@ -107,11 +105,9 @@ public class ThemeSystem: ThemeProvider {
     
     /// Notifies all registered observers of a theme change asynchronously on the main thread.
     private func notifyObservers() {
-        DispatchQueue.main.async {
-            self.observers.allObjects
-                .compactMap({ $0 as? Themable })
-                .forEach(self.notify)
-        }
+        try? observers.allObjects
+            .compactMap({ $0 as? Themable })
+            .forEach(self.notify)
     }
     
     /// Notifies a single observer to apply the current theme.

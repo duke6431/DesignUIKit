@@ -15,7 +15,7 @@ import DesignExts
 
 /// A lightweight video player view that supports AVPlayer-based playback.
 /// Can be initialized with a preconfigured AVPlayer and optionally customized via closure.
-public class FVideoPlayer: BaseView, FComponent {
+@MainActor public class FVideoPlayer: BaseView, FComponent {
     /// An optional closure for applying additional configuration after being added to a superview.
     public var customConfiguration: ((FVideoPlayer) -> Void)?
     
@@ -34,6 +34,7 @@ public class FVideoPlayer: BaseView, FComponent {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
+        if superview == nil { stop() }
     }
     
     /// Updates layout of internal AVPlayerLayer and applies configuration updates.
@@ -44,9 +45,6 @@ public class FVideoPlayer: BaseView, FComponent {
         playerLayer?.setNeedsLayout()
         playerLayer?.layoutIfNeeded()
     }
-    
-    /// Cleans up player resources when the view is deallocated.
-    deinit { stop() }
 }
 
 public extension FVideoPlayer {

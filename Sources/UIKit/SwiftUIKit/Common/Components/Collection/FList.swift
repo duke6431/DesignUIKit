@@ -15,7 +15,7 @@ import SnapKit
 
 /// A reusable table view component that displays sections and rows using FBody-based cell and header views.
 /// Provides support for cell registration, layout configuration, selection handling, and pagination.
-public final class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
+@MainActor public final class FList: CommonTableView, FConfigurable, FComponent, FAssignable {
     /// A closure to define the layout constraints of the list relative to its superview.
     public var layoutConfiguration: ((ConstraintMaker, UIView) -> Void)?
     /// A closure to apply additional configuration to the list after setup.
@@ -166,7 +166,7 @@ public protocol FHeaderReusable: AnyObject {
 /// A wrapper model for reusable header content used with `FList`.
 public class FHeaderModel: NSObject, CommonHeaderModel {
     public var identifier: String = UUID().uuidString
-    public static var headerKind: CommonTableView.Header.Type = FListHeader.self
+    public static let headerKind: CommonTableView.Header.Type = FListHeader.self
     public var customConfiguration: ((CommonTableView.Header) -> Void)?
     public var model: FHeaderModeling
 
@@ -178,7 +178,7 @@ public class FHeaderModel: NSObject, CommonHeaderModel {
 /// A wrapper model for reusable cell content used with `FList`.
 public class FListModel: NSObject, CommonCellModel, Loggable {
     public var identifier: String = UUID().uuidString
-    public static var cellKind: CommonTableView.TableCell.Type = FListCell.self
+    public static let cellKind: CommonTableView.TableCell.Type = FListCell.self
     public var selectable: Bool = true
     public var customConfiguration: ((CommonTableView.TableCell) -> Void)?
     #if os(iOS)

@@ -16,7 +16,7 @@ import Foundation
 
 /// A wrapper component that embeds a view controller's view into a parent view hierarchy,
 /// handling view controller containment and layout.
-public final class FViewController: BaseView, FComponent {
+@MainActor public final class FViewController: BaseView, FComponent {
     /// Optional closure for applying additional runtime configuration.
     public var customConfiguration: ((FViewController) -> Void)?
     
@@ -66,13 +66,12 @@ public final class FViewController: BaseView, FComponent {
     }
 
     deinit {
-        removeFromSuperview()
         logger.trace("Deinitialized \(self)")
     }
 }
 
 /// A hosting view controller that wraps and displays a stack of body components as a single view.
-public class FViewContainer: UIViewController, Chainable, Loggable {
+@MainActor public class FViewContainer: UIViewController, Chainable, Loggable {
     /// The root view constructed from FBody content.
     public var content: UIView
     

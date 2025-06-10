@@ -14,7 +14,7 @@ import DesignCore
 /// A configurable and themable `UITextField` subclass.
 ///
 /// `BaseTextField` provides a foundation for text field components that require dynamic configuration and theme support. It integrates with configuration and theming protocols to enable background color and shadow customization via theme keys.
-open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     
     /// Initializes a new `BaseTextField` instance with an optional frame.
     ///

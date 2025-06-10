@@ -13,7 +13,7 @@ import DesignCore
 
 /// Adds an associated `FConfiguration` object to any `UIView`.
 /// Enables configuration sharing and mutation through dynamic properties.
-public extension UIView {
+@MainActor public extension UIView {
     /// The shared object association for storing configurations per view.
     static var configuration = ObjectAssociation<FConfiguration>()
     
@@ -26,7 +26,7 @@ public extension UIView {
 
 /// A protocol that allows a view to assign itself to an external reference.
 /// Useful for capturing views for later manipulation within a declarative context.
-public protocol FAssignable {
+@MainActor public protocol FAssignable {
     @discardableResult
     func assign<View: FBodyComponent>(to target: inout View?) -> Self
 }

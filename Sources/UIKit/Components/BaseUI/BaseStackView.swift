@@ -17,7 +17,7 @@ import DesignCore
 /// providing a flexible stack view that can be easily customized and themed.
 /// 
 /// Use this class to create stack views that automatically apply theme colors and shadows, and support custom configurations.
-open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     
     /// Initializes a new `BaseStackView` instance with an optional frame.
     /// - Parameter frame: The frame rectangle for the view, defaulting to `.zero`.
@@ -30,7 +30,7 @@ open class BaseStackView: UIStackView, FConfigurable, FThemableBackground, FThem
     /// - Parameter views: The array of `UIView` instances to be arranged by the stack view.
     public convenience init(arrangedSubviews views: [UIView]) {
         self.init(frame: .zero)
-        views.forEach(addArrangedSubview)
+        try? views.forEach(addArrangedSubview)
         loadConfiguration()
     }
     

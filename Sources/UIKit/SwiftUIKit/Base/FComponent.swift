@@ -15,7 +15,7 @@ import DesignExts
 /// A protocol representing a configurable UI component that supports chaining and custom configuration.
 ///
 /// Conforming types are expected to provide an optional configuration object and allow setting a custom configuration closure.
-public protocol FComponent: AnyObject, Chainable {
+@MainActor public protocol FComponent: AnyObject, Chainable {
     /// The configuration object for the component.
     var configuration: FConfiguration? { get }
     
@@ -42,7 +42,7 @@ public extension FComponent {
 }
 
 /// A protocol for UI components that support setting content hugging and compression resistance priorities.
-public protocol FContentConstraintable: AnyObject {
+@MainActor public protocol FContentConstraintable: AnyObject {
     /// Sets the content hugging priority for a given axis.
     ///
     /// - Parameters:

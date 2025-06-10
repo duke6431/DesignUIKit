@@ -15,7 +15,7 @@ import Foundation
 /// `SpacingSystem` provides a centralized way to define and retrieve consistent spacing
 /// values, which can be scaled using a multiplier. This helps maintain uniform spacing
 /// across the application and supports dynamic adjustments based on design requirements.
-public class SpacingSystem {
+@MainActor public class SpacingSystem {
     /// The shared singleton instance of `SpacingSystem`.
     public static let shared = SpacingSystem()
     

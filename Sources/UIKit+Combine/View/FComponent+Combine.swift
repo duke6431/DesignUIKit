@@ -12,7 +12,7 @@ import DesignCore
 
 public typealias FBinder<Subject> = AnyPublisher<Subject, Never>
 
-public protocol Combinable: AnyObject {
+@MainActor public protocol Combinable: AnyObject {
     var cancellables: Set<AnyCancellable> { get set }
 }
 

@@ -27,7 +27,7 @@ public extension Loggable {
 /// Extension to provide a default log level for `Logger.Level`.
 public extension Logger.Level {
     /// The default log level used throughout the system.
-    static var `default`: Self = .info
+    nonisolated(unsafe) static var `default`: Self = .info
 }
 
 /// Extension to convert a `String` to a `Logger.Message`.

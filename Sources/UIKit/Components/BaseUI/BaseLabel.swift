@@ -21,7 +21,7 @@ import DesignCore
 ///
 /// - Important: This class is intended to be subclassed or instantiated directly
 ///   when you need a label with additional layout and theming features.
-open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     /// Insets to apply to the label's text content.
     ///
     /// Adjust this property to increase or decrease the padding inside the label.

@@ -15,7 +15,7 @@ import DesignExts
 
 /// A reusable and configurable grid view that supports cell and header binding
 /// through reusable FBody components. Allows selection and custom configuration.
-public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
+@MainActor public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
     /// Closure for applying custom configuration after the grid is added to a superview.
     public var customConfiguration: ((FGrid) -> Void)?
     /// Callback triggered when a grid cell is selected.
@@ -118,7 +118,7 @@ public extension FGrid {
 /// A model representing a reusable grid header view using an `FCellModeling`.
 public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
     public var identifier: String = UUID().uuidString
-    public static var headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
+    public static let headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
     public var customConfiguration: ((CommonCollection.ReusableView) -> Void)?
     public var model: FCellModeling
 
@@ -152,7 +152,7 @@ public class FGridHeader: CommonCollection.ReusableView {
 /// A model representing a reusable grid cell backed by an `FCellModeling` component.
 public class FGridModel: NSObject, CommonCollectionCellModel {
     public var identifier: String = UUID().uuidString
-    public static var cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
+    public static let cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
     public var selectable: Bool = true
     public var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
     public var realData: Any?

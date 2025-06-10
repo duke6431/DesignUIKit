@@ -17,7 +17,7 @@ import SnapKit
 /// A protocol that defines a configurable UI component supporting fluent interface style configuration.
 /// Components conforming to `FConfigurable` can be assigned configurations related to layout, appearance,
 /// modifiers, and other UI behaviors.
-public protocol FConfigurable: AnyObject, FAssignable, Chainable {
+@MainActor public protocol FConfigurable: AnyObject, FAssignable, Chainable {
     /// The current configuration applied to the component.
     var configuration: FConfiguration? { get }
     
@@ -179,7 +179,7 @@ public protocol FConfigurable: AnyObject, FAssignable, Chainable {
 
 /// Represents the configuration state of an `FConfigurable` component,
 /// encapsulating layout, appearance, modifiers, and other UI-related settings.
-public class FConfiguration: Chainable {
+@MainActor public class FConfiguration: Chainable {
     /// The list of modifiers applied to the component.
     var modifiers: [FModifier] = []
     

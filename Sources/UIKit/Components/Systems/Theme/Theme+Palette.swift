@@ -28,7 +28,7 @@ public extension Theme {
     /// A color palette associated with a specific theme style.
     ///
     /// Contains a dictionary of color values keyed by their names.
-    struct Palette: Codable, Hashable {
+    struct Palette: Codable, Hashable, Sendable {
         /// The style of the theme this palette corresponds to.
         var style: Style
         

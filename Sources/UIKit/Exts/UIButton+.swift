@@ -15,12 +15,12 @@ import DesignCore
 /// Error types related to UIControl actions.
 public extension UIControl {
     /// Represents errors that can occur when handling UIControl actions.
-    class Failure: Error {
+    class Failure: Error, @unchecked Sendable {
         /// An optional message describing the error.
         var message: String?
         
         /// Error cases specific to adding or removing actions from a UIControl.
-        class Action: Failure {
+        class Action: Failure, @unchecked Sendable {
             /// Error indicating that a requested action was not found.
             static let notFound: Action = .init()
         }

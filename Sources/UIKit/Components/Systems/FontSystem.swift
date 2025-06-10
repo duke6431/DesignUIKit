@@ -30,11 +30,11 @@ public protocol Calligraphiable: AnyObject {
 /// FontSystem.shared.use(MyCustomFontFamily())
 /// FontSystem.shared.register(observer: myLabel)
 /// ```
-public class FontSystem {
+@MainActor public class FontSystem {
     /// The shared singleton instance.
-    public static var shared: FontSystem = .init()
+    public static let shared: FontSystem = .init()
     /// The default font family (system font).
-    public static var defaultFont: FontFamily = .System()
+    public static let defaultFont: FontFamily = .System()
     
     /// The currently active font family.
     public var current: FontFamily
@@ -70,11 +70,9 @@ public class FontSystem {
     
     /// Notifies all registered observers of the current font change.
     private func notifyObservers() {
-        DispatchQueue.main.async {
-            self.observers.allObjects
-                .compactMap({ $0 as? Calligraphiable })
-                .forEach(self.notify(_:))
-        }
+        try? observers.allObjects
+            .compactMap({ $0 as? Calligraphiable })
+            .forEach(self.notify(_:))
     }
     
     /// Notifies a single observer and updates its font property.
@@ -137,7 +135,7 @@ public class FontSystem {
 /// `FontFamily.System` is a subclass of `FontFamily` that represents the system font.
 /// It overrides font loading to always return the built-in system font for the given style and weight.
 public extension FontFamily {
-    class System: FontFamily {
+    @MainActor class System: FontFamily {
         public static let shared: System = .init()
 
         init() { super.init(name: "system") }

@@ -16,7 +16,7 @@ import DesignCore
 /// This class is designed to provide a flexible image view that supports runtime configuration and dynamic theming,
 /// including background and shadow theming. It is intended for use as a base class in UI components where
 /// consistent styling and configuration are required.
-open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     
     /// Initializes a new `BaseImageView` instance with the specified frame.
     ///

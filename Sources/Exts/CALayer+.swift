@@ -12,13 +12,14 @@
 import UIKit
 import DesignCore
 
+@MainActor
 public extension CALayer {
     /// A configuration object encapsulating the parameters for a layer's shadow.
     ///
     /// This struct provides a convenient way to specify shadow properties such as offset, opacity,
     /// radius, color, and an optional shadow path. It conforms to `SelfCustomizable` to support default
     /// and custom shadow configurations.
-    struct ShadowConfiguration: SelfCustomizable {
+    @MainActor struct ShadowConfiguration: SelfCustomizable {
         /// A predefined shadow configuration representing no shadow.
         ///
         /// This configuration has zero offset, zero opacity, zero radius, and a clear color.

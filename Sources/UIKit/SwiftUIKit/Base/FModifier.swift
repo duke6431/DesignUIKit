@@ -12,7 +12,7 @@ import Foundation
 
 /// A protocol that defines a modifier for transforming a UI component's body.
 /// Typically used to apply additional configuration or appearance logic to `FBodyComponent`s.
-public protocol FModifier {
+@MainActor public protocol FModifier {
     /// Applies a transformation to the given `FBodyComponent`.
     ///
     /// - Parameter content: The original body component to be modified.

@@ -11,7 +11,7 @@ import DesignUIKit
 import Combine
 import UIKit
 
-open class BaseViewController: UIViewController, FThemableBackground, Loggable {
+@MainActor open class BaseViewController: UIViewController, FThemableBackground, Loggable {
     open var cancellables = Set<AnyCancellable>()
 
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

@@ -15,7 +15,7 @@ import DesignCore
 import RxCocoa
 
 /// A protocol for UI components that should support RxSwift subscriptions via a `DisposeBag`.
-public protocol Reactivable: AnyObject {
+@MainActor public protocol Reactivable: AnyObject {
     /// The `DisposeBag` used to store subscriptions tied to the component's lifecycle.
     var disposeBag: DisposeBag { get set }
 }

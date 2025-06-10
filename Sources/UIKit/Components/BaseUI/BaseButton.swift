@@ -15,7 +15,7 @@ import DesignCore
 /// 
 /// This class provides a foundation for buttons that can be styled and themed dynamically.
 /// It supports configuration loading, theme application, and visual state animations.
-open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     /// Creates and returns a button object with the specified button type.
     ///
     /// - Parameter buttonType: The button type to use for the button. Defaults to `.custom` if not provided.

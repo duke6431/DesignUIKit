@@ -45,7 +45,7 @@ public final class FZStack: BaseView, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        contentViews.flatMap {
+        try? contentViews.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
         }.forEach(addSubview)
         customConfiguration?(self)
