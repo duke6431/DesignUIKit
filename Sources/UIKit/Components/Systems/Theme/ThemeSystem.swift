@@ -49,7 +49,7 @@ public protocol CGThemable: Themable {
 ///
 /// Observers conforming to `Themable` or `CGThemable` can register to receive theme updates.
 /// Supports dynamic theme switching and handles UIKit trait collection changes.
-@MainActor final class ThemeSystem: ThemeProvider {
+@MainActor public final class ThemeSystem: ThemeProvider {
     
     /// The shared singleton instance of `ThemeSystem`.
     public static let shared: ThemeSystem = .init()
