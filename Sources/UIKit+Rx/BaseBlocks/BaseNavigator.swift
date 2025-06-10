@@ -19,7 +19,7 @@ public protocol BaseNavigating: Chainable {
     var navigationController: UINavigationController? { get }
 }
 
-open class BaseNavigator: Loggable {
+@MainActor open class BaseNavigator: Loggable {
     /// The `UINavigationController` instance used to perform navigation.
     /// Held as a weak reference to avoid retain cycles.
     open weak var navigationController: UINavigationController?
