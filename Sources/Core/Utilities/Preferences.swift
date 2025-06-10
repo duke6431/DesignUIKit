@@ -13,7 +13,7 @@ import Foundation
 /// A type that represents a key for user preferences.
 /// 
 /// `FPreferenceKey` can be initialized using string literals or string interpolations, allowing for easy and flexible key creation.
-public struct FPreferenceKey: ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
+public struct FPreferenceKey: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, Sendable {
     /// The raw string value of the preference key.
     public var rawValue: String
     
