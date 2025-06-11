@@ -15,7 +15,7 @@ import Foundation
 ///
 /// - Note: Conforming types should implement business logic and bind
 ///         user input to outputs exposed to the view layer.
-public protocol ViewModeling<Input, Output> {
+@MainActor public protocol ViewModeling<Input, Output> {
     associatedtype Input
     associatedtype Output
     /// Transforms the given input into a corresponding output.
@@ -26,7 +26,7 @@ public protocol ViewModeling<Input, Output> {
 
 /// A base class for view models that provides a shared initializer.
 /// Subclass this to implement view model-specific logic and bindings.
-open class BaseViewModel<Navigator: BaseNavigating> {
+@MainActor open class BaseViewModel<Navigator: BaseNavigating> {
     public let navigator: Navigator
     public required init(with navigator: Navigator) {
         self.navigator = navigator

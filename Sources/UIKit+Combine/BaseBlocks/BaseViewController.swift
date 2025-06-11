@@ -27,18 +27,15 @@ import UIKit
     open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
-        bindViewModel()
     }
 
     open func configureViews() {
-
+        view.addSubview(body)
     }
-
-    open func bindViewModel() {
-        bindError()
+    
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
-
-    @objc open dynamic func bindError() { }
 
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
@@ -61,10 +58,13 @@ open class FScene<ViewModel: BaseViewModel>: BaseViewController {
     
     open override func configureViews() {
         super.configureViews()
-        view.addSubview(body)
+        bindViewModel()
     }
 
-    open var body: FBodyComponent {
-        fatalError("Variable body of \(String(describing: self)) must be overridden")
+    open func bindViewModel() {
+        bindError()
+        viewModel.drain(with: &cancellables)
     }
+    
+    @objc open dynamic func bindError() { }
 }

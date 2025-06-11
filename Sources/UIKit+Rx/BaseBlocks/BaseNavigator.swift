@@ -14,7 +14,7 @@ import UIKit
 
 /// A protocol representing a base navigator that exposes a `UINavigationController`.
 /// Conforming types can coordinate navigation logic and flow.
-public protocol BaseNavigating: Chainable {
+@MainActor public protocol BaseNavigating: Chainable {
     /// The `UINavigationController` used for managing the navigation stack.
     var navigationController: UINavigationController? { get }
 }

@@ -9,14 +9,16 @@ import Combine
 import Foundation
 import DesignCore
 
-public protocol ViewModeling: AnyObject {
+@MainActor public protocol ViewModeling: AnyObject {
     var error: Error? { get set }
+
+    func drain(with cancellables: inout Set<AnyCancellable>)
 }
 
-open class BaseViewModel: NSObject, ViewModeling, Loggable {
+@MainActor open class BaseViewModel: NSObject, ViewModeling, Loggable {
     @Published
     public var error: Error?
-    open var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     public required override init() {
         super.init()
@@ -38,10 +40,11 @@ open class BaseViewModel: NSObject, ViewModeling, Loggable {
         self.error = error
     }
 
-    open func discardAll() {
-        fatalError("\(String(describing: self)) didn't implemented discardAll()")
+    public func drain(with cancellables: inout Set<AnyCancellable>) {
+        self.cancellables.forEach { cancellables.insert($0) }
+        self.cancellables = .init(minimumCapacity: 0)
     }
-
+    
     deinit {
         logger.trace("Deinitialized \(self)")
     }

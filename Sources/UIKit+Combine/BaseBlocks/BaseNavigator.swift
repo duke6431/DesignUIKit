@@ -8,14 +8,14 @@
 import DesignCore
 import UIKit
 
-@MainActor public protocol BaseCoordinating: Chainable {
+@MainActor public protocol BaseNavigating: Chainable {
     var navigationController: UINavigationController? { get }
 
     func toScene() -> Self
 }
 
 // TODO: Handle message `MessageHandlable`
-@MainActor open class BaseCoordinator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseCoordinating, Loggable {
+@MainActor open class BaseNavigator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseNavigating, Loggable {
     open weak var navigationController: UINavigationController?
 
     public init(_ navigationController: UINavigationController? = nil) {
