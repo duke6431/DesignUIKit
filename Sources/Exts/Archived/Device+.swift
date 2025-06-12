@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-public enum DeviceSystem: Int, Codable, @unchecked Sendable {
+public enum DeviceSystem: Int, Codable, Sendable {
 
     case unspecified = -1
 

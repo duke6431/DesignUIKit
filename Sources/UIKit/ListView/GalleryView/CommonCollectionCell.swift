@@ -14,7 +14,7 @@ import UIKit
 /// A protocol that defines the model requirements for a common collection view cell.
 /// Conforming types must provide an identifier, the cell class type, selection capability,
 /// an optional custom configuration closure, and optional real data.
-@objc public protocol CommonCollectionCellModel: NSObjectProtocol {
+@objc public protocol CommonCollectionCellModel: NSObjectProtocol, Sendable {
     /// A unique identifier string for the cell model.
     var identifier: String { get }
     
@@ -27,7 +27,7 @@ import UIKit
     /// A closure for custom configuration of the collection cell.
     /// This should only be used as an emergency option when customization is needed once or twice,
     /// or when something is critically required in production.
-    var customConfiguration: ((CommonCollection.CollectionCell) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? { get set }
     
     /// Optional real data associated with the model.
     var realData: Any? { get }

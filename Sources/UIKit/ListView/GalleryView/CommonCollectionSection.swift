@@ -17,17 +17,17 @@ extension CommonCollection {
     /// A section in a `CommonCollection` view, representing a group of cells and optionally a header.
     ///
     /// Use this class to configure the content and layout of a section in your collection view.
-    @MainActor public final class Section: NSObject, @unchecked Sendable {
+    public final class Section: NSObject, @unchecked Sendable {
         /// The model representing the header supplementary view for the section.
-        public var header: CommonCollectionReusableModel?
+        public let header: CommonCollectionReusableModel?
         /// The array of cell models contained in the section.
-        public var cells: [CommonCollectionCellModel]
+        public let cells: [CommonCollectionCellModel]
         /// A Boolean value indicating whether the section is scrollable.
         public var scrollable: Bool = true
         /// The layout dimension and configuration for the section.
         public var dimension: LayoutDimension = .init()
         /// An optional closure to provide a custom layout for the section.
-        public var layout: ((Section) -> NSCollectionLayoutSection)?
+        public var layout: (@Sendable (Section) -> NSCollectionLayoutSection)? = nil
         
         /// Creates a new section with the specified header and cells.
         /// - Parameters:
@@ -37,12 +37,13 @@ extension CommonCollection {
                     cells: [CommonCollectionCellModel]) {
             self.header = header
             self.cells = cells
+            super.init()
         }
         
         /// Returns a new section with the specified layout closure.
         /// - Parameter layout: A closure that returns the layout for the section.
         /// - Returns: The modified section instance.
-        public func with(layout: @escaping (Section) -> NSCollectionLayoutSection) -> Self {
+        public func with(layout: @escaping (@Sendable (Section) -> NSCollectionLayoutSection)) -> Self {
             self.layout = layout
             return self
         }
@@ -56,7 +57,7 @@ extension CommonCollection {
         }
         
         /// A struct that encapsulates layout and sizing configuration for a section.
-        public struct LayoutDimension {
+        public struct LayoutDimension: Sendable {
             /// If `true`, the item's height is automatically determined (estimated).
             var autoHeight: Bool = false
             /// The width-to-height ratio for each item.
@@ -88,7 +89,7 @@ extension CommonCollection {
             var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
             
             /// An optional closure to provide a completely custom layout for the section.
-            var customLayout: ((CommonCollection.Section) -> NSCollectionLayoutSection)?
+            var customLayout: (@Sendable (CommonCollection.Section) -> NSCollectionLayoutSection)?
             
             /// Initializes a new `LayoutDimension` with the specified properties.
             /// - Parameters:
@@ -126,7 +127,7 @@ extension CommonCollection {
             
             /// Initializes a new `LayoutDimension` using a custom layout closure.
             /// - Parameter customLayout: A closure that returns a custom layout for the section.
-            public init(customLayout: @escaping ((CommonCollection.Section) -> NSCollectionLayoutSection)) {
+            public init(customLayout: @escaping (@Sendable (CommonCollection.Section) -> NSCollectionLayoutSection)) {
                 self.customLayout = customLayout
             }
         }
@@ -138,7 +139,7 @@ extension CommonCollection.Section {
     ///
     /// - Parameter section: The section to layout.
     /// - Returns: An `NSCollectionLayoutSection` configured for sliding presentation.
-    public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
+    @MainActor public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
@@ -209,7 +210,7 @@ extension CommonCollection.Section {
     ///
     /// - Parameter section: The section to layout.
     /// - Returns: An `NSCollectionLayoutSection` configured by the custom layout closure or the default sliding layout.
-    public static func customLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
+    @MainActor public static func customLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
         guard let layout = section.dimension.customLayout else {
             return slidingLayout(section: section)
         }

@@ -16,16 +16,16 @@ import Logging
 }
 
 /// A protocol that provides a logger instance for conforming types.
-public protocol Loggable {
+public protocol Loggable: Sendable {
     /// A logger used for logging messages.
-    nonisolated var logger: Logger { get }
+    var logger: Logger { get }
 }
 
 public extension Loggable {
     /// A default logger instance for the conforming type.
-    nonisolated static var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
+    static var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
     /// A default logger instance for the conforming type.
-    nonisolated var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
+    var logger: Logger { Logger(label: String(reflecting: type(of: self))).custom { $0.logLevel = .default } }
 }
 
 /// Extension to provide a default log level for `Logger.Level`.

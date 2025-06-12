@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FAxis: OptionSet, Hashable, @unchecked Sendable, ExpressibleByIntegerLiteral {
+public struct FAxis: OptionSet, Hashable, Sendable, ExpressibleByIntegerLiteral {
     public var rawValue: Int
     
     public init(rawValue: Int) { self.rawValue = rawValue }
@@ -27,7 +27,7 @@ extension FAxis {
     }
 }
 
-public struct FDirectionalRectEdge: OptionSet, Hashable, @unchecked Sendable, ExpressibleByIntegerLiteral {
+public struct FDirectionalRectEdge: OptionSet, Hashable, Sendable, ExpressibleByIntegerLiteral {
     public var rawValue: Int
     
     public init(rawValue: Int) { self.rawValue = rawValue }

@@ -16,7 +16,7 @@ import UIKit
 ///
 /// Types conforming to this protocol provide information necessary for configuring and identifying
 /// reusable views in a collection view.
-@objc public protocol CommonCollectionReusableModel: NSObjectProtocol {
+@objc public protocol CommonCollectionReusableModel: NSObjectProtocol, Sendable {
     /// The unique identifier for the reusable view model.
     var identifier: String { get }
     /// The type of reusable view (header or footer) associated with this model.
@@ -25,7 +25,7 @@ import UIKit
     ///
     /// - Note: This should only be used as an emergency option when something needs to be customized
     ///   once or twice, or when something is really needed in production.
-    var customConfiguration: ((CommonCollection.ReusableView) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? { get set }
 }
 
 extension CommonCollection {

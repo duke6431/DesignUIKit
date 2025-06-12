@@ -12,7 +12,7 @@ import UIKit
 
 /// Protocol defining the requirements for a model used by `CommonTableView.TableCell`.
 /// Conforming types provide information necessary to configure and manage table view cells.
-@objc public protocol CommonCellModel: NSObjectProtocol {
+@objc public protocol CommonCellModel: NSObjectProtocol, Sendable {
     /// A unique identifier for the cell model instance.
     var identifier: String { get }
     
@@ -24,7 +24,7 @@ import UIKit
     
     /// A closure for custom configuration of the cell.
     /// This should be used sparingly for one-off customizations or critical production needs.
-    var customConfiguration: ((CommonTableView.TableCell) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? { get set }
     
 #if os(iOS)
     /// Array of leading swipe actions for the cell (iOS only).

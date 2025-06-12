@@ -116,10 +116,10 @@ public extension FGrid {
 }
 
 /// A model representing a reusable grid header view using an `FCellModeling`.
-public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
-    public var identifier: String = UUID().uuidString
+public final class FGridHeaderModel: NSObject, CommonCollectionReusableModel, @unchecked Sendable {
+    public let identifier: String = UUID().uuidString
     public static let headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
-    public var customConfiguration: ((CommonCollection.ReusableView) -> Void)?
+    public var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)?
     public var model: FCellModeling
 
     public init(model: FCellModeling) {
@@ -150,11 +150,11 @@ public class FGridHeader: CommonCollection.ReusableView {
 }
 
 /// A model representing a reusable grid cell backed by an `FCellModeling` component.
-public class FGridModel: NSObject, CommonCollectionCellModel {
-    public var identifier: String = UUID().uuidString
+public final class FGridModel: NSObject, CommonCollectionCellModel, @unchecked Sendable {
+    public let identifier: String = UUID().uuidString
     public static let cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
     public var selectable: Bool = true
-    public var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
+    public var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)?
     public var realData: Any?
     public var model: FCellModeling
 

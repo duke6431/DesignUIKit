@@ -58,7 +58,7 @@ public extension Chainable where Self: AnyObject {
  This protocol is intended for value types (e.g., structs) to support functional-style updates
  by returning a new instance with applied changes.
  */
-public protocol SelfCustomizable {
+public protocol SelfCustomizable: Sendable {
     /**
      Returns a modified copy of the instance after applying the given configuration closure.
      

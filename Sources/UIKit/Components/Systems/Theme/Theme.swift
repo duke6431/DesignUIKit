@@ -24,7 +24,7 @@ import FileKit
 ///
 /// `Theme` objects can be encoded and decoded, cloned, saved to disk, and queried for color values by key and style.
 /// Themes are uniquely identified by their `name`.
-public final class Theme: Identifiable, Codable, Loggable {
+public final class Theme: Identifiable, Codable, Loggable, @unchecked Sendable {
     /// An empty theme instance with no styles.
     @MainActor static let empty: Theme = .init(name: "Empty", styles: [])
     

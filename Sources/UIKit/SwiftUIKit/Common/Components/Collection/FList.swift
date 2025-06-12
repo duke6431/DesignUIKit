@@ -164,10 +164,10 @@ public protocol FHeaderReusable: AnyObject {
 }
 
 /// A wrapper model for reusable header content used with `FList`.
-public class FHeaderModel: NSObject, CommonHeaderModel {
-    public var identifier: String = UUID().uuidString
+public final class FHeaderModel: NSObject, CommonHeaderModel, Loggable, @unchecked Sendable {
+    public let identifier: String = UUID().uuidString
     public static let headerKind: CommonTableView.Header.Type = FListHeader.self
-    public var customConfiguration: ((CommonTableView.Header) -> Void)?
+    public var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)?
     public var model: FHeaderModeling
 
     public init(model: FHeaderModeling) {
@@ -176,11 +176,11 @@ public class FHeaderModel: NSObject, CommonHeaderModel {
 }
 
 /// A wrapper model for reusable cell content used with `FList`.
-public class FListModel: NSObject, CommonCellModel, Loggable {
-    public var identifier: String = UUID().uuidString
+public final class FListModel: NSObject, CommonCellModel, Loggable, @unchecked Sendable {
+    public let identifier: String = UUID().uuidString
     public static let cellKind: CommonTableView.TableCell.Type = FListCell.self
     public var selectable: Bool = true
-    public var customConfiguration: ((CommonTableView.TableCell) -> Void)?
+    public var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)?
     #if os(iOS)
     public var leadingActions: [UIContextualAction] = []
     public var trailingActions: [UIContextualAction] = []

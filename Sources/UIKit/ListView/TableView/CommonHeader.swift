@@ -12,7 +12,7 @@ import UIKit
 
 /// A protocol that defines the requirements for a model representing a common table view header.
 /// Conforming types must provide an identifier, specify the header view type, and optionally provide a custom configuration closure.
-@objc public protocol CommonHeaderModel: NSObjectProtocol {
+@objc public protocol CommonHeaderModel: NSObjectProtocol, Sendable {
     /// A unique identifier for the header model.
     var identifier: String { get }
     
@@ -21,7 +21,7 @@ import UIKit
     
     /// A closure that allows custom configuration of the header view.
     /// This should be used sparingly, only for one-off customizations or critical production needs.
-    var customConfiguration: ((CommonTableView.Header) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)? { get set }
 }
 
 extension CommonTableView {
