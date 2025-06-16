@@ -48,7 +48,7 @@ import UIKit
     }
 }
 
-open class FScene<ViewModel: BaseViewModel>: BaseViewController {
+open class FScene<ViewModel: ViewModeling>: BaseViewController {
     open var viewModel: ViewModel
 
     public required init(with viewModel: ViewModel) {

@@ -15,7 +15,7 @@ import UIKit
 }
 
 // TODO: Handle message `MessageHandlable`
-@MainActor open class BaseNavigator<ViewModel: BaseViewModel, Scene: FScene<ViewModel>>: BaseNavigating, Loggable {
+@MainActor open class BaseNavigator<Navigator: BaseNavigating ,ViewModel: BaseViewModel<Navigator>, Scene: FScene<ViewModel>>: BaseNavigating, Loggable {
     open weak var navigationController: UINavigationController?
 
     public init(_ navigationController: UINavigationController? = nil) {
@@ -28,7 +28,10 @@ import UIKit
 
     @discardableResult
     open func toScene() -> Self {
-        let viewModel = ViewModel()
+        guard let navigator = self as? Navigator else {
+            fatalError("\(Self.self) must conform to \(Navigator.self)")
+        }
+        let viewModel = ViewModel(with: navigator)
         let scene = Scene(with: viewModel)
         prepare(viewModel, scene)
         navigationController?.pushViewController(scene, animated: true)
