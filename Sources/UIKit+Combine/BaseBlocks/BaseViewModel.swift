@@ -15,15 +15,12 @@ import DesignCore
     func drain(with cancellables: inout Set<AnyCancellable>)
 }
 
-@MainActor open class BaseViewModel<Navigator: BaseNavigating>: NSObject, ViewModeling, Loggable {
-    let navigator: Navigator
-    
+@MainActor open class BaseViewModel: NSObject, ViewModeling, Loggable {
     @Published
     public var error: Error?
     private var cancellables = Set<AnyCancellable>()
 
-    public required init(with navigator: Navigator) {
-        self.navigator = navigator
+    public required override init() {
         super.init()
         bind()
     }
