@@ -14,8 +14,8 @@ import DesignCore
 /// `Calligraphiable` is a protocol for UI elements or objects that can have their font updated dynamically.
 /// Objects conforming to this protocol can be registered with the `FontSystem` as observers to be notified
 /// when the font family or style changes, enabling live font switching throughout the app.
-public protocol Calligraphiable: AnyObject {
-    var font: UIFont { get set }
+@MainActor public protocol Calligraphiable: AnyObject {
+    var fontWrapper: UIFont { get set }
 }
 
 /// `FontSystem` is a singleton class responsible for managing the current font family used throughout the app.
@@ -77,10 +77,10 @@ public protocol Calligraphiable: AnyObject {
     
     /// Notifies a single observer and updates its font property.
     func notify(_ observer: Calligraphiable) {
-        observer.font = current.font(
+        observer.fontWrapper = current.font(
             with: .init(
-                size: observer.font.pointSize,
-                weight: observer.font.weight
+                size: observer.fontWrapper.pointSize,
+                weight: observer.fontWrapper.weight
             )
         )
     }

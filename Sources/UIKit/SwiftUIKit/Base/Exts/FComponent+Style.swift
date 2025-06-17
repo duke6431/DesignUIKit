@@ -17,7 +17,7 @@ import Foundation
 
 /// A protocol that defines the capability to apply a font style to a component.
 /// Conforms to `Chainable` for fluent interface usage.
-@MainActor public protocol FCalligraphiable: AnyObject, Chainable {
+@MainActor public protocol FCalligraphiable: AnyObject, Calligraphiable, Chainable {
     /// Sets the font of the component.
     /// - Parameter font: The `UIFont` to apply.
     /// - Returns: Self, to allow chaining.

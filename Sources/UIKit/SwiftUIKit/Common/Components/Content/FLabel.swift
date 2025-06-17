@@ -66,6 +66,11 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
         return self
     }
     
+    public var fontWrapper: UIFont {
+        get { font }
+        set { font = newValue }
+    }
+    
     /// Sets the text color of the label.
     /// - Parameter color: The color to use (default is `.label`).
     /// - Returns: Self for fluent chaining.

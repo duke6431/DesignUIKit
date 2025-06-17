@@ -144,6 +144,11 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         return self
     }
     
+    public var fontWrapper: UIFont {
+        get { font ?? .systemFont(ofSize: 17) }
+        set { font = newValue }
+    }
+    
     /// Sets the text color.
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
         self.textColor = color
