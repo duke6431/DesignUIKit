@@ -75,6 +75,7 @@ public extension FContentConstraintable where Self: UIView {
 }
 
 /// A protocol for UI components that support setting content insets.
+@MainActor
 public protocol FContentAvailable: FContentConstraintable {
     /// Sets the content insets using a `UIEdgeInsets` value.
     ///
