@@ -186,6 +186,11 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
 
 /// Handles UITextFieldDelegate methods for return key and text change monitoring.
 extension FTextField: UITextFieldDelegate {
+    override public func paste(_ sender: Any?) {
+        super.paste(sender)
+        onChangeAction?(text ?? "")
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
             textLayer.opacity = textField.text?.isEmpty ?? true ? 1.0 : 0.0

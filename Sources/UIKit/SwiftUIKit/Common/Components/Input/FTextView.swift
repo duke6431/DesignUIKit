@@ -176,6 +176,14 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
         if let placeholderKey { placeholder(theme.color(key: placeholderKey)) }
     }
+}
+
+/// Conforms to `UITextViewDelegate` to enable live text monitoring.
+extension FTextView: UITextViewDelegate {
+    override public func paste(_ sender: Any?) {
+        super.paste(sender)
+        onChangeAction?(text ?? "")
+    }
     
     /// Handles live text changes and updates the placeholder layer opacity accordingly.
     /// - Parameter textView: The text view whose text changed.
@@ -186,6 +194,3 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         onChangeAction?(textView.text ?? "")
     }
 }
-
-/// Conforms to `UITextViewDelegate` to enable live text monitoring.
-extension FTextView: UITextViewDelegate { }
