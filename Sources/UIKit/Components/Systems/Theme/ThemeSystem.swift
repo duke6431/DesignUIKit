@@ -79,7 +79,7 @@ public protocol CGThemable: Themable {
     /// Handles UIKit trait collection changes by notifying all `CGThemable` observers
     /// to update their Core Graphics related theme properties.
     public func onTraitCollectionChange() {
-        try? observers.allObjects
+        observers.allObjects
             .compactMap({ $0 as? CGThemable })
             .forEach(self.notify)
     }
@@ -105,7 +105,7 @@ public protocol CGThemable: Themable {
     
     /// Notifies all registered observers of a theme change asynchronously on the main thread.
     private func notifyObservers() {
-        try? observers.allObjects
+        observers.allObjects
             .compactMap({ $0 as? Themable })
             .forEach(self.notify)
     }

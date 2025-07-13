@@ -15,6 +15,7 @@ import RxSwift
 
 /// A property wrapper that synchronizes a value with `UserDefaults` using a `BehaviorRelay`.
 /// Automatically observes changes to the associated key and updates the wrapped value reactively.
+@MainActor
 @propertyWrapper
 public class FObservedPreference<T>: Loggable {
     fileprivate var observer: FPrefObservation<T>?
@@ -76,9 +77,10 @@ public class FObservedPreference<T>: Loggable {
 
 /// An internal observer object that listens for changes to a specific `UserDefaults` key
 /// and invokes a closure with the old and new values.
+@MainActor
 private final class FPrefObservation<T>: NSObject, Chainable, Loggable {
     let key: FPreferenceKey
-    private var onChange: (T?, T?) -> Void
+    private let onChange: (T?, T?) -> Void
     
     init(key: FPreferenceKey, onChange: @escaping (T?, T?) -> Void) {
         self.onChange = onChange

@@ -70,7 +70,7 @@ import DesignCore
     
     /// Notifies all registered observers of the current font change.
     private func notifyObservers() {
-        try? observers.allObjects
+        observers.allObjects
             .compactMap({ $0 as? Calligraphiable })
             .forEach(self.notify(_:))
     }

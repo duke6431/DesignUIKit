@@ -30,7 +30,7 @@ import DesignCore
     /// - Parameter views: The array of `UIView` instances to be arranged by the stack view.
     public convenience init(arrangedSubviews views: [UIView]) {
         self.init(frame: .zero)
-        try? views.forEach(addArrangedSubview)
+        views.forEach(addArrangedSubview)
         loadConfiguration()
     }
     

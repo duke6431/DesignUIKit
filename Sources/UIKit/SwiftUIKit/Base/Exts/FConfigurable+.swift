@@ -78,7 +78,7 @@ public extension FConfigurable {
     }
 
     @discardableResult func padding(_ edges: FDirectionalRectEdge, _ padding: CGFloat) -> Self {
-        try? edges.rawEdges.map { (padding, $0) }.forEach(configuration?.update ?? { _, _ in })
+        edges.rawEdges.map { (padding, $0) }.forEach(configuration?.update ?? { _, _ in })
         return self
     }
 

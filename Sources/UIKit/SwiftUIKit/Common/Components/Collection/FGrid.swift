@@ -120,16 +120,16 @@ public final class FGridHeaderModel: NSObject, CommonCollectionReusableModel, @u
     public let identifier: String = UUID().uuidString
     public static let headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
     public var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)?
-    public var model: FCellModeling
+    public var model: FHeaderModeling
 
-    public init(model: FCellModeling) {
+    public init(model: FHeaderModeling) {
         self.model = model
     }
 }
 
 /// A reusable view used as a header in the `FGrid`. Wraps an FBody header component.
 public class FGridHeader: CommonCollection.ReusableView {
-    weak var content: (FBodyComponent & FCellReusable)?
+    weak var content: (FBodyComponent & FHeaderReusable)?
 
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
@@ -142,7 +142,7 @@ public class FGridHeader: CommonCollection.ReusableView {
     
     /// Installs the provided view into the header and retains a reference to it.
     /// - Parameter view: The FBody header component.
-    open func install<T: FBodyComponent & FCellReusable>(view: T) {
+    open func install<T: FBodyComponent & FHeaderReusable>(view: T) {
         backgroundColor = .clear
         addSubview(view)
         content = view

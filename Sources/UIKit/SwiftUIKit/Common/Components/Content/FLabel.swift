@@ -18,7 +18,7 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
     /// Initializes a label with a string.
     /// - Parameter text: The string to display.
     public init(
-        _ text: String
+        _ text: String? = nil
     ) {
         super.init(frame: .zero)
         self.text = text
