@@ -29,7 +29,7 @@ import DesignExts
     ///   - headerPrototypes: Optional header types to register.
     public init(
         prototypes: [(FCellReusable & UIView).Type],
-        headerPrototypes: [(FCellReusable & UIView).Type]? = nil
+        headerPrototypes: [(FHeaderReusable & UIView).Type]? = nil
     ) {
         super.init(itemMapper: [], sectionMapper: [])
         prototypes.forEach {
