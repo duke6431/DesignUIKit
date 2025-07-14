@@ -103,7 +103,7 @@ public extension FImage {
     /// - Parameters:
     ///   - image: A new local image to display.
     ///   - url: An optional new URL to load the image from.
-    func reload(image: UIImage? = nil, url: URL? = nil) {
+    func reload(image: UIImage? = nil, url: URL? = nil, completion: ((FImage?, UIImage) -> Void)? = nil) {
         self.image = image
         if let currentForegroundColor {
             self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
@@ -113,6 +113,7 @@ public extension FImage {
         ImagePipeline.shared.loadImage(with: url) { [weak self] result in
             if case .success(let response) = result, self?.url == response.request.url {
                 self?.image = response.image
+                completion?(self, response.image)
             }
         }
     }
