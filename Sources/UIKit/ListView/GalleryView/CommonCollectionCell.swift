@@ -27,10 +27,10 @@ import UIKit
     /// A closure for custom configuration of the collection cell.
     /// This should only be used as an emergency option when customization is needed once or twice,
     /// or when something is critically required in production.
-    var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? { get }
     
     /// Optional real data associated with the model.
-    var realData: Any? { get }
+    var realData: Sendable? { get }
 }
 
 extension CommonCollection {

@@ -24,18 +24,18 @@ import UIKit
     
     /// A closure for custom configuration of the cell.
     /// This should be used sparingly for one-off customizations or critical production needs.
-    var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? { get }
     
 #if os(iOS)
     /// Array of leading swipe actions for the cell (iOS only).
-    var leadingActions: [UIContextualAction] { get set }
+    var leadingActions: [UIContextualAction] { get }
     
     /// Array of trailing swipe actions for the cell (iOS only).
-    var trailingActions: [UIContextualAction] { get set }
+    var trailingActions: [UIContextualAction] { get }
 #endif
     
     /// The underlying data represented by the model.
-    var realData: Any? { get }
+    var realData: Sendable? { get }
     
     /// Optional method to determine if the cell should be highlighted based on a search keyword.
     /// - Parameter keyword: The search keyword to check for highlighting.

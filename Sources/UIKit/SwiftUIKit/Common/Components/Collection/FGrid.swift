@@ -116,14 +116,16 @@ public extension FGrid {
 }
 
 /// A model representing a reusable grid header view using an `FCellModeling`.
-public final class FGridHeaderModel: NSObject, CommonCollectionReusableModel, @unchecked Sendable {
+public final class FGridHeaderModel: NSObject, CommonCollectionReusableModel, Sendable {
     public let identifier: String = UUID().uuidString
     public static let headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
-    public var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)?
-    public var model: FHeaderModeling
+    public var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? { _customConfiguration }
+    private let _customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)?
+    public let model: FHeaderModeling
 
-    public init(model: FHeaderModeling) {
+    public init(model: FHeaderModeling, customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? = nil) {
         self.model = model
+        self._customConfiguration = customConfiguration
     }
 }
 
@@ -150,19 +152,22 @@ public class FGridHeader: CommonCollection.ReusableView {
 }
 
 /// A model representing a reusable grid cell backed by an `FCellModeling` component.
-public final class FGridModel: NSObject, CommonCollectionCellModel, @unchecked Sendable {
+public final class FGridModel: NSObject, CommonCollectionCellModel, Sendable {
     public let identifier: String = UUID().uuidString
     public static let cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
-    public var selectable: Bool = true
-    public var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)?
-    public var realData: Any?
-    public var model: FCellModeling
+    public let selectable: Bool = true
+    public var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? { _customConfiguration }
+    public let _customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)?
+    public let realData: Sendable?
+    public let model: FCellModeling
 
     public init(
         model: FCellModeling,
-        realData: Any? = nil
+        customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? = nil,
+        realData: Sendable? = nil
     ) {
         self.model = model
+        self._customConfiguration = customConfiguration
         self.realData = realData
     }
 }

@@ -21,7 +21,7 @@ import UIKit
     
     /// A closure that allows custom configuration of the header view.
     /// This should be used sparingly, only for one-off customizations or critical production needs.
-    var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)? { get }
 }
 
 extension CommonTableView {

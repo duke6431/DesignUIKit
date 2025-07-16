@@ -25,7 +25,7 @@ import UIKit
     ///
     /// - Note: This should only be used as an emergency option when something needs to be customized
     ///   once or twice, or when something is really needed in production.
-    var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? { get }
 }
 
 extension CommonCollection {

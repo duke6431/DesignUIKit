@@ -17,7 +17,8 @@ extension CommonCollection {
     /// A section in a `CommonCollection` view, representing a group of cells and optionally a header.
     ///
     /// Use this class to configure the content and layout of a section in your collection view.
-    public final class Section: NSObject, @unchecked Sendable {
+    @MainActor
+    public final class Section: NSObject {
         /// The model representing the header supplementary view for the section.
         public let header: CommonCollectionReusableModel?
         /// The array of cell models contained in the section.

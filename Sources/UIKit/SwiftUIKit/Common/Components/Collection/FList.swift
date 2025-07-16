@@ -120,7 +120,7 @@ public extension FList {
 }
 
 /// A model representing a reusable cell with layout configuration.
-public protocol FCellModeling {
+public protocol FCellModeling: Sendable {
     var view: (FBodyComponent & FCellReusable).Type { get set }
     func layoutConfiguration(container: UIView, view: UIView?)
 }
@@ -130,7 +130,7 @@ public extension FCellModeling {
 }
 
 /// A model representing a reusable header with layout configuration.
-public protocol FHeaderModeling {
+public protocol FHeaderModeling: Sendable {
     var view: (FBodyComponent & FHeaderReusable).Type { get set }
     func layoutConfiguration(container: UIView, view: UIView?)
 }
@@ -164,37 +164,48 @@ public protocol FHeaderReusable: AnyObject {
 }
 
 /// A wrapper model for reusable header content used with `FList`.
-public final class FHeaderModel: NSObject, CommonHeaderModel, Loggable, @unchecked Sendable {
+public final class FHeaderModel: NSObject, CommonHeaderModel, Loggable, Sendable {
     public let identifier: String = UUID().uuidString
     public static let headerKind: CommonTableView.Header.Type = FListHeader.self
-    public var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)?
-    public var model: FHeaderModeling
+    public var customConfiguration: (@Sendable (CommonTableView.Header) -> Void)? { _customConfiguration }
+    private let _customConfiguration: (@Sendable (CommonTableView.Header) -> Void)?
+    public let model: FHeaderModeling
 
-    public init(model: FHeaderModeling) {
+    public init(model: FHeaderModeling, customConfiguration: (@Sendable (CommonTableView.Header) -> Void)? = nil) {
         self.model = model
+        self._customConfiguration = customConfiguration
     }
 }
 
 /// A wrapper model for reusable cell content used with `FList`.
-public final class FListModel: NSObject, CommonCellModel, Loggable, @unchecked Sendable {
+public final class FListModel: NSObject, CommonCellModel, Loggable, Sendable {
     public let identifier: String = UUID().uuidString
     public static let cellKind: CommonTableView.TableCell.Type = FListCell.self
-    public var selectable: Bool = true
-    public var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)?
+    public let selectable: Bool = true
+    public var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? { _customConfiguration }
+    private let _customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)?
     #if os(iOS)
-    public var leadingActions: [UIContextualAction] = []
-    public var trailingActions: [UIContextualAction] = []
+    public var leadingActions: [UIContextualAction] { _leadingActions }
+    public var trailingActions: [UIContextualAction] { _trailingActions }
+    private let _leadingActions: [UIContextualAction]
+    private let _trailingActions: [UIContextualAction]
     #endif
-    public var padding: UIEdgeInsets = .zero
-    public var model: FCellModeling
-    public var realData: Any?
+    public let padding: UIEdgeInsets = .zero
+    public let model: FCellModeling
+    public let realData: Sendable?
 
     public init(
         model: FCellModeling,
-        realData: Any? = nil
+        customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? = nil,
+        realData: Sendable? = nil,
+        leadingActions: [UIContextualAction] = [],
+        trailingActions: [UIContextualAction]
     ) {
         self.model = model
         self.realData = realData
+        self._customConfiguration = customConfiguration
+        self._leadingActions = leadingActions
+        self._trailingActions = trailingActions
     }
 
     deinit {
