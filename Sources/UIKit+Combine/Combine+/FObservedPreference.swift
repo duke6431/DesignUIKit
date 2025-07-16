@@ -91,7 +91,7 @@ private final class FPrefObservation<T>: NSObject, Chainable {
     deinit {
         UserDefaults.standard.removeObserver(self, forKeyPath: key.rawValue, context: nil)
         #if DEBUG
-        logger?.info("Deinitialized")
+        logger?.trace("Deinitialized")
         #endif
     }
 }

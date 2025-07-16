@@ -104,6 +104,6 @@ private final class FPrefObservation<T>: NSObject, Chainable, Loggable {
     /// Cleans up the KVO observer on deallocation.
     deinit {
         UserDefaults.standard.removeObserver(self, forKeyPath: key.rawValue, context: nil)
-        logger.info("Deinitialized")
+        logger.trace("Deinitialized")
     }
 }
