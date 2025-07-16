@@ -199,7 +199,7 @@ public final class FListModel: NSObject, CommonCellModel, Loggable, Sendable {
         customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? = nil,
         realData: Sendable? = nil,
         leadingActions: [UIContextualAction] = [],
-        trailingActions: [UIContextualAction]
+        trailingActions: [UIContextualAction] = []
     ) {
         self.model = model
         self.realData = realData
