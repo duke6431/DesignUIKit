@@ -28,7 +28,7 @@ extension CommonCollection {
         /// The layout dimension and configuration for the section.
         public var dimension: LayoutDimension = .init()
         /// An optional closure to provide a custom layout for the section.
-        public var layout: (@Sendable (Section) -> NSCollectionLayoutSection)? = nil
+        public var layout: (@MainActor (Section) -> NSCollectionLayoutSection)? = nil
         
         /// Creates a new section with the specified header and cells.
         /// - Parameters:
@@ -44,7 +44,7 @@ extension CommonCollection {
         /// Returns a new section with the specified layout closure.
         /// - Parameter layout: A closure that returns the layout for the section.
         /// - Returns: The modified section instance.
-        public func with(layout: @escaping (@Sendable (Section) -> NSCollectionLayoutSection)) -> Self {
+        public func with(layout: @escaping (@MainActor (Section) -> NSCollectionLayoutSection)) -> Self {
             self.layout = layout
             return self
         }
@@ -90,7 +90,7 @@ extension CommonCollection {
             var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
             
             /// An optional closure to provide a completely custom layout for the section.
-            var customLayout: (@Sendable (CommonCollection.Section) -> NSCollectionLayoutSection)?
+            var customLayout: (@MainActor (CommonCollection.Section) -> NSCollectionLayoutSection)?
             
             /// Initializes a new `LayoutDimension` with the specified properties.
             /// - Parameters:
@@ -128,7 +128,7 @@ extension CommonCollection {
             
             /// Initializes a new `LayoutDimension` using a custom layout closure.
             /// - Parameter customLayout: A closure that returns a custom layout for the section.
-            public init(customLayout: @escaping (@Sendable (CommonCollection.Section) -> NSCollectionLayoutSection)) {
+            public init(customLayout: @escaping (@MainActor (CommonCollection.Section) -> NSCollectionLayoutSection)) {
                 self.customLayout = customLayout
             }
         }
