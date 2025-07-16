@@ -182,6 +182,7 @@ public class FGridCell: CommonCollection.CollectionCell {
             install(view: model.model.view.empty)
             model.model.layoutConfiguration(container: contentView, view: content)
         }
+        content?.indexPath = indexPath
         content?.bind(model.model)
     }
     
