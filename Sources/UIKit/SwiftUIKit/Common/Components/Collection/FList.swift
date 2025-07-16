@@ -142,7 +142,6 @@ public extension FHeaderModeling {
 /// A reusable cell capable of binding to an `FCellModeling` object.
 public protocol FCellReusable: AnyObject {
     static var empty: Self { get }
-    var indexPath: IndexPath? { get set }
     func bind(_ value: FCellModeling)
 }
 
@@ -225,7 +224,6 @@ public class FListCell: CommonTableView.TableCell, Loggable {
             install(view: model.model.view.empty)
             model.model.layoutConfiguration(container: contentView, view: content)
         }
-        content?.indexPath = indexPath
         content?.bind(model.model)
     }
 
