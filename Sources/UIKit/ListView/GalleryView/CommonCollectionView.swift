@@ -62,7 +62,7 @@ public extension CommonCollection {
         func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
             // swiftlint:disable:next line_length
             let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(collectionView: self) { [weak self] collectionView, indexPath, _ in
-                guard let item = self?.sections[indexPath.section].cells[indexPath.row] else {
+                guard let item = self?.sections[safe: indexPath.section]?.cells[safe: indexPath.row] else {
                     return UICollectionViewCell()
                 }
                 if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
@@ -82,7 +82,7 @@ public extension CommonCollection {
             }
             // swiftlint:disable:next line_length
             dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-                guard let headerData = self?.sections[indexPath.section].header else {
+                guard let headerData = self?.sections[safe: indexPath.section]?.header else {
                     return nil
                 }
                 if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
@@ -141,7 +141,7 @@ extension CommonCollection.View {
     func generateLayout() -> UICollectionViewLayout {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let section = self?.sections[section] else { return nil }
+            guard let section = self?.sections[safe: section] else { return nil }
             return section.layout?(section)
         }
     }
@@ -176,6 +176,7 @@ extension CommonCollection.View: UICollectionViewDelegate {
     ///
     /// Forwards the event to `didSelectCell(at:with:)`.
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectCell(at: indexPath, with: sections[indexPath.section].cells[indexPath.row])
+        guard let data = sections[safe: indexPath.section]?.cells[safe: indexPath.row] else { return }
+        didSelectCell(at: indexPath, with: data)
     }
 }
