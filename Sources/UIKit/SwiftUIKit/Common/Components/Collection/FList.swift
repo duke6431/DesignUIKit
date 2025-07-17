@@ -61,7 +61,7 @@ import SnapKit
     }
 
     public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let item = searchedSections[section].header as? FHeaderModel,
+        guard let item = searchedSections[safe: section]?.header as? FHeaderModel,
               let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: item.model.view)) as? FListHeader else { return nil }
         header.section = section
         header.bind(item)
@@ -69,9 +69,9 @@ import SnapKit
     }
 
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = searchedSections[indexPath.section].items[indexPath.row] as? FListModel,
+        guard let item = searchedSections[safe: indexPath.section]?.items[safe: indexPath.row] as? FListModel,
               let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: item.model.view)) as? FListCell else {
-            return UITableViewCell()
+            return dequeue(UITableViewCell.self)
         }
         cell.selectionStyle = .none
         cell.indexPath = indexPath
@@ -82,6 +82,7 @@ import SnapKit
     /// Loads the default configuration object for styling and lifecycle delegation.
     public func loadConfiguration() {
         configuration = .init()
+        register(UITableViewCell.self)
     }
     
     @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")

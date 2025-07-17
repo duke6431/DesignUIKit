@@ -57,12 +57,12 @@ import DesignExts
         let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(
             collectionView: self
         ) { [weak self] collectionView, indexPath, _ in
-            guard let item = self?.sections[indexPath.section].cells[indexPath.row] as? FGridModel,
+            guard let item = self?.sections[safe: indexPath.section]?.cells[safe: indexPath.row] as? FGridModel,
                   let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: String(describing: item.model.view),
                     for: indexPath
                   ) as? FGridCell else {
-                return UICollectionViewCell()
+                return collectionView.dequeue(UICollectionViewCell.self, indexPath: indexPath)
             }
             cell.indexPath = indexPath
             cell.bind(item)
@@ -70,7 +70,7 @@ import DesignExts
         }
         // swiftlint:disable:next line_length
         dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-            guard let headerData = self?.sections[indexPath.section].header as? FGridHeaderModel,
+            guard let headerData = self?.sections[safe: indexPath.section]?.header as? FGridHeaderModel,
                   let header = collectionView.dequeueReusableSupplementaryView(
                     ofKind: ReusableKind.header.rawValue,
                     withReuseIdentifier: String(describing: headerData.model.view),
@@ -89,6 +89,7 @@ import DesignExts
     /// Loads the default configuration for the grid.
     public func loadConfiguration() {
         configuration = .init()
+        register(UICollectionViewCell.self)
     }
     
     @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
