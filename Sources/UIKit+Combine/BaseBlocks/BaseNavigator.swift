@@ -9,7 +9,7 @@ import DesignCore
 import UIKit
 
 @MainActor public protocol BaseNavigating: Chainable {
-    var navigationController: UINavigationController? { get }
+    var navigationController: UINavigationController? { get set }
 
     func toScene() -> Self
 }
