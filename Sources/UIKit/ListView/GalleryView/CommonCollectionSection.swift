@@ -27,8 +27,10 @@ extension CommonCollection {
         /// The layout dimension and configuration for the section.
         public var layoutStyle: LayoutStyle
         /// An optional closure to provide a custom layout for the section.
-        public var layout: ((Section) -> NSCollectionLayoutSection)?
-        
+        public func layout() -> NSCollectionLayoutSection {
+            layoutStyle.layout(section: self)
+        }
+
         /// Creates a new section with the specified header and cells.
         /// - Parameters:
         ///   - header: The header model for the section. Defaults to `nil`.
@@ -43,14 +45,7 @@ extension CommonCollection {
             self.layoutStyle = layoutStyle
         }
 
-        /// Returns a new section with the specified layout closure.
-        /// - Parameter layout: A closure that returns the layout for the section.
-        /// - Returns: The modified section instance.
-        public func with(layout: @escaping (Section) -> NSCollectionLayoutSection) -> Self {
-            self.layout = layout
-            return self
-        }
-        
+
         public enum LayoutStyle {
             case preconfigured(_ dimension: LayoutDimension)
             case customized((CommonCollection.Section) -> NSCollectionLayoutSection)
