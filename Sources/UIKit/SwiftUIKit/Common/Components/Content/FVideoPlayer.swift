@@ -10,109 +10,88 @@
 
 import UIKit
 import AVFoundation
+import DesignCore
+import DesignExts
 
-/// A lightweight video player component using `AVPlayerLayer`.
-/// Supports local and remote video playback, autoplay, and looping.
-public final class FVideoPlayer: UIView {
-    /// An optional closure for applying additional configuration to the video player.
+/// `FVideoPlayer` is a reusable view for rendering video content using `AVPlayerLayer`.
+///
+/// Usage:
+/// ```swift
+/// let player = AVPlayer(url: url)
+/// let videoView = FVideoPlayer(with: player)
+/// videoView.contentMode(.resizeAspectFill)
+/// ```
+///
+/// The view manages an internal `AVPlayerLayer` and keeps it sized to its bounds.
+/// Call `stop()` to pause playback and remove the layer when the view is no longer needed.
+public final class FVideoPlayer: BaseView, FComponent {
+    /// Optional hook to perform additional configuration when the view moves to a superview.
+    /// This closure is invoked from `didMoveToSuperview()` after the `configuration` hook.
     public var customConfiguration: ((FVideoPlayer) -> Void)?
-    
-    /// The video URL to load and play. Can be local or remote.
-    public var url: URL? {
-        didSet {
-            guard let url = url else { return }
-            load(url: url)
-        }
-    }
-    
-    /// Whether the video should start playing automatically upon loading.
-    public var autoplay: Bool = false
-    
-    /// Whether the video should loop back to the beginning after finishing.
-    public var loop: Bool = false
-    
-    /// The internal `AVPlayer` responsible for playback.
-    private var player: AVPlayer?
-    
-    /// The `AVPlayerLayer` used for rendering the video content.
-    private var playerLayer: AVPlayerLayer?
-    
-    /// Initializes a new video player instance with a video URL.
-    /// - Parameter url: The URL of the video to play.
-    public init(url: URL? = nil) {
+
+    /// The player responsible for providing media to the layer.
+    /// Weak to avoid retain cycles with external owners managing the player.
+    fileprivate weak var player: AVPlayer?
+    /// The backing layer that renders the video content.
+    /// Weak because the view's layer hierarchy retains it.
+    fileprivate weak var playerLayer: AVPlayerLayer?
+
+    /// Initializes the video player view with an existing `AVPlayer`.
+    /// - Parameter player: The player that will provide media for playback.
+    /// The view immediately prepares its `AVPlayerLayer` by calling `load()`.
+    public init(with player: AVPlayer) {
         super.init(frame: .zero)
-        self.url = url
-        if let url = url {
-            load(url: url)
-        }
+        self.player = player
+        load()
     }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    /// Loads a new video into the player and optionally starts playback.
-    /// - Parameter url: The URL of the video to load.
-    public func load(url: URL) {
-        let playerItem = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: playerItem)
-        playerLayer?.removeFromSuperlayer()
-        playerLayer = AVPlayerLayer(player: player)
-        if let playerLayer = playerLayer {
-            layer.addSublayer(playerLayer)
-        }
-        if autoplay {
-            play()
-        }
-        if loop {
-            NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying),
-                                                   name: .AVPlayerItemDidPlayToEndTime,
-                                                   object: playerItem)
-        }
-    }
-    
-    /// Starts video playback.
-    public func play() {
-        player?.play()
-    }
-    
-    /// Pauses video playback.
-    public func pause() {
-        player?.pause()
-    }
-    
-    /// Resets the playback to the beginning and pauses the player.
-    public func reset() {
-        player?.seek(to: .zero)
-        pause()
-    }
-    
-    /// Called when the video player is added to a superview. Triggers configuration and loading.
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        // Invoke framework configuration first, then custom configuration.
+        configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
-        if let url = url {
-            load(url: url)
-        }
     }
-    
-    /// Updates the player layer's frame when the view layout changes.
+
+    /// Ensures the `AVPlayerLayer` tracks the view's bounds and remains transparent.
+    /// Also forwards a layout update to any attached configuration.
     public override func layoutSubviews() {
         super.layoutSubviews()
+        configuration?.updateLayers(for: self)
+        // Keep the video layer composited over transparent backgrounds.
+        playerLayer?.isOpaque = false
+        playerLayer?.backgroundColor = UIColor.clear.cgColor
         playerLayer?.frame = bounds
+        playerLayer?.setNeedsLayout()
+        playerLayer?.layoutIfNeeded()
     }
-    
-    @objc private func playerDidFinishPlaying(notification: Notification) {
-        if loop {
-            reset()
-            play()
-        }
+
+    /// Sets the video gravity (content mode) of the underlying `AVPlayerLayer`.
+    /// - Parameter contentMode: One of the `AVLayerVideoGravity` values, e.g. `.resizeAspect`.
+    /// - Returns: Self, to allow chaining.
+    public func contentMode(_ contentMode: AVLayerVideoGravity) -> Self {
+        playerLayer?.videoGravity = contentMode
+        return self
     }
-    
-    /// Cleans up the player and removes observers when the video player is deallocated.
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+
+    // Ensure playback is paused and the layer is removed when the view is deallocated.
+    deinit { stop() }
+}
+
+public extension FVideoPlayer {
+    /// Creates and attaches an `AVPlayerLayer` to the view's layer hierarchy.
+    /// Call this after setting/updating the `player` if needed.
+    func load() {
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.backgroundColor = UIColor.black.cgColor
+        self.playerLayer = playerLayer
+        playerLayer.frame = bounds
+        layer.addSublayer(playerLayer)
+    }
+
+    /// Pauses playback and removes the `AVPlayerLayer` from the view.
+    /// Safe to call multiple times.
+    func stop() {
         player?.pause()
-        player = nil
+        playerLayer?.removeFromSuperlayer()
     }
 }
+
