@@ -46,8 +46,10 @@ public extension FButton {
     /// Binds the button's tap event to a `PublishSubject`.
     /// - Parameter subject: The subject to forward tap events to.
     /// - Returns: Self for fluent chaining.
+#if !os(tvOS)
     func sendTap(to subject: PublishSubject<Void>) -> Self {
         rx.tap.bind(onNext: subject.onNext).disposed(by: disposeBag)
         return self
     }
+#endif
 }

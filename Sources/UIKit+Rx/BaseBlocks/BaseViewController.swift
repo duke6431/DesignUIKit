@@ -97,6 +97,6 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
 }
 
 /// Conformance to `Disposable` for `Never`, enabling fallback in generic contexts.
-extension Never: Disposable {
+extension Never: @retroactive Disposable {
     public func dispose() { }
 }
