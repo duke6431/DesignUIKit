@@ -37,8 +37,8 @@ public final class FScroll: BaseScrollView, FComponent {
             self.contentViews = []
         }
         super.init(frame: .zero)
-        self.showsHorizontalScrollIndicator = false
-        self.showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
     }
     
     /// Initializes a scroll view with multiple body components using a builder.
@@ -52,10 +52,10 @@ public final class FScroll: BaseScrollView, FComponent {
         self.axis = axis
         self.contentViews = contentViews()
         super.init(frame: .zero)
-        self.showsHorizontalScrollIndicator = false
-        self.showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
     }
-
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         switch axis {
@@ -77,30 +77,15 @@ public final class FScroll: BaseScrollView, FComponent {
 
         let flattened = contentViews.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
-        }.forEach { view in
-            addSubview(view.attachToParent(false))
-            view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate {
-                switch axis {
-                case .horizontal:
-                    view.topAnchor.constraint(equalTo: topAnchor)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor)
-                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding[.leading] ?? 0)
-                    view.centerYAnchor.constraint(equalTo: centerYAnchor)
-                case .vertical:
-                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding[.top] ?? 0)
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor)
-                    view.centerXAnchor.constraint(equalTo: centerXAnchor)
-                @unknown default:
-                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding[.top] ?? 0)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding[.bottom] ?? 0))
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding[.leading] ?? 0)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding[.trailing] ?? 0))
-                }
+        }
+        guard !flattened.isEmpty else { return }
+
+        var previousView: UIView?
+        for view in flattened {
+            if view.superview !== self {
+                addSubview(view.attachToParent(false))
             }
             view.translatesAutoresizingMaskIntoConstraints = false
-            let padding = view.configuration?.containerPadding
             switch axis {
             case .horizontal:
                 NSLayoutConstraint.activate([
@@ -108,14 +93,14 @@ public final class FScroll: BaseScrollView, FComponent {
                     view.bottomAnchor.constraint(equalTo: frameLayoutGuide.bottomAnchor),
                     view.leadingAnchor.constraint(
                         equalTo: previousView?.trailingAnchor ?? contentLayoutGuide.leadingAnchor,
-                        constant: padding?.leading ?? 0
+                        constant: view.configuration?.containerPadding[.leading] ?? 0
                     )
                 ])
             case .vertical:
                 NSLayoutConstraint.activate([
                     view.topAnchor.constraint(
                         equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
-                        constant: padding?.top ?? 0
+                        constant: view.configuration?.containerPadding[.top] ?? 0
                     ),
                     view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
                     view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)
@@ -124,7 +109,7 @@ public final class FScroll: BaseScrollView, FComponent {
                 NSLayoutConstraint.activate([
                     view.topAnchor.constraint(
                         equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
-                        constant: padding?.top ?? 0
+                        constant: view.configuration?.containerPadding[.top] ?? 0
                     ),
                     view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
                     view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)
@@ -136,9 +121,15 @@ public final class FScroll: BaseScrollView, FComponent {
         guard let lastView = previousView else { return }
         switch axis {
         case .horizontal:
-            NSLayoutConstraint.activate { leading.constraint(equalTo: trailingAnchor) }
+            NSLayoutConstraint.activate([
+                lastView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
+                lastView.heightAnchor.constraint(equalTo: frameLayoutGuide.heightAnchor)
+            ])
         case .vertical:
-            NSLayoutConstraint.activate { top.constraint(equalTo: bottomAnchor) }
+            NSLayoutConstraint.activate([
+                lastView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
+                lastView.widthAnchor.constraint(equalTo: frameLayoutGuide.widthAnchor)
+            ])
         @unknown default:
             NSLayoutConstraint.activate([
                 lastView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
@@ -146,25 +137,9 @@ public final class FScroll: BaseScrollView, FComponent {
             ])
         }
     }
-
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
-    }
-}
-
-extension FScroll {
-    func showIndicator(for axis: FAxis, _ status: Bool) -> Self {
-        axis.rawAxes.forEach {
-            switch $0 {
-            case .horizontal:
-                showsHorizontalScrollIndicator = true
-            case .vertical:
-                showsVerticalScrollIndicator = true
-            default:
-                break
-            }
-        }
-        return self
     }
 }

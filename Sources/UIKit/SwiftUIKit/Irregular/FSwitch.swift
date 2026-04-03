@@ -33,9 +33,11 @@ public final class FSwitch: BaseView, FComponent {
     public var statusImageOff: UIImage?
     /// Image displayed when the switch is on.
     public var statusImageOn: UIImage?
-
+    
     private var onSwitch: ((Bool) -> Void)?
-
+    private var hasSetupViews: Bool = false
+    private lazy var bodyView: UIView = makeBodyView()
+    
     private weak var statusImage: UIImageView?
     private var thumbViewLeading: Constraint?
     private var thumbViewTrailing: Constraint?
@@ -49,7 +51,7 @@ public final class FSwitch: BaseView, FComponent {
         }.shadow(.init(opacity: 0.4, radius: 3))
         return view
     }()
-
+    
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -71,7 +73,7 @@ public final class FSwitch: BaseView, FComponent {
         snp.remakeConstraints { $0.width.equalTo(snp.height).multipliedBy(1.8) }
         configureViews()
     }
-
+    
     private func configureViews() {
         addSubview(thumbView)
         thumbView.snp.remakeConstraints {
@@ -83,17 +85,17 @@ public final class FSwitch: BaseView, FComponent {
         thumbViewLeading?.isActive = true
         thumbViewTrailing?.isActive = false
     }
-
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         updateLayers()
     }
-
+    
     private func updateLayers() {
         layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
-
-    public var body: UIView {
+    
+    private func makeBodyView() -> UIView {
         FZStack {
             FImage(image: statusImageOff).contentMode(.scaleAspectFill).customConfiguration { [weak self] view in
                 self?.statusImage = view
@@ -128,9 +130,9 @@ public final class FSwitch: BaseView, FComponent {
         }
         onSwitch?(on)
     }
-
+    
     @objc private func onTap() { isOn.toggle() }
-
+    
     @objc private func onSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
         case .left: isOn = false
