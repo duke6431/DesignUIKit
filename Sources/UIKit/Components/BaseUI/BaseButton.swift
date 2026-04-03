@@ -74,7 +74,6 @@ open class BaseButton: UIButton, FConfigurable, FThemableBackground, FThemableSh
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
 }

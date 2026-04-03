@@ -68,7 +68,6 @@ open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemab
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     
@@ -77,4 +76,3 @@ open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemab
         logger.trace("Deinitialized \(self)")
     }
 }
-

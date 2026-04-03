@@ -90,7 +90,6 @@ open class BaseImageView: UIImageView, FConfigurable, FThemableBackground, FThem
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     

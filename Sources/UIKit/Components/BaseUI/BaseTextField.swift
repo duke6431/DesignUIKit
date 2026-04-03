@@ -68,7 +68,6 @@ open class BaseTextField: UITextField, FConfigurable, FThemableBackground, FThem
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     

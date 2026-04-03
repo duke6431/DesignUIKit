@@ -29,6 +29,7 @@ open class FView: BaseView, FComponent {
     /// Use this closure to perform additional setup or styling that is not covered by
     /// the standard configuration mechanisms.
     public var customConfiguration: ((FView) -> Void)?
+    private var hasConfiguredViews: Bool = false
     
     /// Called when the view is added to a superview.
     ///
@@ -37,7 +38,10 @@ open class FView: BaseView, FComponent {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        configureViews()
+        if superview != nil, !hasConfiguredViews {
+            hasConfiguredViews = true
+            configureViews()
+        }
         customConfiguration?(self)
     }
     

@@ -35,7 +35,7 @@ public extension CommonCollection {
         /// Current list of sections displayed by the collection view.
         var sections: [Section] = []
         /// Current diffable data source used by the collection view.
-        var currentDataSource: UICollectionViewDataSource?
+        var currentDataSource: UICollectionViewDiffableDataSource<CommonCollection.Section, String>?
         
         /// Initializes the collection view with item and section mappers for reusable view registration.
         ///
@@ -62,7 +62,9 @@ public extension CommonCollection {
         func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
             // swiftlint:disable:next line_length
             let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(collectionView: self) { [weak self] collectionView, indexPath, _ in
-                guard let item = self?.sections[indexPath.section].cells[indexPath.row] else {
+                guard let section = self?.sections[safe: indexPath.section],
+                      let item = section.cells[safe: indexPath.row]
+                else {
                     return UICollectionViewCell()
                 }
                 if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
@@ -82,7 +84,9 @@ public extension CommonCollection {
             }
             // swiftlint:disable:next line_length
             dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-                guard let headerData = self?.sections[indexPath.section].header else {
+                guard let section = self?.sections[safe: indexPath.section],
+                      let headerData = section.header
+                else {
                     return nil
                 }
                 if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
@@ -124,6 +128,8 @@ extension CommonCollection.View {
         keyboardDismissMode = .onDrag
         itemMapper.forEach { register($0.cellKind) }
         sectionMapper?.forEach { register($0.headerKind) }
+        setCollectionViewLayout(generateLayout(), animated: false)
+        currentDataSource = generateDataSource()
     }
     
     /// Reloads the collection view with updated sections, layout, and snapshot.
@@ -131,10 +137,11 @@ extension CommonCollection.View {
     /// - Parameter sections: An array of section models to display.
     public func reloadData(sections: [CommonCollection.Section]) {
         self.sections = sections
-        setCollectionViewLayout(generateLayout(), animated: false)
-        let dataSource = generateDataSource()
-        self.currentDataSource = dataSource
-        dataSource.apply(generateSnapshot(), animatingDifferences: true)
+        if currentDataSource == nil {
+            currentDataSource = generateDataSource()
+        }
+        collectionViewLayout.invalidateLayout()
+        currentDataSource?.apply(generateSnapshot(), animatingDifferences: true)
     }
     
     /// Builds a compositional layout based on the section’s layout closure.
@@ -143,7 +150,8 @@ extension CommonCollection.View {
     func generateLayout() -> UICollectionViewLayout {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            self?.sections[section].layout()
+            guard let self, self.sections.indices.contains(section) else { return nil }
+            return self.sections[section].layout()
         }
     }
     
@@ -177,6 +185,9 @@ extension CommonCollection.View: UICollectionViewDelegate {
     ///
     /// Forwards the event to `didSelectCell(at:with:)`.
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectCell(at: indexPath, with: sections[indexPath.section].cells[indexPath.row])
+        guard let section = sections[safe: indexPath.section],
+              let item = section.cells[safe: indexPath.row]
+        else { return }
+        didSelectCell(at: indexPath, with: item)
     }
 }

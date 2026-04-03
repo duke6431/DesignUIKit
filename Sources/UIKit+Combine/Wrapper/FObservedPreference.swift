@@ -16,7 +16,10 @@ public class FObservedPreference<T>: Loggable {
     
     let key: FPreferenceKey
     @Published private var value: T {
-        didSet { UserDefaults.standard.set(value, forKey: key.rawValue) }
+        didSet {
+            if Self.isEqual(oldValue, value) { return }
+            UserDefaults.standard.set(value, forKey: key.rawValue)
+        }
     }
 
     public var projectedValue: Published<T>.Publisher {
@@ -60,6 +63,11 @@ public class FObservedPreference<T>: Loggable {
 #endif
         })
     }
+    
+    private static func isEqual(_ lhs: T, _ rhs: T) -> Bool {
+        guard let left = lhs as? NSObject, let right = rhs as? NSObject else { return false }
+        return left == right
+    }
 }
 
 fileprivate final class FPrefObservation<T>: NSObject, Chainable {
@@ -81,6 +89,9 @@ fileprivate final class FPrefObservation<T>: NSObject, Chainable {
         change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?
     ) {
         guard let change = change, object != nil, keyPath == key.rawValue else { return }
+        if let old = change[.oldKey] as? NSObject, let new = change[.newKey] as? NSObject, old == new {
+            return
+        }
         onChange(change[.oldKey] as? T, change[.newKey] as? T)
     }
     

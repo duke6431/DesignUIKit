@@ -20,6 +20,8 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     
     /// An optional closure used for additional runtime configuration.
     public var customConfiguration: ((FImage) -> Void)?
+    private var loadingURL: URL?
+    private var isLoadingRemoteImage: Bool = false
     
     /// Initializes the image view with an optional local image and optional remote URL.
     public init(
@@ -53,14 +55,6 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         reload(image: image, url: url)
-        if let url = url {
-            image = nil
-            ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-                if case .success(let response) = result {
-                    self?.image = response.image
-                }
-            }
-        }
         customConfiguration?(self)
     }
     
@@ -108,11 +102,19 @@ public extension FImage {
         if let currentForegroundColor {
             self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
         }
-        self.url = url ?? self.url
-        guard let url else { return }
+        if let url {
+            self.url = url
+        }
+        guard let url = self.url else { return }
+        if isLoadingRemoteImage, loadingURL == url { return }
+        if loadingURL == url, self.image != nil { return }
+        isLoadingRemoteImage = true
+        loadingURL = url
         ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-            if case .success(let response) = result, self?.url == response.request.url {
-                self?.image = response.image
+            guard let self else { return }
+            self.isLoadingRemoteImage = false
+            if case .success(let response) = result, self.url == response.request.url {
+                self.image = response.image
             }
         }
     }

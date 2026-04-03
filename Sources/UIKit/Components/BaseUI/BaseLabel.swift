@@ -108,7 +108,6 @@ open class BaseLabel: UILabel, FConfigurable, FThemableBackground, FThemableShad
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     

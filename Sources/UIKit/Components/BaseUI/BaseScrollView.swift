@@ -77,7 +77,6 @@ open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FTh
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     

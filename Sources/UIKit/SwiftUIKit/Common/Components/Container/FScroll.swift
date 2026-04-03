@@ -20,6 +20,7 @@ public final class FScroll: BaseScrollView, FComponent {
     public var contentViews: [FBodyComponent] = []
     /// Optional closure for applying additional configuration to the scroll view.
     public var customConfiguration: ((FScroll) -> Void)?
+    private var hasSetupContent: Bool = false
     
     /// Initializes a scroll view with a single optional body component.
     /// - Parameters:
@@ -62,54 +63,76 @@ public final class FScroll: BaseScrollView, FComponent {
             break
         }
         configuration?.didMoveToSuperview(superview, with: self)
-        var top = topAnchor
-        var leading = leadingAnchor
-        contentViews.flatMap {
+        setupContentIfNeeded()
+        customConfiguration?(self)
+    }
+    
+    private func setupContentIfNeeded() {
+        guard !hasSetupContent else { return }
+        hasSetupContent = true
+
+        let flattened = contentViews.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
-        }.forEach { view in
-            addSubview(view.attachToParent(false))
-            view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate {
-                switch axis {
-                case .horizontal:
-                    view.topAnchor.constraint(equalTo: topAnchor)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor)
-                    view.leadingAnchor.constraint(equalTo: leading, constant: view.configuration?.containerPadding?.leading ?? 0)
-                    view.centerYAnchor.constraint(equalTo: centerYAnchor)
-                case .vertical:
-                    view.topAnchor.constraint(equalTo: top, constant: view.configuration?.containerPadding?.top ?? 0)
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor)
-                    view.centerXAnchor.constraint(equalTo: centerXAnchor)
-                @unknown default:
-                    view.topAnchor.constraint(equalTo: topAnchor, constant: view.configuration?.containerPadding?.top ?? 0)
-                    view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(view.configuration?.containerPadding?.bottom ?? 0))
-                    view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: view.configuration?.containerPadding?.leading ?? 0)
-                    view.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -(view.configuration?.containerPadding?.trailing ?? 0))
-                }
+        }
+        guard !flattened.isEmpty else { return }
+
+        var previousView: UIView?
+        for view in flattened {
+            if view.superview !== self {
+                addSubview(view.attachToParent(false))
             }
+            view.translatesAutoresizingMaskIntoConstraints = false
+            let padding = view.configuration?.containerPadding
             switch axis {
             case .horizontal:
-                leading = view.trailingAnchor
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(equalTo: frameLayoutGuide.topAnchor),
+                    view.bottomAnchor.constraint(equalTo: frameLayoutGuide.bottomAnchor),
+                    view.leadingAnchor.constraint(
+                        equalTo: previousView?.trailingAnchor ?? contentLayoutGuide.leadingAnchor,
+                        constant: padding?.leading ?? 0
+                    )
+                ])
             case .vertical:
-                top = view.bottomAnchor
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(
+                        equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
+                        constant: padding?.top ?? 0
+                    ),
+                    view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
+                    view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)
+                ])
             @unknown default:
-                break
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(
+                        equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
+                        constant: padding?.top ?? 0
+                    ),
+                    view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
+                    view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)
+                ])
             }
+            previousView = view
         }
+
+        guard let lastView = previousView else { return }
         switch axis {
         case .horizontal:
-            NSLayoutConstraint.activate {
-                leading.constraint(equalTo: trailingAnchor)
-            }
+            NSLayoutConstraint.activate([
+                lastView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
+                lastView.heightAnchor.constraint(equalTo: frameLayoutGuide.heightAnchor)
+            ])
         case .vertical:
-            NSLayoutConstraint.activate {
-                top.constraint(equalTo: bottomAnchor)
-            }
+            NSLayoutConstraint.activate([
+                lastView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
+                lastView.widthAnchor.constraint(equalTo: frameLayoutGuide.widthAnchor)
+            ])
         @unknown default:
-            break
+            NSLayoutConstraint.activate([
+                lastView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
+                lastView.widthAnchor.constraint(equalTo: frameLayoutGuide.widthAnchor)
+            ])
         }
-        customConfiguration?(self)
     }
     
     public override func layoutSubviews() {

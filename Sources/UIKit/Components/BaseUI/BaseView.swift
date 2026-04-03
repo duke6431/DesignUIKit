@@ -66,7 +66,6 @@ open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     

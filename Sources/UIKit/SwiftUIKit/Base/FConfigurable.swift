@@ -229,28 +229,28 @@ public class FConfiguration: Chainable {
         modifiers.forEach { $0.body(target) }
         target.backgroundColor = backgroundColor
         target.alpha = opacity
-        if let centerOffset, let superview {
-            target.snp.makeConstraints {
-                $0.centerX.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.width).priority(layoutPriority)
-                $0.centerY.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.height).priority(layoutPriority)
+        target.snp.remakeConstraints { make in
+            if let centerOffset, let superview {
+                make.centerX.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.width).priority(layoutPriority)
+                make.centerY.equalTo(superview.safeAreaLayoutGuide).offset(centerOffset.height).priority(layoutPriority)
+            } else if shouldConstraintWithParent, let superview {
+                let constraintTarget: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
+                make.top.equalTo(constraintTarget).offset(offset.height + (containerPadding?.top ?? 0)).priority(layoutPriority)
+                make.leading.equalTo(constraintTarget).offset(offset.width + (containerPadding?.leading ?? 0)).priority(layoutPriority)
+                make.trailing.equalTo(constraintTarget).offset(offset.width - (containerPadding?.trailing ?? 0)).priority(layoutPriority)
+                make.bottom.equalTo(constraintTarget).offset(offset.height - (containerPadding?.bottom ?? 0)).priority(layoutPriority)
             }
-        } else if shouldConstraintWithParent, let superview {
-            target.snp.remakeConstraints {
-                let target: ConstraintRelatableTarget = shouldIgnoreSafeArea ? superview : superview.safeAreaLayoutGuide
-                $0.top.equalTo(target).offset(offset.height + (containerPadding?.top ?? 0)).priority(layoutPriority)
-                $0.leading.equalTo(target).offset(offset.width + (containerPadding?.leading ?? 0)).priority(layoutPriority)
-                $0.trailing.equalTo(target).offset(offset.width - (containerPadding?.trailing ?? 0)).priority(layoutPriority)
-                $0.bottom.equalTo(target).offset(offset.height - (containerPadding?.bottom ?? 0)).priority(layoutPriority)
+            if let width, width > 0 {
+                make.width.equalTo(width).priority(layoutPriority)
             }
-        }
-        target.snp.makeConstraints {
-            if let width, width > 0 { $0.width.equalTo(width).priority(layoutPriority) }
-            if let height, height > 0 { $0.height.equalTo(height).priority(layoutPriority) }
-            if let ratio { $0.width.equalTo(target.snp.height).multipliedBy(ratio).priority(layoutPriority) }
-        }
-        if let layoutConfiguration, let superview {
-            target.snp.makeConstraints {
-                layoutConfiguration($0, superview)
+            if let height, height > 0 {
+                make.height.equalTo(height).priority(layoutPriority)
+            }
+            if let ratio {
+                make.width.equalTo(target.snp.height).multipliedBy(ratio).priority(layoutPriority)
+            }
+            if let layoutConfiguration, let superview {
+                layoutConfiguration(make, superview)
             }
         }
     }
