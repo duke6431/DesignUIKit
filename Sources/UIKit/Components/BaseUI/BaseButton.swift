@@ -74,7 +74,6 @@ import DesignCore
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
 }

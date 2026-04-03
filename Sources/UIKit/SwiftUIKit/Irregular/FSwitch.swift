@@ -52,7 +52,16 @@ public final class FSwitch: BaseView, FComponent {
 
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        addSubview(body)
+        configuration?.didMoveToSuperview(superview, with: self)
+        setupViewsIfNeeded()
+        set(on: isOn, animated: false)
+        customConfiguration?(self)
+    }
+    
+    private func setupViewsIfNeeded() {
+        guard !hasSetupViews else { return }
+        hasSetupViews = true
+        addSubview(bodyView)
         clipsToBounds = true
         backgroundColor = statusColorOff
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
@@ -98,19 +107,26 @@ public final class FSwitch: BaseView, FComponent {
         }.shaped(.circle)
     }
     
+    public var body: UIView { bodyView }
+    
     /// Updates the switch state and appearance with optional animation.
     /// - Parameters:
     ///   - on: Whether the switch should be turned on.
     ///   - animated: Whether to animate the change. Default is true.
     public func set(on: Bool, animated: Bool = true) {
-        thumbViewLeading?.isActive = !isOn
-        thumbViewTrailing?.isActive = isOn
-        UIView.animate(withDuration: 0.2) { [self] in
-            backgroundColor = isOn ? statusColorOn : statusColorOff
-            statusImage?.image = isOn ? statusImageOn : statusImageOff
+        thumbViewLeading?.isActive = !on
+        thumbViewTrailing?.isActive = on
+        let update = { [self] in
+            backgroundColor = on ? statusColorOn : statusColorOff
+            statusImage?.image = on ? statusImageOn : statusImageOff
             layoutIfNeeded()
         }
-        onSwitch?(isOn)
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: update)
+        } else {
+            update()
+        }
+        onSwitch?(on)
     }
 
     @objc private func onTap() { isOn.toggle() }

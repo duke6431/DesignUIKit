@@ -35,7 +35,7 @@ public extension CommonCollection {
         /// Current list of sections displayed by the collection view.
         var sections: [Section] = []
         /// Current diffable data source used by the collection view.
-        var currentDataSource: UICollectionViewDataSource?
+        var currentDataSource: UICollectionViewDiffableDataSource<CommonCollection.Section, String>?
         
         /// Initializes the collection view with item and section mappers for reusable view registration.
         ///
@@ -122,6 +122,8 @@ extension CommonCollection.View {
         keyboardDismissMode = .onDrag
         itemMapper.forEach { register($0.cellKind) }
         sectionMapper?.forEach { register($0.headerKind) }
+        setCollectionViewLayout(generateLayout(), animated: false)
+        currentDataSource = generateDataSource()
     }
     
     /// Reloads the collection view with updated sections, layout, and snapshot.
@@ -129,10 +131,11 @@ extension CommonCollection.View {
     /// - Parameter sections: An array of section models to display.
     public func reloadData(sections: [CommonCollection.Section]) {
         self.sections = sections
-        setCollectionViewLayout(generateLayout(), animated: false)
-        let dataSource = generateDataSource()
-        self.currentDataSource = dataSource
-        dataSource.apply(generateSnapshot(), animatingDifferences: true)
+        if currentDataSource == nil {
+            currentDataSource = generateDataSource()
+        }
+        collectionViewLayout.invalidateLayout()
+        currentDataSource?.apply(generateSnapshot(), animatingDifferences: true)
     }
     
     /// Builds a compositional layout based on the section’s layout closure.

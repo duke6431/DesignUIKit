@@ -63,3 +63,4 @@ public extension FVideoPlayer {
         playerLayer?.removeFromSuperlayer()
     }
 }
+

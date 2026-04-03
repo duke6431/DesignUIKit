@@ -154,35 +154,18 @@ public class CommonTableView: UITableView, Loggable {
     ///
     /// - Parameter identifier: The unique identifier of the item to delete.
     public func deleteItem(with identifier: String) {
-        var selectedItem = IndexPath(row: 0, section: 0)
-        for (index, section) in sections.enumerated() {
-            var stop = false
-            selectedItem.section = index
-            for (index, item) in section.items.enumerated() where identifier == item.identifier {
-                selectedItem.row = index
-                stop = true
-            }
-            if stop { break }
+        guard let sectionIndex = sections.firstIndex(where: { section in
+            section.items.contains(where: { $0.identifier == identifier })
+        }) else {
+            return
         }
-        sections[selectedItem.section].items.remove(at: selectedItem.row)
-        for (index, section) in searchedSections.enumerated() {
-            var stop = false
-            selectedItem.section = index
-            for (index, item) in section.items.enumerated() where identifier == item.identifier {
-                selectedItem.row = index
-                stop = true
-            }
-            if stop { break }
+        guard let rowIndex = sections[sectionIndex].items.firstIndex(where: { $0.identifier == identifier }) else {
+            return
         }
-        searchedSections[selectedItem.section].items.remove(at: selectedItem.row)
-        for cell in visibleCells as? [CommonTableView.TableCell] ?? [] where cell.identifier == identifier {
-            selectedItem = cell.indexPath ?? selectedItem
-        }
-        deleteRows(at: [selectedItem], with: .fade)
-        if searchedSections[selectedItem.section].items.count == 0 {
-            searchedSections.remove(at: selectedItem.section)
-            deleteSections(IndexSet(integer: selectedItem.section), with: .fade)
-        }
+        sections[sectionIndex].items.remove(at: rowIndex)
+
+        // Recompute searched data from source of truth to keep indexes safe under filters.
+        search(with: keyword)
     }
 
     deinit {
@@ -220,7 +203,7 @@ extension CommonTableView: UITableViewDataSource {
         guard let headerData = searchedSections[section].header else {
             return nil
         }
-        if let cachedMap = headerCache {
+        if let cachedMap = headerCache, headerData.isKind(of: cachedMap) {
             let header = tableView.dequeue(cachedMap.headerKind)
             header.section = section
             header.bind(headerData)

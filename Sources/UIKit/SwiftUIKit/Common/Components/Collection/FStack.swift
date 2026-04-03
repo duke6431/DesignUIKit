@@ -63,9 +63,12 @@ public class FStack: BaseStackView, FComponent {
     func addContents(_ body: FBody) {
         body.flatMap {
             ($0 as? FForEach)?.content() ?? [$0]
-        }.forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            addArrangedSubview($0)
+        }.forEach { view in
+            if arrangedSubviews.contains(where: { $0 === view }) {
+                return
+            }
+            view.translatesAutoresizingMaskIntoConstraints = false
+            addArrangedSubview(view)
         }
     }
 

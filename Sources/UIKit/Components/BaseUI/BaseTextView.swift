@@ -67,7 +67,6 @@ import DesignCore
                 $0.color = theme.color(key: shadowKey)
             }
             setNeedsLayout()
-            layoutIfNeeded()
         }
     }
     
@@ -76,4 +75,3 @@ import DesignCore
         logger.trace("Deinitialized \(self)")
     }
 }
-

@@ -35,4 +35,5 @@ public extension FButton {
         rx.tap.bind(onNext: publisher.onNext).disposed(by: disposeBag)
         return self
     }
+#endif
 }
