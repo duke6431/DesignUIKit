@@ -34,7 +34,7 @@ private extension CommonCollectionViewTest {
     }
 
     func makeSection(cells: [CommonCollectionCellModel]) -> CommonCollection.Section {
-        .init(cells: cells, layoutStyle: .customized { _ in
+        .init(cells: cells).with(layout: { _ in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .absolute(44)
@@ -59,9 +59,9 @@ private final class SpyCollectionDelegate: NSObject, CommonCollectionViewDelegat
 
 private final class CellModel: NSObject, CommonCollectionCellModel {
     let identifier: String
-    var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
-    var selectable: Bool = true
-    var realData: Any?
+    let customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? = nil
+    let selectable: Bool = true
+    var realData: Sendable? { identifier }
 
     init(identifier: String) {
         self.identifier = identifier

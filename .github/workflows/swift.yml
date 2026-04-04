@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: xcodebuild -scheme ComponentSystem-Package -destination "id=$(xcrun simctl create 'iPhone 16' 'com.apple.CoreSimulator.SimDeviceType.iPhone-16' 'com.apple.CoreSimulator.SimRuntime.iOS-18-2')"
+      run: xcodebuild -scheme DesignUIKit-Package -destination "id=$(xcrun simctl create 'iPhone 16' 'com.apple.CoreSimulator.SimDeviceType.iPhone-16' 'com.apple.CoreSimulator.SimRuntime.iOS-18-2')"

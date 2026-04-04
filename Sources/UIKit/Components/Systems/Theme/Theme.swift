@@ -15,7 +15,7 @@ import FileKit
 /// A protocol representing a key used for theme color lookups.
 ///
 /// Conforming types provide a unique string name for referencing a color value in a theme palette.
-public protocol ThemeKey {
+@MainActor public protocol ThemeKey {
     /// The unique name of the theme key.
     var name: String { get }
 }
@@ -24,17 +24,17 @@ public protocol ThemeKey {
 ///
 /// `Theme` objects can be encoded and decoded, cloned, saved to disk, and queried for color values by key and style.
 /// Themes are uniquely identified by their `name`.
-public class Theme: Identifiable, Codable, Loggable {
+public final class Theme: Identifiable, Codable, Loggable, @unchecked Sendable {
     /// An empty theme instance with no styles.
-    static let empty: Theme = .init(name: "Empty", styles: [])
+    @MainActor static let empty: Theme = .init(name: "Empty", styles: [])
     
     /// The default color (hex string) used when a key is missing from a style.
-    public static var defaultColor: String = "00000000"
+    public static let defaultColor: String = "00000000"
     
     /// The unique identifier of the theme.
-    public var id = UUID()
+    public let id = UUID()
     /// The display name of the theme.
-    public var name: String
+    public let name: String
     /// The set of color palettes associated with this theme.
     var styles: Set<Palette>
     
@@ -51,7 +51,10 @@ public class Theme: Identifiable, Codable, Loggable {
     /// - Parameter filename: The filename to use (spaces replaced with dashes, `.json` appended).
     /// - Throws: An error if writing to disk fails.
     public func save(as filename: String) throws {
-        try FileKit.write(self, to: Path.userDocuments + String(filename.replacingOccurrences(of: " ", with: "-") + ".json"))
+        try FileKit.write(
+            self,
+            to: Path.userDocuments + filename.replacingOccurrences(of: " ", with: "-") + ".json"
+        )
     }
     
     /// Sets a color value for a given key and style in the theme.
@@ -60,7 +63,7 @@ public class Theme: Identifiable, Codable, Loggable {
     ///   - key: The theme key to set.
     ///   - style: The palette style to update.
     /// - Throws: `ThemeError.missingPalette` if the style does not exist.
-    public func set(color: UIColor, for key: ThemeKey, style: Theme.Style) throws {
+    @MainActor public func set(color: UIColor, for key: ThemeKey, style: Theme.Style) throws {
         guard var newStyle = styles[style] else { throw ThemeError.missingPalette(style.rawValue) }
         newStyle[key.name] = color.hexString
         styles.remove(newStyle)
@@ -72,14 +75,14 @@ public class Theme: Identifiable, Codable, Loggable {
     ///   - key: The theme key to look up.
     ///   - style: The palette style to use.
     /// - Returns: The UIColor found, or the `defaultColor` if missing.
-    public func color(key: ThemeKey, style: Theme.Style) -> UIColor {
+    @MainActor public func color(key: ThemeKey, style: Theme.Style) -> UIColor {
         .init(hexString: styles[style]?[key.name] ?? Self.defaultColor)
     }
     
     /// Returns a dynamic color for a given key, adapting to the current user interface style.
     /// - Parameter key: The theme key to look up.
     /// - Returns: A dynamic UIColor that adapts to light/dark mode.
-    public func color(key: ThemeKey) -> UIColor {
+    @MainActor public func color(key: ThemeKey) -> UIColor {
         .init(dynamicProvider: { [weak self] collection in
                 .init(hexString: self?.styles[collection.userInterfaceStyle.style]?[key.name] ?? Self.defaultColor)
         })

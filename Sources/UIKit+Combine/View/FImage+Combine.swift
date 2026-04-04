@@ -19,7 +19,7 @@ extension FImage {
             if let foregroundKey = self?.foregroundKey { imageView.foreground(key: foregroundKey) }
         }
     }
-    
+
     public convenience init(
         _ imagePublisher: FBinder<UIImage>
     ) {

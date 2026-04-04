@@ -17,7 +17,8 @@ public extension FConfigurable where Self: UIView {
     ///   - condition: A Boolean expression to evaluate.
     ///   - transform: A closure that returns a modified view when the condition is `true`.
     /// - Returns: The original or transformed view based on the condition.
-    @discardableResult func `if`<Content: FBodyComponent>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content) -> FBodyComponent {
+    @discardableResult 
+    func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> FBodyComponent) -> FBodyComponent {
         if condition() {
             transform(self)
         } else {
@@ -29,13 +30,14 @@ public extension FConfigurable where Self: UIView {
     /// - Parameters:
     ///   - condition: A Boolean expression to evaluate.
     ///   - transform: The closure to apply if the condition is `true`.
-    ///   - othertransform: The closure to apply if the condition is `false`.
+    ///   - otherTransform: The closure to apply if the condition is `false`.
     /// - Returns: A view transformed by one of the closures depending on the condition.
-    @discardableResult func `if`<Content: FBodyComponent, OtherContent: FBodyComponent>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content, else othertransform: ((Self) -> OtherContent)) -> FBodyComponent {
+    @discardableResult 
+    func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> FBodyComponent, else otherTransform: ((Self) -> FBodyComponent)) -> FBodyComponent {
         if condition() {
             transform(self)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     
@@ -44,7 +46,8 @@ public extension FConfigurable where Self: UIView {
     ///   - optional: An optional value. If non-nil, the transform is applied.
     ///   - transform: A closure that takes the optional value and returns a modified view.
     /// - Returns: A transformed view if the optional is non-nil, otherwise the original view.
-    @discardableResult func `if`<T, Content: FBodyComponent>(_ optional: T?, transform: (Self, T) -> Content) -> FBodyComponent {
+    @discardableResult 
+    func `if`<T>(_ optional: T?, transform: (Self, T) -> FBodyComponent) -> FBodyComponent {
         if let optional {
             transform(self, optional)
         } else {
@@ -56,13 +59,14 @@ public extension FConfigurable where Self: UIView {
     /// - Parameters:
     ///   - optional: An optional value.
     ///   - transform: A closure that uses the non-nil value.
-    ///   - othertransform: A closure used when the optional is `nil`.
+    ///   - otherTransform: A closure used when the optional is `nil`.
     /// - Returns: The view transformed accordingly.
-    @discardableResult func `if`<T, Content: FBodyComponent, OtherContent: FBodyComponent>(_ optional: T?, transform: (Self, T) -> Content, else othertransform: ((Self) -> OtherContent)) -> FBodyComponent {
+    @discardableResult 
+    func `if`<T>(_ optional: T?, transform: (Self, T) -> FBodyComponent, else otherTransform: ((Self) -> FBodyComponent)) -> FBodyComponent {
         if let optional {
             transform(self, optional)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     
@@ -72,7 +76,8 @@ public extension FConfigurable where Self: UIView {
     ///   - cases: A dictionary mapping values to transform closures.
     ///   - transform: An optional default transform if no case matches.
     /// - Returns: The transformed view from the matched case or default, or the original view.
-    @discardableResult func `switch`<T: Hashable, Content: FBodyComponent>(_ condition: @autoclosure () -> T, cases: [T: (Self) -> FBodyComponent], default transform: ((Self) -> Content)? = nil) -> FBodyComponent {
+    @discardableResult 
+    func `switch`<T: Hashable>(_ condition: @autoclosure () -> T, cases: [T: (Self) -> FBodyComponent], default transform: ((Self) -> FBodyComponent)? = nil) -> FBodyComponent {
         if let action = cases[condition()] {
             action(self)
         } else if let transform {
@@ -86,7 +91,8 @@ public extension FConfigurable where Self: UIView {
     /// Ideal for macro-like `#if` or `#available` platform logic.
     /// - Parameter transform: A closure that returns the transformed view.
     /// - Returns: The transformed view.
-    @discardableResult func wrapped<Content: FBodyComponent>(transform: (Self) -> Content) -> FBodyComponent {
+    @discardableResult 
+    func wrapped(transform: (Self) -> FBodyComponent) -> FBodyComponent {
         transform(self)
     }
 }

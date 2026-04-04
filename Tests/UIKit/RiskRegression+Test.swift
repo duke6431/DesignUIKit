@@ -88,13 +88,13 @@ private extension RiskRegressionTest {
 
 private final class TableItem: NSObject, CommonCellModel {
     let identifier: String
-    var selectable: Bool = true
-    var customConfiguration: ((CommonTableView.TableCell) -> Void)?
+    let selectable: Bool = true
+    let customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? = nil
 #if os(iOS)
-    var leadingActions: [UIContextualAction] = []
-    var trailingActions: [UIContextualAction] = []
+    let leadingActions: [UIContextualAction] = []
+    let trailingActions: [UIContextualAction] = []
 #endif
-    var realData: Any? { identifier }
+    var realData: Sendable? { identifier }
 
     init(id: String) {
         self.identifier = id

@@ -62,9 +62,7 @@ public extension CommonCollection {
         func generateDataSource() -> UICollectionViewDiffableDataSource<CommonCollection.Section, String> {
             // swiftlint:disable:next line_length
             let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(collectionView: self) { [weak self] collectionView, indexPath, _ in
-                guard let section = self?.sections[safe: indexPath.section],
-                      let item = section.cells[safe: indexPath.row]
-                else {
+                guard let item = self?.sections[safe: indexPath.section]?.cells[safe: indexPath.row] else {
                     return UICollectionViewCell()
                 }
                 if let cachedItem = self?.itemCache?.cellKind, item.isKind(of: cachedItem) {
@@ -84,9 +82,7 @@ public extension CommonCollection {
             }
             // swiftlint:disable:next line_length
             dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-                guard let section = self?.sections[safe: indexPath.section],
-                      let headerData = section.header
-                else {
+                guard let headerData = self?.sections[safe: indexPath.section]?.header else {
                     return nil
                 }
                 if let cachedHeader = self?.sectionCache?.headerKind, headerData.isKind(of: cachedHeader) {
@@ -111,9 +107,7 @@ public extension CommonCollection {
         
         /// Cleans up resources when the collection view is deinitialized.
         deinit {
-#if CORE_DEBUG
             logger.trace("Deinitialized \(self)")
-#endif
         }
     }
 }
@@ -150,8 +144,8 @@ extension CommonCollection.View {
     func generateLayout() -> UICollectionViewLayout {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let self, self.sections.indices.contains(section) else { return nil }
-            return self.sections[section].layout()
+            guard let section = self?.sections[safe: section] else { return nil }
+            return section.layout?(section)
         }
     }
     
@@ -185,9 +179,7 @@ extension CommonCollection.View: UICollectionViewDelegate {
     ///
     /// Forwards the event to `didSelectCell(at:with:)`.
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let section = sections[safe: indexPath.section],
-              let item = section.cells[safe: indexPath.row]
-        else { return }
-        didSelectCell(at: indexPath, with: item)
+        guard let data = sections[safe: indexPath.section]?.cells[safe: indexPath.row] else { return }
+        didSelectCell(at: indexPath, with: data)
     }
 }

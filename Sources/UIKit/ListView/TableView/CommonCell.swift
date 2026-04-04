@@ -12,7 +12,7 @@ import UIKit
 
 /// Protocol defining the requirements for a model used by `CommonTableView.TableCell`.
 /// Conforming types provide information necessary to configure and manage table view cells.
-@objc public protocol CommonCellModel: NSObjectProtocol {
+@objc public protocol CommonCellModel: NSObjectProtocol, Sendable {
     /// A unique identifier for the cell model instance.
     var identifier: String { get }
     
@@ -24,18 +24,18 @@ import UIKit
     
     /// A closure for custom configuration of the cell.
     /// This should be used sparingly for one-off customizations or critical production needs.
-    var customConfiguration: ((CommonTableView.TableCell) -> Void)? { get set }
+    var customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? { get }
     
 #if os(iOS)
     /// Array of leading swipe actions for the cell (iOS only).
-    var leadingActions: [UIContextualAction] { get set }
+    var leadingActions: [UIContextualAction] { get }
     
     /// Array of trailing swipe actions for the cell (iOS only).
-    var trailingActions: [UIContextualAction] { get set }
+    var trailingActions: [UIContextualAction] { get }
 #endif
     
     /// The underlying data represented by the model.
-    var realData: Any? { get }
+    var realData: Sendable? { get }
     
     /// Optional method to determine if the cell should be highlighted based on a search keyword.
     /// - Parameter keyword: The search keyword to check for highlighting.
@@ -61,7 +61,7 @@ extension CommonTableView {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             configureViews()
         }
-        
+
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         /// Initialization from a coder is not supported.

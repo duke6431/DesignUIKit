@@ -58,5 +58,5 @@ let host = FViewController(child).parent(parentViewController)
 
 ## Validation
 - Run package tests after changes:
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`

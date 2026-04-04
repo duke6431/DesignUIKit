@@ -24,7 +24,7 @@ public struct FSafeAreaModifier: FModifier {
     /// Applies the safe area ignore setting to the given content.
     /// - Parameter content: The content component to modify.
     /// - Returns: The modified content with or without safe area insets.
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         content.ignoreSafeArea(isIgnore)
     }
 }

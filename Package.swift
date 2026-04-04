@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 
 /**
  *  ComponentSystem
@@ -8,7 +8,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "ComponentSystem",
+    name: "DesignUIKit",
     platforms: [
         .iOS(.v13),
         .tvOS(.v15)
@@ -46,7 +46,7 @@ let package = Package(
         .package(url: "https://github.com/nvzqz/FileKit.git", .upToNextMajor(from: "6.1.0")),
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.4.0")),
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0")),
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.5.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -94,7 +94,7 @@ let package = Package(
         .target(
             name: "DesignCombineUIKit",
             dependencies: [
-                .target(name: "DesignUIKit"),
+                .target(name: "DesignUIKit")
             ],
             path: "Sources/UIKit+Combine",
             exclude: ["Archived/"],
@@ -105,7 +105,7 @@ let package = Package(
             dependencies: [
                 .target(name: "DesignUIKit"),
                 .product(name: "RxSwift", package: "RxSwift"),
-                .product(name: "RxCocoa", package: "RxSwift"),
+                .product(name: "RxCocoa", package: "RxSwift")
             ],
             path: "Sources/UIKit+Rx",
             exclude: ["Archived/"],

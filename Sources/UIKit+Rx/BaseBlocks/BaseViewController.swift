@@ -20,25 +20,28 @@ import DesignUIKit
 open class BaseViewController: UIViewController, FThemableBackground {
     /// The dispose bag used to manage RxSwift subscriptions.
     open var disposeBag = DisposeBag()
-    
+
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("Coder init not required")
     }
-    
+
     open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
+        bindViewModel()
     }
     
     /// Override point for setting up UI components and layout constraints.
     open func configureViews() { }
     
+	open func bindViewModel() { }
+
     /// The theme key used to determine the background color of the view.
     public var backgroundKey: ThemeKey?
     /// Applies the background color using the current theme and `backgroundKey`.
@@ -77,7 +80,7 @@ open class FScene<ViewModel: ViewModeling>: BaseViewController {
     }
     
     /// Connects the view model input/output to the scene using `handle(_: ViewModel.Output)`.
-    open func bindViewModel() {
+    open override func bindViewModel() {
         disposeBag.insert(handle(viewModel.transform(input)))
     }
     

@@ -15,7 +15,7 @@ import DesignCore
 ///
 /// This class conforms to `FConfigurable`, `FThemableBackground`, `FThemableShadow`, and `Loggable` protocols,
 /// providing a base view with configurable appearance and theming capabilities.
-open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseView: UIView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     
     /// Initializes a new instance of `BaseView` with the specified frame.
     /// - Parameter frame: The frame rectangle for the view, defaulting to `.zero`.

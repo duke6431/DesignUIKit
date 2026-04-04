@@ -26,14 +26,15 @@ public extension FButton {
         self.init(style: style)
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
     }
-    
+
+    #if !os(tvOS)
     /// Binds the button's tap event to a `PublishSubject`.
     /// - Parameter subject: The subject to forward tap events to.
     /// - Returns: Self for fluent chaining.
-#if !os(tvOS)
-    func sendTap(to subject: PublishSubject<Void>) -> Self {
-        rx.tap.bind(onNext: subject.onNext).disposed(by: disposeBag)
+    @discardableResult
+    func onTap(trigger publisher: PublishSubject<Void>) -> Self {
+        rx.tap.bind(onNext: publisher.onNext).disposed(by: disposeBag)
         return self
     }
-#endif
+    #endif
 }

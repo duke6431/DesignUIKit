@@ -17,7 +17,7 @@ import Foundation
 
 /// A protocol that defines the capability to apply a font style to a component.
 /// Conforms to `Chainable` for fluent interface usage.
-public protocol FCalligraphiable: AnyObject, Chainable {
+@MainActor public protocol FCalligraphiable: AnyObject, Calligraphiable, Chainable {
     /// Sets the font of the component.
     /// - Parameter font: The `UIFont` to apply.
     /// - Returns: Self, to allow chaining.
@@ -26,7 +26,7 @@ public protocol FCalligraphiable: AnyObject, Chainable {
 
 /// A protocol that defines theming capabilities for foreground colors.
 /// Conforms to `Themable`.
-public protocol FThemableForeground: Themable {
+@MainActor public protocol FThemableForeground: Themable {
     /// The theme key associated with the foreground color.
     var foregroundKey: ThemeKey? { get set }
     
@@ -43,7 +43,7 @@ public protocol FThemableForeground: Themable {
 
 /// A protocol that defines theming capabilities for placeholder text.
 /// Conforms to `Themable`.
-public protocol FThemablePlaceholder: Themable {
+@MainActor public protocol FThemablePlaceholder: Themable {
     /// The theme key associated with the placeholder.
     var placeholderKey: ThemeKey? { get set }
     
@@ -55,7 +55,7 @@ public protocol FThemablePlaceholder: Themable {
 
 /// A protocol that defines theming capabilities for background colors.
 /// Conforms to `Themable`.
-public protocol FThemableBackground: Themable {
+@MainActor public protocol FThemableBackground: Themable {
     /// The theme key associated with the background color.
     var backgroundKey: ThemeKey? { get set }
     
@@ -67,7 +67,7 @@ public protocol FThemableBackground: Themable {
 
 /// A protocol that defines theming capabilities for shadows.
 /// Conforms to `Themable`.
-public protocol FThemableShadow: Themable {
+@MainActor public protocol FThemableShadow: Themable {
     /// The theme key associated with the shadow.
     var shadowKey: ThemeKey? { get set }
     

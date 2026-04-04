@@ -17,10 +17,15 @@ import SnapKit
 /// `FButton` is a reusable component that allows you to define its label using a builder,
 /// apply custom configuration logic, and easily connect actions or menus.
 public final class FButton: BaseButton, FComponent, FCalligraphiable, FThemableForeground, FContentConstraintable {
+    public var fontWrapper: UIFont {
+        get { titleLabel?.font ?? .systemFont(ofSize: 17) }
+        set { titleLabel?.font = newValue }
+    }
+    
     /// Platform-specific primary tap event (`.touchUpInside` or `.primaryActionTriggered`).
 #if os(tvOS) || targetEnvironment(macCatalyst)
     public static let tapEvent: UIControl.Event = .primaryActionTriggered
-#else
+    #else
     public static let tapEvent: UIControl.Event = .touchUpInside
 #endif
     

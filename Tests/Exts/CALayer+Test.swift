@@ -2,6 +2,7 @@ import XCTest
 import UIKit
 @testable import DesignExts
 
+@MainActor
 final class CALayerExtTest: XCTestCase {
     func testAddShadow_whenPathIsNil_clearsExistingPath() {
         let layer = CALayer()

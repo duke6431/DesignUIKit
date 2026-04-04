@@ -33,7 +33,7 @@ public class CommonTableView: UITableView, Loggable {
         }
     }
 #endif
-    
+
     let cellMapper: [CommonCellModel.Type]
     let headerMapper: [CommonHeaderModel.Type]
     var cellCache: CommonCellModel.Type?
@@ -67,7 +67,7 @@ public class CommonTableView: UITableView, Loggable {
         super.init(frame: .zero, style: style)
         configureViews()
     }
-    
+
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     required init?(coder: NSCoder) {
@@ -113,9 +113,9 @@ public class CommonTableView: UITableView, Loggable {
     public func reloadData(sections: [CommonTableSection]) {
         self.sections = sections
         search(with: keyword)
-#if os(iOS)
+        #if os(iOS)
         endRefreshing()
-#endif
+        #endif
     }
     
     /// Filters the table view data based on the provided keyword and reloads the table.
@@ -167,7 +167,7 @@ public class CommonTableView: UITableView, Loggable {
         // Recompute searched data from source of truth to keep indexes safe under filters.
         search(with: keyword)
     }
-    
+
     deinit {
         logger.trace("Deinitialized \(self)")
     }

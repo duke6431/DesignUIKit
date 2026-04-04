@@ -27,7 +27,7 @@ extension PanModal {
                 y: [
                     OriginDirection.top: 0,
                     OriginDirection.bottom: containerView.bounds.height - presentedViewSize.height
-                   ][direction] ?? 0,
+                ][direction] ?? 0,
                 width: presentedViewSize.width,
                 height: presentedViewSize.height
             )

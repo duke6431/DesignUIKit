@@ -29,7 +29,7 @@ public struct FBackgroundModifier: FModifier {
     /// Applies the background color or theme key to the content if it supports theming.
     /// - Parameter content: The content to modify.
     /// - Returns: The modified content or the original if unsupported.
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FThemableBackground) else { return content }
         if let key {
             return modifiedContent.background(key: key)
@@ -60,7 +60,7 @@ public struct FForegroundModifier: FModifier {
     /// Applies the foreground color or theme key to the content if it supports theming.
     /// - Parameter content: The content to modify.
     /// - Returns: The modified content or the original if unsupported.
-    public func body(_ content: Content) -> Content {
+    public func body(_ content: FBodyComponent) -> FBodyComponent {
         guard let modifiedContent = content as? (FBodyComponent & FThemableForeground) else { return content }
         if let key {
             return modifiedContent.foreground(key: key)

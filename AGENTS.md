@@ -47,7 +47,7 @@
 
 ## Validation
 - Preferred (full package on Apple platforms):
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`
 - Fast local sanity (host runtime only, may not cover UIKit runtime paths):
   - `swift test`

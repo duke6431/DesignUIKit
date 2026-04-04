@@ -37,6 +37,8 @@ public final class FScroll: BaseScrollView, FComponent {
             self.contentViews = []
         }
         super.init(frame: .zero)
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
     }
     
     /// Initializes a scroll view with multiple body components using a builder.
@@ -50,6 +52,8 @@ public final class FScroll: BaseScrollView, FComponent {
         self.axis = axis
         self.contentViews = contentViews()
         super.init(frame: .zero)
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
     }
     
     public override func didMoveToSuperview() {
@@ -82,7 +86,6 @@ public final class FScroll: BaseScrollView, FComponent {
                 addSubview(view.attachToParent(false))
             }
             view.translatesAutoresizingMaskIntoConstraints = false
-            let padding = view.configuration?.containerPadding
             switch axis {
             case .horizontal:
                 NSLayoutConstraint.activate([
@@ -90,14 +93,14 @@ public final class FScroll: BaseScrollView, FComponent {
                     view.bottomAnchor.constraint(equalTo: frameLayoutGuide.bottomAnchor),
                     view.leadingAnchor.constraint(
                         equalTo: previousView?.trailingAnchor ?? contentLayoutGuide.leadingAnchor,
-                        constant: padding?.leading ?? 0
+                        constant: view.configuration?.containerPadding[.leading] ?? 0
                     )
                 ])
             case .vertical:
                 NSLayoutConstraint.activate([
                     view.topAnchor.constraint(
                         equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
-                        constant: padding?.top ?? 0
+                        constant: view.configuration?.containerPadding[.top] ?? 0
                     ),
                     view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
                     view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)
@@ -106,7 +109,7 @@ public final class FScroll: BaseScrollView, FComponent {
                 NSLayoutConstraint.activate([
                     view.topAnchor.constraint(
                         equalTo: previousView?.bottomAnchor ?? contentLayoutGuide.topAnchor,
-                        constant: padding?.top ?? 0
+                        constant: view.configuration?.containerPadding[.top] ?? 0
                     ),
                     view.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
                     view.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor)

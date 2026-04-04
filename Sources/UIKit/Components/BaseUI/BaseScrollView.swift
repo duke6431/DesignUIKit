@@ -1,4 +1,3 @@
-
 //
 //  BaseScrollView.swift
 //  DesignUIKit
@@ -16,7 +15,7 @@ import DesignCore
 ///
 /// `BaseScrollView` is designed to provide a flexible scroll view that supports dynamic configuration and theming for background and shadow properties.
 /// It integrates with the FConfigurable, FThemableBackground, and FThemableShadow protocols, and supports logging.
-open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseScrollView: UIScrollView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     /// Initializes a new instance of `BaseScrollView` with the given frame.
     ///
     /// - Parameter frame: The frame rectangle for the view, measured in points. Defaults to `.zero`.

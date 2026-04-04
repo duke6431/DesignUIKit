@@ -89,16 +89,16 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         textLayer.alignmentMode = .left
         textLayer.isWrapped = true
         textLayer.foregroundColor = placeholderColor.cgColor
-        
+
         if let font = self.font {
             textLayer.fontSize = font.pointSize
         } else {
             textLayer.fontSize = 17.0
         }
-        
+
         // insert the textLayer
         layer.insertSublayer(textLayer, at: 0)
-        
+
         // set delegate to self
         delegate = self
     }
@@ -138,6 +138,11 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         return self
     }
     
+    public var fontWrapper: UIFont {
+        get { font ?? .systemFont(ofSize: 17) }
+        set { font = newValue }
+    }
+    
     /// Sets the text color.
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
         self.textColor = color
@@ -161,7 +166,7 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         self.onSubmitAction = onSubmit
         return self
     }
-    
+
     public var foregroundKey: ThemeKey?
     public var placeholderKey: ThemeKey?
     
@@ -170,6 +175,14 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         super.apply(theme: theme)
         if let foregroundKey { foreground(theme.color(key: foregroundKey)) }
         if let placeholderKey { placeholder(theme.color(key: placeholderKey)) }
+    }
+}
+
+/// Conforms to `UITextViewDelegate` to enable live text monitoring.
+extension FTextView: UITextViewDelegate {
+    override public func paste(_ sender: Any?) {
+        super.paste(sender)
+        onChangeAction?(text ?? "")
     }
     
     /// Handles live text changes and updates the placeholder layer opacity accordingly.
@@ -181,6 +194,3 @@ public final class FTextView: BaseTextView, FComponent, FCalligraphiable, FThema
         onChangeAction?(textView.text ?? "")
     }
 }
-
-/// Conforms to `UITextViewDelegate` to enable live text monitoring.
-extension FTextView: UITextViewDelegate { }

@@ -87,8 +87,8 @@ extension PanModal {
                 return .init(
                     x: 0,
                     y: presenting
-                    ? containerView.bounds.height
-                    : containerView.bounds.height - targetView.bounds.height,
+                        ? containerView.bounds.height
+                        : containerView.bounds.height - targetView.bounds.height,
                     width: targetView.bounds.width,
                     height: targetView.bounds.height
                 )

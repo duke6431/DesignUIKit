@@ -64,7 +64,7 @@ final class ProfileViewModel: BaseViewModel, ViewModeling {
   - Non-goal: hosting feature/domain-specific implementations.
 - `FButton+Rx` currently provides:
   - title binding convenience initializer
-  - `sendTap(to:)` (not available on tvOS)
+  - `onTap(trigger:)` (not available on tvOS)
   - no action-closure convenience initializer in the current API.
 
 ## Guardrails For Changes
@@ -78,5 +78,5 @@ final class ProfileViewModel: BaseViewModel, ViewModeling {
 
 ## Validation
 - Run package tests after changes:
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
-  - `xcodebuild test -scheme ComponentSystem-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=iOS Simulator,id=<SIM_ID>'`
+  - `xcodebuild test -scheme DesignUIKit-Package -destination 'platform=tvOS Simulator,id=<SIM_ID>'`

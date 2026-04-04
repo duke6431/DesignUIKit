@@ -11,7 +11,6 @@
 import UIKit
 import DesignExts
 import DesignCore
-import SnapKit
 
 public extension FConfigurable {
     /// Adds a modifier to the configuration.
@@ -65,50 +64,37 @@ public extension FConfigurable {
     /// - Parameter insets: The directional edge insets to apply.
     /// - Returns: Self for chaining.
     @discardableResult func padding(_ insets: NSDirectionalEdgeInsets) -> Self {
-        configuration?.containerPadding = (configuration?.containerPadding ?? .zero) + insets
+        [
+            (insets.top, .top),
+            (insets.leading, .leading),
+            (insets.bottom, .bottom),
+            (insets.trailing, .trailing)
+        ].forEach(configuration?.update ?? { _, _ in })
         return self
     }
-    
-    /// Applies the specified padding value to all edges.
-    ///
-    /// - Parameter padding: The padding value.
-    /// - Returns: Self for chaining.
+
     @discardableResult func padding(_ padding: CGFloat) -> Self {
         self.padding(.all, padding)
     }
-    
-    /// Applies the specified padding value to the given edges.
-    ///
-    /// - Parameters:
-    ///   - edges: The edges to apply padding to.
-    ///   - padding: The padding value.
-    /// - Returns: Self for chaining.
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, _ padding: CGFloat) -> Self {
-        configuration?.containerPadding = (configuration?.containerPadding ?? .zero).add(edges, padding)
+
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, _ padding: CGFloat) -> Self {
+        edges.rawEdges.map { (padding, $0) }.forEach(configuration?.update ?? { _, _ in })
         return self
     }
-    
-    /// Applies padding using a style from the spacing system to all edges.
-    ///
-    /// - Parameter style: The common spacing style.
-    /// - Returns: Self for chaining.
+
     @discardableResult func padding(with style: SpacingSystem.CommonSpacing) -> Self {
         padding(SpacingSystem.shared.spacing(style))
     }
-    /// Applies padding using a style from the spacing system to the given edges.
-    ///
-    /// - Parameters:
-    ///   - edges: The edges to apply padding to.
-    ///   - style: The common spacing style.
-    /// - Returns: Self for chaining.
-    @discardableResult func padding(_ edges: NSDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self {
+
+    @discardableResult func padding(_ edges: FDirectionalRectEdge, with style: SpacingSystem.CommonSpacing) -> Self {
         padding(edges, SpacingSystem.shared.spacing(style))
     }
     
-    /// Sets the background color of the view.
-    ///
-    /// - Parameter color: The background color.
-    /// - Returns: Self for chaining.
+    @discardableResult func ignore(edges: FDirectionalRectEdge) -> Self {
+        edges.rawEdges.forEach { configuration?.containerPadding.removeValue(forKey: $0) }
+        return self
+    }
+
     @discardableResult func background(_ color: UIColor) -> Self {
         configuration?.with(\.backgroundColor, setTo: color)
         return self
@@ -196,6 +182,15 @@ public extension FConfigurable {
         configuration?.with(\.height, setTo: height).with(\.width, setTo: width)
         return self
     }
+
+    @discardableResult func center(axis: FAxis) -> Self {
+        center(axis: axis, offset: 0)
+    }
+    
+    @discardableResult func center(axis: FAxis, offset: CGFloat) -> Self {
+        axis.rawAxes.forEach { configuration?.centerOffset[$0] = (configuration?.centerOffset[$0] ?? 0) + offset }
+        return self
+    }
     
     /// Centers the view in its parent with zero offset.
     ///
@@ -209,7 +204,8 @@ public extension FConfigurable {
     /// - Parameter offset: The offset to apply when centering.
     /// - Returns: Self for chaining.
     @discardableResult func centerInParent(offset: CGSize) -> Self {
-        configuration?.with(\.centerOffset, setTo: offset)
+        configuration?.centerOffset[.vertical] = (configuration?.centerOffset[.vertical] ?? 0) + offset.width
+        configuration?.centerOffset[.horizontal] = (configuration?.centerOffset[.horizontal] ?? 0) + offset.height
         return self
     }
     

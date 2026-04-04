@@ -11,9 +11,10 @@ import DesignCore
 import Logging
 
 @propertyWrapper
-public class FObservedPreference<T>: Loggable {
+@MainActor
+public final class FObservedPreference<T>: Loggable {
     fileprivate var observer: FPrefObservation<T>?
-    
+
     let key: FPreferenceKey
     @Published private var value: T {
         didSet {
@@ -27,12 +28,12 @@ public class FObservedPreference<T>: Loggable {
         @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
         set { $value = newValue }
     }
-    
+
     public var wrappedValue: T {
         get { value }
         set { value = newValue }
     }
-    
+
     public init(_ key: FPreferenceKey, default value: T) {
         self.key = key
         if let value = UserDefaults.standard.object(forKey: key.rawValue) as? T {
@@ -43,13 +44,13 @@ public class FObservedPreference<T>: Loggable {
         }
         defer { generateObserver() }
     }
-    
+
     public init(_ key: FPreferenceKey, initialValue: T) {
         self.key = key
         self.value = initialValue
         defer { generateObserver() }
     }
-    
+
     private func generateObserver() {
         self.observer = .init(key: key, onChange: { [weak self] _, new in
             guard let new else {
@@ -58,9 +59,9 @@ public class FObservedPreference<T>: Loggable {
             }
             self?.value = new
         }).customized({
-#if DEBUG
+            #if DEBUG
             $0.with(\.logger, setTo: logger)
-#endif
+            #endif
         })
     }
     
@@ -70,10 +71,10 @@ public class FObservedPreference<T>: Loggable {
     }
 }
 
-fileprivate final class FPrefObservation<T>: NSObject, Chainable {
+private final class FPrefObservation<T>: NSObject, Chainable {
     let key: FPreferenceKey
     private var onChange: (T?, T?) -> Void
-    
+
     init(key: FPreferenceKey, onChange: @escaping (T?, T?) -> Void) {
         self.onChange = onChange
         self.key = key
@@ -83,7 +84,7 @@ fileprivate final class FPrefObservation<T>: NSObject, Chainable {
             options: [.old, .new], context: nil
         )
     }
-    
+
     override func observeValue(
         forKeyPath keyPath: String?, of object: Any?,
         change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?
@@ -94,14 +95,14 @@ fileprivate final class FPrefObservation<T>: NSObject, Chainable {
         }
         onChange(change[.oldKey] as? T, change[.newKey] as? T)
     }
-    
-#if DEBUG
+
+    #if DEBUG
     var logger: Logger?
-#endif
+    #endif
     deinit {
         UserDefaults.standard.removeObserver(self, forKeyPath: key.rawValue, context: nil)
-#if DEBUG
-        logger?.info("Deinitialized")
-#endif
+        #if DEBUG
+        logger?.trace("Deinitialized")
+        #endif
     }
 }

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Duke Nguyen on 17/02/2024.
 //
@@ -11,49 +11,46 @@ import DesignUIKit
 import Combine
 import UIKit
 
-open class BaseViewController: UIViewController, FThemableBackground, Loggable {
+@MainActor open class BaseViewController: UIViewController, FThemableBackground, Loggable {
     open var cancellables = Set<AnyCancellable>()
-    
+
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("Coder init not required")
     }
-    
+
     open override func viewDidLoad() {
         super.viewDidLoad()
         configureViews()
-        bindViewModel()
     }
-    
+
     open func configureViews() {
-        
+        view.addSubview(body)
     }
     
-    open func bindViewModel() {
-        bindError()
+    open var body: FBodyComponent {
+        fatalError("Variable body of \(String(describing: self)) must be overridden")
     }
-    
-    @objc open dynamic func bindError() { }
-    
+
     public var backgroundKey: ThemeKey?
     public func apply(theme: ThemeProvider) {
         guard let backgroundKey else { return }
         view.backgroundColor = theme.color(key: backgroundKey)
     }
-    
+
     deinit {
         logger.trace("Deinitialized \(self)")
     }
 }
 
-open class FScene<ViewModel: BaseViewModel>: BaseViewController {
+open class FScene<ViewModel: ViewModeling>: BaseViewController {
     open var viewModel: ViewModel
-    
+
     public required init(with viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -61,10 +58,13 @@ open class FScene<ViewModel: BaseViewModel>: BaseViewController {
     
     open override func configureViews() {
         super.configureViews()
-        view.addSubview(body)
+        bindViewModel()
+    }
+
+    open func bindViewModel() {
+        bindError()
+        viewModel.drain(with: &cancellables)
     }
     
-    open var body: FBodyComponent {
-        fatalError("Variable body of \(String(describing: self)) must be overridden")
-    }
+    @objc open dynamic func bindError() { }
 }

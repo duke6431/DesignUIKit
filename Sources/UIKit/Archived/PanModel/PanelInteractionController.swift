@@ -59,7 +59,7 @@ extension PanModal {
             case .changed:
                 if let scrollView = gestureRecognizer.view as? UIScrollView
                     ?? gestureRecognizer.view?.suUIViews.first as? UIScrollView,
-                    direction == .bottom
+                   direction == .bottom
                     ? scrollView.contentOffset.y > 0
                     : scrollView.contentOffset.y < 0, percentComplete == 0 {
                     return

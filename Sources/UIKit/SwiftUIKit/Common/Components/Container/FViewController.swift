@@ -16,7 +16,7 @@ import Foundation
 
 /// A wrapper component that embeds a view controller's view into a parent view hierarchy,
 /// handling view controller containment and layout.
-public final class FViewController: BaseView, FComponent {
+@MainActor public final class FViewController: BaseView, FComponent {
     /// Optional closure for applying additional runtime configuration.
     public var customConfiguration: ((FViewController) -> Void)?
     
@@ -24,14 +24,14 @@ public final class FViewController: BaseView, FComponent {
     public weak var parentViewController: UIViewController?
     /// The embedded content view controller to display inside this view.
     public var contentViewController: UIViewController
-
+    
     /// Initializes the component with a content view controller.
     /// - Parameter contentViewController: The child view controller to embed.
     public init(_ contentViewController: UIViewController) {
         self.contentViewController = contentViewController
         super.init(frame: .zero)
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
@@ -39,13 +39,13 @@ public final class FViewController: BaseView, FComponent {
         attachContentViewControllerIfNeeded()
         customConfiguration?(self)
     }
-    
+
     public override func removeFromSuperview() {
         parentViewController = nil
         detachContentViewController()
         super.removeFromSuperview()
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -62,9 +62,8 @@ public final class FViewController: BaseView, FComponent {
         }
         return self
     }
-    
+
     deinit {
-        detachContentViewController()
         logger.trace("Deinitialized \(self)")
     }
 }
@@ -102,7 +101,7 @@ private extension FViewController {
 }
 
 /// A hosting view controller that wraps and displays a stack of body components as a single view.
-public class FViewContainer: UIViewController, Chainable, Loggable {
+@MainActor public class FViewContainer: UIViewController, Chainable, Loggable {
     /// The root view constructed from FBody content.
     public var content: UIView
     
@@ -112,7 +111,7 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
     var onAppear: ((FViewContainer) -> Void)?
     /// Closure triggered when the corresponding lifecycle event occurs.
     var onDisappear: ((FViewContainer) -> Void)?
-    
+
     public convenience init(@FViewBuilder _ content: () -> FBody) {
         self.init(content())
     }
@@ -123,27 +122,27 @@ public class FViewContainer: UIViewController, Chainable, Loggable {
         self.content = FZStack(contentViews: content).ignoreSafeArea(true)
         super.init(nibName: nil, bundle: .main)
     }
-    
+
     @available(iOS, unavailable)
     @available(tvOS, unavailable)
     public required init?(coder: NSCoder) { fatalError("Unimplemented") }
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(content)
         onLoad?(self)
     }
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         onAppear?(self)
     }
-    
+
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onDisappear?(self)
     }
-    
+
     deinit {
         logger.trace("Deinitialized \(self)")
     }

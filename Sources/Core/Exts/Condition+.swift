@@ -26,7 +26,7 @@ public protocol Conditionable {
     ///   - transform: A closure to apply if the condition is true.
     ///   - othertransform: A closure to apply if the condition is false.
     /// - Returns: The result of either transform.
-    @discardableResult func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> Self, else othertransform: ((Self) -> Self)) -> Self
+    @discardableResult func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> Self, else otherTransform: ((Self) -> Self)) -> Self
     
     /// Applies the given transform if the optional contains a value.
     ///
@@ -90,14 +90,14 @@ public extension Conditionable {
     /// - Parameters:
     ///   - condition: A Boolean value to evaluate.
     ///   - transform: A closure to apply if the condition is true.
-    ///   - othertransform: A closure to apply if the condition is false.
-    /// - Returns: The result of either `transform` or `othertransform`.
+    ///   - otherTransform: A closure to apply if the condition is false.
+    /// - Returns: The result of either `transform` or `otherTransform`.
     @discardableResult
-    func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> Self, else othertransform: ((Self) -> Self)) -> Self {
+    func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> Self, else otherTransform: ((Self) -> Self)) -> Self {
         if condition() {
             transform(self)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     
@@ -121,14 +121,14 @@ public extension Conditionable {
     /// - Parameters:
     ///   - optional: An optional value.
     ///   - transform: A closure that transforms `self` using the unwrapped value.
-    ///   - othertransform: A closure that transforms `self` if the optional is `nil`.
-    /// - Returns: The result of either `transform` or `othertransform`.
+    ///   - otherTransform: A closure that transforms `self` if the optional is `nil`.
+    /// - Returns: The result of either `transform` or `otherTransform`.
     @discardableResult
-    func `if`<T>(_ optional: T?, transform: (Self, T) -> Self, else othertransform: ((Self) -> Self)) -> Self {
+    func `if`<T>(_ optional: T?, transform: (Self, T) -> Self, else otherTransform: ((Self) -> Self)) -> Self {
         if let optional {
             transform(self, optional)
         } else {
-            othertransform(self)
+            otherTransform(self)
         }
     }
     

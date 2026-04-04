@@ -15,7 +15,7 @@ import DesignExts
 
 /// A reusable and configurable grid view that supports cell and header binding
 /// through reusable FBody components. Allows selection and custom configuration.
-public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
+@MainActor public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAssignable {
     /// Closure for applying custom configuration after the grid is added to a superview.
     public var customConfiguration: ((FGrid) -> Void)?
     /// Callback triggered when a grid cell is selected.
@@ -29,7 +29,7 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
     ///   - headerPrototypes: Optional header types to register.
     public init(
         prototypes: [(FCellReusable & UIView).Type],
-        headerPrototypes: [(FCellReusable & UIView).Type]? = nil
+        headerPrototypes: [(FHeaderReusable & UIView).Type]? = nil
     ) {
         super.init(itemMapper: [], sectionMapper: [])
         prototypes.forEach {
@@ -40,13 +40,13 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         }
         loadConfiguration()
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -57,12 +57,12 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         let dataSource = UICollectionViewDiffableDataSource<CommonCollection.Section, String>(
             collectionView: self
         ) { [weak self] collectionView, indexPath, _ in
-            guard let item = self?.sections[indexPath.section].cells[indexPath.row] as? FGridModel,
+            guard let item = self?.sections[safe: indexPath.section]?.cells[safe: indexPath.row] as? FGridModel,
                   let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: String(describing: item.model.view),
                     for: indexPath
                   ) as? FGridCell else {
-                return UICollectionViewCell()
+                return collectionView.dequeue(UICollectionViewCell.self, indexPath: indexPath)
             }
             cell.indexPath = indexPath
             cell.bind(item)
@@ -70,7 +70,7 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
         }
         // swiftlint:disable:next line_length
         dataSource.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) -> UICollectionReusableView? in
-            guard let headerData = self?.sections[indexPath.section].header as? FGridHeaderModel,
+            guard let headerData = self?.sections[safe: indexPath.section]?.header as? FGridHeaderModel,
                   let header = collectionView.dequeueReusableSupplementaryView(
                     ofKind: ReusableKind.header.rawValue,
                     withReuseIdentifier: String(describing: headerData.model.view),
@@ -89,7 +89,11 @@ public final class FGrid: CommonCollection.View, FConfigurable, FComponent, FAss
     /// Loads the default configuration for the grid.
     public func loadConfiguration() {
         configuration = .init()
+        register(UICollectionViewCell.self)
     }
+    
+    @available(iOS, deprecated: 1.0, message: "Use reloadData(sections:) instead")
+    public func reload() { }
 }
 
 public extension FGrid {
@@ -113,21 +117,23 @@ public extension FGrid {
 }
 
 /// A model representing a reusable grid header view using an `FCellModeling`.
-public class FGridHeaderModel: NSObject, CommonCollectionReusableModel {
-    public var identifier: String = UUID().uuidString
-    public static var headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
-    public var customConfiguration: ((CommonCollection.ReusableView) -> Void)?
-    public var model: FCellModeling
-    
-    public init(model: FCellModeling) {
+public final class FGridHeaderModel: NSObject, CommonCollectionReusableModel, Sendable {
+    public let identifier: String = UUID().uuidString
+    public static let headerKind: CommonCollection.ReusableView.Type = FGridHeader.self
+    public var customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? { _customConfiguration }
+    private let _customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)?
+    public let model: FHeaderModeling
+
+    public init(model: FHeaderModeling, customConfiguration: (@Sendable (CommonCollection.ReusableView) -> Void)? = nil) {
         self.model = model
+        self._customConfiguration = customConfiguration
     }
 }
 
 /// A reusable view used as a header in the `FGrid`. Wraps an FBody header component.
 public class FGridHeader: CommonCollection.ReusableView {
-    weak var content: (FBodyComponent & FCellReusable)?
-    
+    weak var content: (FBodyComponent & FHeaderReusable)?
+
     public override func bind(_ model: CommonCollectionReusableModel) {
         guard let model = model as? FGridHeaderModel else { return }
         if content == nil {
@@ -139,7 +145,7 @@ public class FGridHeader: CommonCollection.ReusableView {
     
     /// Installs the provided view into the header and retains a reference to it.
     /// - Parameter view: The FBody header component.
-    open func install<T: FBodyComponent & FCellReusable>(view: T) {
+    open func install<T: FBodyComponent & FHeaderReusable>(view: T) {
         backgroundColor = .clear
         addSubview(view)
         content = view
@@ -147,19 +153,22 @@ public class FGridHeader: CommonCollection.ReusableView {
 }
 
 /// A model representing a reusable grid cell backed by an `FCellModeling` component.
-public class FGridModel: NSObject, CommonCollectionCellModel {
-    public var identifier: String = UUID().uuidString
-    public static var cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
-    public var selectable: Bool = true
-    public var customConfiguration: ((CommonCollection.CollectionCell) -> Void)?
-    public var realData: Any?
-    public var model: FCellModeling
-    
+public final class FGridModel: NSObject, CommonCollectionCellModel, Sendable {
+    public let identifier: String = UUID().uuidString
+    public static let cellKind: CommonCollection.CollectionCell.Type = FGridCell.self
+    public let selectable: Bool = true
+    public var customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? { _customConfiguration }
+    public let _customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)?
+    public let realData: Sendable?
+    public let model: FCellModeling
+
     public init(
         model: FCellModeling,
-        realData: Any? = nil
+        customConfiguration: (@Sendable (CommonCollection.CollectionCell) -> Void)? = nil,
+        realData: Sendable? = nil
     ) {
         self.model = model
+        self._customConfiguration = customConfiguration
         self.realData = realData
     }
 }
@@ -167,7 +176,7 @@ public class FGridModel: NSObject, CommonCollectionCellModel {
 /// A concrete grid cell that binds to an `FGridModel` and hosts an FBody view.
 public class FGridCell: CommonCollection.CollectionCell {
     weak var content: (FBodyComponent & FCellReusable)?
-    
+
     public override func bind(_ model: CommonCollectionCellModel) {
         guard let model = model as? FGridModel else { return }
         if content == nil {

@@ -14,11 +14,11 @@ public class Key: KeyRenderable, KeyTappable {
         case insert(value: String)
         case delete
     }
-    
+
     public private(set) var multiplier = Keyboard.Multiplier()
     public var isBaseMeasurement = false
     weak var delegate: KeyTappableDelegate?
-    
+
     var name: String? { didSet { updateButton() } }
     var image: UIImage? { didSet { updateButton() } }
     var value: Kind
@@ -41,7 +41,7 @@ public class Key: KeyRenderable, KeyTappable {
     var shadow: CALayer.ShadowConfiguration = Keyboard.Default.Key.shadow {
         didSet { button.layer.removeShadow().add(shadow: shadow) }
     }
-    
+
     lazy var button: UIButton = {
         let view = UIButton(type: .custom)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ public class Key: KeyRenderable, KeyTappable {
         view.clipsToBounds = true
         return view
     }()
-    
+
     public init(name: String? = nil, image: UIImage? = nil, value: Kind? = nil) {
         self.name = name
         self.image = image?.withRenderingMode(.alwaysTemplate)
@@ -62,9 +62,9 @@ public class Key: KeyRenderable, KeyTappable {
             self.value = .insert(value: "")
         }
     }
-    
+
     func tap() { button.sendActions(for: .touchUpInside) }
-    
+
     public func render() -> UIView {
         updateButton()
         button.backgroundColor = backgroundColor
@@ -82,7 +82,7 @@ public class Key: KeyRenderable, KeyTappable {
         button.layer.removeShadow().add(shadow: shadow)
         return button
     }
-    
+
     public func updateButton() {
         if let image = image {
             button.setTitle(nil, for: .normal)
@@ -92,9 +92,9 @@ public class Key: KeyRenderable, KeyTappable {
             button.setTitle(name, for: .normal)
         }
     }
-    
+
     @objc func tapped() { delegate?.didTap(action: value) }
-    
+
     public func multiply(_ value: Keyboard.Multiplier) -> Self {
         self.multiplier = value
         return self
@@ -145,13 +145,13 @@ public class KeyStack: KeyRenderable {
             }
         }
     }
-    
+
     private var totalMultiplier: Double {
         axis == .horizontal ? multiplier.width : multiplier.height
     }
     var axis: NSLayoutConstraint.Axis = .horizontal
     let keys: [KeyRenderable]
-    
+
     lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.distribution = .fill
@@ -160,16 +160,16 @@ public class KeyStack: KeyRenderable {
         view.axis = axis
         return view
     }()
-    
+
     public convenience init(@FBuilder<KeyRenderable> _ builder: () -> [KeyRenderable]) {
         self.init(keys: builder())
     }
-    
+
     public init(keys: [KeyRenderable], axis: NSLayoutConstraint.Axis = .horizontal) {
         self.keys = keys
         self.axis = axis
     }
-    
+
     public func render() -> UIView {
         var multipliers = [Keyboard.Multiplier]()
         keys.map {
@@ -196,12 +196,12 @@ public class KeyStack: KeyRenderable {
         }
         return stackView
     }
-    
+
     public func multiply(_ value: Keyboard.Multiplier) -> Self {
         multiplier = value
         return self
     }
-    
+
     public func axis(_ axis: NSLayoutConstraint.Axis = .horizontal) -> Self {
         self.axis = axis
         return self

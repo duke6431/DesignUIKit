@@ -15,19 +15,16 @@ import DesignCore
 /// Error types related to UIControl actions.
 public extension UIControl {
     /// Represents errors that can occur when handling UIControl actions.
-    class Failure: Error {
+    struct Failure: Error, Sendable {
         /// An optional message describing the error.
         var message: String?
         
-        /// Error cases specific to adding or removing actions from a UIControl.
-        class Action: Failure {
-            /// Error indicating that a requested action was not found.
-            static let notFound: Action = .init()
-        }
-        
+        /// Error indicating that a requested action was not found.
+        static let notFound: Failure = .init()
+    
         /// Sets a custom error message for this error.
         /// - Parameter message: The message to associate with the error.
-        func with(message: String) {
+        mutating func with(message: String) {
             self.message = message
         }
     }
@@ -56,7 +53,7 @@ public extension UIControl {
     ///   - closure: The closure to execute when the event is triggered.
     /// - Returns: A unique identifier for the added action.
     @discardableResult
-    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping() -> Void) -> String {
+    func addAction(for controlEvent: UIControl.Event, _ closure: @escaping () -> Void) -> String {
         var identifier: String
         if #available(iOS 14.0, *) {
             let action = UIAction { (_: UIAction) in closure() }
@@ -87,7 +84,7 @@ public extension UIControl {
             removeAction(identifiedBy: .init(rawValue: identifier), for: controlEvent)
         } else {
             guard let sleeve = objc_getAssociatedObject(self, identifier) as? ClosureSleeve else {
-                throw Failure.Action.notFound
+                throw Failure.notFound
             }
             objc_setAssociatedObject(self, identifier, nil, .OBJC_ASSOCIATION_RETAIN)
             removeTarget(sleeve, action: #selector(ClosureSleeve.invoke), for: controlEvent)
@@ -95,7 +92,7 @@ public extension UIControl {
     }
 }
 
-extension UIControl.Failure.Action: LocalizedError {
+extension UIControl.Failure: LocalizedError {
     /// A localized message describing what error occurred.
     public var errorDescription: String? {
         message ?? String(describing: self)

@@ -11,6 +11,7 @@ final class FObservedPreferenceTest: XCTestCase {
         super.tearDown()
     }
 
+    @MainActor
     func testWrappedValue_whenUpdated_persistsToUserDefaults() {
         let key: FPreferenceKey = "designuikit.combine.preference.persist"
         defer { UserDefaults.standard.removeObject(forKey: key.rawValue) }
@@ -22,6 +23,7 @@ final class FObservedPreferenceTest: XCTestCase {
         XCTAssertEqual(UserDefaults.standard.object(forKey: key.rawValue) as? Int, 42)
     }
 
+    @MainActor
     func testProjectedValue_whenWrappedValueChanges_emitsUpdatedValue() {
         let key: FPreferenceKey = "designuikit.combine.preference.publisher"
         defer { UserDefaults.standard.removeObject(forKey: key.rawValue) }

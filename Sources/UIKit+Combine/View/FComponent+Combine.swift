@@ -12,13 +12,13 @@ import DesignCore
 
 public typealias FBinder<Subject> = AnyPublisher<Subject, Never>
 
-public protocol Combinable: AnyObject {
+@MainActor public protocol Combinable: AnyObject {
     var cancellables: Set<AnyCancellable> { get set }
 }
 
 extension UIView: Combinable {
     static let cancellables = ObjectAssociation<StructWrapper<Set<AnyCancellable>>>()
-    
+
     public var cancellables: Set<AnyCancellable> {
         get {
             if let cancellables = Self.cancellables[self]?.value {

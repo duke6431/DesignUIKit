@@ -1,4 +1,3 @@
-
 //
 //  BaseTextView.swift
 //  DesignUIKit
@@ -15,7 +14,7 @@ import DesignCore
 /// `BaseTextView` is a configurable and themable subclass of `UITextView`.
 ///
 /// This class provides a flexible foundation for text views that need to support dynamic configuration and theming, such as background color and shadow. It also integrates with a logging system for lifecycle events.
-open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
+@MainActor open class BaseTextView: UITextView, FConfigurable, FThemableBackground, FThemableShadow, Loggable {
     /// Initializes a new `BaseTextView` instance with an optional frame.
     ///
     /// - Parameter frame: The frame rectangle for the view, measured in points. Defaults to `.zero`.

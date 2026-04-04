@@ -91,16 +91,16 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         textLayer.alignmentMode = .left
         textLayer.isWrapped = true
         textLayer.foregroundColor = placeholderColor.cgColor
-        
+
         if let font = self.font {
             textLayer.fontSize = font.pointSize
         } else {
             textLayer.fontSize = 17.0
         }
-        
+
         // insert the textLayer
         layer.insertSublayer(textLayer, at: 0)
-        
+
         // set delegate to self
         delegate = self
     }
@@ -144,6 +144,11 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         return self
     }
     
+    public var fontWrapper: UIFont {
+        get { font ?? .systemFont(ofSize: 17) }
+        set { font = newValue }
+    }
+    
     /// Sets the text color.
     @discardableResult public func foreground(_ color: UIColor = .label) -> Self {
         self.textColor = color
@@ -167,7 +172,7 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
         self.onSubmitAction = onSubmit
         return self
     }
-    
+
     public var foregroundKey: ThemeKey?
     public var placeholderKey: ThemeKey?
     
@@ -181,6 +186,11 @@ public final class FTextField: BaseTextField, FComponent, FCalligraphiable, FThe
 
 /// Handles UITextFieldDelegate methods for return key and text change monitoring.
 extension FTextField: UITextFieldDelegate {
+    override public func paste(_ sender: Any?) {
+        super.paste(sender)
+        onChangeAction?(text ?? "")
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         UIView.animate(withDuration: 0.15) { [textLayer] in
             textLayer.opacity = textField.text?.isEmpty ?? true ? 1.0 : 0.0

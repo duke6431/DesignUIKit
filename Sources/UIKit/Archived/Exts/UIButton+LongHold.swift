@@ -19,12 +19,12 @@ class HoldConfiguration {
 
 extension UIButton {
     private static let holdConfiguration = ObjectAssociation<HoldConfiguration>()
-    
+
     var holdConfiguration: HoldConfiguration {
         get { Self.holdConfiguration[self] ?? .init() }
         set { Self.holdConfiguration[self] = newValue }
     }
-    
+
     @objc func startHold() {
         holdConfiguration.holding = true
         guard let timer = holdConfiguration.timer else { return }
@@ -35,7 +35,7 @@ extension UIButton {
             }
         }
     }
-    
+
     @objc func stopHold() {
         holdConfiguration.onRelease?.invoke()
         holdConfiguration.holding = false
@@ -44,7 +44,7 @@ extension UIButton {
             self?.holdConfiguration.onHold?.invoke()
         })
     }
-    
+
     public func attachLongHold(
         delay: TimeInterval = 0.15,
         shouldRepeat: Bool = false,

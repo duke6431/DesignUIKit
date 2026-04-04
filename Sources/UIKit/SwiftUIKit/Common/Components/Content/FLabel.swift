@@ -18,7 +18,7 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
     /// Initializes a label with a string.
     /// - Parameter text: The string to display.
     public init(
-        _ text: String
+        _ text: String? = nil
     ) {
         super.init(frame: .zero)
         self.text = text
@@ -30,13 +30,13 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
         super.init(frame: .zero)
         self.attributedText = attributedText
     }
-    
+
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
         customConfiguration?(self)
     }
-    
+
     public override func layoutSubviews() {
         super.layoutSubviews()
         configuration?.updateLayers(for: self)
@@ -64,6 +64,11 @@ public final class FLabel: BaseLabel, FComponent, FCalligraphiable, FThemableFor
     @discardableResult public func font(_ font: UIFont) -> Self {
         self.font = font
         return self
+    }
+    
+    public var fontWrapper: UIFont {
+        get { font }
+        set { font = newValue }
     }
     
     /// Sets the text color of the label.

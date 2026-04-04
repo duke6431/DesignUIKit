@@ -14,8 +14,8 @@ import DesignCore
 /// `Calligraphiable` is a protocol for UI elements or objects that can have their font updated dynamically.
 /// Objects conforming to this protocol can be registered with the `FontSystem` as observers to be notified
 /// when the font family or style changes, enabling live font switching throughout the app.
-public protocol Calligraphiable: AnyObject {
-    var font: UIFont { get set }
+@MainActor public protocol Calligraphiable: AnyObject {
+    var fontWrapper: UIFont { get set }
 }
 
 /// `FontSystem` is a singleton class responsible for managing the current font family used throughout the app.
@@ -30,11 +30,11 @@ public protocol Calligraphiable: AnyObject {
 /// FontSystem.shared.use(MyCustomFontFamily())
 /// FontSystem.shared.register(observer: myLabel)
 /// ```
-public class FontSystem {
+@MainActor public class FontSystem {
     /// The shared singleton instance.
-    public static var shared: FontSystem = .init()
+    public static let shared: FontSystem = .init()
     /// The default font family (system font).
-    public static var defaultFont: FontFamily = .System()
+    public static let defaultFont: FontFamily = .System()
     
     /// The currently active font family.
     public var current: FontFamily
@@ -70,19 +70,17 @@ public class FontSystem {
     
     /// Notifies all registered observers of the current font change.
     private func notifyObservers() {
-        DispatchQueue.main.async {
-            self.observers.allObjects
-                .compactMap({ $0 as? Calligraphiable })
-                .forEach(self.notify(_:))
-        }
+        observers.allObjects
+            .compactMap({ $0 as? Calligraphiable })
+            .forEach(self.notify(_:))
     }
     
     /// Notifies a single observer and updates its font property.
     func notify(_ observer: Calligraphiable) {
-        observer.font = current.font(
+        observer.fontWrapper = current.font(
             with: .init(
-                size: observer.font.pointSize,
-                weight: observer.font.weight
+                size: observer.fontWrapper.pointSize,
+                weight: observer.fontWrapper.weight
             )
         )
     }
@@ -100,7 +98,7 @@ public class FontSystem {
 @objc open class FontFamily: NSObject {
     /// The base name of the font family.
     public var name: String
-    
+
     public init(name: String) { self.name = name }
     
     /// Returns a `UIFont` for the given style and multiplier.
@@ -137,9 +135,9 @@ public class FontSystem {
 /// `FontFamily.System` is a subclass of `FontFamily` that represents the system font.
 /// It overrides font loading to always return the built-in system font for the given style and weight.
 public extension FontFamily {
-    class System: FontFamily {
+    @MainActor class System: FontFamily {
         public static let shared: System = .init()
-        
+
         init() { super.init(name: "system") }
         public override func font(with style: FontFamily.Style, multiplier: CGFloat = 1) -> UIFont {
             .systemFont(ofSize: style.size * multiplier, weight: style.weight)
@@ -155,7 +153,7 @@ extension FontFamily {
         public var size: CGFloat
         /// The weight of the font.
         public var weight: UIFont.Weight
-        
+
         public init(size: CGFloat, weight: UIFont.Weight) {
             self.size = size
             self.weight = weight
@@ -171,9 +169,9 @@ fileprivate extension UIFont {
         let weight = UIFont.Weight(rawValue: weightNumber)
         return weight
     }
-    
+
     private var traits: [UIFontDescriptor.TraitKey: Any] {
         return fontDescriptor.object(forKey: .traits) as? [UIFontDescriptor.TraitKey: Any]
-        ?? [:]
+            ?? [:]
     }
 }

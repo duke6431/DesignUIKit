@@ -23,7 +23,7 @@ extension FButton {
         }
         addAction(for: Self.tapEvent, action)
     }
-    
+
     public convenience init(
         style: UIButton.ButtonType? = nil,
         _ textPublisher: FBinder<String>,
