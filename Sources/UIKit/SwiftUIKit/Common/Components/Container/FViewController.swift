@@ -35,20 +35,14 @@ public final class FViewController: BaseView, FComponent {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configuration?.didMoveToSuperview(superview, with: self)
-        guard let parentViewController else { return }
-        contentViewController.willMove(toParent: parentViewController)
-        parentViewController.addChild(contentViewController)
-        addSubview(contentViewController.view)
-        contentViewController.didMove(toParent: parentViewController)
-        contentViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+        guard superview != nil else { return }
+        attachContentViewControllerIfNeeded()
         customConfiguration?(self)
     }
     
     public override func removeFromSuperview() {
         parentViewController = nil
-        contentViewController.willMove(toParent: nil)
-        contentViewController.view.removeFromSuperview()
-        contentViewController.removeFromParent()
+        detachContentViewController()
         super.removeFromSuperview()
     }
     
@@ -61,13 +55,49 @@ public final class FViewController: BaseView, FComponent {
     /// - Parameter viewController: The parent view controller.
     /// - Returns: Self for fluent chaining.
     @discardableResult public func parent(_ viewController: UIViewController) -> Self {
+        guard parentViewController !== viewController else { return self }
         parentViewController = viewController
+        if superview != nil {
+            attachContentViewControllerIfNeeded()
+        }
         return self
     }
     
     deinit {
-        removeFromSuperview()
+        detachContentViewController()
         logger.trace("Deinitialized \(self)")
+    }
+}
+
+private extension FViewController {
+    func attachContentViewControllerIfNeeded() {
+        guard let parentViewController else { return }
+
+        if contentViewController.parent !== nil, contentViewController.parent !== parentViewController {
+            detachContentViewController()
+        }
+
+        let shouldNotifyDidMove = contentViewController.parent !== parentViewController
+        if contentViewController.parent !== parentViewController {
+            parentViewController.addChild(contentViewController)
+        }
+        if contentViewController.view.superview !== self {
+            addSubview(contentViewController.view)
+        }
+        contentViewController.view.snp.remakeConstraints { $0.edges.equalToSuperview() }
+        if shouldNotifyDidMove, contentViewController.parent === parentViewController {
+            contentViewController.didMove(toParent: parentViewController)
+        }
+    }
+
+    func detachContentViewController() {
+        guard contentViewController.parent != nil else {
+            contentViewController.view.removeFromSuperview()
+            return
+        }
+        contentViewController.willMove(toParent: nil)
+        contentViewController.view.removeFromSuperview()
+        contentViewController.removeFromParent()
     }
 }
 

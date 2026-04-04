@@ -13,11 +13,25 @@
   },
   "testTargets" : [
     {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DesignExtsTests",
+        "name" : "DesignExtsTests"
+      }
+    },
+    {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
         "identifier" : "DesignCoreTests",
         "name" : "DesignCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DesignUIKitTests",
+        "name" : "DesignUIKitTests"
       }
     }
   ],

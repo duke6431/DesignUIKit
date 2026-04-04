@@ -10,6 +10,20 @@
 
 import Foundation
 
+/// A marker protocol for values that can be directly stored in `UserDefaults`.
+public protocol PreferenceValue { }
+
+extension String: PreferenceValue { }
+extension Int: PreferenceValue { }
+extension Double: PreferenceValue { }
+extension Float: PreferenceValue { }
+extension Bool: PreferenceValue { }
+extension Data: PreferenceValue { }
+extension Date: PreferenceValue { }
+extension URL: PreferenceValue { }
+extension Array: PreferenceValue where Element: PreferenceValue { }
+extension Dictionary: PreferenceValue where Key == String, Value: PreferenceValue { }
+
 /// A type that represents a key for user preferences.
 /// 
 /// `FPreferenceKey` can be initialized using string literals or string interpolations, allowing for easy and flexible key creation.
@@ -33,12 +47,15 @@ public struct FPreferenceKey: ExpressibleByStringLiteral, ExpressibleByStringInt
 ///
 /// - Note: The wrapped value type `T` should be compatible with `UserDefaults` storage.
 @propertyWrapper
-public struct PreferenceItem<T> {
+public struct PreferenceItem<T: PreferenceValue> {
     /// The key used to store the preference in `UserDefaults`.
     let key: FPreferenceKey
     
     /// The default value returned if no value exists in `UserDefaults` for the key.
     let defaultValue: T
+
+    /// The preference store backing this property.
+    let store: UserDefaults
     
     /// An optional closure to transform the stored or default value before returning it.
     let calculatedValue: ((T) -> (T))?
@@ -51,15 +68,15 @@ public struct PreferenceItem<T> {
     /// On set, saves the new value to `UserDefaults`.
     public var wrappedValue: T {
         get {
-            guard let res = UserDefaults.standard.value(forKey: key.rawValue) as? T
+            guard let res = store.object(forKey: key.rawValue) as? T
             else {
-                UserDefaults.standard.set(defaultValue, forKey: key.rawValue)
+                store.set(defaultValue, forKey: key.rawValue)
                 return calculatedValue?(defaultValue) ?? defaultValue
             }
             return calculatedValue?(res) ?? res
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: key.rawValue)
+            store.set(newValue, forKey: key.rawValue)
         }
     }
     
@@ -68,10 +85,17 @@ public struct PreferenceItem<T> {
     ///   - key: The preference key.
     ///   - defaultValue: The default value to use if no value exists.
     ///   - calculatedValue: An optional closure to transform the stored or default value.
-    public init(_ key: FPreferenceKey, _ defaultValue: T, _ calculatedValue: ((T) -> (T))? = nil) {
+    ///   - store: The `UserDefaults` store to use. Defaults to `.standard`.
+    public init(
+        _ key: FPreferenceKey,
+        _ defaultValue: T,
+        _ calculatedValue: ((T) -> (T))? = nil,
+        store: UserDefaults = .standard
+    ) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue
+        self.store = store
     }
 }
 
@@ -89,6 +113,9 @@ public struct PreferenceData<T: Codable> {
     
     /// The default value returned if no data exists in `UserDefaults` for the key.
     let defaultValue: T
+
+    /// The preference store backing this property.
+    let store: UserDefaults
     
     /// An optional closure to transform the decoded or default value before returning it.
     let calculatedValue: ((T) -> (T))?
@@ -101,11 +128,11 @@ public struct PreferenceData<T: Codable> {
     /// On set, encodes the new value and saves it to `UserDefaults`. If encoding fails, removes the value.
     public var wrappedValue: T {
         get {
-            guard let decoded = UserDefaults.standard.data(forKey: key.rawValue),
+            guard let decoded = store.data(forKey: key.rawValue),
                   let res = try? JSONDecoder().decode(T.self, from: decoded)
             else {
                 if let encodedData = try? JSONEncoder().encode(defaultValue) {
-                    UserDefaults.standard.set(encodedData, forKey: key.rawValue)
+                    store.set(encodedData, forKey: key.rawValue)
                 }
                 return calculatedValue?(defaultValue) ?? defaultValue
             }
@@ -113,9 +140,9 @@ public struct PreferenceData<T: Codable> {
         }
         set {
             if let encodedData: Data = try? JSONEncoder().encode(newValue) {
-                UserDefaults.standard.set(encodedData, forKey: key.rawValue)
+                store.set(encodedData, forKey: key.rawValue)
             } else {
-                UserDefaults.standard.set(nil, forKey: key.rawValue)
+                store.removeObject(forKey: key.rawValue)
             }
         }
     }
@@ -125,9 +152,16 @@ public struct PreferenceData<T: Codable> {
     ///   - key: The preference key.
     ///   - defaultValue: The default value to use if no data exists.
     ///   - calculatedValue: An optional closure to transform the decoded or default value.
-    public init(_ key: FPreferenceKey, _ defaultValue: T, calculatedValue: ((T) -> (T))? = nil) {
+    ///   - store: The `UserDefaults` store to use. Defaults to `.standard`.
+    public init(
+        _ key: FPreferenceKey,
+        _ defaultValue: T,
+        calculatedValue: ((T) -> (T))? = nil,
+        store: UserDefaults = .standard
+    ) {
         self.key = key
         self.defaultValue = defaultValue
         self.calculatedValue = calculatedValue
+        self.store = store
     }
 }

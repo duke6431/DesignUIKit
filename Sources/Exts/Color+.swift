@@ -62,11 +62,30 @@ public extension UIColor {
     /// The string is formatted as `#RRGGBB` representing the red, green, and blue components.
     /// Alpha component is not included in this string.
     var hexString: String {
-        .init(
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        if getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return .init(
+                format: "#%02lX%02lX%02lX",
+                lroundf(Float(red * 255)),
+                lroundf(Float(green * 255)),
+                lroundf(Float(blue * 255))
+            )
+        }
+        guard let rgbColorSpace = CGColorSpace(name: CGColorSpace.sRGB),
+              let converted = cgColor.converted(to: rgbColorSpace, intent: .defaultIntent, options: nil),
+              let components = converted.components,
+              components.count >= 3
+        else {
+            return "#000000"
+        }
+        return .init(
             format: "#%02lX%02lX%02lX",
-            lroundf(Float((cgColor.components?[safe: 0] ?? 0.0) * 255)),
-            lroundf(Float((cgColor.components?[safe: 1] ?? 0.0) * 255)),
-            lroundf(Float((cgColor.components?[safe: 2] ?? 0.0) * 255))
+            lroundf(Float(components[0] * 255)),
+            lroundf(Float(components[1] * 255)),
+            lroundf(Float(components[2] * 255))
         )
     }
 }

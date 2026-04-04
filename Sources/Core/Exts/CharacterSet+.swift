@@ -52,6 +52,6 @@ public extension String {
     /// - Parameter characters: The `CharacterSet` of characters to remove.
     /// - Returns: A new string without the specified characters.
     func remove(allCharactersIn characters: CharacterSet) -> String {
-        filter { characters.inverted.characters.contains($0) }
+        String(String.UnicodeScalarView(unicodeScalars.filter { !characters.contains($0) }))
     }
 }

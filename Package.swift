@@ -122,6 +122,41 @@ let package = Package(
                 .target(name: "TestBase")
             ],
             path: "Tests/Core"
+        ),
+        .testTarget(
+            name: "DesignExtsTests",
+            dependencies: [
+                .target(name: "DesignExts")
+            ],
+            path: "Tests/Exts"
+        ),
+        .testTarget(
+            name: "DesignExternalTests",
+            dependencies: [
+                .target(name: "DesignExternal")
+            ],
+            path: "Tests/External"
+        ),
+        .testTarget(
+            name: "DesignUIKitTests",
+            dependencies: [
+                .target(name: "DesignUIKit")
+            ],
+            path: "Tests/UIKit"
+        ),
+        .testTarget(
+            name: "DesignCombineUIKitTests",
+            dependencies: [
+                .target(name: "DesignCombineUIKit")
+            ],
+            path: "Tests/UIKitCombine"
+        ),
+        .testTarget(
+            name: "DesignRxUIKitTests",
+            dependencies: [
+                .target(name: "DesignRxUIKit")
+            ],
+            path: "Tests/UIKitRx"
         )
     ]
 )

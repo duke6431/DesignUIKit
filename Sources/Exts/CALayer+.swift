@@ -91,9 +91,7 @@ public extension CALayer {
         offSet: CGSize = .zero, opacity: Float = 0.2,
         radius: CGFloat = 3, color: UIColor = .black, path: CGPath? = nil
     ) -> CALayer {
-        if let path {
-            shadowPath = path
-        }
+        shadowPath = path
         shadowOffset = offSet
         shadowOpacity = opacity
         shadowRadius = radius

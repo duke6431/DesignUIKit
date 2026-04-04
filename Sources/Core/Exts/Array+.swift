@@ -26,7 +26,8 @@ public extension Array {
     /// - Parameter separator: The element to insert between each element of the array.
     /// - Returns: A new array with the separator interleaved between elements.
     func insert(separator: Element) -> [Element] {
-        (0 ..< 2 * count - 1).map { $0 % 2 == 0 ? self[$0/2] : separator }
+        guard !isEmpty else { return [] }
+        return (0 ..< 2 * count - 1).map { $0 % 2 == 0 ? self[$0/2] : separator }
     }
     
     /// Returns an array containing the elements that do not satisfy the given predicate.

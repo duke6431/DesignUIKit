@@ -15,29 +15,13 @@ import RxCocoa
 import RxSwift
 
 public extension FButton {
-    /// Initializes an `FButton` with a reactive title from a `Driver<String>` and an action.
+    /// Initializes an `FButton` with a reactive title from a `Driver<String>`.
     /// - Parameters:
     ///   - style: The button style type (optional).
     ///   - textPublisher: A `Driver` emitting button titles.
-    ///   - action: A closure to execute on tap.
     convenience init(
         style: UIButton.ButtonType? = nil,
-        _ textPublisher: Driver<String>,
-        action: @escaping () -> Void
-    ) {
-        self.init(style: style)
-        textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)
-    }
-    
-    /// Initializes an `FButton` with a reactive title and access to the button instance in the action.
-    /// - Parameters:
-    ///   - style: The button style type (optional).
-    ///   - textPublisher: A `Driver` emitting button titles.
-    ///   - action: A closure receiving the `FButton` instance on tap.
-    convenience init(
-        style: UIButton.ButtonType? = nil,
-        _ textPublisher: Driver<String>,
-        action: @escaping (FButton?) -> Void
+        _ textPublisher: Driver<String>
     ) {
         self.init(style: style)
         textPublisher.drive(onNext: { [weak self] in self?.setTitle($0, for: .normal) }).disposed(by: disposeBag)

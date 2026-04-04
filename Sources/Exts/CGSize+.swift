@@ -29,6 +29,7 @@ public extension CGSize {
     ///   - rhs: The scalar value to divide by.
     /// - Returns: A new `CGSize` with width and height divided by the scalar.
     static func / (lhs: CGSize, rhs: CGFloat) -> CGSize {
-        .init(width: lhs.width / rhs, height: lhs.height / rhs)
+        guard rhs != 0 else { return .zero }
+        return .init(width: lhs.width / rhs, height: lhs.height / rhs)
     }
 }

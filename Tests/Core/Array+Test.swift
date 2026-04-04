@@ -36,6 +36,14 @@ final class ArrayExtTest: XCTestCase {
             XCTAssertEqual(array[safe: selectedNumber], array[selectedNumber])
         }
     }
-    
 
+    func testInsertSeparator_whenArrayIsEmpty_returnsEmpty() {
+        let result = [Int]().insert(separator: 999)
+        XCTAssertEqual(result, [])
+    }
+
+    func testInsertSeparator_whenArrayHasElements_interleavesSeparator() {
+        let result = [1, 2, 3].insert(separator: 0)
+        XCTAssertEqual(result, [1, 0, 2, 0, 3])
+    }
 }
