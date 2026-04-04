@@ -195,6 +195,7 @@ public final class FListModel: NSObject, CommonCellModel, Loggable, Sendable {
     public let model: FCellModeling
     public let realData: Sendable?
 
+    #if os(iOS)
     public init(
         model: FCellModeling,
         customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? = nil,
@@ -208,6 +209,17 @@ public final class FListModel: NSObject, CommonCellModel, Loggable, Sendable {
         self._leadingActions = leadingActions
         self._trailingActions = trailingActions
     }
+    #else
+    public init(
+        model: FCellModeling,
+        customConfiguration: (@Sendable (CommonTableView.TableCell) -> Void)? = nil,
+        realData: Sendable? = nil
+    ) {
+        self.model = model
+        self.realData = realData
+        self._customConfiguration = customConfiguration
+    }
+    #endif
 
     deinit {
         logger.trace("Deinitializing \(model)")
