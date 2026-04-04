@@ -136,6 +136,20 @@ extension CommonCollection {
 }
 
 extension CommonCollection.Section {
+    @MainActor static func resolvedSlidingItemWHRatio(for section: CommonCollection.Section) -> CGFloat {
+        let ratio = section.dimension.itemWHRatio
+        return ratio.isFinite && ratio > 0 ? ratio : 1
+    }
+    
+    @MainActor static func resolvedSlidingGroupWidthRatio(for section: CommonCollection.Section) -> CGFloat {
+        let ratio = section.dimension.groupWidthRatio
+        return ratio.isFinite && ratio > 0 ? ratio : 1
+    }
+    
+    @MainActor static func slidingGroupHeightRatio(for section: CommonCollection.Section) -> CGFloat {
+        resolvedSlidingGroupWidthRatio(for: section) / resolvedSlidingItemWHRatio(for: section)
+    }
+    
     /// Returns a standard "sliding" layout for the provided section, supporting horizontal or vertical scrolling.
     ///
     /// - Parameter section: The section to layout.
@@ -144,13 +158,13 @@ extension CommonCollection.Section {
         let itemLayout = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / section.dimension.itemWHRatio)
+                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / resolvedSlidingItemWHRatio(for: section))
             )
         )
 
         // Show one item plus peek
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(section.dimension.groupWidthRatio),
+            widthDimension: .fractionalWidth(resolvedSlidingGroupWidthRatio(for: section)),
             heightDimension: section.dimension.autoHeight
             ? .estimated(
                 CGFloat(44 * section.dimension.numberOfItemsPerGroup)
@@ -158,10 +172,8 @@ extension CommonCollection.Section {
                 * section.dimension.itemSpacing
             )
                 : .fractionalWidth(
-                    section.dimension.groupWidthRatio
-                    / section.dimension.itemWHRatio
-                    / CGFloat(section.dimension.numberOfItemsPerGroup) *
-                    ceil(CGFloat(section.cells.count) / CGFloat(section.dimension.numberOfItemsPerGroup)))
+                    // Sliding/carousel sections should keep a stable row height; item count expands horizontally.
+                    slidingGroupHeightRatio(for: section))
         )
         var groupLayout: NSCollectionLayoutGroup
         switch section.dimension.groupAxis {
