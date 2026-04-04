@@ -15,6 +15,8 @@ import DesignCore
 /// A customizable image view component that supports theming and asynchronous remote loading.
 /// Provides convenient initializers and modifiers for fluent UI setup.
 public final class FImage: BaseImageView, FThemableForeground, FComponent, FContentConstraintable {
+    public typealias ReloadCompletion = (_ view: FImage?, _ image: UIImage) -> Void
+
     /// The URL used to asynchronously load an image using Nuke.
     public var url: URL?
     
@@ -22,6 +24,7 @@ public final class FImage: BaseImageView, FThemableForeground, FComponent, FCont
     public var customConfiguration: ((FImage) -> Void)?
     private var loadingURL: URL?
     private var isLoadingRemoteImage: Bool = false
+    private var pendingReloadCompletions: [URL: [ReloadCompletion]] = [:]
     
     /// Initializes the image view with an optional local image and optional remote URL.
     public init(
@@ -97,7 +100,13 @@ public extension FImage {
     /// - Parameters:
     ///   - image: A new local image to display.
     ///   - url: An optional new URL to load the image from.
-    func reload(image: UIImage? = nil, url: URL? = nil) {
+    ///   - completion: Invoked when an image is available. For remote URLs,
+    ///     this runs after the image has been loaded (or immediately if already loaded).
+    func reload(
+        image: UIImage? = nil,
+        url: URL? = nil,
+        completion: ReloadCompletion? = nil
+    ) {
         self.image = image
         if let currentForegroundColor {
             self.image = self.image?.withTintColor(currentForegroundColor, renderingMode: .alwaysOriginal)
@@ -105,9 +114,30 @@ public extension FImage {
         if let url {
             self.url = url
         }
-        guard let url = self.url else { return }
-        if isLoadingRemoteImage, loadingURL == url { return }
-        if loadingURL == url, self.image != nil { return }
+
+        guard let url = self.url else {
+            if let image = self.image {
+                completion?(self, image)
+            }
+            return
+        }
+
+        if isLoadingRemoteImage, loadingURL == url {
+            if let completion {
+                pendingReloadCompletions[url, default: []].append(completion)
+            }
+            return
+        }
+
+        if loadingURL == url, let image = self.image {
+            completion?(self, image)
+            return
+        }
+
+        if let completion {
+            pendingReloadCompletions[url, default: []].append(completion)
+        }
+
         isLoadingRemoteImage = true
         loadingURL = url
         ImagePipeline.shared.loadImage(with: url) { [weak self] result in
@@ -115,6 +145,12 @@ public extension FImage {
             self.isLoadingRemoteImage = false
             if case .success(let response) = result, self.url == response.request.url {
                 self.image = response.image
+                if let requestURL = response.request.url {
+                    let completions = self.pendingReloadCompletions.removeValue(forKey: requestURL) ?? []
+                    completions.forEach { $0(self, response.image) }
+                }
+            } else {
+                self.pendingReloadCompletions.removeValue(forKey: url)
             }
         }
     }
