@@ -141,13 +141,24 @@ extension CommonCollection.Section {
         return ratio.isFinite && ratio > 0 ? ratio : 1
     }
     
+    @MainActor static func resolvedSlidingItemsPerGroup(for section: CommonCollection.Section) -> CGFloat {
+        let itemsPerGroup = section.dimension.numberOfItemsPerGroup
+        return itemsPerGroup > 0 ? CGFloat(itemsPerGroup) : 1
+    }
+    
     @MainActor static func resolvedSlidingGroupWidthRatio(for section: CommonCollection.Section) -> CGFloat {
         let ratio = section.dimension.groupWidthRatio
         return ratio.isFinite && ratio > 0 ? ratio : 1
     }
     
     @MainActor static func slidingGroupHeightRatio(for section: CommonCollection.Section) -> CGFloat {
-        resolvedSlidingGroupWidthRatio(for: section) / resolvedSlidingItemWHRatio(for: section)
+        let baseRatio = resolvedSlidingGroupWidthRatio(for: section) / resolvedSlidingItemWHRatio(for: section)
+        guard section.dimension.groupAxis == .horizontal else {
+            return baseRatio
+        }
+        // In horizontal groups, each item's effective width is groupWidth / itemsPerGroup.
+        // Keep `itemWHRatio` semantics stable as the ratio of a single item.
+        return baseRatio / resolvedSlidingItemsPerGroup(for: section)
     }
     
     /// Returns a standard "sliding" layout for the provided section, supporting horizontal or vertical scrolling.

@@ -20,7 +20,23 @@ final class CommonCollectionSectionTest: XCTestCase {
         let manyItemsRatio = CommonCollection.Section.slidingGroupHeightRatio(for: sectionWithManyItems)
 
         XCTAssertEqual(fewItemsRatio, manyItemsRatio, accuracy: 0.000_1)
-        XCTAssertEqual(fewItemsRatio, 0.4, accuracy: 0.000_1)
+        XCTAssertEqual(fewItemsRatio, 0.8 / 2 / 3, accuracy: 0.000_1)
+    }
+    
+    func testSlidingGroupHeightRatio_whenHorizontalAndMultipleItemsPerGroup_scalesPerItemWidth() {
+        let dimension = CommonCollection.Section.LayoutDimension(
+            itemWHRatio: 2.0 / 3.0,
+            autoHeight: false,
+            groupAxis: .horizontal,
+            groupWidthRatio: 1,
+            numberItemsPerGroup: 2
+        )
+        let section = CommonCollection.Section(cells: makeCells(count: 2))
+            .with(dimension: dimension)
+
+        let ratio = CommonCollection.Section.slidingGroupHeightRatio(for: section)
+
+        XCTAssertEqual(ratio, 0.75, accuracy: 0.000_1)
     }
     
     func testSlidingGroupHeightRatio_whenRatiosAreInvalid_fallsBackToFiniteDefaults() {
