@@ -4,6 +4,41 @@ import UIKit
 
 @MainActor
 final class CommonCollectionViewTest: XCTestCase {
+    func testReloadData_whenCalledRepeatedlyWithChangingSectionCounts_keepsStateConsistent() {
+        let sut = makeSUT()
+        let host = UIView(frame: .init(x: 0, y: 0, width: 320, height: 480))
+        host.addSubview(sut)
+        sut.frame = host.bounds
+
+        for index in 0 ..< 40 {
+            let sectionCount = index.isMultiple(of: 2) ? 3 : 1
+            let sections = (0 ..< sectionCount).map { sectionIndex in
+                makeSection(cells: [CellModel(identifier: "\(index)-\(sectionIndex)")])
+            }
+            sut.reloadData(sections: sections)
+            sut.layoutIfNeeded()
+        }
+
+        XCTAssertEqual(sut.numberOfSections, 1)
+        XCTAssertEqual(sut.numberOfItems(inSection: 0), 1)
+    }
+
+    func testReloadData_whenCalledOffMainThread_dispatchesSafelyToMainThread() {
+        let sut = makeSUT()
+        let expectation = expectation(description: "reloadData")
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            sut.reloadData(sections: [self.makeSection(cells: [CellModel(identifier: "bg")])])
+            DispatchQueue.main.async {
+                expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(sut.numberOfSections, 1)
+        XCTAssertEqual(sut.numberOfItems(inSection: 0), 1)
+    }
+
     func testDidSelectItemAt_whenIndexPathIsOutOfRange_ignoresSelection() {
         let sut = makeSUT()
         let delegate = SpyCollectionDelegate()

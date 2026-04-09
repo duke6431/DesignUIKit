@@ -130,12 +130,21 @@ extension CommonCollection.View {
     ///
     /// - Parameter sections: An array of section models to display.
     public func reloadData(sections: [CommonCollection.Section]) {
+        if !Thread.isMainThread {
+            DispatchQueue.main.async { [weak self] in
+                self?.reloadData(sections: sections)
+            }
+            return
+        }
         self.sections = sections
         if currentDataSource == nil {
             currentDataSource = generateDataSource()
         }
-        collectionViewLayout.invalidateLayout()
-        currentDataSource?.apply(generateSnapshot(), animatingDifferences: true)
+        let snapshot = generateSnapshot()
+        let shouldAnimate = window != nil
+        currentDataSource?.apply(snapshot, animatingDifferences: shouldAnimate) { [weak self] in
+            self?.collectionViewLayout.invalidateLayout()
+        }
     }
     
     /// Builds a compositional layout based on the section’s layout closure.
@@ -144,9 +153,16 @@ extension CommonCollection.View {
     func generateLayout() -> UICollectionViewLayout {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let section = self?.sections[safe: section] else { return nil }
-            return section.layout?(section)
+            guard let sectionData = self?.sectionData(for: section) else { return nil }
+            return sectionData.layout?(sectionData)
         }
+    }
+
+    func sectionData(for index: Int) -> CommonCollection.Section? {
+        if let currentSection = currentDataSource?.snapshot().sectionIdentifiers[safe: index] {
+            return currentSection
+        }
+        return sections[safe: index]
     }
     
     /// Constructs a snapshot from the current sections and their cell identifiers.
