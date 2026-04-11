@@ -16,7 +16,7 @@ public extension UICollectionView {
     ///
     /// - header: Header view for collection section.
     /// - footer: Footer view for collection section.
-    @MainActor enum ReusableKind {
+    enum ReusableKind {
         /// Header for collection section
         case header
         /// Footer for collection section

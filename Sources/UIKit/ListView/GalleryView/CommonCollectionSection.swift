@@ -17,81 +17,69 @@ extension CommonCollection {
     /// A section in a `CommonCollection` view, representing a group of cells and optionally a header.
     ///
     /// Use this class to configure the content and layout of a section in your collection view.
-    @MainActor
-    public final class Section: NSObject {
+    public final class Section: NSObject, @unchecked Sendable {
         /// The model representing the header supplementary view for the section.
-        public let header: CommonCollectionReusableModel?
+        public var header: CommonCollectionReusableModel?
         /// The array of cell models contained in the section.
-        public let cells: [CommonCollectionCellModel]
+        public var cells: [CommonCollectionCellModel]
         /// A Boolean value indicating whether the section is scrollable.
         public var scrollable: Bool = true
         /// The layout dimension and configuration for the section.
-        public var dimension: LayoutDimension = .init()
+        public var layoutStyle: LayoutStyle
         /// An optional closure to provide a custom layout for the section.
-        public var layout: (@MainActor (Section) -> NSCollectionLayoutSection)? = nil
-        
+        public func layout() -> NSCollectionLayoutSection {
+            layoutStyle.layout(section: self)
+        }
+
         /// Creates a new section with the specified header and cells.
         /// - Parameters:
         ///   - header: The header model for the section. Defaults to `nil`.
         ///   - cells: The array of cell models for the section.
-        public init(header: CommonCollectionReusableModel? = nil,
-                    cells: [CommonCollectionCellModel]) {
+        public init(
+            header: CommonCollectionReusableModel? = nil,
+            cells: [CommonCollectionCellModel],
+            layoutStyle: LayoutStyle
+        ) {
             self.header = header
             self.cells = cells
-            super.init()
+            self.layoutStyle = layoutStyle
         }
-        
-        /// Returns a new section with the specified layout closure.
-        /// - Parameter layout: A closure that returns the layout for the section.
-        /// - Returns: The modified section instance.
-        public func with(layout: @escaping (@MainActor (Section) -> NSCollectionLayoutSection)) -> Self {
-            self.layout = layout
-            return self
+
+
+        public enum LayoutStyle {
+            case preconfigured(_ dimension: LayoutDimension)
+            case customized((CommonCollection.Section) -> NSCollectionLayoutSection)
         }
-        
-        /// Returns a new section with the specified layout dimension.
-        /// - Parameter dimension: The layout dimension to apply to the section.
-        /// - Returns: The modified section instance.
-        public func with(dimension: LayoutDimension) -> Self {
-            self.dimension = dimension
-            return self
-        }
-        
+
         /// A struct that encapsulates layout and sizing configuration for a section.
-        public struct LayoutDimension: Sendable {
-            /// If `true`, the item's height is automatically determined (estimated).
-            var autoHeight: Bool = false
+        public struct LayoutDimension {
             /// The width-to-height ratio for each item.
-            var itemWHRatio: CGFloat = 1
+            var itemSize: NSCollectionLayoutSize
             /// The spacing between items within a group.
             var itemSpacing: CGFloat = 8
-            
+
             // Group
-            /// The axis along which items are grouped (horizontal or vertical).
-            var groupAxis: NSLayoutConstraint.Axis = .horizontal
-            /// The width ratio of the group relative to the section's width.
-            var groupWidthRatio: CGFloat = 0.95
+            var groupSize: NSCollectionLayoutSize
             /// The spacing between groups.
             var groupSpacing: CGFloat = 8
+            /// The axis along which items are grouped (horizontal or vertical).
+            var groupAxis: NSLayoutConstraint.Axis = .horizontal
             /// The number of items per group.
             var numberOfItemsPerGroup: Int = 1
-            
+
             // Section
             /// The inset margins for the section.
-            var sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
+            var sectionInset: UIEdgeInsets = .init(top: 0, left: 12, bottom: 0, right: 12)
             // Header
             /// The size of the header supplementary view, if any.
             var headerSize: NSCollectionLayoutSize?
             // Footer
             /// The size of the footer supplementary view, if any.
             var footerSize: NSCollectionLayoutSize?
-            
+
             /// The orthogonal scrolling behavior for the section.
             var pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .groupPaging
-            
-            /// An optional closure to provide a completely custom layout for the section.
-            var customLayout: (@MainActor (CommonCollection.Section) -> NSCollectionLayoutSection)?
-            
+
             /// Initializes a new `LayoutDimension` with the specified properties.
             /// - Parameters:
             ///   - itemWHRatio: The width-to-height ratio for each item. Defaults to `1`.
@@ -106,118 +94,79 @@ extension CommonCollection {
             ///   - footerSize: The size of the footer supplementary view. Defaults to `nil`.
             ///   - pagingBehaviour: The orthogonal scrolling behavior for the section. Defaults to `.continuous`.
             public init(
-                itemWHRatio: CGFloat = 1, itemSpacing: CGFloat = 8, autoHeight: Bool = false,
+                itemSize: NSCollectionLayoutSize, itemSpacing: CGFloat = 8,
+                groupSize: NSCollectionLayoutSize, groupSpacing: CGFloat = 8,
                 groupAxis: NSLayoutConstraint.Axis = .horizontal,
-                groupWidthRatio: CGFloat = 0.95, groupSpacing: CGFloat = 8, numberItemsPerGroup: Int = 1,
-                sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
+                numberItemsPerGroup: Int = 1, sectionInset: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12),
                 headerSize: NSCollectionLayoutSize? = nil, footerSize: NSCollectionLayoutSize? = nil,
                 pagingBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .continuous
             ) {
-                self.itemWHRatio = itemWHRatio
+                self.itemSize = itemSize
                 self.itemSpacing = itemSpacing
-                self.autoHeight = autoHeight
-                self.groupAxis = groupAxis
-                self.groupWidthRatio = groupWidthRatio
+                self.groupSize = groupSize
                 self.groupSpacing = groupSpacing
+                self.groupAxis = groupAxis
                 self.numberOfItemsPerGroup = numberItemsPerGroup
                 self.sectionInset = sectionInset
                 self.headerSize = headerSize
                 self.footerSize = footerSize
                 self.pagingBehaviour = pagingBehaviour
             }
-            
-            /// Initializes a new `LayoutDimension` using a custom layout closure.
-            /// - Parameter customLayout: A closure that returns a custom layout for the section.
-            public init(customLayout: @escaping (@MainActor (CommonCollection.Section) -> NSCollectionLayoutSection)) {
-                self.customLayout = customLayout
-            }
         }
     }
 }
 
-extension CommonCollection.Section {
-    @MainActor static func resolvedSlidingItemWHRatio(for section: CommonCollection.Section) -> CGFloat {
-        let ratio = section.dimension.itemWHRatio
-        return ratio.isFinite && ratio > 0 ? ratio : 1
-    }
-    
-    @MainActor static func resolvedSlidingItemsPerGroup(for section: CommonCollection.Section) -> CGFloat {
-        let itemsPerGroup = section.dimension.numberOfItemsPerGroup
-        return itemsPerGroup > 0 ? CGFloat(itemsPerGroup) : 1
-    }
-    
-    @MainActor static func resolvedSlidingGroupWidthRatio(for section: CommonCollection.Section) -> CGFloat {
-        let ratio = section.dimension.groupWidthRatio
-        return ratio.isFinite && ratio > 0 ? ratio : 1
-    }
-    
-    @MainActor static func slidingGroupHeightRatio(for section: CommonCollection.Section) -> CGFloat {
-        let baseRatio = resolvedSlidingGroupWidthRatio(for: section) / resolvedSlidingItemWHRatio(for: section)
-        guard section.dimension.groupAxis == .horizontal else {
-            return baseRatio
+extension CommonCollection.Section.LayoutStyle {
+    func layout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
+        switch self {
+        case .preconfigured(let dimension):
+            layout(section: section, dimension: dimension)
+        case .customized(let configuration):
+            configuration(section)
         }
-        // In horizontal groups, each item's effective width is groupWidth / itemsPerGroup.
-        // Keep `itemWHRatio` semantics stable as the ratio of a single item.
-        return baseRatio / resolvedSlidingItemsPerGroup(for: section)
     }
-    
+
     /// Returns a standard "sliding" layout for the provided section, supporting horizontal or vertical scrolling.
     ///
     /// - Parameter section: The section to layout.
     /// - Returns: An `NSCollectionLayoutSection` configured for sliding presentation.
-    @MainActor public static func slidingLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
-        let itemLayout = NSCollectionLayoutItem(
-            layoutSize: .init(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: section.dimension.autoHeight ? .estimated(44) : .fractionalWidth(1 / resolvedSlidingItemWHRatio(for: section))
-            )
-        )
+    private func layout(section: CommonCollection.Section, dimension: CommonCollection.Section.LayoutDimension) -> NSCollectionLayoutSection {
+        let itemLayout = NSCollectionLayoutItem(layoutSize: dimension.itemSize)
 
         // Show one item plus peek
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(resolvedSlidingGroupWidthRatio(for: section)),
-            heightDimension: section.dimension.autoHeight
-            ? .estimated(
-                CGFloat(44 * section.dimension.numberOfItemsPerGroup)
-                + CGFloat(section.dimension.numberOfItemsPerGroup)
-                * section.dimension.itemSpacing
-            )
-                : .fractionalWidth(
-                    // Sliding/carousel sections should keep a stable row height; item count expands horizontally.
-                    slidingGroupHeightRatio(for: section))
-        )
+        let groupSize = dimension.groupSize
         var groupLayout: NSCollectionLayoutGroup
-        switch section.dimension.groupAxis {
+        switch dimension.groupAxis {
         case .vertical:
             groupLayout = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
+                layoutSize: groupSize, subitem: itemLayout, count: dimension.numberOfItemsPerGroup
             )
         default:
             groupLayout = NSCollectionLayoutGroup.horizontal(
-                layoutSize: groupSize, subitem: itemLayout, count: section.dimension.numberOfItemsPerGroup
+                layoutSize: groupSize, subitem: itemLayout, count: dimension.numberOfItemsPerGroup
             )
         }
-        groupLayout.interItemSpacing = .fixed(section.dimension.itemSpacing)
-        
+        groupLayout.interItemSpacing = .fixed(dimension.itemSpacing)
+
         let sectionLayout = NSCollectionLayoutSection(group: groupLayout)
-        sectionLayout.interGroupSpacing = section.dimension.groupSpacing
-        sectionLayout.orthogonalScrollingBehavior = section.dimension.pagingBehaviour
+        sectionLayout.interGroupSpacing = dimension.groupSpacing
+        sectionLayout.orthogonalScrollingBehavior = dimension.pagingBehaviour
         sectionLayout.contentInsets = .init(
-            top: section.dimension.sectionInset.top,
-            leading: section.dimension.sectionInset.left,
-            bottom: section.dimension.sectionInset.bottom,
-            trailing: section.dimension.sectionInset.right
+            top: dimension.sectionInset.top,
+            leading: dimension.sectionInset.left,
+            bottom: dimension.sectionInset.bottom,
+            trailing: dimension.sectionInset.right
         )
         var reusableSizes = [NSCollectionLayoutBoundarySupplementaryItem]()
         if section.header != nil {
-            if let headerSize = section.dimension.headerSize {
+            if let headerSize = dimension.headerSize {
                 reusableSizes.append(
                     .init(layoutSize: headerSize,
                           elementKind: UICollectionView.ReusableKind.header.rawValue,
                           alignment: .topLeading)
                 )
             }
-            if let footerSize = section.dimension.footerSize {
+            if let footerSize = dimension.footerSize {
                 reusableSizes.append(
                     .init(layoutSize: footerSize,
                           elementKind: UICollectionView.ReusableKind.footer.rawValue,
@@ -229,15 +178,5 @@ extension CommonCollection.Section {
             }
         }
         return sectionLayout
-    }
-    /// Returns a custom layout for the provided section if available, otherwise falls back to the sliding layout.
-    ///
-    /// - Parameter section: The section to layout.
-    /// - Returns: An `NSCollectionLayoutSection` configured by the custom layout closure or the default sliding layout.
-    @MainActor public static func customLayout(section: CommonCollection.Section) -> NSCollectionLayoutSection {
-        guard let layout = section.dimension.customLayout else {
-            return slidingLayout(section: section)
-        }
-        return layout(section)
     }
 }

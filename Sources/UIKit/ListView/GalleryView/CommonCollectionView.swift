@@ -154,7 +154,7 @@ extension CommonCollection.View {
         // swiftlint:disable:next line_length
         UICollectionViewCompositionalLayout { [weak self] (section: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let sectionData = self?.sectionData(for: section) else { return nil }
-            return sectionData.layout?(sectionData)
+            return sectionData.layout()
         }
     }
 
